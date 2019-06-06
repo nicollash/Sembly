@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>791030767677-mlkvjkmmneourq297e9ianglcl5hmlbi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.791030767677-mlkvjkmmneourq297e9ianglcl5hmlbi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA_R10QXxrV_YnOwpTsQEy1GOV3bvtEWQY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>791030767677</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.postworld.sembly</string>
+	<key>PROJECT_ID</key>
+	<string>sembly</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sembly.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:791030767677:ios:765c465ccea4228d</string>
+	<key>DATABASE_URL</key>
+	<string>https://sembly.firebaseio.com</string>
+</dict>
+</plist>

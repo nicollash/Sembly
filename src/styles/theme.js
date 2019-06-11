@@ -10,16 +10,19 @@ const { width, height } = Dimensions.get('screen');
 
 // Fonts definitions
 const fonts = {
-  ultraLight: iOS ? 'SFProDisplay-Ultralight' : 'Roboto-Light',
-  ultraLightItalic: iOS ? 'SFProDisplay-ultraLightItalic' : 'Roboto-ThinItalic',
-  light: iOS ? 'SFProDisplay-Light' : 'Roboto-Light',
-  lightItalic: iOS ? 'SFProDisplay-LightItalic' : 'Roboto-LightItalic',
-  thin: iOS ? 'SFProDisplay-Thin' : 'Roboto-Light',
-  regular: iOS ? 'SFProDisplay-Regular' : 'Roboto-Regular',
-  medium: iOS ? 'SFProDisplay-Medium' : 'Roboto-Medium',
-  bold: iOS ? 'SFProDisplay-Bold' : 'Roboto-Bold',
-  helveticaNeue: iOS ? 'Helvetica Neue' : 'Roboto-Light',
-  ringFont: iOS ? 'SFProDisplay-Thin' : 'Roboto-Thin',
+  extraLight: 'Nunito-ExtraLight',
+  extraLightItalic: 'Nunito-ExtraLightItalic',
+  light: 'Nunito-Light',
+  lightItalic: 'Nunito-LightItalic',
+  regular: 'Nunito-Regular',
+  semiBold: 'Nunito-SemiBold',
+  semiBoldItalic: 'Nunito-SemiBoldItalic',
+  bold: 'Nunito-Bold',
+  boldItalic: 'Nunito-BoldItalic',
+  black: 'Nunito-Black',
+  blackItalic: 'Nunito-BlackItalic',
+  extraBold: 'Nunito-ExtraBold',
+  extraBoldItalic: 'Nunito-ExtraBoldItalic',
 };
 
 // Themes definitions

@@ -8,8 +8,9 @@ target 'sembly' do
   # Pods for sembly
 
   # Firebase
-  pod 'Firebase/Auth'
+  use_frameworks!
   pod 'Firebase/Core'
+  pod 'Firebase/Auth'
   pod 'Firebase/Messaging'
   pod 'Firebase/Storage'
   pod 'Firebase/Database'

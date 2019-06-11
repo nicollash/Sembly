@@ -1,24 +1,34 @@
 import React from 'react';
 import { StatusBar, Platform, Text } from 'react-native';
 import _ from 'underscore';
-import { createStackNavigator, createSwitchNavigator, NavigationActions } from 'react-navigation';
+
+import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import ThemeContainer from '../styles/themeContainer';
-import Theme from '../styles/theme.js';
+
+import { LoginView, SignupView } from './Welcome';
 
 // Main application navigation
-//const RootStack = createStackNavigator();
+const WelcomeStack = createStackNavigator({
+  Main: { 
+    screen: LoginView,
+    navigationOptions: { header: null }
+  },
+  Signup: {
+    screen: SignupView,
+    navigationOptions: { header: null }
+  }
+}, {
+  headerMode: 'none',
+});
 
 // Switches between the Login, Onboarding & Main Application
 
-/*
+
 const RootSwitchNavigation = createSwitchNavigator ({
-  Root: RootStack,
-  Onboarding: OnboardingStack,
+  Root: WelcomeStack,
 });
-*/
 
 /*
 * Root of the Application
@@ -32,11 +42,8 @@ class AppRoot extends React.PureComponent {
   render() {
     return (
         <ThemeContainer theme={'default'}>
-          <StatusBar barStyle={'default'} />
-          
-          {/*
-          <RootSwitchNavigation ref={nav => { this.navigator = nav; }} onNavigationStateChange={(prevState, newState) => { if (Platform.OS === 'ios') RNAccessibilityStatus.sendBlankScreenChangedNotification() }} />
-          */}
+          <StatusBar barStyle={'default'} />   
+          <RootSwitchNavigation ref={nav => { this.navigator = nav; }} />
         </ThemeContainer>
     );
   }
@@ -58,5 +65,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
 });
+/*
+export default class LoginView extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+        </View>
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);
+      </View>
+    );
+  }
+}
+*/
+export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(RootSwitchNavigation));

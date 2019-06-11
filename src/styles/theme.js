@@ -10,17 +10,15 @@ const { width, height } = Dimensions.get('screen');
 
 // Fonts definitions
 const fonts = {
-  extraLight: 'Nunito-ExtraLight',
-  extraLightItalic: 'Nunito-ExtraLightItalic',
-  light: 'Nunito-Light',
-  lightItalic: 'Nunito-LightItalic',
-  regular: 'Nunito-Regular',
-  semiBold: 'Nunito-SemiBold',
-  semiBoldItalic: 'Nunito-SemiBoldItalic',
-  bold: 'Nunito-Bold',
-  boldItalic: 'Nunito-BoldItalic',
-  black: 'Nunito-Black',
-  blackItalic: 'Nunito-BlackItalic',
+  hairline: 'Lato-Hairline',
+  hairlineItalic: 'Lato-HairlineItalic',
+  light: 'Lato-Light',
+  lightItalic: 'Lato-LightItalic',
+  regular: 'Lato-Regular',
+  bold: 'Lato-Bold',
+  boldItalic: 'Lato-BoldItalic',
+  black: 'Lato-Black',
+  blackItalic: 'Lato-BlackItalic',
   extraBold: 'Nunito-ExtraBold',
   extraBoldItalic: 'Nunito-ExtraBoldItalic',
 };
@@ -28,7 +26,7 @@ const fonts = {
 // Themes definitions
 const themes = {
   default: {
-    fonts: fonts,
+    fonts,
     statusBarStyle: 'default',
     colors: {
       mainBackground: '#FFFFFF',

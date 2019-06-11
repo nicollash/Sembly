@@ -13,6 +13,8 @@ import { StyleSheet,
 
 import { connect } from 'react-redux';
 
+import Theme from '../../styles/theme';
+
 import { 
     SemblyButton,
     LoginForm
@@ -33,14 +35,16 @@ const styles = {
   title: {
     marginTop: 35,
     fontSize: 35,
-    color: '#26315F'
+    color: '#26315F',
+    fontFamily: Theme.fonts.black,
   },
   sub: {
     textAlign: 'center',
     marginTop: 15,
     marginRight: 20,
     fontSize: 18,
-    color: '#96969A'
+    color: '#96969A',
+    fontFamily: Theme.fonts.bold,
   }
 };
 

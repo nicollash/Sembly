@@ -1,14 +1,10 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-
 import {
   View,
 } from 'react-native';
 
-import { 
-  SemblyButton 
-} from '../../components';
+import Carousel from 'react-native-snap-carousel';
 
 const styles = {
   container: {
@@ -17,7 +13,7 @@ const styles = {
     alignItems: 'center',
   },
 };
-class SignupView extends React.Component {
+class OnboardingView extends React.Component {
   componentWillMount() {
   }
 
@@ -25,21 +21,24 @@ class SignupView extends React.Component {
   }
 
   render() {
+    /*
+    UTILISER SNAP CAROUSEL POUR LE CAROUSEL; déjà
+    configurer et ready to go;
+    https://github.com/archriss/react-native-snap-carousel#usage
+    */
+    
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        <SemblyButton label="Go Back" onPress={() => this.props.navigation.goBack()} />
-        <SemblyButton label="Go Onboarding" onPress={() => this.props.navigation.navigate('Onboarding')} />
+        
       </View>
     );
   }
 }
 
-//this.props.navigation.navigate('Onboarding')
-
-SignupView.defaultProps = {
+OnboardingView.defaultProps = {
 };
 
-SignupView.propTypes = {
+OnboardingView.propTypes = {
 };
 
 
@@ -50,4 +49,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default SignupView;
+export default OnboardingView;

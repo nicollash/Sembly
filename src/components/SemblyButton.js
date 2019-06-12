@@ -18,6 +18,7 @@ const styles = {
   text: {
     color: 'white',
     fontWeight: 'bold',
+    fontSize: 16
   }
 };
 
@@ -43,7 +44,7 @@ SemblyButton.defaultProps = {
 };
 
 SemblyButton.propTypes = {
-    
+
 };
 
 

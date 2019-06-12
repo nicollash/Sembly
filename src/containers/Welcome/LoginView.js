@@ -22,26 +22,34 @@ import {
 
 
 const styles = {
+  header: {
+    backgroundColor: '#FFF9BB',
+    alignSelf: 'stretch',
+    flex: 1
+  },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#D8C34A',
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
+  },
+  whiteContainer: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+    alignSelf: 'stretch',
     alignItems: 'center',
-  },
-  logoContainer: {
-  },
-  logo: {
+    paddingTop: 20,
+    paddingBottom: 50
   },
   title: {
-    marginTop: 35,
+    marginTop: 10,
     fontSize: 35,
     color: '#26315F',
     fontFamily: Theme.fonts.black,
   },
-  sub: {
+  desc: {
     textAlign: 'center',
     marginTop: 15,
-    marginRight: 20,
+    marginHorizontal: 20,
     fontSize: 18,
     color: '#96969A',
     fontFamily: Theme.fonts.bold,
@@ -59,24 +67,50 @@ class LoginView extends React.Component {
   render() {
     return (
         <KeyboardAvoidingView behavior="padding" accessibilityIgnoresInvertColors style={styles.container}>
-          <View style={styles.logoContainer}>
-            <Image 
-              style={styles.logo}
-              source={require('../../../assets/images/loginViewBackground.png')}
-              />    
-          </View>
-          <View>
-            <Text style={styles.title}>Discover your city</Text>
-          </View>
-          <View>
-            <Text style={styles.sub}>
-              Sembly is a crowdsourced city discovery platform.
-            </Text>
-          </View>
-          <View style={{marginTop: 5}}>
-            <LoginForm />
-          </View>
-        </KeyboardAvoidingView>
+
+            <View style={styles.header}></View>
+
+            <View><Image 
+                source={require('../../../assets/images/loginViewBackground.png')}/>    
+            </View>
+
+            <View style={styles.whiteContainer}>
+
+                <View>
+                  <Text style={styles.title}>Discover your city</Text>
+                </View>
+
+                <View>
+                  <Text style={styles.desc}>
+                    Sembly is a crowdsourced city discovery platform.
+                  </Text>
+                </View>
+
+                <View style={{marginTop: 5}}>
+                  <LoginForm actionOnPress={() => this.props.navigation.navigate('MainApp')} />
+                </View>
+
+                <TouchableOpacity>
+                          <Text style={{color: '#97979B',
+                                        marginTop: 30,
+                                        textAlign: 'center',
+                                        fontFamily: Theme.fonts.bold}}>
+                          Forgot your password?</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity accessibilityIgnoresInvertColors onPress={() => this.props.navigation.navigate('Signup')}>
+                          <Text style={{color: '#26315F',
+                                        alignItems: 'baseline',
+                                        marginTop: 40,
+                                        textAlign: 'center',
+                                        fontFamily: Theme.fonts.bold}}>Don't have an account?
+                              <Text style={{color: '#F93963'}}> Sign up</Text>
+                          </Text>
+                  </TouchableOpacity>
+
+              </View>
+
+         </KeyboardAvoidingView>
     );
   }
 }

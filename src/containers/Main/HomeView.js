@@ -2,12 +2,19 @@ import React from 'react';
 
 import {
   View,
+  Text,
 } from 'react-native';
 
+import SlidingUpPanel from 'rn-sliding-up-panel';
+
+import SemblyMapView from './SemblyMapView';
 
 const styles = {
   container: {
-      backgroundColor: 'red',
+    backgroundColor: 'red',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 };
 class HomeView extends React.Component {
@@ -15,13 +22,19 @@ class HomeView extends React.Component {
   }
 
   componentDidMount() {
+    this._panel.show(300);
   }
 
   render() {
 
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        
+        <SemblyMapView />
+        <SlidingUpPanel ref={c => this._panel = c}>
+          <View style={{ backgroundColor: 'green', flex: 1, alignItems: 'center' }}>
+            <Text>FeedView goes here</Text>
+          </View>
+        </SlidingUpPanel>
       </View>
     );
   }

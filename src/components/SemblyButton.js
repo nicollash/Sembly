@@ -5,21 +5,21 @@ import { connect } from 'react-redux';
 import {
   TouchableOpacity,
   Text,
+  View,
 } from 'react-native';
 
 const styles = {
-  container: {
-    padding: 12,
+  button: {
     borderRadius: 25,
     backgroundColor: '#F7567C',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 16,
   },
   text: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16
-  }
+    fontSize: 16,
+    textAlign: 'center',
+  },
 };
 
 class SemblyButton extends React.Component {
@@ -31,16 +31,22 @@ class SemblyButton extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity accessibilityIgnoresInvertColors style={styles.container} onPress={this.props.onPress}>
-        <Text style={styles.text}>{this.props.label}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          
+          accessibilityIgnoresInvertColors
+          style={[styles.button, {width: this.props.width}]}
+          onPress={this.props.onPress}
+        >
+          <Text style={styles.text}>{this.props.label}</Text>
+        </TouchableOpacity>
     );
   }
 }
 
 SemblyButton.defaultProps = {
-    label: 'Button',
-    onPress: null,
+  label: 'Button',
+  onPress: null,
+  width: '80%',
 };
 
 SemblyButton.propTypes = {

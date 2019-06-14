@@ -13,6 +13,7 @@ const styles = {
     borderRadius: 25,
     backgroundColor: '#F7567C',
     padding: 16,
+    alignSelf: 'center',
   },
   text: {
     color: 'white',
@@ -31,14 +32,14 @@ class SemblyButton extends React.Component {
 
   render() {
     return (
-        <TouchableOpacity
+      <TouchableOpacity
           
-          accessibilityIgnoresInvertColors
-          style={[styles.button, {width: this.props.width}]}
-          onPress={this.props.onPress}
-        >
-          <Text style={styles.text}>{this.props.label}</Text>
-        </TouchableOpacity>
+        accessibilityIgnoresInvertColors
+        style={[styles.button, { width: this.props.width }]}
+        onPress={this.props.onPress}
+      >
+        <Text style={styles.text}>{this.props.label}</Text>
+      </TouchableOpacity>
     );
   }
 }

@@ -13,6 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* semblyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* semblyTests.m */; };
+		06FC9E4D85D2D943DD615505 /* libPods-semblyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE6DD7FC1888BDBEC882981 /* libPods-semblyTests.a */; };
 		0D856855C7164677AFD2F10A /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D16DF1468854D259E4CEE45 /* Lato-Italic.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -41,18 +42,29 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
+		2DAF4E38FA7381EE7F92B5AD /* libPods-sembly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A2BA0AFA8B8E78DB5A2C9D /* libPods-sembly.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* semblyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* semblyTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		49D4B82908734FBA9FB3BEE5 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EE86AD6D6F844E2AE2E4E93 /* Lato-Bold.ttf */; };
+		4D6E328722B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
+		4D6E328822B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
+		4D6E328922B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
+		4D6E328A22B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
+		4D6E328B22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
+		4D6E328C22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
+		4D6E328D22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
+		4D6E328E22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
+		4D6E328F22B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
+		4D6E329022B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
+		4D6E329122B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
+		4D6E329222B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
 		501FEC1322A94D360080706C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501FEC1222A94D360080706C /* GoogleService-Info.plist */; };
 		501FEC6B22AA09970080706C /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501FEC6822AA097F0080706C /* libRNGestureHandler.a */; };
 		5B41360F8C3E480E8E7DD9AB /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE8440A2D9B74664A490F1C3 /* Lato-HairlineItalic.ttf */; };
-		67525A59652AAD3799170D5C /* Pods_semblyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A56F7F9141D883A13C75C2E4 /* Pods_semblyTests.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		91F73F980BCE481EBF3AB3E3 /* libReactNativeConfig-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7B8C311C6441FA8AD82028 /* libReactNativeConfig-tvOS.a */; };
 		995051A0B9764259B4500C7D /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1262A7ABA8A4A69A5732205 /* Lato-Hairline.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		B3FD928F3D02D9A3A983846D /* Pods_sembly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C4BE53BB99C6550E040825 /* Pods_sembly.framework */; };
 		BA2A1949E259489A82FE70C8 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C688AFF92AA04675B1C60FB0 /* Lato-BlackItalic.ttf */; };
 		EA1C7FEFB9C7462E86DD33F7 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BFAC12C666348D4AE596797 /* Lato-Regular.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
@@ -383,7 +395,7 @@
 		00E356F21AD99517003FC87E /* semblyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = semblyTests.m; sourceTree = "<group>"; };
 		04CD7A21CF48237976C9D94E /* Pods-semblyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-semblyTests.debug.xcconfig"; path = "Target Support Files/Pods-semblyTests/Pods-semblyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		087608A2B8F54F189966615F /* Nunito-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-BoldItalic.ttf"; path = "../assets/fonts/Nunito-BoldItalic.ttf"; sourceTree = "<group>"; };
-		11C4BE53BB99C6550E040825 /* Pods_sembly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sembly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FE6DD7FC1888BDBEC882981 /* libPods-semblyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-semblyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12CC0148A14A4DFDBC6CAB2C /* Lato-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Light.ttf"; path = "../assets/fonts/Lato-Light.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -403,6 +415,9 @@
 		2D7C8BE5F80A4F74BB813F91 /* Nunito-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Italic.ttf"; path = "../assets/fonts/Nunito-Italic.ttf"; sourceTree = "<group>"; };
 		3E390BF420D148C086DDB74A /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		3E96F7B453BE3BC1C1743812 /* Pods-sembly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sembly.release.xcconfig"; path = "Target Support Files/Pods-sembly/Pods-sembly.release.xcconfig"; sourceTree = "<group>"; };
+		4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splashScreen@2x.png"; sourceTree = "<group>"; };
+		4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splashScreen@3x.png"; sourceTree = "<group>"; };
+		4D6E328622B2ABDA00C5CC63 /* splashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashScreen.png; sourceTree = "<group>"; };
 		501FEC1222A94D360080706C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		501FEC3B22AA097F0080706C /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		556029755F374C9A87A1F9E0 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
@@ -419,7 +434,6 @@
 		8D16DF1468854D259E4CEE45 /* Lato-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Italic.ttf"; path = "../assets/fonts/Lato-Italic.ttf"; sourceTree = "<group>"; };
 		9A02B2DF26324EC2B11CBB83 /* Nunito-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-BlackItalic.ttf"; path = "../assets/fonts/Nunito-BlackItalic.ttf"; sourceTree = "<group>"; };
 		A553670C086B4B45821091B5 /* Nunito-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-SemiBoldItalic.ttf"; path = "../assets/fonts/Nunito-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		A56F7F9141D883A13C75C2E4 /* Pods_semblyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_semblyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B3FE8E7D657440D98706498C /* Nunito-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraBoldItalic.ttf"; path = "../assets/fonts/Nunito-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		BB7B8C311C6441FA8AD82028 /* libReactNativeConfig-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libReactNativeConfig-tvOS.a"; sourceTree = "<group>"; };
@@ -428,6 +442,7 @@
 		C688AFF92AA04675B1C60FB0 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BlackItalic.ttf"; path = "../assets/fonts/Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
 		CCE12A1AB03C4B5CAC7CCCFF /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-SemiBold.ttf"; path = "../assets/fonts/Nunito-SemiBold.ttf"; sourceTree = "<group>"; };
 		CE8440A2D9B74664A490F1C3 /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-HairlineItalic.ttf"; path = "../assets/fonts/Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
+		D1A2BA0AFA8B8E78DB5A2C9D /* libPods-sembly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-sembly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69DC1A11368406E8F1C7F88 /* libReactNativeConfig.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeConfig.a; sourceTree = "<group>"; };
 		DF0A1235F3774563AC013CBC /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-LightItalic.ttf"; path = "../assets/fonts/Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		E1262A7ABA8A4A69A5732205 /* Lato-Hairline.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Hairline.ttf"; path = "../assets/fonts/Lato-Hairline.ttf"; sourceTree = "<group>"; };
@@ -444,7 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				67525A59652AAD3799170D5C /* Pods_semblyTests.framework in Frameworks */,
+				06FC9E4D85D2D943DD615505 /* libPods-semblyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,7 +483,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				1A8E3C631ADE4EE689DD6426 /* libReactNativeConfig.a in Frameworks */,
 				1893C124A83D47EC9D05B121 /* libRNFirebase.a in Frameworks */,
-				B3FD928F3D02D9A3A983846D /* Pods_sembly.framework in Frameworks */,
+				2DAF4E38FA7381EE7F92B5AD /* libPods-sembly.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,8 +638,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				11C4BE53BB99C6550E040825 /* Pods_sembly.framework */,
-				A56F7F9141D883A13C75C2E4 /* Pods_semblyTests.framework */,
+				D1A2BA0AFA8B8E78DB5A2C9D /* libPods-sembly.a */,
+				0FE6DD7FC1888BDBEC882981 /* libPods-semblyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -771,6 +786,9 @@
 				087608A2B8F54F189966615F /* Nunito-BoldItalic.ttf */,
 				F6ACC63E6EDF4BB4AA9C0B53 /* Nunito-ExtraBold.ttf */,
 				B3FE8E7D657440D98706498C /* Nunito-ExtraBoldItalic.ttf */,
+				4D6E328622B2ABDA00C5CC63 /* splashScreen.png */,
+				4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */,
+				4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */,
 				2A51C9BF09B746348854EABC /* Nunito-ExtraLight.ttf */,
 				E94FE8E73D2642EBB2CE90A5 /* Nunito-ExtraLightItalic.ttf */,
 				2D7C8BE5F80A4F74BB813F91 /* Nunito-Italic.ttf */,
@@ -824,7 +842,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				E9D25B07AEB679F29B0FC924 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1280,6 +1297,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D6E329022B2ABDA00C5CC63 /* splashScreen.png in Resources */,
+				4D6E328C22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,
+				4D6E328822B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1296,9 +1316,12 @@
 				281320C3C9DF42F49526AEBD /* Lato-BoldItalic.ttf in Resources */,
 				995051A0B9764259B4500C7D /* Lato-Hairline.ttf in Resources */,
 				5B41360F8C3E480E8E7DD9AB /* Lato-HairlineItalic.ttf in Resources */,
+				4D6E328722B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
 				0D856855C7164677AFD2F10A /* Lato-Italic.ttf in Resources */,
 				19DE2DF97C7745BAB2381186 /* Lato-Light.ttf in Resources */,
+				4D6E328B22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,
 				22563A9AFAF443B6BA4147FE /* Lato-LightItalic.ttf in Resources */,
+				4D6E328F22B2ABDA00C5CC63 /* splashScreen.png in Resources */,
 				EA1C7FEFB9C7462E86DD33F7 /* Lato-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1307,7 +1330,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D6E328D22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
+				4D6E329122B2ABDA00C5CC63 /* splashScreen.png in Resources */,
+				4D6E328922B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1315,6 +1341,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D6E329222B2ABDA00C5CC63 /* splashScreen.png in Resources */,
+				4D6E328E22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,
+				4D6E328A22B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1369,32 +1398,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E9D25B07AEB679F29B0FC924 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-sembly/Pods-sembly-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-sembly/Pods-sembly-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F04E3F7302BF566DC9BBCFC4 /* [CP] Check Pods Manifest.lock */ = {

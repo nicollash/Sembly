@@ -1,64 +1,99 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, 
-         View, 
-         Image,
-         TextInput, 
-         TouchableOpacity, 
-         Text, 
-         fontSize,
-         fontFamily,
-         KeyboardAvoidingView
-        } from 'react-native';
-
 import { connect } from 'react-redux';
+
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  fontSize,
+  fontFamily,
+  KeyboardAvoidingView,
+} from 'react-native';
+
+import {
+  SemblyButton,
+  LoginForm,
+} from '../../components';
 
 import Theme from '../../styles/theme';
 
-import { 
-    SemblyButton,
-    LoginForm
-} from '../../components';
-
-
 const styles = {
-  header: {
-    backgroundColor: '#FFF9BB',
-    alignSelf: 'stretch',
-    flex: 1
-  },
   container: {
-    backgroundColor: '#D8C34A',
-    display: 'flex',
     flex: 1,
-    justifyContent: 'flex-end',
+    backgroundColor: 'blue',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
-  whiteContainer: {
-    borderRadius: 10,
-    backgroundColor: 'white',
+  headerContainer: {
+    backgroundColor: '#FFF9BB',
+    flex: 0.425,
     alignSelf: 'stretch',
     alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 50
+    justifyContent: 'flex-start',
   },
-  title: {
-    marginTop: 10,
-    fontSize: 35,
-    color: '#26315F',
-    fontFamily: Theme.fonts.black,
+  image: {
+    alignSelf: 'stretch',
+    order: 2,
+    flex: 0.9,
   },
-  desc: {
-    textAlign: 'center',
-    marginTop: 15,
-    marginHorizontal: 20,
-    fontSize: 18,
-    color: '#96969A',
-    fontFamily: Theme.fonts.bold,
-  }
+  underwhite: {
+    backgroundColor: '#D8C34A',
+    flex: 0.575,
+    alignSelf: 'stretch',
+  },
+  whiteContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    borderRadius: 10,
+  },
+  textbox: {
+    paddingTop: 2,
+    flex: 0.2,
+    alignSelf: 'stretch',
+    justifyContent: 'flex-start',
+    title: {
+      fontSize: 35,
+      color: '#26315F',
+      textAlign: 'center',
+      fontFamily: Theme.fonts.black,
+    },
+    desc: {
+      textAlign: 'center',
+      flex: 1,
+      paddingTop: 10,
+      marginHorizontal: 20,
+      color: '#96969A',
+      fontSize: 18,
+      fontFamily: Theme.fonts.bold,
+    },
+  },
+  form: {
+    flex: 0.45,
+    width: '85%',
+    justifyContent: 'flex-end',
+  },
+  footer: {
+    flex: 0.3,
+    justifyContent: 'flex-start',
+    foothead: {
+      marginTop: 20,
+    },
+    footline: {
+      marginTop: 40,
+    },
+  },
 };
 
 
-class LoginView extends React.Component {
+class SignupView extends React.Component {
   componentWillMount() {
   }
 
@@ -67,68 +102,94 @@ class LoginView extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" accessibilityIgnoresInvertColors style={styles.container}>
+      <View style={styles.container}>
 
-        <View style={styles.header} />
+        <StatusBar barStyle="dark-content" />
 
-        <View>
-          <Image source={require('../../../assets/images/loginViewBackground.png')}/>
-        </View>
+        <View style={styles.headerContainer}>
 
-        <View style={styles.whiteContainer}>
+          {/* blank bar to add spacing */}
+          <View style={{
+            order: 1,
+            backgroundColor: '#FFF9BB',
+            flex: 0.1,
+            alignSelf: 'stretch',
+          }}
+          />
 
-          <View>
-            <Text style={styles.title}>Discover your city</Text>
+          <View style={styles.image}>
+            <Image source={require('../../../assets/images/loginViewBackground.png')} />
           </View>
-
-          <View>
-            <Text style={styles.desc}>
-                Sembly is a crowdsourced city discovery platform.
-            </Text>
-          </View>
-
-          <View style={{ marginTop: 5 }}>
-            <LoginForm actionOnPress={() => this.props.navigation.navigate('MainApp')} />
-          </View>
-
-          <TouchableOpacity>
-            <Text style={{
-              color: '#97979B',
-              marginTop: 30,
-              textAlign: 'center',
-              fontFamily: Theme.fonts.bold,
-            }}
-            >
-            Forgot your password?
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity accessibilityIgnoresInvertColors onPress={() => this.props.navigation.navigate('Signup')}>
-            <Text style={{
-              color: '#26315F',
-              alignItems: 'baseline',
-              marginTop: 40,
-              textAlign: 'center',
-              fontFamily: Theme.fonts.bold,
-            }}
-            >
-            Don't have an account?
-              <Text style={{ color: '#F93963' }}> Sign up</Text>
-            </Text>
-          </TouchableOpacity>
 
         </View>
 
-      </KeyboardAvoidingView>
+        <View style={styles.underwhite}>
+          <View style={styles.whiteContainer}>
+            <View style={styles.textbox}>
+
+              <View>
+                <Text style={styles.textbox.title}>Discover you city</Text>
+              </View>
+
+              <Text style={styles.textbox.desc}>
+                  Sembly is a crowdsourced city discovery platform.
+              </Text>
+            </View>
+
+            <KeyboardAvoidingView
+              behavior="padding"
+              accessibilityIgnoresInvertColors
+              style={styles.form}
+            >
+              <LoginForm actionOnPress={() => this.props.navigation.navigate('MainApp')} actionLabel="Login" />
+            </KeyboardAvoidingView>
+            
+            
+            <View style={styles.footer}>
+              <View>
+                <TouchableOpacity style={styles.footer.foothead}>
+                  <Text style={{
+                    color: '#97979B',
+                    textAlign: 'center',
+                    fontSize: 18,
+                    fontFamily: Theme.fonts.bold,
+                  }}
+                  >
+              Forgot your password?
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity 
+                  accessibilityIgnoresInvertColors 
+                  onPress={() => this.props.navigation.navigate('Signup')}
+                  style={styles.footer.footline}
+                >
+                  <Text style={{
+                    color: '#26315F',
+                    textAlign: 'center',
+                    alignSelf: 'flex-end',
+                    fontSize: 18,
+                    fontFamily: Theme.fonts.bold,
+                  }}
+                  >
+                  Don't have an account?
+                    <Text style={{ color: '#F93963' }}> Sign up</Text>
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
     );
   }
 }
 
-
-LoginView.defaultProps = {
+SignupView.defaultProps = {
 };
 
-LoginView.propTypes = {
+SignupView.propTypes = {
 };
 
 
@@ -139,5 +200,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-
-export default LoginView;
+export default SignupView;

@@ -1,60 +1,94 @@
 // import liraries
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView, StatusBar } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 import { whileStatement } from '@babel/types';
 import { SemblyButton } from '../components';
 
 
 // define your styles
-const styles = StyleSheet.create({
+const styles = {
   container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
-  input: {
-    height: 40,
-    width: 332,
-    backgroundColor: 'white',
-    marginBottom: 20,
+  email: {
+    color: '#C7CAD1',
+    fontSize: 14,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#D8D8D8',
+    alignSelf: 'auto',
+  },
+  emailInput: {
+    width: '100%',
+    paddingTop: 15,
+    fontSize: 18,
+    color: '#C7CAD1',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#D8D8D8',
+    alignSelf: 'center',
+  },
+  password: {
+    fontSize: 14,
+    paddingTop: 30,
     color: '#C7CAD1',
     borderBottomWidth: 0.5,
     borderBottomColor: '#D8D8D8',
   },
-});
+  passwordInput: {
+    width: '100%',
+    fontSize: 18,
+    paddingTop: 15,
+    color: '#C7CAD1',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#D8D8D8',
+    alignSelf: 'center',
+    marginBottom: 37,
+  },
+  button: {
+    width: '120%',
+    alignSelf: 'center',
+  },
+};
 
 // create a component
 class LoginForm extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar
-          barStyle="dark-content"
-        />
-        <Text style={{ color: '#C7CAD1', textAlign: 'left' }}>EMAIL</Text>
+
+        <Text style={styles.email}>EMAIL</Text>
         <TextInput
+          style={styles.emailInput}
           placeholder="your@email.com"
           returnKeyType="next"
           onSubmitEditing={() => this.passwordInput.focus()}
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
-          style={styles.input}
         />
-        <Text style={{ color: '#C7CAD1' }}>PASSWORD</Text>
+        <Text style={styles.password}>PASSWORD</Text>
         <TextInput
+          style={styles.passwordInput}
           placeholder="**********"
-          returnKeyType="go"
+          returnKeyType="done"
           secureTextEntry
-          style={styles.input}
           ref={(input) => this.passwordInput = input}
         />
 
-        <View>
-          <SemblyButton label="Login" onPress={this.props.actionOnPress} />
+        <View style={styles.button}>
+          <SemblyButton label={this.props.actionLabel} onPress={this.props.actionOnPress} />
         </View>
 
       </View>
     );
   }
 }
+
+LoginForm.defaultProps = {
+  actionLabel: 'Loginadnw',
+  actionOnPress: null,
+};
 
 // make this component available to the app
 export default LoginForm;

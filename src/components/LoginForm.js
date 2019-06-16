@@ -1,11 +1,9 @@
-// import liraries
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 import { whileStatement } from '@babel/types';
 import { SemblyButton } from '../components';
 
 
-// define your styles
 const styles = {
   container: {
     flex: 1,
@@ -51,7 +49,6 @@ const styles = {
   },
 };
 
-// create a component
 class LoginForm extends Component {
   render() {
     return (
@@ -90,5 +87,4 @@ LoginForm.defaultProps = {
   actionOnPress: null,
 };
 
-// make this component available to the app
 export default LoginForm;

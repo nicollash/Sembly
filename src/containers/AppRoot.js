@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import ThemeContainer from '../styles/themeContainer';
 
 /* Views */
-import { LoginView, SignupView, OnboardingView } from './Welcome';
+import { LoginView, SignupView, OnboardingView, ForgotPasswordView } from './Welcome';
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import { ProfileView } from './Profile';
@@ -19,6 +19,10 @@ import { ProfileView } from './Profile';
 const WelcomeStack = createStackNavigator({
   Main: {
     screen: LoginView,
+    navigationOptions: { header: null },
+  },
+  ForgotPassword: {
+    screen: ForgotPasswordView,
     navigationOptions: { header: null },
   },
   Signup: {

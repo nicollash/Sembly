@@ -56,8 +56,8 @@ const styles = {
     borderRadius: 10,
   },
   textbox: {
-    flex: 0.2,
-    // paddingTop: ,
+    border: 1, borderWidth: 5, borderColor: 'blue',
+    flex: 0.3,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -88,11 +88,27 @@ const styles = {
     },
   },
   form: {
-    flex: 0.45,
+    flex: 0.35,
     marginTop: 10,
     alignSelf: 'center',
     width: '80%',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
+    email: {
+      color: '#C7CAD1',
+      fontSize: 14,
+      borderBottomWidth: 0.5,
+      borderBottomColor: '#D8D8D8',
+      alignSelf: 'auto',
+    },
+    emailInput: {
+      width: '100%',
+      paddingTop: 15,
+      fontSize: 18,
+      color: '#C7CAD1',
+      borderBottomWidth: 0.5,
+      borderBottomColor: '#D8D8D8',
+      alignSelf: 'center',
+    },
   },
   footer: {
     flex: 0.3,
@@ -100,13 +116,12 @@ const styles = {
     alignItems: 'center',
     marginTop: 22,
   },
-  fbButton: {
-    marginTop: 18,
+  submit: {
   },
 };
 
 
-class SignupView extends React.Component {
+class ForgotPasswordView extends React.Component {
   componentWillMount() {
   }
 
@@ -152,13 +167,15 @@ class SignupView extends React.Component {
                 }}
                 />
 
-                <Text style={styles.textbox.headline.title}>Welcome aboard.</Text>
+                <Text style={styles.textbox.headline.title}>Lost Something?</Text>
               </View>
 
               <Text style={styles.textbox.desc}>
-                  Fill-in the informations below and you'll 
+                Did you forget your password? Enter
                 {'\n'}
-                  be ready to explore your city in a second.
+                your registration email and we’ll send you
+                {'\n'}
+                a link to set a new one.
               </Text>
             </View>
 
@@ -167,21 +184,23 @@ class SignupView extends React.Component {
               accessibilityIgnoresInvertColors
               style={styles.form}
             >
-              <LoginForm actionLabel="Signup" actionOnPress={() => this.props.navigation.navigate('Onboarding')} />
+              {/* cache submit button et remplace par text vert (comme dans sketch) */}
+              <Text style={styles.form.email}>EMAIL</Text>
+              <TextInput
+                style={styles.form.emailInput}
+                placeholder="your@email.com"
+                returnKeyType="next"
+                onSubmitEditing={() => this.passwordInput.focus()}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
             </KeyboardAvoidingView>
 
             <View style={styles.footer}>
-              <Text style={{
-                color: '#96969A',
-                fontSize: 14,
-                fontFamily: Theme.fonts.bold,
-              }}
-              >
-                - or -
-              </Text>
+             
 
-              <TouchableOpacity style={styles.fbButton}>
-                <Image source={require('../../../assets/images/FacebookButton.png')} />
+              <TouchableOpacity style={styles.submit}>
               </TouchableOpacity>
             </View>
 
@@ -194,11 +213,11 @@ class SignupView extends React.Component {
 
 // this.props.navigation.navigate('Onboarding')
 
-SignupView.defaultProps = {
+ForgotPasswordView.defaultProps = {
   onPress: null,
 };
 
-SignupView.propTypes = {
+ForgotPasswordView.propTypes = {
 };
 
 
@@ -209,4 +228,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default SignupView;
+export default ForgotPasswordView;

@@ -77,7 +77,7 @@ const styles = {
   },
   form: {
     flex: 0.45,
-    width: '85%',
+    width: '80%',
     justifyContent: 'flex-end',
   },
   footer: {
@@ -93,7 +93,7 @@ const styles = {
 };
 
 
-class SignupView extends React.Component {
+class LoginView extends React.Component {
   componentWillMount() {
   }
 
@@ -147,7 +147,11 @@ class SignupView extends React.Component {
             
             <View style={styles.footer}>
               <View>
-                <TouchableOpacity style={styles.footer.foothead}>
+                <TouchableOpacity 
+                  accessibilityIgnoresInvertColors 
+                  onPress={() => this.props.navigation.navigate('ForgotPassword')}
+                  style={styles.footer.foothead}
+                >
                   <Text style={{
                     color: '#97979B',
                     textAlign: 'center',
@@ -186,10 +190,10 @@ class SignupView extends React.Component {
   }
 }
 
-SignupView.defaultProps = {
+LoginView.defaultProps = {
 };
 
-SignupView.propTypes = {
+LoginView.propTypes = {
 };
 
 
@@ -200,4 +204,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default SignupView;
+export default LoginView;

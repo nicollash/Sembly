@@ -2,12 +2,12 @@ import React from 'react';
 
 import {
   View,
+  Text,
 } from 'react-native';
 
 
 const styles = {
   container: {
-      backgroundColor: 'red',
   },
 };
 class ProfileView extends React.Component {
@@ -21,7 +21,7 @@ class ProfileView extends React.Component {
 
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        
+        <Text>Profile</Text>
       </View>
     );
   }

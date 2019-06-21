@@ -21,12 +21,13 @@ import {
 } from '../../components';
 
 import Theme from '../../styles/theme';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = {
   container: {
     flex: 1,
     backgroundColor: 'blue',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   headerContainer: {
@@ -34,7 +35,7 @@ const styles = {
     flex: 0.425,
     alignSelf: 'stretch',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
   },
   image: {
     alignSelf: 'stretch',
@@ -45,6 +46,7 @@ const styles = {
     backgroundColor: '#D8C34A',
     flex: 0.575,
     alignSelf: 'stretch',
+    justifyContent: 'flex-end',
   },
   whiteContainer: {
     flex: 1,
@@ -55,20 +57,29 @@ const styles = {
     borderRadius: 10,
   },
   textbox: {
-    paddingTop: 2,
-    flex: 0.2,
-    alignSelf: 'stretch',
-    justifyContent: 'flex-start',
+    flex: 0.25,
+    justifyContent: 'flex-end',
+    headline: {
+      alignSelf: 'center',
+      width: '90%',
+      flex: 0.4,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
     title: {
+      flex: 1,
+      width: '100%',
       fontSize: 35,
       color: '#26315F',
       textAlign: 'center',
+      alignSelf: 'center',
       fontFamily: Theme.fonts.black,
     },
     desc: {
       textAlign: 'center',
-      flex: 1,
-      paddingTop: 10,
+      lineHeight: 25,
+      flex: 0.4,
       marginHorizontal: 20,
       color: '#96969A',
       fontSize: 18,
@@ -76,7 +87,7 @@ const styles = {
     },
   },
   form: {
-    flex: 0.45,
+    flex: 0.425,
     width: '80%',
     justifyContent: 'flex-end',
   },
@@ -84,10 +95,10 @@ const styles = {
     flex: 0.3,
     justifyContent: 'flex-start',
     foothead: {
-      marginTop: 20,
+      flex: 0.4,
     },
     footline: {
-      marginTop: 40,
+      flex: 0.4,
     },
   },
 };
@@ -108,7 +119,6 @@ class LoginView extends React.Component {
 
         <View style={styles.headerContainer}>
 
-          {/* blank bar to add spacing */}
           <View style={{
             order: 1,
             backgroundColor: '#FFF9BB',
@@ -124,11 +134,19 @@ class LoginView extends React.Component {
         </View>
 
         <View style={styles.underwhite}>
-          <View style={styles.whiteContainer}>
+          <KeyboardAvoidingView style={styles.whiteContainer}>
             <View style={styles.textbox}>
-
-              <View>
-                <Text style={styles.textbox.title}>Discover you city</Text>
+              <View style={{
+                backgroundColor: 'white',
+                alignSelf: 'stretch',
+                flex: 0.175,
+              }}
+              />
+ 
+              <View style={styles.textbox.headline}>
+                <View>
+                  <Text style={styles.textbox.title}>Discover your city</Text>
+                </View>
               </View>
 
               <Text style={styles.textbox.desc}>
@@ -144,8 +162,12 @@ class LoginView extends React.Component {
               <LoginForm actionOnPress={() => this.props.navigation.navigate('MainApp')} actionLabel="Login" />
             </KeyboardAvoidingView>
             
-            
             <View style={styles.footer}>
+              <View style={{
+                backgroundColor: 'white',
+                flex: 0.7,
+              }}
+              />
               <View>
                 <TouchableOpacity 
                   accessibilityIgnoresInvertColors 
@@ -183,7 +205,7 @@ class LoginView extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       </View>
     );

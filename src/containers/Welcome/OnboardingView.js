@@ -2,9 +2,15 @@ import React from 'react';
 
 import {
   View,
+  Text,
+  Dimensions,
+  Image,
 } from 'react-native';
 
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Theme from '../../styles/theme';
+import { SemblyButton } from '../../components';
+
 
 const styles = {
   container: {
@@ -12,24 +18,147 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  slide: {
+    // marginTop: 566,
+    // border:1 , borderWidth: 2, borderColor: 'blue',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    // textAlign: 'center',
+  },
+  image: {
+    marginTop: 155,
+    alignSelf: 'center',
+  },
+  shadow: {
+    marginTop: 30,
+  },
+  title: {
+    marginTop: 148,
+    alignSelf: 'center',
+    color: '#B7AAF2',
+    opacity: 1,
+    fontSize: 35,
+    fontFamily: Theme.fonts.bold,
+  },
+  desc: {
+    width: '86%',
+    marginTop: 16,
+    alignSelf: 'center',
+    textAlign: 'center',
+    lineHeight: 25,
+    color: 'white',
+    opacity: 1,
+    fontSize: 18,
+    fontFamily: Theme.fonts.bold,
+  },
+  button: {
+    marginTop: 45,
+    width: '96%',
+  },
 };
 class OnboardingView extends React.Component {
+
+  static navigationOptions = {
+    gesturesEnabled: false,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      entries: [
+        {
+          title: 'Welcome to Sembly',
+          text: `A local platform for sharing and
+    discovering what your city is all about.`,
+          image: <Image source={require('../../../assets/images/cityscapeOnboarding1.png')} />,
+        },
+        {
+          title: 'Local and social',
+          text: `Local conversations, insights, events, food, \n promotions - and more. All powered by
+    the community and you.`,
+          image: <Image source={require('../../../assets/images/villageOnboarding2.png')} />,
+        },
+        {
+          title: 'Your city. Together.',
+          text: `Explore an interactive map and tag your favorite spots, find exclusive promotions,
+    and things to do with the ultimate local\nplatform.`,
+          image: <Image source={require('../../../assets/images/rainbowFieldsOnboarding3.png')} />,
+        }],
+      activeSlide: 0,
+    };
+  }
+
+
   componentWillMount() {
   }
 
   componentDidMount() {
   }
 
+  renderSlide = ({ item, index }) =>
+  {
+    return (
+    <View style={styles.slide}>
+      <View style={styles.image}>
+        { item.image }
+      </View>
+      <View style={styles.shadow}>
+        <Image source={require('../../../assets/images/shadowOrb.png')} />
+      </View>
+      <Text style={styles.title}>{ item.title }</Text>
+      <Text style={styles.desc}>{ item.text }</Text>
+      <View style={styles.button}>
+        {index >= this.state.entries.length - 1
+            && (
+              <SemblyButton 
+              label="Get Started" 
+              backgroundColor="#B7AAF2" 
+              onPress={() => this.props.navigation.navigate('MainApp')}
+              />
+            )}
+        </View>
+      </View>
+
+    );
+  }
+
   render() {
-    /*
-    UTILISER SNAP CAROUSEL POUR LE CAROUSEL; déjà
-    configurer et ready to go;
-    https://github.com/archriss/react-native-snap-carousel#usage
-    */
-    
+    const { entries, activeSlide } = this.state;
+    const { height, width } = Dimensions.get('window');
+
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        
+        <View style={{ backgroundColor: '#F3F3F3', width, height: '58%' }} />
+        <View style={{ backgroundColor: '#6C59C3', width, height: '42%' }} />
+        <Carousel
+          data={entries}
+          renderItem={this.renderSlide}
+          sliderWidth={width}
+          itemWidth={width}
+          onSnapToItem={(index) => this.setState({ activeSlide: index }) }
+          containerCustomStyle={{ position: 'absolute', top: 0, height }}
+        />
+
+        <Pagination
+          dotsLength={entries.length}
+          activeDotIndex={activeSlide}
+          containerStyle={{ position: 'absolute', top: '55.7%' }}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 25,
+            marginHorizontal: -6,
+            backgroundColor: 'rgba(255, 255, 255, 0.92)',
+          }}
+          inactiveDotStyle={{
+            backgroundColor: '#3A2B7F',
+          }}
+          inactiveDotOpacity={1}
+          inactiveDotScale={1}
+        />
+
       </View>
     );
   }

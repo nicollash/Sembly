@@ -7,7 +7,7 @@ import { SemblyButton } from '../components';
 const styles = {
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'flex-start',
   },
   email: {
@@ -41,7 +41,7 @@ const styles = {
     borderBottomWidth: 0.5,
     borderBottomColor: '#D8D8D8',
     alignSelf: 'center',
-    marginBottom: 37,
+    marginBottom: 22,
   },
   button: {
     width: '120%',
@@ -49,10 +49,10 @@ const styles = {
   },
 };
 
-class LoginForm extends Component {
+class LoginForm extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
 
         <Text style={styles.email}>EMAIL</Text>
         <TextInput
@@ -77,13 +77,13 @@ class LoginForm extends Component {
           <SemblyButton label={this.props.actionLabel} onPress={this.props.actionOnPress} />
         </View>
 
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 LoginForm.defaultProps = {
-  actionLabel: 'Loginadnw',
+  actionLabel: 'Login',
   actionOnPress: null,
 };
 

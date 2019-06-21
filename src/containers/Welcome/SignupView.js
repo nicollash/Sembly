@@ -56,31 +56,33 @@ const styles = {
     borderRadius: 10,
   },
   textbox: {
-    flex: 0.2,
-    // paddingTop: ,
+    flex: 0.285,
+    marginBottom: 12,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'flex-start',
     headline: {
-      alignSelf: 'center',
-      width: '85%',
-      flex: 1,
+      marginBottom: 7,
+      marginTop: 25,
+      width: '100%',
       flexDirection: 'row',
-      justifyContent: 'flex-start',
+      alignContent: 'center',
       alignItems: 'center',
       caret: {
+        marginLeft: 30,
+        marginRight: 25,
       },
       title: {
+        flex: 1,
         fontSize: 35,
         color: '#26315F',
-        textAlign: 'center',
-        alignSelf: 'center',
         fontFamily: Theme.fonts.black,
       },
     },
     desc: {
       textAlign: 'center',
-      flex: 1,
+      lineHeight: 25,
+      // flex: 0.54,
       marginHorizontal: 20,
       color: '#96969A',
       fontSize: 18,
@@ -88,20 +90,19 @@ const styles = {
     },
   },
   form: {
-    flex: 0.45,
-    marginTop: 10,
+    flex: 0.475,
     alignSelf: 'center',
     width: '80%',
     justifyContent: 'flex-end',
   },
   footer: {
-    flex: 0.3,
+    flex: 0.28,
     alignSelf: 'stretch',
     alignItems: 'center',
-    marginTop: 22,
+    justifyContent: 'space-between',
   },
   fbButton: {
-    marginTop: 18,
+    flex: 0.8,
   },
 };
 
@@ -121,7 +122,6 @@ class SignupView extends React.Component {
 
         <View style={styles.headerContainer}>
 
-          {/* blank bar to add spacing */}
           <View style={{
             order: 1,
             backgroundColor: '#FFF9BB',
@@ -138,19 +138,22 @@ class SignupView extends React.Component {
 
         <View style={styles.underwhite}>
           <View style={styles.whiteContainer}>
+
+            <View style={{
+              flex: 0.012,
+            }}
+            />
             <View style={styles.textbox}>
 
-              <View style={styles.textbox.headline}>
-                <View>
-                  <SemblyBackCaret style={styles.textbox.headline.caret} onPress={() => this.props.navigation.goBack()} />
-                </View>
+              <View style={{
+                flex: 0.24,
+              }}
+              />
 
-                {/* Blank white block to add spacing */}
-                <View style={{
-                  backgroundColor: 'white',
-                  flex: 0.35,
-                }}
-                />
+              <View style={styles.textbox.headline}>
+                <View style={styles.textbox.headline.caret}>
+                  <SemblyBackCaret onPress={() => this.props.navigation.goBack()} />
+                </View>
 
                 <Text style={styles.textbox.headline.title}>Welcome aboard.</Text>
               </View>
@@ -172,6 +175,7 @@ class SignupView extends React.Component {
 
             <View style={styles.footer}>
               <Text style={{
+                flex: 0.25,
                 color: '#96969A',
                 fontSize: 14,
                 fontFamily: Theme.fonts.bold,

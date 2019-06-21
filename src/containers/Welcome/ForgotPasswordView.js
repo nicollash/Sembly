@@ -56,31 +56,37 @@ const styles = {
     borderRadius: 10,
   },
   textbox: {
-    border: 1, borderWidth: 5, borderColor: 'blue',
-    flex: 0.3,
+    flex: 0.35,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'flex-start',
     headline: {
-      alignSelf: 'center',
-      width: '85%',
-      flex: 1,
+      // border: 1, borderWidth: 2, borderColor: 'black',
+      // alignSelf: 'center',
+      width: '100%',
+      // flex: 1,
       flexDirection: 'row',
-      justifyContent: 'flex-start',
+      // justifyContent: 'center',
       alignItems: 'center',
+      alignContent: 'center',
+      // flexWrap: 'wrap',
       caret: {
+        // border: 1, borderWidth: 2, borderColor: 'red',
+        marginRight: 25,
+        marginLeft: 35,
+        // alignSelf: 'center',
       },
       title: {
+        // border: 1, borderWidth: 2, borderColor: 'purple',
         fontSize: 35,
         color: '#26315F',
-        textAlign: 'center',
-        alignSelf: 'center',
         fontFamily: Theme.fonts.black,
       },
     },
     desc: {
       textAlign: 'center',
-      flex: 1,
+      lineHeight: 25,
+      flex: 0.7,
       marginHorizontal: 20,
       color: '#96969A',
       fontSize: 18,
@@ -88,7 +94,7 @@ const styles = {
     },
   },
   form: {
-    flex: 0.35,
+    flex: 0.15,
     marginTop: 10,
     alignSelf: 'center',
     width: '80%',
@@ -111,21 +117,64 @@ const styles = {
     },
   },
   footer: {
-    flex: 0.3,
+    flex: 0.5,
     alignSelf: 'stretch',
     alignItems: 'center',
     marginTop: 22,
   },
-  submit: {
+  footline: {
+    flex: 0.22,
+    width: '100%',
+    alignSelf: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  bottomline: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  greenMsg: {
+    color: '#188A0D',
+    fontSize: 15,
+    fontFamily: Theme.fonts.bold,
+  },
+  checkmark: {
+    marginLeft: 7,
   },
 };
 
 
 class ForgotPasswordView extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      submitted: false,
+      isHidden: false,
+      email: '',
+    };
+  }
+
   componentWillMount() {
   }
 
   componentDidMount() {
+  }
+
+  handleClick = () => {
+    this.setState({
+      submitted: true,
+      isHidden: true,
+    });
+  }
+
+  setInput = (txt) => {
+    this.setState({
+      email: {txt},
+    });
   }
 
   render() {
@@ -136,7 +185,6 @@ class ForgotPasswordView extends React.Component {
 
         <View style={styles.headerContainer}>
 
-          {/* blank bar to add spacing */}
           <View style={{
             order: 1,
             backgroundColor: '#FFF9BB',
@@ -154,21 +202,27 @@ class ForgotPasswordView extends React.Component {
         <View style={styles.underwhite}>
           <View style={styles.whiteContainer}>
             <View style={styles.textbox}>
-
+              <View style={{
+                flex: 0.285,
+              }}
+              />
               <View style={styles.textbox.headline}>
-                <View>
-                  <SemblyBackCaret style={styles.textbox.headline.caret} onPress={() => this.props.navigation.goBack()} />
+                <View style={styles.textbox.headline.caret}> 
+                  <SemblyBackCaret onPress={() => this.props.navigation.goBack()} />
                 </View>
 
-                {/* Blank white block to add spacing */}
                 <View style={{
-                  backgroundColor: 'white',
-                  flex: 0.35,
+                  flex: 0.05,
                 }}
                 />
 
                 <Text style={styles.textbox.headline.title}>Lost Something?</Text>
               </View>
+
+              <View style={{
+                flex: 0.075,
+              }}
+              />
 
               <Text style={styles.textbox.desc}>
                 Did you forget your password? Enter
@@ -179,31 +233,60 @@ class ForgotPasswordView extends React.Component {
               </Text>
             </View>
 
-            <KeyboardAvoidingView
-              behavior="padding"
-              accessibilityIgnoresInvertColors
-              style={styles.form}
-            >
-              {/* cache submit button et remplace par text vert (comme dans sketch) */}
-              <Text style={styles.form.email}>EMAIL</Text>
-              <TextInput
-                style={styles.form.emailInput}
-                placeholder="your@email.com"
-                returnKeyType="next"
-                onSubmitEditing={() => this.passwordInput.focus()}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-            </KeyboardAvoidingView>
 
-            <View style={styles.footer}>
-             
-
-              <TouchableOpacity style={styles.submit}>
-              </TouchableOpacity>
+            <View style={{
+              flex: 0.02,
+            }}
+            />
+            <View style={styles.form}>
+              {!this.state.isHidden 
+                && (
+                  <KeyboardAvoidingView
+                    hide="true"
+                    behavior="padding"
+                    accessibilityIgnoresInvertColors
+                    // style={styles.form}
+                  >
+                    <Text style={styles.form.email}>EMAIL</Text>
+                    <TextInput
+                      style={styles.form.emailInput}
+                      placeholder="your@email.com"
+                      returnKeyType="next"
+                      onSubmitEditing={() => this.passwordInput.focus()}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                    />
+                  </KeyboardAvoidingView>
+                )}
             </View>
+            <View style={styles.footer}>
 
+              <View style={{
+                flex: 0.07,
+              }}
+              />
+
+              <View style={styles.footline}>
+                {!this.state.submitted
+                && (
+                  <SemblyButton
+                    label="Submit"
+                    onPress={() => this.handleClick()}
+                  />
+                )}
+                {this.state.submitted
+                && (
+                  <View style={styles.bottomline}>
+                    <Text style={styles.greenMsg}>
+                      Check your emails for reset instructions
+                    </Text>
+                    <Image style={styles.checkmark} 
+                      source={require('../../../assets/images/GreenCheckmark.png')} />
+                  </View>
+                )}
+              </View>
+            </View>
           </View>
         </View>
       </View>

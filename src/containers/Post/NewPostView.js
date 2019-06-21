@@ -2,15 +2,21 @@ import React from 'react';
 
 import {
   View,
+  Text,
 } from 'react-native';
 
 
 const styles = {
   container: {
-      backgroundColor: 'red',
   },
 };
 class NewPostView extends React.Component {
+  
+  static navigationOptions = {
+    title: 'New Post',
+    headerMode: 'card',
+  };
+
   componentWillMount() {
   }
 
@@ -21,7 +27,7 @@ class NewPostView extends React.Component {
 
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        
+        <Text>New Post View</Text>
       </View>
     );
   }

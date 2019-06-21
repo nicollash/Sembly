@@ -11,9 +11,9 @@ import {
 const styles = {
   button: {
     borderRadius: 25,
-    backgroundColor: '#F7567C',
     padding: 16,
     alignSelf: 'center',
+    justifyContent: 'flex-end',
   },
   text: {
     color: 'white',
@@ -35,7 +35,8 @@ class SemblyButton extends React.Component {
       <TouchableOpacity
           
         accessibilityIgnoresInvertColors
-        style={[styles.button, { width: this.props.width }]}
+        style={[styles.button, { width: this.props.width }, 
+          { backgroundColor: this.props.backgroundColor }]}
         onPress={this.props.onPress}
       >
         <Text style={styles.text}>{this.props.label}</Text>
@@ -48,6 +49,7 @@ SemblyButton.defaultProps = {
   label: 'Button',
   onPress: null,
   width: '80%',
+  backgroundColor: '#F7567C',
 };
 
 SemblyButton.propTypes = {

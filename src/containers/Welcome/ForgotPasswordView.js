@@ -171,10 +171,8 @@ class ForgotPasswordView extends React.Component {
     });
   }
 
-  setInput = (txt) => {
-    this.setState({
-      email: {txt},
-    });
+  setEmail = (email)=>{
+    this.setState({ email });
   }
 
   render() {
@@ -252,7 +250,7 @@ class ForgotPasswordView extends React.Component {
                       style={styles.form.emailInput}
                       placeholder="your@email.com"
                       returnKeyType="next"
-                      onSubmitEditing={() => this.passwordInput.focus()}
+                      onChangeText={(str) => this.setEmail(str)}
                       keyboardType="email-address"
                       autoCapitalize="none"
                       autoCorrect={false}

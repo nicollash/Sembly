@@ -23,10 +23,10 @@ import {
 import Theme from '../../styles/theme';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'blue',
+    backgroundColor: 'white', 
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -39,7 +39,6 @@ const styles = {
   },
   image: {
     alignSelf: 'stretch',
-    order: 2,
     flex: 0.9,
   },
   underwhite: {
@@ -59,32 +58,32 @@ const styles = {
   textbox: {
     flex: 0.25,
     justifyContent: 'flex-end',
-    headline: {
-      alignSelf: 'center',
-      width: '90%',
-      flex: 0.4,
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    },
-    title: {
-      flex: 1,
-      width: '100%',
-      fontSize: 35,
-      color: '#26315F',
-      textAlign: 'center',
-      alignSelf: 'center',
-      fontFamily: Theme.fonts.black,
-    },
-    desc: {
-      textAlign: 'center',
-      lineHeight: 25,
-      flex: 0.4,
-      marginHorizontal: 20,
-      color: '#96969A',
-      fontSize: 18,
-      fontFamily: Theme.fonts.bold,
-    },
+  },
+  headline: {
+    alignSelf: 'center',
+    width: '90%',
+    flex: 0.4,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  title: {
+    flex: 1,
+    width: '100%',
+    fontSize: 35,
+    color: '#26315F',
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontFamily: Theme.fonts.black,
+  },
+  desc: {
+    textAlign: 'center',
+    lineHeight: 25,
+    flex: 0.4,
+    marginHorizontal: 20,
+    color: '#96969A',
+    fontSize: 18,
+    fontFamily: Theme.fonts.bold,
   },
   form: {
     flex: 0.425,
@@ -94,21 +93,37 @@ const styles = {
   footer: {
     flex: 0.3,
     justifyContent: 'flex-start',
-    foothead: {
-      flex: 0.4,
-    },
-    footline: {
-      flex: 0.4,
-    },
   },
-};
+  foothead: {
+    flex: 0.4,
+  },
+  footline: {
+    flex: 0.4,
+  },
+});
 
 
 class LoginView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
+
   componentWillMount() {
   }
 
   componentDidMount() {
+  }
+
+  setEmail = (email) => {
+    this.setState({email});
+  }
+
+  setPassword = (password) => {
+    this.setState({password});
   }
 
   render() {
@@ -134,7 +149,7 @@ class LoginView extends React.Component {
         </View>
 
         <View style={styles.underwhite}>
-          <KeyboardAvoidingView style={styles.whiteContainer}>
+          <KeyboardAvoidingView behavior="padding" style={styles.whiteContainer}>
             <View style={styles.textbox}>
               <View style={{
                 backgroundColor: 'white',
@@ -143,24 +158,28 @@ class LoginView extends React.Component {
               }}
               />
  
-              <View style={styles.textbox.headline}>
+              <View style={styles.headline}>
                 <View>
-                  <Text style={styles.textbox.title}>Discover your city</Text>
+                  <Text style={styles.title}>Discover your city</Text>
                 </View>
               </View>
 
-              <Text style={styles.textbox.desc}>
+              <Text style={styles.desc}>
                   Sembly is a crowdsourced city discovery platform.
               </Text>
             </View>
 
-            <KeyboardAvoidingView
-              behavior="padding"
+            <View
               accessibilityIgnoresInvertColors
               style={styles.form}
             >
-              <LoginForm actionOnPress={() => this.props.navigation.navigate('MainApp')} actionLabel="Login" />
-            </KeyboardAvoidingView>
+              <LoginForm 
+                actionOnPress={() => this.props.navigation.navigate('MainApp')} 
+                actionLabel="Login"
+                emailChanged={(value) => this.setEmail(value)}
+                passwordChanged={(value) => this.setPassword(value)}
+              />
+            </View>
             
             <View style={styles.footer}>
               <View style={{
@@ -172,7 +191,7 @@ class LoginView extends React.Component {
                 <TouchableOpacity 
                   accessibilityIgnoresInvertColors 
                   onPress={() => this.props.navigation.navigate('ForgotPassword')}
-                  style={styles.footer.foothead}
+                  style={styles.foothead}
                 >
                   <Text style={{
                     color: '#97979B',
@@ -189,7 +208,7 @@ class LoginView extends React.Component {
                 <TouchableOpacity 
                   accessibilityIgnoresInvertColors 
                   onPress={() => this.props.navigation.navigate('Signup')}
-                  style={styles.footer.footline}
+                  style={styles.footline}
                 >
                   <Text style={{
                     color: '#26315F',

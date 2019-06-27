@@ -108,10 +108,26 @@ const styles = {
 
 
 class SignupView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
+
   componentWillMount() {
   }
 
   componentDidMount() {
+  }
+
+  setEmail = (email) => {
+    this.setState({email});
+  }
+
+  setPassword = (password) => {
+    this.setState({password});
   }
 
   render() {
@@ -170,7 +186,12 @@ class SignupView extends React.Component {
               accessibilityIgnoresInvertColors
               style={styles.form}
             >
-              <LoginForm actionLabel="Signup" actionOnPress={() => this.props.navigation.navigate('Onboarding')} />
+              <LoginForm 
+                actionLabel="Signup" 
+                actionOnPress={() => this.props.navigation.navigate('Onboarding')} 
+                emailChanged={(value) => this.setEmail(value)}
+                passwordChanged={(value) => this.setPassword(value)}
+              />
             </KeyboardAvoidingView>
 
             <View style={styles.footer}>

@@ -35,6 +35,8 @@ target 'sembly' do
 
   pod 'react-native-maps', path: rn_maps_path
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'semblyTests' do
     inherit! :search_paths
     # Pods for testing

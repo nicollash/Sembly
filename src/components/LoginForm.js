@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 import { whileStatement } from '@babel/types';
 import { SemblyButton } from '../components';
+import SemblyInput from './SemblyInput';
 
 
 const styles = {
@@ -50,16 +51,36 @@ const styles = {
 };
 
 class LoginForm extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     email: '',
+  //     password: '',
+  //   };
+  // }
+
+   // setEmail = (email)=>{
+   //   this.setState({ email });
+   //   console.log(email);
+   // }
+
+   // setPassword = (passw)=>{
+   //   this.setState({ passw });
+   //   console.log(passw);
+   // }
+
+
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.container}>
 
-        <Text style={styles.email}>EMAIL</Text>
+        {/* <Text style={styles.email}>EMAIL</Text>
         <TextInput
           style={styles.emailInput}
           placeholder="your@email.com"
           returnKeyType="next"
-          onSubmitEditing={() => this.passwordInput.focus()}
+          onChangeText={(str) => this.props.emailChanged(str)}
+          onSubmitEditing={() => {this.passwordInput.focus() }}
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
@@ -69,15 +90,19 @@ class LoginForm extends React.Component {
           style={styles.passwordInput}
           placeholder="**********"
           returnKeyType="done"
+          onChangeText={(str) => this.props.passwordChanged(str)}
           secureTextEntry
           ref={(input) => this.passwordInput = input}
-        />
+        /> */}
+
+        <SemblyInput label="EMAIL" placeholder="your@email.com" />
+        <SemblyInput label="PASSWORD" placeholder="**********" />
 
         <View style={styles.button}>
           <SemblyButton label={this.props.actionLabel} onPress={this.props.actionOnPress} />
         </View>
 
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

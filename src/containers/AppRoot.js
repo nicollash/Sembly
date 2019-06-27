@@ -98,7 +98,7 @@ const RootStack = createStackNavigator({
 // Switches between the Login/Signup/Onboarding & Main Application
 const RootSwitchNavigation = createSwitchNavigator({
   Root: WelcomeStack,
-  MainApp: MainTabNavigation,
+  MainApp: RootStack,
 });
 
 /*
@@ -135,5 +135,17 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = () => ({
 });
+/*
+export default class LoginView extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+        </View>
 
+      </View>
+    );
+  }
+}
+*/
 export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(RootSwitchNavigation));

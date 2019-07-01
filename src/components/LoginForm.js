@@ -7,96 +7,36 @@ import SemblyInput from './SemblyInput';
 
 const styles = {
   container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
-  },
-  email: {
-    color: '#C7CAD1',
-    fontSize: 14,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#D8D8D8',
-    alignSelf: 'auto',
-  },
-  emailInput: {
     width: '100%',
-    paddingTop: 15,
-    fontSize: 18,
-    color: '#C7CAD1',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#D8D8D8',
     alignSelf: 'center',
-  },
-  password: {
-    fontSize: 14,
-    paddingTop: 30,
-    color: '#C7CAD1',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#D8D8D8',
-  },
-  passwordInput: {
-    width: '100%',
-    fontSize: 18,
-    paddingTop: 15,
-    color: '#C7CAD1',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#D8D8D8',
-    alignSelf: 'center',
-    marginBottom: 22,
+    // justifyContent: 'flex-end',
+    // alignItems: 'flex-start',
   },
   button: {
+    top: '14%',
     width: '120%',
     alignSelf: 'center',
   },
 };
 
 class LoginForm extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     email: '',
-  //     password: '',
-  //   };
-  // }
-
-   // setEmail = (email)=>{
-   //   this.setState({ email });
-   //   console.log(email);
-   // }
-
-   // setPassword = (passw)=>{
-   //   this.setState({ passw });
-   //   console.log(passw);
-   // }
-
-
   render() {
     return (
       <View style={styles.container}>
 
-        {/* <Text style={styles.email}>EMAIL</Text>
-        <TextInput
-          style={styles.emailInput}
+        <SemblyInput
+          label="EMAIL"
           placeholder="your@email.com"
-          returnKeyType="next"
-          onChangeText={(str) => this.props.emailChanged(str)}
-          onSubmitEditing={() => {this.passwordInput.focus() }}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
+          returnKey="next"
+          valueChanged={(str) => this.props.emailChanged(str)}
         />
-        <Text style={styles.password}>PASSWORD</Text>
-        <TextInput
-          style={styles.passwordInput}
+        <SemblyInput
+          label="PASSWORD"
           placeholder="**********"
-          returnKeyType="done"
-          onChangeText={(str) => this.props.passwordChanged(str)}
-          secureTextEntry
-          ref={(input) => this.passwordInput = input}
-        /> */}
-
-        <SemblyInput label="EMAIL" placeholder="your@email.com" />
-        <SemblyInput label="PASSWORD" placeholder="**********" />
+          returnKey="done"
+          valueChanged={(str) => this.props.passwordChanged(str)}
+          ref={(input) => this.props.nextInput = input}
+        />
 
         <View style={styles.button}>
           <SemblyButton label={this.props.actionLabel} onPress={this.props.actionOnPress} />

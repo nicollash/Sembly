@@ -22,12 +22,14 @@ import {
 
 import Theme from '../../styles/theme';
 import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-const styles = StyleSheet.create({
+
+const styles = {
   container: {
     flex: 1,
-    backgroundColor: 'white', 
-    justifyContent: 'flex-end',
+    backgroundColor: 'white',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   headerContainer: {
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 0.425,
     alignSelf: 'stretch',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   image: {
     alignSelf: 'stretch',
@@ -47,17 +49,19 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
   },
+  contentContainer: {
+    alignItems: 'center',
+  },
   whiteContainer: {
     flex: 1,
     backgroundColor: 'white',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
     alignSelf: 'stretch',
     borderRadius: 10,
   },
   textbox: {
+    top: '10%',
     flex: 0.25,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   headline: {
     alignSelf: 'center',
@@ -77,6 +81,7 @@ const styles = StyleSheet.create({
     fontFamily: Theme.fonts.black,
   },
   desc: {
+    top: '9%',
     textAlign: 'center',
     lineHeight: 25,
     flex: 0.4,
@@ -86,21 +91,26 @@ const styles = StyleSheet.create({
     fontFamily: Theme.fonts.bold,
   },
   form: {
-    flex: 0.425,
-    width: '80%',
+    // flex: 0.425,
+    alignSelf: 'center',
+    top: '7.5%',
+    width: '85%',
     justifyContent: 'flex-end',
   },
   footer: {
+    top: '20%',
     flex: 0.3,
     justifyContent: 'flex-start',
   },
   foothead: {
+    top: '38%',
     flex: 0.4,
   },
   footline: {
+    top: '150%',
     flex: 0.4,
   },
-});
+};
 
 
 class LoginView extends React.Component {
@@ -124,6 +134,7 @@ class LoginView extends React.Component {
 
   setPassword = (password) => {
     this.setState({password});
+
   }
 
   render() {
@@ -149,7 +160,9 @@ class LoginView extends React.Component {
         </View>
 
         <View style={styles.underwhite}>
-          <KeyboardAvoidingView behavior="padding" style={styles.whiteContainer}>
+          <KeyboardAwareScrollView 
+            contentContainerStyle={styles.contentContainer}
+            style={styles.whiteContainer}>
             <View style={styles.textbox}>
               <View style={{
                 backgroundColor: 'white',
@@ -224,7 +237,7 @@ class LoginView extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </KeyboardAvoidingView>
+          </KeyboardAwareScrollView>
         </View>
       </View>
     );

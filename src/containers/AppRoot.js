@@ -3,7 +3,7 @@ import { StatusBar, Image, View, StyleSheet, Text, Modal } from 'react-native';
 import _ from 'underscore';
 
 import {
-  createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer,
+  createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView,
 } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -45,42 +45,52 @@ const MainTabNavigation = createBottomTabNavigator({
     screen: HomeView,
     navigationOptions: () => ({
       tabBarLabel: 'Home',
+      tabBarIcon: ({ tintColor }) => (
+        <SafeAreaView>
+          <Image style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
+        </SafeAreaView>
+      ),
       tabBarOptions: {
         activeTintColor: '#5DFDCB',
         inactiveTintColor: '#C5C5C5',
-        safeAreaInset: { bottom: 22, top: 5 },
+        safeAreaInset: { bottom: 30, top: 3 },
+        labelStyle: { height: '21%' },
       },
-      tabBarIcon: ({ tintColor }) => (
-        <Image style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
-      ),
     }),
   },
   NewPostTab: {
     screen: NewPostView,
     navigationOptions: ({ navigation }) => ({
       mode: 'modal',
-      tabBarOptions: {
-        safeAreaInset: { bottom: 22, top: 5 },
-      },
       tabBarButtonComponent: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('NewPost')}>
-          <Image source={require('../../assets/images/NewPostIconTab.png')} />
-        </TouchableOpacity>
+        <SafeAreaView style={{ paddingHorizontal: '160%' }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('NewPost')}
+            hitSlop={{ left: 50, right: 50 }}
+          >
+            <Image source={require('../../assets/images/NewPostIconTab.png')} />
+          </TouchableOpacity>
+        </SafeAreaView>
       ),
+      tabBarOptions: {
+      },
     }),
   },
   Profile: {
     screen: ProfileView,
     navigationOptions: () => ({
       tabBarLabel: 'Profile',
+      tabBarIcon: () => (
+        <View>
+          <Image source={require('../../assets/images/ProfileIconTab.png')} />
+        </View>
+      ),
       tabBarOptions: {
         activeTintColor: '#C5C5C5',
         inactiveTintColor: '#C5C5C5',
-        safeAreaInset: { bottom: 22, top: 5 },
+        safeAreaInset: { bottom: 30, top: 3 },
+        labelStyle: { height: '21%' },
       },
-      tabBarIcon: () => (
-        <Image source={require('../../assets/images/ProfileIconTab.png')} />
-      ),
     }),
   },
 }, {

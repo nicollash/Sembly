@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  StyleSheet, 
+  StyleSheet,
   TextInput,
   View,
 } from 'react-native';
@@ -42,10 +42,11 @@ class SemblyInput extends React.Component {
           placeholder={this.props.placeholder}
           placeholderTextColor="#C7CAD1"
           autoCapitalize="none"
-          ref={(input) => this.passwordInput = input}
+          autoCorrect={false}
           secureTextEntry
-          onChangeText={(str) => this.props.passwordChanged(str)}
-          returnKeyType="done"
+          onChangeText={(str) => this.props.valueChanged(str)}
+          returnKeyType={this.props.returnKey}
+          ref={(input) => this.props.nextInput = input}
         />
       </View>
     );

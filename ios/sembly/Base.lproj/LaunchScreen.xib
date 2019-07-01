@@ -16,18 +16,15 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashScreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="6T4-Ip-ROb">
-                    <rect key="frame" x="120" y="176" width="240" height="128"/>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="240" id="SZx-GO-Kax"/>
-                    </constraints>
+                    <rect key="frame" x="60" y="83" width="360" height="314"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.4566725492477417" green="0.37794098258018494" blue="0.77098971605300903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="6T4-Ip-ROb" secondAttribute="bottom" constant="176" id="9yP-C8-OZf"/>
-                <constraint firstItem="6T4-Ip-ROb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="176" id="GMe-9P-nk4"/>
-                <constraint firstAttribute="trailing" secondItem="6T4-Ip-ROb" secondAttribute="trailing" constant="120" id="M73-11-E1M"/>
-                <constraint firstItem="6T4-Ip-ROb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="120" id="fyp-gb-nM0"/>
+                <constraint firstAttribute="bottom" secondItem="6T4-Ip-ROb" secondAttribute="bottom" constant="83" id="A6E-ad-MrX"/>
+                <constraint firstAttribute="trailing" secondItem="6T4-Ip-ROb" secondAttribute="trailing" constant="60" id="SRY-fc-cXJ"/>
+                <constraint firstItem="6T4-Ip-ROb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="83" id="dNO-Z7-BSE"/>
+                <constraint firstItem="6T4-Ip-ROb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="60" id="uAO-kL-Wmd"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

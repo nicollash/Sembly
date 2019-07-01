@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   View,
+  KeyboardAvoidingView,
   Text,
   Button,
   StyleSheet,
@@ -18,7 +19,7 @@ import ImagePicker from 'react-native-image-picker';
 
 import { TextInput, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { SemblyInput } from '../../components';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const styles = StyleSheet.create({
   container: {
@@ -126,10 +127,7 @@ class NewPostView extends React.Component {
   
   render() {
     return (
-      <View
-        accessibilityIgnoresInvertColors 
-        style={styles.container}
-      >
+      <View accessibilityIgnoresInvertColors style={styles.container}>
         {this.state.submitted 
         && (
           <Modal
@@ -144,28 +142,6 @@ class NewPostView extends React.Component {
             <View style={styles.successAlert}>
               <Image source={require('../../../assets/images/PostSubmitted.png')} />
             </View>
-
-              {/* <View style={{
-                position: 'absolute',
-                zIndex: 1,
-                top: '54%',
-                height: '21%',
-                width: '100%',
-              }}
-              >
-                <ImageBackground
-                  source={this.state.avatarSource} 
-                  style={{
-                    opacity: 0.2,
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  imageStyle={{ borderRadius: 15 }}
-                >
-                  <Image source={require('../../../assets/images/ButtonCameraPost.png')} style={{ opacity: 0.5 }} />
-                </ImageBackground>
-              </View> */}
           </Modal>
         )}
         <SemblyInput
@@ -178,7 +154,6 @@ class NewPostView extends React.Component {
             secondLabel="OPTIONAL"
             onSecondFontSize={10}
             placeholder="Current Location"
-            imaqeGiven={<Image source={require('../../../assets/images/LocationIcon.png')} />}
           />
         </View>
 

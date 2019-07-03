@@ -1,0 +1,92 @@
+import React from 'react';
+
+import { connect } from 'react-redux';
+
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  View,
+} from 'react-native';
+
+import FeedCategoryButton from './FeedCategoryButton';
+
+const styles = StyleSheet.create({
+  spacing: {
+    width: 6,
+  },
+});
+
+class FeedCategoryBar extends React.Component {
+  componentWillMount() {
+  }
+
+  componentDidMount() {
+  }
+
+  render() {
+    return (
+      <View>
+        <View style={{ flexDirection: 'row' }}>
+          <FeedCategoryButton
+            buttonWidth={this.props.buttonWidth1}
+            bgColor={this.props.buttonColor1}
+            bordercolor={this.props.borderColor1}
+            title={this.props.title1}
+            titleColor={this.props.titleColor1}
+            icon={this.props.icon1}
+          />
+          <View style={styles.spacing} />
+          <FeedCategoryButton
+            bgColor={this.props.buttonColor2}
+            bordercolor={this.props.borderColor2}
+            title={this.props.title2}
+            titleColor={this.props.titleColor2}
+            icon={this.props.icon2}
+          />
+          <View style={styles.spacing} />
+          <FeedCategoryButton
+            bgColor={this.props.buttonColor3}
+            bordercolor={this.props.borderColor3}
+            title={this.props.title3}
+            titleColor={this.props.titleColor3}
+            icon={this.props.icon3}
+          />
+          <View style={styles.spacing} />
+          <FeedCategoryButton
+            bgColor={this.props.buttonColor4}
+            bordercolor={this.props.borderColor4}
+            title={this.props.title4}
+            titleColor={this.props.titleColor4}
+            icon={this.props.icon4}
+          />
+          <View style={styles.spacing} />
+          <FeedCategoryButton
+            bgColor={this.props.buttonColor5}
+            bordercolor={this.props.borderColor5}
+            title={this.props.title5}
+            titleColor={this.props.titleColor5}
+            icon={this.props.icon5}
+          />
+        </View>
+      </View>
+    );
+  }
+}
+
+FeedCategoryBar.defaultProps = {
+};
+
+FeedCategoryBar.propTypes = {
+
+};
+
+
+const mapStateToProps = (state, ownProps) => {
+};
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default FeedCategoryBar;

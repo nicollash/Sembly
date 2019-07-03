@@ -10,7 +10,7 @@ import MapView from 'react-native-maps';
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: 'white',
     width: '100%',
   },
 };
@@ -29,8 +29,8 @@ class SemblyMapView extends React.Component {
         <MapView
           style={{width: '100%', height: '100%'}}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 45.5017,
+            longitude: -73.5673,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}

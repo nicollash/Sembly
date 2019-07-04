@@ -23,14 +23,13 @@ class SemblyMapView extends React.Component {
   }
 
   render() {
-
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
-          style={{width: '100%', height: '100%'}}
+          style={{ width: '100%', height: '100%' }}
           initialRegion={{
-            latitude: 45.5017,
-            longitude: -73.5673,
+            latitude: 41.2565,
+            longitude: -95.9345,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}

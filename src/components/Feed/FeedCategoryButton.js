@@ -42,6 +42,7 @@ class FeedCategoryButton extends React.Component {
           { backgroundColor: this.props.bgColor },
           { borderColor: this.props.bordercolor },
           { width: this.props.buttonWidth }]}
+        onPress={this.props.actionOnPress}
       >
         <View>
           <Image source={this.props.icon} />

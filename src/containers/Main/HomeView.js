@@ -16,6 +16,8 @@ import FeedHeader from '../../components/Feed/FeedHeader';
 import FeedSeparator from '../../components/Feed/FeedSeparator';
 import FeedSubHeader from '../../components/Feed/FeedSubHeader';
 import FeedHorizontalScroll from '../../components/Feed/FeedHorizontalScroll';
+import FeedFilterBar from '../../components/Feed/FeedFilterBar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const styles = {
@@ -24,12 +26,20 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  postText: {
+    color: '#B9BDC5',
+    fontSize: 11,
+    fontFamily: Theme.fonts.bold,
+  },
 };
 class HomeView extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      selectedCategoryTitle: 'All',
+      selectedCategoryIcon: null,
+      liked: false,
     };
   }
 
@@ -45,6 +55,7 @@ class HomeView extends React.Component {
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <SemblyMapView />
         <SlidingUpPanel
+          draggableRange={{ top: 790, bottom: 30 }}
           friction={0.2}
           ref={c => this._panel = c}>
           <View style={{
@@ -60,7 +71,7 @@ class HomeView extends React.Component {
               title="Discover Omaha"
             />
 
-            <View style={{ height: '10%', width: '100%' }}>
+            <View style={{ height: '10%', width: '90%' }}>
               <ScrollView
                 horizontal
                 style={{ top: '9%', width: '100%' }}
@@ -104,7 +115,7 @@ class HomeView extends React.Component {
               title="Events near you"
             />
 
-            <View style={{ height: '17%', width: '100%' }}>
+            <View style={{ height: '15.5%', width: '100%' }}>
               <ScrollView
                 horizontal
                 style={{ width: '100%' }}
@@ -120,6 +131,123 @@ class HomeView extends React.Component {
                 />
               </ScrollView>
             </View>
+
+            <View style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              shadowColor: '#F0F0F0',
+              shadowRadius: 4,
+              shadowOffset: { height: 3, width: 3 },
+              shadowOpacity: 1,
+            }}
+            >
+              <FeedSubHeader
+                icon={this.state.selectedCategoryIcon}
+                title={this.state.selectedCategoryTitle}
+              />
+              <View>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <FeedFilterBar />
+                </ScrollView>
+              </View>
+            </View>
+
+            <View style={{
+              width: '95%',
+              height: '40%',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              left: '1%',
+              borderRadius: 10,
+              borderWidth: 4, borderColor: '#F0F0F0', //temporary
+              //missing the shadow around the view, PROBLEM: goes to its children instead
+            }}
+            >
+              <View style={{
+                flexDirection: 'row',
+                height: '10%',
+                width: '30%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '1.1%',
+                marginLeft: '1.5%',
+              }}
+              >
+                <View style={{ height: '100%', width: '30%' }}>
+                  <Image style={{ height: '100%', width: '100%' }} source={require('../../../assets/images/ProfileIconTab.png')} />
+                </View>
+                <Text style={{
+                  color: '#26315F',
+                  fontSize: 15,
+                  fontFamily: Theme.fonts.bold,
+                }}
+                >
+                  {'   '}
+                Jeedee
+                </Text>
+              </View>
+              <TouchableOpacity style={{
+                alignSelf: 'center',
+                marginLeft: '2.5%',
+              }}
+              >
+                <Image source={require('../../../assets/images/FeedUserPicture.png')}/>
+              </TouchableOpacity>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                width: '90%',
+                marginLeft: '6%',
+                marginTop: '3%',
+              }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Image source={require('../../../assets/images/PhotoPostLocationIcon.png')} />
+                  <View style={{ width: '5%' }} />
+                  <Text style={[styles.postText, { marginTop: '1%' }]}>Jackson St.</Text>
+                </View>
+                <View style={{
+                  flexDirection: 'row',
+                  marginLeft: '22%',
+                }}
+                >
+                  <Image source={require('../../../assets/images/PhotoPostBubble.png')} />
+                  <View style={{ width: '8%' }} />
+                  <Text style={[styles.postText, { marginTop: '3%' }]}>5</Text>
+                </View>
+                <View style={{
+                  flexDirection: 'row',
+                  marginLeft: '26%',
+                }}
+                >
+                  <TouchableOpacity onPress={() => this.setState({ liked: !this.state.liked })}>
+                    {this.state.liked
+                    && (
+                      <View style={{ flexDirection: 'row' }}>
+                        <Image source={require('../../../assets/images/LikedPost.png')} />
+                        <View style={{ width: '12%' }} />
+                        <Text style={styles.postText}>Liked</Text>
+                      </View>
+                    )}
+                    {!this.state.liked
+                    && (
+                      <View style={{ flexDirection: 'row' }}>
+                        <Image style={{ tintColor: '#B9BDC5' }} source={require('../../../assets/images/LikedPost.png')} />
+                        <View style={{ width: '12%' }} />
+                        <Text style={styles.postText}>Like</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
           </View>
         </SlidingUpPanel>
       </View>

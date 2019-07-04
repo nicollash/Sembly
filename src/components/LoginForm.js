@@ -29,6 +29,7 @@ class LoginForm extends React.Component {
           placeholder="your@email.com"
           returnKey="next"
           valueChanged={(str) => this.props.emailChanged(str)}
+          secured={false}
         />
         <SemblyInput
           label="PASSWORD"
@@ -36,6 +37,7 @@ class LoginForm extends React.Component {
           returnKey="done"
           valueChanged={(str) => this.props.passwordChanged(str)}
           ref={(input) => this.props.nextInput = input}
+          secured
         />
 
         <View style={styles.button}>

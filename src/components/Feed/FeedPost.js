@@ -55,7 +55,7 @@ class FeedPost extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={this.props.image} />
         </View>
@@ -69,7 +69,7 @@ class FeedPost extends React.Component {
           <Text style={styles.title}>{this.props.title}</Text>
           <Text style={styles.distance}>{this.props.distance}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

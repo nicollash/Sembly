@@ -186,7 +186,7 @@ class LoginView extends React.Component {
               accessibilityIgnoresInvertColors
               style={styles.form}
             >
-              <LoginForm 
+              <LoginForm
                 actionOnPress={() => this.props.navigation.navigate('MainApp')} 
                 actionLabel="Login"
                 emailChanged={(value) => this.setEmail(value)}

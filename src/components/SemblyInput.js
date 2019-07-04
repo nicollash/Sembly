@@ -43,7 +43,7 @@ class SemblyInput extends React.Component {
           placeholderTextColor="#C7CAD1"
           autoCapitalize="none"
           autoCorrect={false}
-          secureTextEntry
+          secureTextEntry={this.props.secured}
           onChangeText={(str) => this.props.valueChanged(str)}
           returnKeyType={this.props.returnKey}
           ref={(input) => this.props.nextInput = input}

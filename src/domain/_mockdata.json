@@ -1,0 +1,55 @@
+// Posts for sherbrooke
+// 45.40406335792101, -71.89232458381258
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Out and about in Sherbrooke",
+      "text": "Really enjoying what is happening at the Granada",
+      "category": "general",
+      "picture": "https://www.quebecoriginal.com/fiche/images/800x600/898720c9-945e-416a-90b5-d964a0b7fc0a/theatre-granada-theatre-granada.jpg",
+      "createdAt": "2019-07-01T14:31:38+0000",
+      "locationName": "Le Granada",
+      "latlng": ["45.402306992381774", "-71.89101219177246"],
+      "comments": [
+        { "text": "LOVE this location", "createdAt": "2019-07-03T14:31:38+0000", "user": { "id": 2, "name": "Jim Halpert", "avatar": "https://i.pravatar.cc/300" } },
+        { "text": "Nice place for a venue but really a pain to find some decent parking, make sure you go there by bus", "createdAt": "2019-07-03T11:52:38+0000", "user": { "id": 3, "name": "Michael Scott", "avatar": "https://i.pravatar.cc/300" } },
+        { "text": "Saw a few pretty decent shows there", "createdAt": "2019-07-02T11:21:38+0000", "user": { "id": 4, "name": "Dwight Schrute", "avatar": "https://i.pravatar.cc/300" } }
+      ],
+      "user": { "id": 1, "name": "Jeedee", "avatar": "https://i.pravatar.cc/300" },
+      "liked": false
+    },
+    {
+      "id": 2,
+      "title": "Nice place for drinks",
+      "text": "Got here just in time for the happy hour! If anyone is nearby, make sure you join us!",
+      "category": "food",
+      "picture": "https://siboire.ca/wp-content/uploads/siboire-depot-1040x480-02-3-1024x473.jpg",
+      "createdAt": "2019-06-22T14:31:38+0000",
+      "locationName": "Siboire Depot",
+      "latlng": ["45.40040865018543", "-71.88835144042969"],
+      "comments": [
+        { "text": "I dig this one but I'd rather go to the one at the bus stop since it is way easier to find parking", "createdAt": "2019-07-03T14:31:38+0000", "user": { "id": 1, "name": "Jeedee", "avatar": "https://i.pravatar.cc/300" } }
+      ],
+      "user": { "id": 2, "name": "Jim Halpert", "avatar": "https://i.pravatar.cc/300" },
+      "liked": false
+    }
+  ],
+  "events": [
+    {
+      "id": 0,
+      "title": "Festival des traditions du monde de Sherbrooke",
+      "text": "Festival des traditions du monde de Sherbrooke. Take a trip around the world with over 150 shows, workshops and activities. The event includes 17 international restaurants, 70 exhibitors and much more",
+      "picture": "https://www.quebecoriginal.com/en/listing/images/800x600/7840e5c8-d4ef-449d-b8bb-1273a0f5bcb9/festival-des-traditions-du-monde-de-sherbrooke-coin-gastronomique.jpg",
+      
+      "happeningOn": "2019-07-01T14:31:38+0000",
+      "locationName": "Parc Quintal",
+      "latlng": ["45.41529990148982", "-71.88916799346566"],
+    
+      "interested": false,
+      "going": true,
+      "interestedCount": 11,
+      "goingCount": 12
+    }
+  ]
+}

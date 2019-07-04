@@ -107,7 +107,7 @@ const RootStack = createStackNavigator({
 
 // Switches between the Login/Signup/Onboarding & Main Application
 const RootSwitchNavigation = createSwitchNavigator({
-  Root: MainTabNavigation,
+  Root: WelcomeStack,
   MainApp: RootStack,
 });
 

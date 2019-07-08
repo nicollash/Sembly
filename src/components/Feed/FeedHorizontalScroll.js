@@ -10,7 +10,7 @@ import {
   Text,
 } from 'react-native';
 
-import FeedPost from './FeedPost';
+import FeedScrollPost from './FeedScrollPost';
 
 
 const styles = StyleSheet.create({
@@ -29,11 +29,11 @@ class FeedHorizontalScroll extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: 'row', left: '2.5%' }}>
-        <FeedPost image={this.props.image1} title={this.props.title1} distance="0.4km"/>
+        <FeedScrollPost image={this.props.image1} title={this.props.title1} distance="0.4km"/>
         <View style={styles.spacing} />
-        <FeedPost image={this.props.image2} title={this.props.title2} />
+        <FeedScrollPost image={this.props.image2} title={this.props.title2} />
         <View style={styles.spacing} />
-        <FeedPost image={this.props.image3} title={this.props.title3} />
+        <FeedScrollPost image={this.props.image3} title={this.props.title3} />
         <View style={styles.spacing} />
       </View>
     );

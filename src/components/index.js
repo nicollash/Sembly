@@ -7,5 +7,5 @@ export { default as SemblyInput } from './SemblyInput';
 export { default as SemblyDropdown } from './SemblyDropdown';
 export { default as FeedCategoryBar } from './Feed/FeedCategoryBar';
 export { default as FeedCategoryButton } from './Feed/FeedCategoryButton';
-export { default as FeedPost } from './Feed/FeedPost';
+export { default as FeedScrollPost } from './Feed/FeedScrollPost';
 export { default as FeedHorizontalScroll } from './Feed/FeedHorizontalScroll';

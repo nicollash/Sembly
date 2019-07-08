@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class FeedPost extends React.Component {
+class FeedScrollPost extends React.Component {
   componentWillMount() {
   }
 
@@ -75,12 +75,12 @@ class FeedPost extends React.Component {
 }
 
 
-FeedPost.defaultProps = {
+FeedScrollPost.defaultProps = {
   image: null,
   title: 'blank',
 };
 
-FeedPost.propTypes = {
+FeedScrollPost.propTypes = {
 
 };
 
@@ -92,4 +92,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default FeedPost;
+export default FeedScrollPost;

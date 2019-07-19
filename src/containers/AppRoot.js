@@ -1,10 +1,11 @@
 import React from 'react';
-import { StatusBar, Image, View, StyleSheet, Text, Modal } from 'react-native';
+import { StatusBar, Image, View } from 'react-native';
 import _ from 'underscore';
 
 import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView,
 } from 'react-navigation';
+
 import { connect } from 'react-redux';
 
 import ThemeContainer from '../styles/themeContainer';
@@ -16,28 +17,13 @@ import { NewPostView } from './Post';
 import { ProfileView } from './Profile';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-// Main application navigation
-const WelcomeStack = createStackNavigator({
-  Main: {
-    screen: LoginView,
-    navigationOptions: { header: null },
-  },
-  ForgotPassword: {
-    screen: ForgotPasswordView,
-    navigationOptions: { header: null },
-  },
-  Signup: {
-    screen: SignupView,
-    navigationOptions: { header: null },
-  },
-  Onboarding: {
-    screen: OnboardingView,
-    navigationOptions: { header: null },
-  },
-}, {
-  headerMode: 'none',
-});
 
+const WelcomeStack = createStackNavigator({
+  Main: LoginView,
+  ForgotPassword: ForgotPasswordView,
+  Signup: SignupView,
+  Onboarding: OnboardingView,
+});
 
 // Tab navigator
 const MainTabNavigation = createBottomTabNavigator({
@@ -98,8 +84,13 @@ const MainTabNavigation = createBottomTabNavigator({
   },
 });
 
+
 const RootStack = createStackNavigator({
-  RootTab: { screen: MainTabNavigation },
+  RootTab: { 
+    screen: MainTabNavigation,
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    })},
   NewPost: { screen: NewPostView },
 }, {
   mode: 'modal',

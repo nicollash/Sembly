@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
@@ -8,9 +8,14 @@ import {
   Image,
   View,
   Text,
+  Animated,
+  Easing,
+  Dimensions,
 } from 'react-native';
 
-import Theme from '../../styles/theme';
+import Theme from '../styles/theme';
+import FeedSeparator from './Feed/FeedSeparator';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -22,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class SemblyUserPost extends React.Component {
+class PostViewUserPost extends React.Component {
   constructor(props) {
     super(props);
 
@@ -40,61 +45,70 @@ class SemblyUserPost extends React.Component {
   render() {
     return (
       <View style={{
+        flex: 1,
         width: '95%',
-        height: '40%',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        left: '1%',
+        alignSelf: 'center',
         marginBottom: '2%',
+        top: '-3%',
         borderRadius: 10,
-        borderWidth: 4, borderColor: '#F0F0F0', //temporary
-        //missing the shadow around the view, PROBLEM: goes to its children instead
       }}
       >
         <View style={{
           flexDirection: 'row',
-          height: '10%',
-          width: '30%',
-          justifyContent: 'center',
+          height: '17%',
+          width: '91%',
+          alignSelf: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
-          marginTop: '1.1%',
-          marginLeft: '1.5%',
+          marginTop: '0.8%',
+          marginLeft: '-2%',
         }}
         >
+          <TouchableOpacity
+            style={{ position: 'absolute', left: 0, top: '25%' }}
+            onPress={this.props.backPress}
+          >
+            <Image source={require('../../assets/images/PostViewGoBackButton.png')} />
+          </TouchableOpacity>
           <TouchableOpacity style={{
-            flex: 1,
+            width: '20%',
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
+            left: '8%',
           }}
           >
-            <View style={{ height: '100%', width: '30%' }}>
-              <Image style={{ height: '100%', width: '100%' }} source={this.props.userProfilePicture} />
+            <View style={{ height: '100%', width: '45%' }}>
+              <Image style={{ height: '90%', width: '100%' }} source={this.props.userProfilePicture} />
             </View>
             <Text style={{
               color: '#26315F',
               fontSize: 15,
               fontFamily: Theme.fonts.bold,
+              alignSelf: 'flex-end',
+              bottom: '5%',
             }}
             >
               {'   '}
               {this.props.userName}
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={{ position: 'absolute', right: 0, top: '35%' }}>
+            <Image source={require('../../assets/images/PostViewShareButton.png')} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{
-          alignSelf: 'center',
-          marginLeft: '2.5%',
-        }}
-        >
-          <Image source={this.props.userPostPicture}/>
-        </TouchableOpacity>
+        <View style={{ left: '1%' }}>
+          <Image source={this.props.userPostPicture} />
+        </View>
         <View style={{
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
+          alignSelf: 'center',
           width: '90%',
-          marginLeft: '6%',
+          marginLeft: '3%',
           marginTop: '3%',
         }}
         >
@@ -104,28 +118,24 @@ class SemblyUserPost extends React.Component {
             height: '130%',
           }}
           >
-            <Image source={require('../../../assets/images/PhotoPostLocationIcon.png')} />
+            <Image source={require('../../assets/images/PhotoPostLocationIcon.png')} />
             <View style={{ width: '5%' }} />
-            <Text style={[styles.postText, { marginTop: '1%' }]}>{this.props.location}</Text>
+            <Text style={[styles.postText, { marginTop: '1%' }]}>
+              {this.props.location}
+            </Text>
           </View>
-          <TouchableOpacity style={{
-            flexDirection: 'row',
-          }}
-          >
-            <Image source={require('../../../assets/images/PhotoPostBubble.png')} />
-            <View style={{ width: '8%' }} />
-            <Text style={[styles.postText, { marginTop: '3%' }]}>{this.props.comments}</Text>
-          </TouchableOpacity>
           <View style={{
             flexDirection: 'row',
-            marginLeft: '26%',
+            // position: 'absolute',
+            // right: '4%',
+            marginLeft: '35%',
           }}
           >
             <TouchableOpacity onPress={() => this.setState({ liked: !this.state.liked })}>
               {this.state.liked
               && (
                 <View style={{ flexDirection: 'row' }}>
-                  <Image source={require('../../../assets/images/LikedPost.png')} />
+                  <Image source={require('../../assets/images/LikedPost.png')} />
                   <View style={{ width: '12%' }} />
                   <Text style={styles.postText}>Liked</Text>
                 </View>
@@ -133,7 +143,7 @@ class SemblyUserPost extends React.Component {
               {!this.state.liked
               && (
                 <View style={{ flexDirection: 'row' }}>
-                  <Image style={{ tintColor: '#B9BDC5' }} source={require('../../../assets/images/LikedPost.png')} />
+                  <Image style={{ tintColor: '#B9BDC5' }} source={require('../../assets/images/LikedPost.png')} />
                   <View style={{ width: '12%' }} />
                   <Text style={styles.postText}>Like</Text>
                 </View>
@@ -141,21 +151,25 @@ class SemblyUserPost extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+
+        <View style={{ top: '10%', alignSelf: 'center' }}>
+          <FeedSeparator />
+        </View>
       </View>
     );
   }
 }
 
 
-SemblyUserPost.defaultProps = {
-  userProfilePicture: require('../../../assets/images/ProfileIconTab.png'),
+PostViewUserPost.defaultProps = {
+  userProfilePicture: require('../../assets/images/ProfileIconTab.png'),
   userName: "Miguel",
-  userPostPicture: require('../../../assets/images/FeedUserPicture.png'),
+  userPostPicture: require('../../assets/images/FeedUserPicture.png'),
   location: "Jackson St.",
   comments: 9,
 };
 
-SemblyUserPost.propTypes = {
+PostViewUserPost.propTypes = {
 
 };
 
@@ -167,4 +181,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default SemblyUserPost;
+export default PostViewUserPost;

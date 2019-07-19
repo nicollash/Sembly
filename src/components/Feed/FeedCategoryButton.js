@@ -37,23 +37,26 @@ class FeedCategoryButton extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity
-        style={[styles.buttonContainer,
-          { backgroundColor: this.props.bgColor },
-          { borderColor: this.props.bordercolor },
-          { width: this.props.buttonWidth }]}
-        onPress={this.props.actionOnPress}
-      >
-        <View>
-          <Image source={this.props.icon} />
-        </View>
-        <View>
-          <Text style={[styles.title, { color: this.props.titleColor }]}>
-            {'  '}
-            {this.props.title}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          style={[styles.buttonContainer,
+            { backgroundColor: this.props.bgColor },
+            { borderColor: this.props.bordercolor },
+            { width: this.props.buttonWidth }]}
+          onPress={this.props.actionOnPress}
+        >
+          <View>
+            <Image source={this.props.icon} />
+          </View>
+          <View>
+            <Text style={[styles.title, { color: this.props.titleColor }]}>
+              {'  '}
+              {this.props.title}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View style={{ width: this.props.outerWidth }} />
+      </View>
     );
   }
 }
@@ -62,6 +65,7 @@ FeedCategoryButton.defaultProps = {
   bgColor: 'white',
   borderColor: 'black',
   buttonWidth: 120,
+  outerWidth: 0,
 };
 
 FeedCategoryButton.propTypes = {

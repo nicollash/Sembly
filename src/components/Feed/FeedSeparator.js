@@ -12,6 +12,7 @@ import {
 
 const styles = StyleSheet.create({
   container: {
+    alignSelf: 'center',
   },
 });
 
@@ -33,9 +34,6 @@ class FeedSeparator extends React.Component {
 }
 
 FeedSeparator.defaultProps = {
-  bgColor: 'white',
-  borderColor: 'black',
-  buttonWidth: 120,
 };
 
 FeedSeparator.propTypes = {

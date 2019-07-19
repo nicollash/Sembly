@@ -35,6 +35,7 @@ class FeedCategoryBar extends React.Component {
     return (
       <View>
         <View style={{ flexDirection: 'row' }}>
+          <View style={{ width: '3%' }} />
           <FeedCategoryButton
             buttonWidth={this.props.buttonWidth1}
             bgColor={this.props.buttonColor1}
@@ -42,6 +43,7 @@ class FeedCategoryBar extends React.Component {
             title={this.props.title1}
             titleColor={this.props.titleColor1}
             icon={this.props.icon1}
+            actionOnPress={this.props.changeCategory1}
           />
           <View style={styles.spacing} />
           <FeedCategoryButton
@@ -50,6 +52,7 @@ class FeedCategoryBar extends React.Component {
             title={this.props.title2}
             titleColor={this.props.titleColor2}
             icon={this.props.icon2}
+            actionOnPress={this.props.changeCategory2}
           />
           <View style={styles.spacing} />
           <FeedCategoryButton
@@ -58,6 +61,7 @@ class FeedCategoryBar extends React.Component {
             title={this.props.title3}
             titleColor={this.props.titleColor3}
             icon={this.props.icon3}
+            actionOnPress={this.props.changeCategory3}
           />
           <View style={styles.spacing} />
           <FeedCategoryButton
@@ -66,6 +70,7 @@ class FeedCategoryBar extends React.Component {
             title={this.props.title4}
             titleColor={this.props.titleColor4}
             icon={this.props.icon4}
+            actionOnPress={this.props.changeCategory4}
           />
           <View style={styles.spacing} />
           <FeedCategoryButton
@@ -74,7 +79,9 @@ class FeedCategoryBar extends React.Component {
             title={this.props.title5}
             titleColor={this.props.titleColor5}
             icon={this.props.icon5}
+            actionOnPress={this.props.changeCategory5}
           />
+          <View style={{ width: 40 }} />
         </View>
       </View>
     );

@@ -30,7 +30,7 @@ class FeedFilterBar extends React.Component {
     this.state = {
       buttons: ['Hot', 'Best', 'New'],
       tintcolor: ['#CCCCCC', '#77FED4'],
-      activeIndex: null,
+      activeIndex: 0,
     };
   }
 

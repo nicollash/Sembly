@@ -9,3 +9,6 @@ export { default as FeedCategoryBar } from './Feed/FeedCategoryBar';
 export { default as FeedCategoryButton } from './Feed/FeedCategoryButton';
 export { default as FeedScrollPost } from './Feed/FeedScrollPost';
 export { default as FeedHorizontalScroll } from './Feed/FeedHorizontalScroll';
+export { default as PostViewUserPost } from './PostViewUserPost';
+export { default as PostViewCommentSection } from './PostViewCommentSection';
+export { default as SemblyMapPin } from './SemblyMapPin';

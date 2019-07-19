@@ -1,12 +1,36 @@
 // Posts for sherbrooke
 // 45.40406335792101, -71.89232458381258
 {
+  "city": "Omaha",
+  "categories": [
+    {
+      "id": 1,
+      "title": "General",
+      "icon": "https://via.placeholder.com/36/0000FF/808080",
+      "color": "#BADAFF",
+      "textColor": "#26315F"
+    },
+    {
+      "id": 2,
+      "title": "Events",
+      "icon": "https://via.placeholder.com/36/0000FF/808080",
+      "color": "#92DD41",
+      "textColor": "#26315F"
+    },
+    {
+      "id": 3,
+      "title": "Events 2",
+      "icon": "https://via.placeholder.com/36/0000FF/808080",
+      "color": "#92DD41",
+      "textColor": "#26315F"
+    }
+  ],
   "posts": [
     {
       "id": 1,
-      "title": "Out and about in Sherbrooke",
+      "title": "Out and about in Omaha",
       "text": "Really enjoying what is happening at the Granada",
-      "category": "general",
+      "category": 1,
       "picture": "https://www.quebecoriginal.com/fiche/images/800x600/898720c9-945e-416a-90b5-d964a0b7fc0a/theatre-granada-theatre-granada.jpg",
       "createdAt": "2019-07-01T14:31:38+0000",
       "locationName": "Le Granada",
@@ -23,7 +47,7 @@
       "id": 2,
       "title": "Nice place for drinks",
       "text": "Got here just in time for the happy hour! If anyone is nearby, make sure you join us!",
-      "category": "food",
+      "category": 3,
       "picture": "https://siboire.ca/wp-content/uploads/siboire-depot-1040x480-02-3-1024x473.jpg",
       "createdAt": "2019-06-22T14:31:38+0000",
       "locationName": "Siboire Depot",
@@ -37,7 +61,7 @@
   ],
   "events": [
     {
-      "id": 0,
+      "id": 1,
       "title": "Festival des traditions du monde de Sherbrooke",
       "text": "Festival des traditions du monde de Sherbrooke. Take a trip around the world with over 150 shows, workshops and activities. The event includes 17 international restaurants, 70 exhibitors and much more",
       "picture": "https://www.quebecoriginal.com/en/listing/images/800x600/7840e5c8-d4ef-449d-b8bb-1273a0f5bcb9/festival-des-traditions-du-monde-de-sherbrooke-coin-gastronomique.jpg",

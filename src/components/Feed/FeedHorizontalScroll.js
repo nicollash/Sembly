@@ -28,13 +28,13 @@ class FeedHorizontalScroll extends React.Component {
 
   render() {
     return (
-      <View style={{ flexDirection: 'row', left: '2.5%' }}>
-        <FeedScrollPost image={this.props.image1} title={this.props.title1} distance="0.4km"/>
+      <View style={{ flexDirection: 'row', left: '3.5%' }}>
+        <FeedScrollPost image={this.props.image1} title={this.props.title1} distance="0.4mi" />
         <View style={styles.spacing} />
-        <FeedScrollPost image={this.props.image2} title={this.props.title2} />
+        <FeedScrollPost image={this.props.image2} title={this.props.title2} distance="0.2mi" />
         <View style={styles.spacing} />
-        <FeedScrollPost image={this.props.image3} title={this.props.title3} />
-        <View style={styles.spacing} />
+        <FeedScrollPost image={this.props.image3} title={this.props.title3} distance="12.7mi" />
+        <View style={{ width: 37 }} />
       </View>
     );
   }

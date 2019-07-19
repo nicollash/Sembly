@@ -61,9 +61,11 @@ class FeedScrollPost extends React.Component {
         </View>
         <View style={{
           flexDirection: 'row',
-          top: 5,
+          top: 1,
           justifyContent: 'space-between',
+          alignItems: 'center',
           width: '90%',
+          height: 28,
         }}
         >
           <Text style={styles.title}>{this.props.title}</Text>

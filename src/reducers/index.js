@@ -5,7 +5,11 @@ import { AsyncStorage as storage } from 'react-native';
 import _ from 'underscore';
 
 import {
-
+  SET_PANEL_NAVIGATION,
+  // ---
+  UPDATE_CATEGORY,
+  UPDATE_POSTS,
+  UPDATE_EVENTS,
 } from '../actions';
 
 
@@ -13,6 +17,20 @@ import {
 * Reducers
 * Applies state changes sent from actions to Redux
 */
+
+const appStateDefault = {
+  panelNavigation: null,
+};
+
+const appState = (state = appStateDefault, action) => {
+  switch (action.type) {
+  case SET_PANEL_NAVIGATION:
+    return Object.assign({}, state, { panelNavigation: action.navigation });
+  // eslint-disable-next-line no-fallthrough
+  default:
+    return state;
+  }
+};
 
 const preferencesDefault = {
   // App tracking
@@ -32,12 +50,35 @@ const preferences = (state = preferencesDefault, action) => {
   }
 };
 
+const feedDefault = {
+  city: 'Ville-Vanier',
+  category: [],
+  events: [],
+  posts: [],
+};
+
+const feed = (state = feedDefault, action) => {
+  switch (action.type) {
+  // eslint-disable-next-line no-fallthrough
+  case UPDATE_CATEGORY:
+    return Object.assign({}, state, { category: action.categories });
+  case UPDATE_POSTS:
+    return Object.assign({}, state, { posts: action.posts });
+  case UPDATE_EVENTS:
+    return Object.assign({}, state, { events: action.events });
+  default:
+    return state;
+  }
+};
+
 
 const semblyApp = combineReducers({
-  preferences
+  appState,
+  preferences,
+  feed,
 });
 
-const blacklisted = [];
+const blacklisted = ['appState'];
 const persistConfig = {
   timeout: 10000,
   key: 'root',

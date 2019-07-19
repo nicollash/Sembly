@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
+import propTypes from 'prop-types';
 
 import {
-  TouchableOpacity,
   Image,
   StyleSheet,
   View,
@@ -13,9 +12,10 @@ import {
 import Theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
-  feedviewbar: {
-    alignSelf: 'center',
-    top: '30%',
+  headerText: {
+    fontSize: 36,
+    fontFamily: Theme.fonts.bold,
+    color: '#1F1F1F',
   },
 });
 
@@ -28,35 +28,31 @@ class FeedHeader extends React.Component {
 
   render() {
     return (
-      <View>
-        <View style={styles.feedviewbar}>
-          <Image source={require('../../../assets/images/FeedViewBar.png')} />
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', top: '5%', marginLeft: '-16%' }}>
-          <Image source={this.props.icon} />
-          <Text style={{ fontSize: 36, fontFamily: Theme.fonts.bold, color: 'black'}}>
-            {'  '}
-            {this.props.title}
-          </Text>
-        </View>
+      <View style={{
+        flex: 1,
+        width: '100%',
+        marginTop: -15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        zIndex: 1000,
+      }}
+      >
+        <Image
+          source={require('../../../assets/images/SemblyLogo.png')} 
+          style={{ marginLeft: '5%', marginRight: '3%' }}
+        />
+        <Text style={styles.headerText}>Discover {this.props.city}</Text>
       </View>
     );
   }
 }
 
 FeedHeader.defaultProps = {
+  city: 'your city',
 };
 
 FeedHeader.propTypes = {
-
+  city: propTypes.string,
 };
-
-
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 export default FeedHeader;

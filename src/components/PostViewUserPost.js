@@ -51,7 +51,6 @@ class PostViewUserPost extends React.Component {
         justifyContent: 'flex-start',
         alignSelf: 'center',
         marginBottom: '2%',
-        top: '-3%',
         borderRadius: 10,
       }}
       >
@@ -62,8 +61,8 @@ class PostViewUserPost extends React.Component {
           alignSelf: 'center',
           justifyContent: 'flex-start',
           alignItems: 'center',
-          marginTop: '0.8%',
-          marginLeft: '-2%',
+          marginTop: 10,
+          marginLeft: 0,
         }}
         >
           <TouchableOpacity
@@ -73,15 +72,15 @@ class PostViewUserPost extends React.Component {
             <Image source={require('../../assets/images/PostViewGoBackButton.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={{
-            width: '20%',
+            width: 120,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
             left: '8%',
           }}
           >
-            <View style={{ height: '100%', width: '45%' }}>
-              <Image style={{ height: '90%', width: '100%' }} source={this.props.userProfilePicture} />
+            <View style={{ marginLeft: 10 }}>
+              <Image style={{ height: 32, width: 32, borderRadius: 16 }} source={this.props.userProfilePicture} />
             </View>
             <Text style={{
               color: '#26315F',
@@ -99,9 +98,26 @@ class PostViewUserPost extends React.Component {
             <Image source={require('../../assets/images/PostViewShareButton.png')} />
           </TouchableOpacity>
         </View>
-        <View style={{ left: '1%' }}>
-          <Image source={this.props.userPostPicture} />
-        </View>
+        {this.props.userPostPicture !== null && (
+          <View style={{ left: '1%' }}>
+            <Image source={this.props.userPostPicture} />
+          </View>
+        )}
+        {this.props.userPostText !== null && (
+          <Text style={{
+            marginLeft: 28,
+            marginTop: 10,
+            fontSize: 14,
+            fontFamily: Theme.fonts.regular,
+            lineHeight: 19,
+            color: '#26315F',
+            marginBottom: 10,
+          }}
+          >
+            Does anyone know how many kilometres the walk is from the parking lot?
+                We will be travelling with a pram/stroller?
+          </Text>
+        )}
         <View style={{
           flexDirection: 'row',
           justifyContent: 'flex-start',
@@ -163,9 +179,9 @@ class PostViewUserPost extends React.Component {
 
 PostViewUserPost.defaultProps = {
   userProfilePicture: require('../../assets/images/ProfileIconTab.png'),
-  userName: "Miguel",
-  userPostPicture: require('../../assets/images/FeedUserPicture.png'),
-  location: "Jackson St.",
+  userName: "no Name",
+  userPostPicture: null,
+  location: "no Location",
   comments: 9,
 };
 

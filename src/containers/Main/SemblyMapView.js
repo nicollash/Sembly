@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 
 import SemblyMapPin from '../../components/SemblyMapPin';
 
+import NavigationService from '../../helpers/SlidingPanelNavigation';
+
 const styles = {
   container: {
     flex: 1,
@@ -50,6 +52,7 @@ class SemblyMapView extends React.Component {
             longitude={-95.9354}
             pinColor="#927FE8"
             pinTag="TH"
+            onPress={() => NavigationService.navigate('Location')}
           />
           <SemblyMapPin
             latitude={41.2365}
@@ -72,7 +75,6 @@ SemblyMapView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
-  navigation: state.appState.panelNavigation,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -23,7 +23,7 @@ const WelcomeStack = createStackNavigator({
   ForgotPassword: ForgotPasswordView,
   Signup: SignupView,
   Onboarding: OnboardingView,
-});
+}, { headerMode: 'none' });
 
 // Tab navigator
 const MainTabNavigation = createBottomTabNavigator({
@@ -98,8 +98,9 @@ const RootStack = createStackNavigator({
 
 // Switches between the Login/Signup/Onboarding & Main Application
 const RootSwitchNavigation = createSwitchNavigator({
-  Root: MainTabNavigation,
-  MainApp: RootStack,
+  Welcome: WelcomeStack,
+  Root: RootStack,
+  MainApp: MainTabNavigation,
 });
 
 /*

@@ -43,8 +43,8 @@ class PostView extends React.Component {
 
     this.state = {
       height: 0,
-      address: '1212 Barney St.',
-      phoneNumber: '(514) 999-6123',
+      address: '1207 Harney St.',
+      phoneNumber: '(402) 504-4929',
     };
   }
 
@@ -165,12 +165,44 @@ class PostView extends React.Component {
               </View>
 
               <View style={styles.separatorBar} />
-              <View style={{ flex: 1 }}>
-                <FeedUserPost NotTouchable />
-                <FeedUserPost NotTouchable />
-                <FeedUserPost NotTouchable />
-                <FeedUserPost NotTouchable />
-                <FeedUserPost NotTouchable />
+              <View style={{
+                flex: 1,
+                width: '100%',
+                marginLeft: 20,
+              }}
+              >
+                <FeedUserPost
+                  NotTouchable
+                  userName="BloomingAlchemy"
+                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=60"}}
+                  userPostText="Super place, my co-workers and I went there last friday to relax after a stressful week, the ambiance was AWESOME !"
+                  location="Harney St."
+                  comments={2}
+                />
+                <FeedUserPost
+                  NotTouchable
+                  userName="girlganggoodies"
+                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=40"}}
+                  userPostText="Had a BLAST, must-see place I'm telling you !"
+                  location="1207 Harney St."
+                  comments={0}
+                />
+                <FeedUserPost
+                  NotTouchable
+                  userName="girlganggoodies"
+                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=49"}}
+                  userPostText="Had a great time with friends, we were able to bypass the long line so that was cool.  Drinks were just right and the dance floor was decent."
+                  location="Harney St."
+                  comments={4}
+                />
+                <FeedUserPost
+                  NotTouchable
+                  userName="girlganggoodies"
+                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=45"}}
+                  userPostText="This is one of the only bar with a decently sized dance floor downtown. They open the designated dance floor after 11pm and they also have a $5 cover for guys starting at that time. Girls get in free. They also have a comfortable seating sections so you dont have to sit at the bar if you dont want to. They also have a drink special wheel. It does get busy quick so get in line. Oh btw there is always a food truck right outside this bar. #Convenient"
+                  location="Omaha, Harney Street"
+                  comments={3}
+                />
               </View>
 
             </View>

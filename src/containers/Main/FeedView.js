@@ -193,29 +193,36 @@ class FeedView extends React.Component {
             }}
             >
               <FeedUserPost
-                userProfilePicture={require('../../../assets/images/ProfileIconTab.png')}
-                userName="Miguel"
-                userPostPicture={require('../../../assets/images/FeedUserPicture.png')}
-                location="Jackson St."
-                comments={3}
-                moveOnPress={() => this.props.navigation.navigate('Location')}
+                userProfilePicture={{uri:"https://i.pravatar.cc/300?img=10"}}
+                userPostPicture={{uri:"https://placeimg.com/640/480/arch"}}
+                userName="velvetcanyon"
+                location="One Harrahs Blvd"
+                comments={12}
+                userPostText="textest"
               />
 
               <FeedUserPost
-                userPostText="mi quis hendrerit dolor magna eget est lorem ipsum dolor sit amet consectetur
-                adipiscing elit pellentesque habitant morbi tristique senectus et netus et
-                malesuadafames ac turpis egestas integer eget aliquet nibh praesent tristique
-                magna sit amet purus gravida quis blandit turpis cursus in hac habai
-                adipiscing elit pellentesque habitant morbi tristique senectus et netus et"
-                userName="Sharehan Thotiannah"
-                location="Bronx"
+                userProfilePicture={{uri:"https://i.pravatar.cc/300?img=46"}}
+                userPostText="Does anyone know how many kilometres the walk is from the parking lot?
+                We will be travelling with a pram/stroller?"
+                userName="HazelAndPine"
+                location="705 Riverfront Dr"
+                comments={3}
+                moveOnPress={() => this.props.navigation.navigate('Post')}
               />
 
-              <FeedUserPost />
-
-              <FeedUserPost />
+              <FeedUserPost
+                userProfilePicture={{uri:"https://i.pravatar.cc/300?img=67"}}
+                userPostPicture={{uri:"https://placeimg.com/640/480/people"}}
+                userName="Richard Haynes"
+                location="Freedom Park Rd"
+                comments={0}
+              />
 
             </View>
+
+            {/* temp space to add until scrollview fixes */}
+            <View style={{ height: 200 }} />
 
           </ScrollView>
         </View>

@@ -201,8 +201,8 @@ class LoginView extends React.Component {
               }}
               />
               <View>
-                <TouchableOpacity 
-                  accessibilityIgnoresInvertColors 
+                <TouchableOpacity
+                  accessibilityIgnoresInvertColors
                   onPress={() => this.props.navigation.navigate('ForgotPassword')}
                   style={styles.foothead}
                 >
@@ -218,8 +218,8 @@ class LoginView extends React.Component {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity 
-                  accessibilityIgnoresInvertColors 
+                <TouchableOpacity
+                  accessibilityIgnoresInvertColors
                   onPress={() => this.props.navigation.navigate('Signup')}
                   style={styles.footline}
                 >

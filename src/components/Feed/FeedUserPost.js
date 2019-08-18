@@ -42,6 +42,7 @@ class FeedUserPost extends React.Component {
   }
 
   render() {
+    const profilePictureHeight = 32;
     return (
       <View style={{
         width: '95%',
@@ -56,6 +57,7 @@ class FeedUserPost extends React.Component {
         borderColor: '#F0F0F0',
         // minHeight: 400,
         // maxHeight: 500,
+        minWidth: 375,
       }}
       >
         <View style={{
@@ -75,7 +77,14 @@ class FeedUserPost extends React.Component {
           }}
           >
             <View>
-              <Image style={{ height: 32, width: 32 }} source={this.props.userProfilePicture} />
+              <Image
+                style={{
+                  height: profilePictureHeight,
+                  width: 32,
+                  borderRadius: profilePictureHeight / 2,
+                }}
+                source={this.props.userProfilePicture} 
+              />
             </View>
             <Text style={{
               color: '#26315F',
@@ -94,21 +103,33 @@ class FeedUserPost extends React.Component {
           <TouchableOpacity
             activeOpacity={this.props.NotTouchable}
             style={{
+              marginTop: 5,
               alignSelf: 'center',
               marginLeft: '2.5%',
+              height: 200,
+              width: 370,
             }}
             onPress={this.props.moveOnPress}
           >
-            <Image source={this.props.userPostPicture}/>
+            <Image
+              source={this.props.userPostPicture}
+              style={{
+                height: '100%',
+                width: '100%',
+                borderRadius: 8,
+              }}
+            />
           </TouchableOpacity>
         )}
         {this.props.userPostPicture === null && (
-          <TouchableOpacity style={{
-            marginLeft: 15,
-            marginTop: 15,
-            width: '90%',
-            flex: 0.5,
-          }}
+          <TouchableOpacity 
+            style={{
+              marginLeft: 15,
+              marginTop: 15,
+              width: '90%',
+              flex: 0.5,
+            }}
+            onPress={this.props.moveOnPress}
           >
             <Text style={{
               fontSize: 14,
@@ -164,7 +185,7 @@ class FeedUserPost extends React.Component {
               && (
                 <View style={{ flexDirection: 'row' }}>
                   <Image source={require('../../../assets/images/LikedPost.png')} />
-                  <View style={{ width: '12%' }} />
+                  <View style={{ width: 7 }} />
                   <Text style={[styles.postText, { marginTop: 2 }]}>Liked</Text>
                 </View>
               )}
@@ -172,7 +193,7 @@ class FeedUserPost extends React.Component {
               && (
                 <View style={{ flexDirection: 'row' }}>
                   <Image style={{ tintColor: '#B9BDC5' }} source={require('../../../assets/images/LikedPost.png')} />
-                  <View style={{ width: '12%' }} />
+                  <View style={{ width: 7 }} />
                   <Text style={[styles.postText, { marginTop: 2 }]}>Like</Text>
                 </View>
               )}
@@ -192,11 +213,11 @@ FeedUserPost.defaultProps = {
   location: 'Location',
   comments: '?',
   NotTouchable: 0.2,
-  userPostText: 'Empty Post',
+  userPostText: null,
+  moveOnPress: null,
 };
 
 FeedUserPost.propTypes = {
-
 };
 
 

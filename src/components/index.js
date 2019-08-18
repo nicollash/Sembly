@@ -11,4 +11,6 @@ export { default as FeedScrollPost } from './Feed/FeedScrollPost';
 export { default as FeedHorizontalScroll } from './Feed/FeedHorizontalScroll';
 export { default as PostViewUserPost } from './PostViewUserPost';
 export { default as PostViewCommentSection } from './PostViewCommentSection';
+export { default as PostViewCommentHeader } from './PostViewCommentHeader';
+export { default as SemblyUserComment } from './SemblyUserComment';
 export { default as SemblyMapPin } from './SemblyMapPin';

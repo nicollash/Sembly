@@ -34,7 +34,7 @@ class SemblyMapPin extends React.Component {
     return (
       <Marker coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}>
         <TouchableOpacity
-          onPress={this.props.onPinPress}
+          onPress={this.props.onPress}
         >
           <View>
             <Image
@@ -86,6 +86,7 @@ class SemblyMapPin extends React.Component {
 SemblyMapPin.defaultProps = {
   pinColor: 'white',
   pinIcon: null,
+  onPress: null,
 };
 
 SemblyMapPin.propTypes = {

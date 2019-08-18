@@ -2,9 +2,7 @@ import React from 'react';
 
 import {
   View,
-  Text,
   Image,
-  ScrollView,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
@@ -14,6 +12,7 @@ import Theme from '../../styles/theme';
 
 import SemblyMapView from './SemblyMapView';
 import SlidingPanelNavigator from '../../components/SlidingPanelNavigator';
+import SlidingPanelNavigationService from '../../helpers/SlidingPanelNavigation';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -70,9 +69,12 @@ class HomeView extends React.Component {
         <SemblyMapView />
         <SlidingUpPanel
           height={deviceHeight}
-          draggableRange={{ top: deviceHeight-128, bottom: 30 }}
+          draggableRange={{ top: deviceHeight - 128, bottom: 30 }}
           friction={0.2}
-          ref={c => this._panel = c}
+          ref={(c) => {
+            this._panel = c;
+            SlidingPanelNavigationService.setPanel(c);
+          }}
         >
           {dragHandler => (
             <View style={styles.panelContainer}>

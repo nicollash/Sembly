@@ -4,35 +4,36 @@ import React, { Component } from 'react';
 
 import {
   createStackNavigator,
-  createNavigationContainer,
+  createAppContainer,
 } from 'react-navigation';
 
 // Redux
 import { connect } from 'react-redux';
 
+import SlidingPanelNavigationService from '../helpers/SlidingPanelNavigation';
+
 import FeedView from '../containers/Main/FeedView';
 import PostView from '../containers/Main/PostView';
 import LocationView from '../containers/Main/LocationView';
 
-// Actions
-import { setPanelNavigation } from '../actions';
-
-const StackNavigator = createNavigationContainer(createStackNavigator({
+const navigator = createStackNavigator({
   Feed: { screen: FeedView },
   Post: { screen: PostView },
   Location: LocationView,
 }, {
   headerMode: 'none',
-}));
+});
+
+const StackNavigator = createAppContainer(navigator);
 
 class SlidingPanelNavigator extends Component {
-  componentDidMount() {
-    this.props.setPanelNavigation(StackNavigator.navigation);
-  }
-
   render() {
     return (
-      <StackNavigator />
+      <StackNavigator
+        ref={(navigatorRef) => {
+          SlidingPanelNavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      />
     );
   }
 }
@@ -41,7 +42,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setPanelNavigation: (navigation) => dispatch(setPanelNavigation(navigation)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SlidingPanelNavigator);

@@ -51,7 +51,7 @@ const preferences = (state = preferencesDefault, action) => {
 };
 
 const feedDefault = {
-  city: 'Ville-Vanier',
+  city: 'Omaha',
   category: [],
   events: [],
   posts: [],

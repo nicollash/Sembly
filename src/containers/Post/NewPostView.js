@@ -2,24 +2,19 @@ import React from 'react';
 
 import {
   View,
-  KeyboardAvoidingView,
   Text,
-  Button,
   StyleSheet,
   Image,
   ImageBackground,
   Modal,
 } from 'react-native';
-import theme from '../../styles/theme';
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
+import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
-
 import ImagePicker from 'react-native-image-picker';
-
-import { TextInput, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import {TouchableOpacity } from 'react-native-gesture-handler';
 import { SemblyInput } from '../../components';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const styles = StyleSheet.create({
   container: {
@@ -27,6 +22,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     justifyContent: 'flex-end',
+    flexDirection:'column'
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -148,16 +144,16 @@ class NewPostView extends React.Component {
           placeholder="Content of your post, up to 300 chars."
           label="TEXT"
         />
-        <View>
-          <SemblyInput
-            label="LOCATION"
-            secondLabel="OPTIONAL"
-            onSecondFontSize={10}
-            placeholder="Current Location"
-          />
-        </View>
+        
+        <SemblyLabel 
+          label={'LOCATION'} 
+          secondLabel={'OPTIONAL'}
+          fontSize= {14}
+          secondFontSize= {10}
+        />
 
-        <SemblyLabel label="CATEGORY" />
+        <SemblyPlaceAutoComplete />
+        <SemblyLabel label="CATEGORY"/>
         <SemblyDropdown />
         <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
 

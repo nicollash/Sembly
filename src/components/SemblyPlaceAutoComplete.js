@@ -83,7 +83,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       }}
 
       query={{
-        key: 'AIzaSyA0xf4QeBkH9a5T9rCpAKG3UQ5RPiwLEuc', //AIzaSyAg0JOwrY-auLunyROB_18Qb9Q_fpzd9As
+        key: 'AIzaSyAg0JOwrY-auLunyROB_18Qb9Q_fpzd9As',
         language: 'en',
         types: '(cities)'
       }}

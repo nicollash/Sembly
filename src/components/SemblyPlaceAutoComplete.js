@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
       container: {
         zIndex: 10,
         overflow: 'visible',
+        marginBottom:45,
         flex:0.2
       },
       textInputContainer: {
@@ -34,17 +35,24 @@ const styles = StyleSheet.create({
       },
       listView: {
         position: 'absolute',
-        top: 60,
-        left: 10,
-        right: 10,
+        top: 50,
         backgroundColor: 'white',
-        borderRadius: 5,
         flex: 1,
         elevation: 3,
-        zIndex: 10
+        zIndex: 10,
+        borderWidth: 1,
+        borderRadius: 2,
+        borderColor: '#ddd',
+        borderBottomWidth: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 1,
+        shadowRadius: 2,
+        elevation: 1
       },
       description: {
-        color: '#1faadb'
+        color: '#26315F',
+        fontSize: 16,
       },
       predefinedPlacesDescription: {
         color: '#1faadb'
@@ -75,7 +83,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       }}
 
       query={{
-        key: 'AIzaSyA0xf4QeBkH9a5T9rCpAKG3UQ5RPiwLEuc',
+        key: 'AIzaSyA0xf4QeBkH9a5T9rCpAKG3UQ5RPiwLEuc', //AIzaSyAg0JOwrY-auLunyROB_18Qb9Q_fpzd9As
         language: 'en',
         types: '(cities)'
       }}
@@ -93,7 +101,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       GooglePlacesDetailsQuery={{
         fields: 'formatted_address',
       }}
-
+      placeholderTextColor={'#C7CAD1'}
       filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
       renderLeftButton={()  => <Image source={require('../../assets/images/LocationIcon.png')}
       style={{alignSelf:'center',marginLeft:10}} />}

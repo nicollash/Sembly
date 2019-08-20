@@ -151,10 +151,12 @@ class NewPostView extends React.Component {
           fontSize= {14}
           secondFontSize= {10}
         />
+        <View style={{backgroundColor:'#ffffff',zIndex:10,elevation:3}}>
+        <SemblyPlaceAutoComplete /></View>
 
-        <SemblyPlaceAutoComplete />
         <SemblyLabel label="CATEGORY"/>
         <SemblyDropdown />
+        
         <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
 
 
@@ -225,3 +227,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default NewPostView;
+

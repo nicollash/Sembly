@@ -43,7 +43,7 @@ class SemblyDropdown extends React.Component {
           justifyContent: 'space-between',
           marginTop: '3%',
           flexDirection: 'row',
-          alignItems: 'center',
+          alignItems: 'center'
         }}
         >
           <Text style={{
@@ -60,6 +60,7 @@ class SemblyDropdown extends React.Component {
             <Picker
               style={{
                 height: '25%',
+                zIndex: 10
               }}
               selectedValue={this.state.category}
               mode="dialog"

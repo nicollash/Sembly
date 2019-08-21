@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
       textInputContainer: {
         borderTopWidth: 0,
         borderBottomWidth: 0,
-        height: 50,
+        height: 41,
         overflow: 'visible',
         backgroundColor: '#ffffff',
         borderColor: '#ffffff',
         borderRadius: 100,
         borderBottomWidth: 0.5,
         borderBottomColor: '#D8D8D8',
-        marginLeft:-18
+        marginLeft:-26
       },
       textInput: {
         backgroundColor: 'transparent',
@@ -83,7 +83,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       }}
 
       query={{
-        key: 'AIzaSyAg0JOwrY-auLunyROB_18Qb9Q_fpzd9As',
+        key: 'AIzaSyAg0JOwrY-auLunyROB_18Qb9Q_fpzd9As', 
         language: 'en',
         types: '(cities)'
       }}
@@ -104,7 +104,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       placeholderTextColor={'#C7CAD1'}
       filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
       renderLeftButton={()  => <Image source={require('../../assets/images/LocationIcon.png')}
-      style={{alignSelf:'center',marginLeft:10}} />}
+      style={{alignSelf:'center',marginLeft:17}} />}
       debounce={200}
     />
     );

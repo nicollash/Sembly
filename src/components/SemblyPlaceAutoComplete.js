@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         zIndex: 10,
         overflow: 'visible',
         marginBottom:45,
-        flex:0.2
+        flex:0.2,
       },
       textInputContainer: {
         borderTopWidth: 0,
@@ -19,11 +19,12 @@ const styles = StyleSheet.create({
         height: 41,
         overflow: 'visible',
         backgroundColor: '#ffffff',
-        borderColor: '#ffffff',
+        /*borderColor: '#ffffff',
         borderRadius: 100,
         borderBottomWidth: 0.5,
-        borderBottomColor: '#D8D8D8',
-        marginLeft:-26
+        borderBottomColor: '#D8D8D8',*/
+        marginLeft:-13.5
+        
       },
       textInput: {
         backgroundColor: 'transparent',
@@ -37,7 +38,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 50,
         backgroundColor: 'white',
-        flex: 1,
         elevation: 3,
         zIndex: 10,
         borderWidth: 1,
@@ -48,11 +48,12 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,
         shadowRadius: 2,
-        elevation: 1
+        elevation: 1,
+        marginTop: -10
       },
       description: {
         color: '#26315F',
-        fontSize: 16,
+        fontSize: 16
       },
       predefinedPlacesDescription: {
         color: '#1faadb'
@@ -104,7 +105,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       placeholderTextColor={'#C7CAD1'}
       filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
       renderLeftButton={()  => <Image source={require('../../assets/images/LocationIcon.png')}
-      style={{alignSelf:'center',marginLeft:17}} />}
+      style={{alignSelf:'center'}} />}
       debounce={200}
     />
     );

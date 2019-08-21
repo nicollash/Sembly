@@ -152,7 +152,9 @@ class NewPostView extends React.Component {
           secondFontSize= {10}
         />
         <View style={{backgroundColor:'#ffffff',zIndex:10,elevation:3}}>
-        <SemblyPlaceAutoComplete /></View>
+        <SemblyPlaceAutoComplete />
+        <View style={{borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4}}/>
+        </View>
 
         <SemblyLabel label="CATEGORY"/>
         <SemblyDropdown />

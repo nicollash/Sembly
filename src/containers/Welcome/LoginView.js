@@ -1,261 +1,192 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Image,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  fontSize,
-  fontFamily,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { View, Image, StatusBar, Text, TouchableOpacity } from "react-native";
 
-import {
-  SemblyButton,
-  LoginForm,
-} from '../../components';
+import { SemblyButton, LoginForm } from "../../components";
 
-import Theme from '../../styles/theme';
-import { ScrollView } from 'react-native-gesture-handler';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import Theme from "../../styles/theme";
+import { ScrollView } from "react-native-gesture-handler";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "column",
+    backgroundColor: "#D8C34A",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
   headerContainer: {
-    backgroundColor: '#FFF9BB',
-    flex: 0.425,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: "#FFF9BB",
+    flex: 0.45,
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "flex-start"
   },
   image: {
-    alignSelf: 'stretch',
-    flex: 0.9,
+    alignSelf: "stretch",
+    flex: 0.9
   },
   underwhite: {
-    backgroundColor: '#D8C34A',
-    flex: 0.575,
-    alignSelf: 'stretch',
-    justifyContent: 'flex-end',
+    flex: 0.55,
+    alignSelf: "stretch",
+    justifyContent: "flex-end",
+    backgroundColor: "white",
+    borderRadius: 10
   },
   contentContainer: {
-    alignItems: 'center',
+    alignItems: "center"
   },
   whiteContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignSelf: 'stretch',
-    borderRadius: 10,
-  },
-  textbox: {
-    top: '10%',
-    flex: 0.25,
-    justifyContent: 'flex-start',
+    backgroundColor: "white",
+    alignSelf: "stretch",
+    borderRadius: 10
   },
   headline: {
-    alignSelf: 'center',
-    width: '90%',
-    flex: 0.4,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignSelf: "center",
+    width: "90%",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
   title: {
-    flex: 1,
-    width: '100%',
+    width: "100%",
     fontSize: 35,
-    color: '#26315F',
-    textAlign: 'center',
-    alignSelf: 'center',
+    color: "#26315F",
+    textAlign: "center",
+    alignSelf: "center",
     fontFamily: Theme.fonts.black,
+    marginTop: 10
   },
   desc: {
-    top: '9%',
-    textAlign: 'center',
-    lineHeight: 25,
-    flex: 0.4,
+    textAlign: "center",
     marginHorizontal: 20,
-    color: '#96969A',
+    color: "#96969A",
     fontSize: 18,
     fontFamily: Theme.fonts.bold,
+    marginTop: 5
   },
   form: {
     // flex: 0.425,
-    alignSelf: 'center',
-    top: '7.5%',
-    width: '85%',
-    justifyContent: 'flex-end',
+    flex: 5.5,
+    alignSelf: "center",
+    width: "85%",
+    justifyContent:'center'
   },
   footer: {
-    top: '20%',
-    flex: 0.3,
-    justifyContent: 'flex-start',
+    top: "20%",
+    justifyContent: "flex-start"
   },
   foothead: {
-    top: '38%',
-    flex: 0.4,
+    marginTop:12
   },
   footline: {
-    top: '150%',
-    flex: 0.4,
-  },
+    marginTop:8
+  }
 };
-
 
 class LoginView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: ""
     };
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  setEmail = (email) => {
-    this.setState({email});
-  }
+  setEmail = email => {
+    this.setState({ email });
+  };
 
-  setPassword = (password) => {
-    this.setState({password});
-
-  }
+  setPassword = password => {
+    this.setState({ password });
+  };
 
   render() {
     return (
       <View style={styles.container}>
-
         <StatusBar barStyle="dark-content" />
-
         <View style={styles.headerContainer}>
-
-          <View style={{
-            order: 1,
-            backgroundColor: '#FFF9BB',
-            flex: 0.1,
-            alignSelf: 'stretch',
-          }}
-          />
-
           <View style={styles.image}>
-            <Image source={require('../../../assets/images/loginViewBackground.png')} />
+            <Image
+              source={require("../../../assets/images/loginViewBackground.png")}
+            />
           </View>
-
         </View>
-
         <View style={styles.underwhite}>
-          <KeyboardAwareScrollView 
-            contentContainerStyle={styles.contentContainer}
-            style={styles.whiteContainer}>
-            <View style={styles.textbox}>
-              <View style={{
-                backgroundColor: 'white',
-                alignSelf: 'stretch',
-                flex: 0.175,
-              }}
-              />
- 
-              <View style={styles.headline}>
-                <View>
-                  <Text style={styles.title}>Discover your city</Text>
-                </View>
-              </View>
-
-              <Text style={styles.desc}>
-                  Sembly is a crowdsourced city discovery platform.
-              </Text>
-            </View>
-
-            <View
+          <View style={{ flex: 2.5, flexDirection: "column" }}>
+            <Text style={styles.title}>Discover your city</Text>
+            <Text style={styles.desc}>
+              Sembly is a crowdsourced city discovery platform.
+            </Text>
+          </View>
+          <View accessibilityIgnoresInvertColors style={styles.form}>
+            <LoginForm
+              actionOnPress={() => this.props.navigation.navigate("MainApp")}
+              actionLabel="Login"
+              emailChanged={value => this.setEmail(value)}
+              passwordChanged={value => this.setPassword(value)}
+            />
+          </View>
+          <View
+            style={{
+              flex: 2,
+              flexDirection: "column",
+              justifyContent: "flex-start",
+            }}
+          >
+            <TouchableOpacity
               accessibilityIgnoresInvertColors
-              style={styles.form}
+              onPress={() => this.props.navigation.navigate("ForgotPassword")}
+              style={styles.foothead}
             >
-              <LoginForm
-                actionOnPress={() => this.props.navigation.navigate('MainApp')} 
-                actionLabel="Login"
-                emailChanged={(value) => this.setEmail(value)}
-                passwordChanged={(value) => this.setPassword(value)}
-              />
-            </View>
-            
-            <View style={styles.footer}>
-              <View style={{
-                backgroundColor: 'white',
-                flex: 0.7,
-              }}
-              />
-              <View>
-                <TouchableOpacity
-                  accessibilityIgnoresInvertColors
-                  onPress={() => this.props.navigation.navigate('ForgotPassword')}
-                  style={styles.foothead}
-                >
-                  <Text style={{
-                    color: '#97979B',
-                    textAlign: 'center',
-                    fontSize: 18,
-                    fontFamily: Theme.fonts.bold,
-                  }}
-                  >
-              Forgot your password?
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity
-                  accessibilityIgnoresInvertColors
-                  onPress={() => this.props.navigation.navigate('Signup')}
-                  style={styles.footline}
-                >
-                  <Text style={{
-                    color: '#26315F',
-                    textAlign: 'center',
-                    alignSelf: 'flex-end',
-                    fontSize: 18,
-                    fontFamily: Theme.fonts.bold,
-                  }}
-                  >
-                  Don't have an account?
-                    <Text style={{ color: '#F93963' }}> Sign up</Text>
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </KeyboardAwareScrollView>
+              <Text
+                style={{
+                  color: "#97979B",
+                  textAlign: "center",
+                  fontSize: 18,
+                  fontFamily: Theme.fonts.bold
+                }}
+              >
+                Forgot your password?
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              accessibilityIgnoresInvertColors
+              onPress={() => this.props.navigation.navigate("Signup")}
+              style={styles.footline}
+            >
+              <Text
+                style={{
+                  color: "#26315F",
+                  textAlign: "center",
+                  alignSelf: "center",
+                  fontSize: 18,
+                  fontFamily: Theme.fonts.bold
+                }}
+              >
+                Don't have an account?
+                <Text style={{ color: "#F93963" }}> Sign up</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
   }
 }
 
-LoginView.defaultProps = {
-};
+LoginView.defaultProps = {};
 
-LoginView.propTypes = {
-};
+LoginView.propTypes = {};
 
+const mapStateToProps = (state, ownProps) => {};
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default LoginView;

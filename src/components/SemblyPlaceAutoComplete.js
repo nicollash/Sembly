@@ -4,11 +4,12 @@ import {
   StyleSheet,
   Image
 } from 'react-native';
+import { Platform } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const styles = StyleSheet.create({
       container: {
-        zIndex: 10,
+        //zIndex: (Platform.OS === 'ios' ? 10 : 0),
         overflow: 'visible',
         marginBottom:45,
         flex:0.2,
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
       },
       listView: {
         position: 'absolute',
-        top: 50,
+        top: (Platform.OS === 'ios' ? 50 : 0),
         backgroundColor: 'white',
         elevation: 3,
         zIndex: 10,

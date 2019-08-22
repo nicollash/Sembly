@@ -8,14 +8,15 @@ import SemblyInput from './SemblyInput';
 const styles = {
   container: {
     width: '100%',
-    alignSelf: 'center',
+    alignSelf: 'center'
     // justifyContent: 'flex-end',
     // alignItems: 'flex-start',
   },
   button: {
-    top: '14%',
+    marginTop: 15,
     width: '120%',
-    alignSelf: 'center',
+    height:50,
+    alignSelf: 'center'
   },
 };
 

@@ -15,6 +15,7 @@ import SemblyDropdown from '../../components/SemblyDropdown';
 import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import { SemblyInput } from '../../components';
+import { Platform } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -151,7 +152,7 @@ class NewPostView extends React.Component {
           fontSize= {14}
           secondFontSize= {10}
         />
-        <View style={{backgroundColor:'#ffffff',zIndex:10,elevation:3}}>
+        <View style={{backgroundColor:'#ffffff',zIndex:10,elevation:(Platform.OS === 'ios' ? 3 : 0)}}>
         <SemblyPlaceAutoComplete />
         <View style={{borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4}}/>
         </View>

@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { View, Image, StatusBar, Text, TouchableOpacity } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import { SemblyButton, LoginForm } from "../../components";
 
@@ -23,11 +25,11 @@ const styles = {
     flex: 0.45,
     alignSelf: "stretch",
     alignItems: "center",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   image: {
     alignSelf: "stretch",
-    flex: 0.9
+    flex: 0.9,
   },
   underwhite: {
     flex: 0.55,
@@ -86,12 +88,14 @@ const styles = {
   }
 };
 
+const backgroundPhoto = require('../../../assets/images/loginViewBackground.png');
+
 class LoginView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
     };
   }
 
@@ -114,7 +118,7 @@ class LoginView extends React.Component {
         <View style={styles.headerContainer}>
           <View style={styles.image}>
             <Image
-              source={require("../../../assets/images/loginViewBackground.png")}
+              source={backgroundPhoto}
             />
           </View>
         </View>

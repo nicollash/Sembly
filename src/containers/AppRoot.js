@@ -7,6 +7,8 @@ import {
 } from 'react-navigation';
 
 import { connect } from 'react-redux';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../styles/iphoneModelCheck';
 
 import ThemeContainer from '../styles/themeContainer';
 
@@ -16,6 +18,7 @@ import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import { ProfileView } from './Profile';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import PostView from './Main/LocationView';
 
 
 const WelcomeStack = createStackNavigator({
@@ -39,8 +42,11 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarOptions: {
         activeTintColor: '#5DFDCB',
         inactiveTintColor: '#C5C5C5',
-        safeAreaInset: { bottom: 30, top: 3 },
-        labelStyle: { height: '21%' },
+        safeAreaInset: { bottom: 5, top: 3 },
+        labelStyle: { height: hp(1.5) },
+        style: {
+          height: hp(6),
+        },
       },
     }),
   },
@@ -59,6 +65,9 @@ const MainTabNavigation = createBottomTabNavigator({
         </SafeAreaView>
       ),
       tabBarOptions: {
+        style: {
+          height: hp(10),
+        },
       },
     }),
   },
@@ -76,11 +85,11 @@ const MainTabNavigation = createBottomTabNavigator({
         inactiveTintColor: '#C5C5C5',
         safeAreaInset: { bottom: 30, top: 3 },
         labelStyle: { height: '21%' },
+        style: {
+          height: 500,
+        },
       },
     }),
-  },
-}, {
-  tabBarOptions: {
   },
 });
 

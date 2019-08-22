@@ -1567,6 +1567,7 @@
 				DEVELOPMENT_TEAM = L3UL8NTQ34;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase/**",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
@@ -1592,6 +1593,7 @@
 				DEVELOPMENT_TEAM = L3UL8NTQ34;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase/**",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);

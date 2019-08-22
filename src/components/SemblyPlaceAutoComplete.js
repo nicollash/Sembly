@@ -106,7 +106,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       placeholderTextColor={'#C7CAD1'}
       filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
       renderLeftButton={()  => <Image source={require('../../assets/images/LocationIcon.png')}
-      style={{alignSelf:'center', marginTop: 7  }} />}
+      style={{ alignSelf:'center', marginTop: 7, left: 10 }} />}
       debounce={200}
     />
     );

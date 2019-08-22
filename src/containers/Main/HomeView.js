@@ -20,31 +20,18 @@ const deviceWidth = Dimensions.get('window').width;
 const styles = {
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: deviceHeight,
-  },
-  postText: {
-    color: '#B9BDC5',
-    fontSize: 11,
-    fontFamily: Theme.fonts.bold,
+    zIndex: 0,
+    backgroundColor: 'white',
+    justifyContent: 'center'
   },
   dragHandler: {
     alignSelf: 'stretch',
-    height: 32,
+    height: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
-
-  },
-  panelContainer: {
-    height: deviceHeight,
-  },
-};
-
+    backgroundColor: '#ccc'
+  }
+}
 class HomeView extends React.Component {
   constructor(props) {
     super(props);
@@ -77,7 +64,7 @@ class HomeView extends React.Component {
           }}
         >
           {dragHandler => (
-            <View style={styles.panelContainer}>
+            <View style={styles.container}>
                 <View style={styles.dragHandler} {...dragHandler}>
                   <TouchableOpacity
                     hitSlop={{ top: 10, bottom: 10, left: 80, right: 80 }}

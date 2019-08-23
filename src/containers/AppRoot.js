@@ -42,10 +42,10 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarOptions: {
         activeTintColor: '#5DFDCB',
         inactiveTintColor: '#C5C5C5',
-        safeAreaInset: { bottom: 5, top: 3 },
-        labelStyle: { height: hp(1.5) },
+        safeAreaInset: { bottom: isIphoneX() ? 15 : 20, top: isIphoneX() ? 4 : 9 },
+        labelStyle: { height: hp(2) },
         style: {
-          height: hp(6),
+          height: isIphoneX() ? hp(8) : hp(7),
         },
       },
     }),
@@ -64,11 +64,6 @@ const MainTabNavigation = createBottomTabNavigator({
           </TouchableOpacity>
         </SafeAreaView>
       ),
-      tabBarOptions: {
-        style: {
-          height: hp(10),
-        },
-      },
     }),
   },
   Profile: {
@@ -77,16 +72,19 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarLabel: 'Profile',
       tabBarIcon: () => (
         <View>
-          <Image source={require('../../assets/images/ProfileIconTab.png')} />
+          <Image
+            source={require('../../assets/images/ProfileIconTab.png')}
+            style={{ marginTop: !isIphoneX() ? hp(-1) : 0 }}
+          />
         </View>
       ),
       tabBarOptions: {
         activeTintColor: '#C5C5C5',
         inactiveTintColor: '#C5C5C5',
-        safeAreaInset: { bottom: 30, top: 3 },
-        labelStyle: { height: '21%' },
+        safeAreaInset: { bottom: isIphoneX() ? 15 : 20, top: isIphoneX() ? 4 : 9 },
+        labelStyle: { height: hp(2) },
         style: {
-          height: 500,
+          height: isIphoneX() ? hp(8) : hp(7),
         },
       },
     }),

@@ -68,6 +68,7 @@ class PostViewUserPost extends React.Component {
           <TouchableOpacity
             style={{ position: 'absolute', left: 0, top: '25%' }}
             onPress={this.props.backPress}
+            hitSlop={{ bottom: 15, top: 15, left: 20, right: 15 }}
           >
             <Image source={require('../../assets/images/PostViewGoBackButton.png')} />
           </TouchableOpacity>
@@ -94,7 +95,10 @@ class PostViewUserPost extends React.Component {
               {this.props.userName}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ position: 'absolute', right: 0, top: '35%' }}>
+          <TouchableOpacity
+            style={{ position: 'absolute', right: 0, top: '35%' }}
+            hitSlop={{ bottom: 20, left: 20, right: 20, top: 20 }}
+          >
             <Image source={require('../../assets/images/PostViewShareButton.png')} />
           </TouchableOpacity>
         </View>

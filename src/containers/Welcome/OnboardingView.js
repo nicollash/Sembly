@@ -6,6 +6,8 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Theme from '../../styles/theme';
@@ -19,29 +21,26 @@ const styles = {
     alignItems: 'center',
   },
   slide: {
-    // marginTop: 566,
-    // border:1 , borderWidth: 2, borderColor: 'blue',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // textAlign: 'center',
   },
   image: {
-    marginTop: 155,
+    marginTop: isIphoneX() ? hp(17) : hp(14),
     alignSelf: 'center',
   },
-  shadow: {
+  shadowImage: {
     marginTop: 30,
   },
   title: {
-    marginTop: 148,
+    marginTop: isIphoneX() ? hp(15) : hp(10),
     alignSelf: 'center',
     color: '#B7AAF2',
     opacity: 1,
-    fontSize: 35,
+    fontSize: wp(8),
     fontFamily: Theme.fonts.bold,
   },
-  desc: {
+  description: {
     width: '86%',
     marginTop: 16,
     alignSelf: 'center',
@@ -49,16 +48,14 @@ const styles = {
     lineHeight: 25,
     color: 'white',
     opacity: 1,
-    fontSize: 18,
+    fontSize: wp(4.4),
     fontFamily: Theme.fonts.bold,
   },
-  button: {
-    marginTop: 45,
-    width: '96%',
-  },
 };
-class OnboardingView extends React.Component {
 
+const shadow = require('../../../assets/images/shadowOrb.png');
+
+class OnboardingView extends React.Component {
   static navigationOptions = {
     gesturesEnabled: false,
   };
@@ -100,24 +97,25 @@ class OnboardingView extends React.Component {
   renderSlide = ({ item, index }) =>
   {
     return (
-    <View style={styles.slide}>
-      <View style={styles.image}>
-        { item.image }
-      </View>
-      <View style={styles.shadow}>
-        <Image source={require('../../../assets/images/shadowOrb.png')} />
-      </View>
-      <Text style={styles.title}>{ item.title }</Text>
-      <Text style={styles.desc}>{ item.text }</Text>
-      <View style={styles.button}>
-        {index >= this.state.entries.length - 1
-            && (
-              <SemblyButton 
-              label="Get Started" 
-              backgroundColor="#B7AAF2" 
-              onPress={() => this.props.navigation.navigate('MainApp')}
-              />
-            )}
+      <View style={styles.slide}>
+        <View style={styles.image}>
+          { item.image }
+        </View>
+        <View style={styles.shadowImage}>
+          <Image source={shadow} />
+        </View>
+        <Text style={styles.title}>{ item.title }</Text>
+        <Text style={styles.description}>{ item.text }</Text>
+        <View style={{ marginTop: isIphoneX() ? hp(4) : hp(2.5) }}>
+          {index >= this.state.entries.length - 1
+              && (
+                <SemblyButton
+                  label="Get Started"
+                  backgroundColor="#B7AAF2"
+                  onPress={() => this.props.navigation.navigate('MainApp')}
+                  width={wp(60)}
+                />
+              )}
         </View>
       </View>
 

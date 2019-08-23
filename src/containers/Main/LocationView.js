@@ -12,6 +12,8 @@ import {
   StyleSheet,
   Share,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import navigation from 'react-navigation';
 import Theme from '../../styles/theme';
@@ -60,7 +62,6 @@ class PostView extends React.Component {
       <View style={{ flex: 1 }}>
         <View style={{ height: (screenHeight - this.state.height) }}>
           <ScrollView>
-
             <View style={{
               justifyContent: 'flex-start',
               alignItems: 'center',
@@ -74,8 +75,7 @@ class PostView extends React.Component {
                     style={{ flex: 1 }}
                   />
                 </View>
-
-                <View style={{ height: 80, minHeight: 75, maxHeight: 95 }}>
+                <View style={{ minHeight: 75, maxHeight: 120, marginTop: hp(1) }}>
                   <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -83,13 +83,13 @@ class PostView extends React.Component {
                     width: '92%',
                     left: '26%',
                     marginTop: '0.2%',
-                    flex: 0.45,
                   }}
                   >
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <TouchableOpacity
                         onPress={() => this.props.navigation.navigate('Feed')}
-                        style={{ }}
+                        style={{ marginLeft: wp(-2) }}
+                        hitSlop={{ bottom: 10, top: 5, right: 5, left: 5 }}
                       >
                         <Image source={require('../../../assets/images/PostViewGoBackButton.png')} />
                       </TouchableOpacity>
@@ -97,28 +97,28 @@ class PostView extends React.Component {
                         The Hive
                       </Text>
                       <View style={{ width: '8%' }} />
-                      <SemblyRedeemButton onTop="1%" />
+                      <SemblyRedeemButton onTop="0%" />
                     </View>
                     <TouchableOpacity
                       onPress={() => Share.share({
                         title: 'title test',
                         message: 'this is a test',
                       })}
+                      style={{ marginRight: wp(1) }}
                     >
                       <Image
-                        style={{ tintColor: 'black' }}
+                        style={{ tintColor: '#000' }}
                         source={require('../../../assets/images/PostViewShareButton.png')} 
                       />
                     </TouchableOpacity>
                   </View>
-
-                  <View style={{ flex: 0.2 }}>
+                  <View>
                     <Text style={{
-                      left: '2%',
-                      fontSize: 12,
-                      fontFamily: Theme.fonts.light,
-                      color: 'black',
-                      textAlign: 'center',
+                      marginLeft: wp(10),
+                      width: '80%',
+                      fontSize: wp(3.5),
+                      fontFamily: Theme.fonts.regular,
+                      color: '#000',
                     }}
                     >
                       An easy-going cocktail bar with live music on Fridays and Saturdays
@@ -127,18 +127,17 @@ class PostView extends React.Component {
 
                   <View style={{
                     flexDirection: 'row',
-                    left: '57%',
-                    flex: 0.4,
+                    marginLeft: wp(10),
                     alignItems: 'center',
                   }}
                   >
                     <TouchableOpacity>
-                      <View style={{ flexDirection: 'row' }}>
+                      <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                         <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
                         <Text style={{
-                          fontSize: 11,
+                          fontSize: wp(3.3),
                           color: 'black',
-                          marginLeft: '5%',
+                          marginLeft: wp(1),
                           fontFamily: Theme.fonts.bold,
                         }}
                         >
@@ -147,13 +146,13 @@ class PostView extends React.Component {
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                      <View style={{ flexDirection: 'row', marginLeft: '-2.5%' }}>
+                      <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
                         <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
                         <Text style={{
-                          fontSize: 11,
-                          color: 'black',
+                          fontSize: wp(3.3),
+                          color: '#000',
                           fontFamily: Theme.fonts.bold,
-                          marginLeft: '0.5%',
+                          marginLeft: wp(0.5),
                         }}
                         >
                           {this.state.phoneNumber}
@@ -163,12 +162,12 @@ class PostView extends React.Component {
                   </View>
                 </View>
               </View>
-
               <View style={styles.separatorBar} />
               <View style={{
                 flex: 1,
                 width: '100%',
                 marginLeft: 20,
+                marginTop: hp(-1),
               }}
               >
                 <FeedUserPost
@@ -203,8 +202,8 @@ class PostView extends React.Component {
                   location="Omaha, Harney Street"
                   comments={3}
                 />
+                <View style={{ height: isIphoneX() ? 240 : 170 }} />
               </View>
-
             </View>
           </ScrollView>
         </View>

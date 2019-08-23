@@ -12,6 +12,9 @@ import {
   Easing,
   Dimensions,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
+
 
 import Theme from '../../styles/theme';
 
@@ -45,9 +48,6 @@ class FeedUserPost extends React.Component {
     const profilePictureHeight = 32;
     return (
       <View style={{
-        width: '95%',
-        // width: 395,
-        flex: 0.23,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         left: '1%',
@@ -55,9 +55,9 @@ class FeedUserPost extends React.Component {
         borderRadius: 10,
         borderWidth: 2,
         borderColor: '#F0F0F0',
-        // minHeight: 400,
-        // maxHeight: 500,
-        minWidth: 375,
+        minHeight: 60,
+        maxHeight: 500,
+        maxWidth: wp(95),
       }}
       >
         <View style={{
@@ -83,7 +83,7 @@ class FeedUserPost extends React.Component {
                   width: 32,
                   borderRadius: profilePictureHeight / 2,
                 }}
-                source={this.props.userProfilePicture} 
+                source={this.props.userProfilePicture}
               />
             </View>
             <Text style={{
@@ -106,8 +106,9 @@ class FeedUserPost extends React.Component {
               marginTop: 5,
               alignSelf: 'center',
               marginLeft: '2.5%',
-              height: 200,
-              width: 370,
+              minHeight: 100,
+              maxHeight: 200,
+              width: '95%',
             }}
             onPress={this.props.moveOnPress}
           >
@@ -127,7 +128,6 @@ class FeedUserPost extends React.Component {
               marginLeft: 15,
               marginTop: 15,
               width: '90%',
-              flex: 0.5,
             }}
             onPress={this.props.moveOnPress}
           >
@@ -156,8 +156,7 @@ class FeedUserPost extends React.Component {
           <TouchableOpacity>
             <View style={{
               flexDirection: 'row',
-              width: 155,
-              flex: 0.6,
+              width: 150,
             }}
             >
               <Image source={require('../../../assets/images/PhotoPostLocationIcon.png')} />
@@ -177,7 +176,7 @@ class FeedUserPost extends React.Component {
           </TouchableOpacity>
           <View style={{
             flexDirection: 'row',
-            marginLeft: '25%',
+            marginLeft: '18%',
           }}
           >
             <TouchableOpacity onPress={() => this.setState({ liked: !this.state.liked })}>

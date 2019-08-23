@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import Theme from '../../styles/theme';
 
@@ -94,15 +96,12 @@ class PostView extends React.Component {
               </View>
               <PostViewCommentHeader />
             </View>
-
             <View>
               <PostViewCommentSection />
             </View>
-
+            <View style={{ height: isIphoneX() ? 240 : 100 }} />
           </ScrollView>
         </View>
-
-
       </View>
 
     );

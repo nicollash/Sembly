@@ -13,6 +13,9 @@ import {
 // Redux
 import { connect } from 'react-redux';
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
+
 // Actions
 import { refreshFeed } from '../../actions';
 
@@ -67,16 +70,15 @@ class FeedView extends React.Component {
 
     return (
       <View style={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         flex: 1,
-        justifyContent: 'flex-start',
         alignItems: 'center',
-        borderRadius: 12,
+        borderRadius: hp(2),
       }}
       >
         <View style={{ width: '100%', height: (screenHeight - this.state.height) }}>
           <ScrollView style={{ width: screenWidth }}>
-            <View style={{ height: staticContainer }}>
+            <View style={{ height: staticContainer, marginTop: hp(2) }}>
               <View style={{ width: '100%', height: '13%' }}>
                 <FeedHeader city={city} />
               </View>
@@ -144,7 +146,7 @@ class FeedView extends React.Component {
                 />
               </View>
 
-              <View style={{ height: 130, width: '100%' }}>
+              <View>
                 <ScrollView
                   horizontal
                   style={{ width: '100%' }}
@@ -162,8 +164,8 @@ class FeedView extends React.Component {
               </View>
 
               <View style={{
+                marginTop: hp(2),
                 width: '100%',
-                height: 45,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -175,23 +177,18 @@ class FeedView extends React.Component {
                     title={this.state.selectedCategoryTitle}
                   />
                 </View>
-                <View>
+                <View style={{ marginTop: hp(1) }}>
                   <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    style={{ marginTop: 7 }}
+                    style={{ marginTop: 0 }}
                   >
                     <FeedFilterBar />
                   </ScrollView>
                 </View>
               </View>
             </View>
-
-            <View style={{
-              left: '2.8%',
-              flex: 1,
-            }}
-            >
+            <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(5) : hp(13) }}>
               <FeedUserPost
                 userProfilePicture={{uri:"https://i.pravatar.cc/300?img=10"}}
                 userPostPicture={{uri:"https://placeimg.com/640/480/arch"}}
@@ -220,10 +217,7 @@ class FeedView extends React.Component {
               />
 
             </View>
-
-            {/* temp space to add until scrollview fixes */}
-            <View style={{ height: 200 }} />
-
+            <View style={{ height: isIphoneX() ? 500 : 300 }} />
           </ScrollView>
         </View>
       </View>

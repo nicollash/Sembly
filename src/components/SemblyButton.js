@@ -5,20 +5,20 @@ import { connect } from 'react-redux';
 import {
   TouchableOpacity,
   Text,
-  View,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../styles/iphoneModelCheck';
 
 const styles = {
   button: {
-    borderRadius: 25,
-    padding: 16,
+    borderRadius: hp(4),
     alignSelf: 'center',
-    justifyContent: 'flex-end',
+    paddingVertical: hp(1.7),
   },
   text: {
-    color: 'white',
+    color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: wp(4),
     textAlign: 'center',
   },
 };
@@ -33,13 +33,14 @@ class SemblyButton extends React.Component {
   render() {
     return (
       <TouchableOpacity
-          
         accessibilityIgnoresInvertColors
         style={[styles.button, { width: this.props.width }, 
           { backgroundColor: this.props.backgroundColor }]}
         onPress={this.props.onPress}
       >
-        <Text style={styles.text}>{this.props.label}</Text>
+        <Text style={styles.text}>
+          {this.props.label}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -47,8 +48,8 @@ class SemblyButton extends React.Component {
 
 SemblyButton.defaultProps = {
   label: 'Button',
+  width: null,
   onPress: null,
-  width: '80%',
   backgroundColor: '#F7567C',
 };
 

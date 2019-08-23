@@ -9,6 +9,8 @@ import {
   View,
   Text,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import FeedScrollPost from './FeedScrollPost';
 
@@ -34,7 +36,7 @@ class FeedHorizontalScroll extends React.Component {
         <FeedScrollPost image={this.props.image2} title={this.props.title2} distance="0.2mi" />
         <View style={styles.spacing} />
         <FeedScrollPost image={this.props.image3} title={this.props.title3} distance="12.7mi" />
-        <View style={{ width: 37 }} />
+        <View style={{ width: wp(9) }} />
       </View>
     );
   }

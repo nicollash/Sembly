@@ -5,24 +5,25 @@ import {
   TextInput,
   View,
 } from 'react-native';
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../styles/iphoneModelCheck';
 import SemblyLabel from './SemblyLabel';
 
 const styles = StyleSheet.create({
   text: {
     color: '#26315F',
-    fontSize: 18,
+    fontSize: wp(4.5),
     paddingHorizontal: '4%',
     paddingBottom: '1.5%',
-    paddingTop: '4%',
-    borderBottomWidth: 0.5,
+    paddingTop: isIphoneX() ? '4%' : '2%',
+    borderBottomWidth: hp(0.05),
     borderBottomColor: '#D8D8D8',
   },
 });
+
+
 class SemblyInput extends React.Component {
-
   componentWillMount() {
-
   }
 
   componentDidMount() {
@@ -31,7 +32,7 @@ class SemblyInput extends React.Component {
   render() {
     return (
       <View>
-        <SemblyLabel 
+        <SemblyLabel
           label={this.props.label} 
           secondLabel={this.props.secondLabel}
           fontSize= {this.props.onFontSize}

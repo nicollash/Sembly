@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 import FeedCategoryButton from './FeedCategoryButton';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 const styles = StyleSheet.create({
   spacing: {
@@ -81,7 +83,7 @@ class FeedCategoryBar extends React.Component {
             icon={this.props.icon5}
             actionOnPress={this.props.changeCategory5}
           />
-          <View style={{ width: 40 }} />
+          <View style={{ width: wp(10) }} />
         </View>
       </View>
     );

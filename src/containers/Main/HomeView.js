@@ -7,6 +7,9 @@ import {
   Dimensions,
 } from 'react-native';
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
+
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Theme from '../../styles/theme';
 
@@ -20,18 +23,20 @@ const deviceWidth = Dimensions.get('window').width;
 const styles = {
   container: {
     flex: 1,
-    zIndex: 0,
-    backgroundColor: 'white',
-    justifyContent: 'center'
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    borderTopRightRadius: hp(2),
+    borderTopLeftRadius: hp(2),
   },
   dragHandler: {
     alignSelf: 'stretch',
     height: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ccc'
-  }
-}
+  },
+};
+
+
 class HomeView extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +61,7 @@ class HomeView extends React.Component {
         <SemblyMapView />
         <SlidingUpPanel
           height={deviceHeight}
-          draggableRange={{ top: deviceHeight - 128, bottom: 30 }}
+          draggableRange={{ top: deviceHeight - 128, bottom: isIphoneX() ? 23 : 20 }}
           friction={0.2}
           ref={(c) => {
             this._panel = c;

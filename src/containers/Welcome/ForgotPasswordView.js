@@ -14,6 +14,8 @@ import {
   fontFamily,
   KeyboardAvoidingView,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import {
   SemblyButton,
@@ -27,27 +29,24 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const styles = {
   container: {
-    flex: 1,
-    backgroundColor: 'blue',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  headerContainer: {
-    backgroundColor: '#FFF9BB',
-    flex: 0.425,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  image: {
-    alignSelf: 'stretch',
-    order: 2,
-    flex: 0.9,
-  },
-  underwhite: {
+    height: hp(100),
+    width: wp(100),
     backgroundColor: '#D8C34A',
-    flex: 0.575,
+    alignItems: 'center',
+  },
+  backgroundContainer: {
+    backgroundColor: '#FFF9BB',
+    height: isIphoneX() ? hp(44) : hp(46),
+    alignItems: 'center',
+    marginTop: !isIphoneX() ? hp(-3) : 0,
+    width: wp(100),
+  },
+  mainContainer: {
+    height: isIphoneX() ? hp(56) : hp(54),
     alignSelf: 'stretch',
+    backgroundColor: '#fff',
+    borderTopRightRadius: hp(2),
+    borderTopLeftRadius: hp(2),
   },
   contentContainer: {
     alignItems: 'center',
@@ -57,13 +56,8 @@ const styles = {
     alignSelf: 'stretch',
     borderRadius: 10,
   },
-  textbox: {
-    marginTop: '7.5%',
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  headline: {
+  title: {
+    marginTop: isIphoneX() ? hp(3.5) : hp(2.5),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -73,22 +67,22 @@ const styles = {
     marginRight: 25,
     marginLeft: 35,
   },
-  title: {
-    fontSize: 35,
+  lostSomething: {
+    fontSize: wp(8),
     color: '#26315F',
     fontFamily: Theme.fonts.black,
   },
-  desc: {
+  description: {
     top: '7%',
     textAlign: 'center',
-    lineHeight: 25,
+    lineHeight: wp(6),
     marginHorizontal: 20,
     color: '#96969A',
-    fontSize: 18,
+    fontSize: wp(4.4),
     fontFamily: Theme.fonts.bold,
   },
   form: {
-    top: '5%',
+    marginTop: hp(3),
     alignSelf: 'center',
     width: '86.5%',
     justifyContent: 'flex-start',
@@ -98,25 +92,9 @@ const styles = {
     paddingTop: '10%',
     paddingBottom: '1.5%',
   },
-  footer: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-  },
-  footline: {
-    top: '122%',
-    width: '100%',
-    alignSelf: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  bottomline: {
-    top: '20%',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   greenMsg: {
     color: '#188A0D',
-    fontSize: 15,
+    fontSize: wp(4),
     fontFamily: Theme.fonts.bold,
   },
   checkmark: {
@@ -124,6 +102,9 @@ const styles = {
   },
 };
 
+const logo = require('../../../assets/images/sembly.png');
+const backgroundPhoto = require('../../../assets/images/loginViewBackground.png');
+const greenCheckmark = require('../../../assets/images/GreenCheckmark.png');
 
 class ForgotPasswordView extends React.Component {
   constructor(props) {
@@ -142,45 +123,43 @@ class ForgotPasswordView extends React.Component {
   componentDidMount() {
   }
 
-  setEmail = (email) => {
-    this.setState({ email });
-  }
-
   render() {
+    const { submitted, isHidden } = this.state;
+
     return (
       <View style={styles.container}>
-
         <StatusBar barStyle="dark-content" />
-
-        <View style={styles.headerContainer}>
-
-          <View style={{
-            order: 1,
-            backgroundColor: '#FFF9BB',
-            flex: 0.1,
-            alignSelf: 'stretch',
-          }}
+        <View style={styles.backgroundContainer}>
+          <Image
+            source={backgroundPhoto}
+            style={{
+              height: '100%',
+              width: '100%',
+              resizeMode: 'cover',
+              position: 'absolute',
+              marginTop: isIphoneX() ? hp(10) : hp(9),
+            }}
           />
-
-          <View style={styles.image}>
-            <Image source={require('../../../assets/images/loginViewBackground.png')} />
-          </View>
-
+          <Image
+            source={logo}
+            style={{
+              position: 'absolute',
+              marginTop: isIphoneX() ? hp(13) : hp(14),
+            }}
+          />
         </View>
-
-        <View style={styles.underwhite}>
-          <KeyboardAwareScrollView
-            contentContainerStyle={styles.contentContainer}
-            style={styles.whiteContainer}
-          >
-            <View style={styles.textbox}>
-              <View style={styles.headline}>
+        <KeyboardAwareScrollView style={styles.mainContainer}>
+          <View>
+            <View>
+              <View style={styles.title}>
                 <View style={styles.caret}>
                   <SemblyBackCaret onPress={() => this.props.navigation.goBack()} />
                 </View>
-                <Text style={styles.title}>Lost Something?</Text>
+                <Text style={styles.lostSomething}>
+                  Lost Something?
+                </Text>
               </View>
-              <Text style={styles.desc}>
+              <Text style={styles.description}>
                 Did you forget your password? Enter
                 {'\n'}
                 your registration email and we’ll send you
@@ -189,7 +168,7 @@ class ForgotPasswordView extends React.Component {
               </Text>
             </View>
             <View style={styles.form}>
-              {!this.state.isHidden 
+              {!isHidden
                 && (
                   <View
                     accessibilityIgnoresInvertColors
@@ -197,13 +176,13 @@ class ForgotPasswordView extends React.Component {
                     <SemblyInput
                       label="EMAIL"
                       returnKey="done"
-                      valueChanged={(str) => this.setEmail(str)}
+                      valueChanged={value => this.setState({ email: value })}
                       keyboardType="email-address"
                       placeholder="your@email.com"
                     />
                   </View>
                 )}
-              {this.state.isHidden 
+              {isHidden
                 && (
                   <View
                     accessibilityIgnoresInvertColors
@@ -211,30 +190,32 @@ class ForgotPasswordView extends React.Component {
                   />
                 )}
             </View>
-            <View style={styles.footer}>
-
-              <View style={styles.footline}>
-                {!this.state.submitted
+            <View>
+              <View style={{ marginTop: hp(6) }}>
+                {!submitted
                 && (
                   <SemblyButton
                     label="Submit"
-                    onPress={() => this.setState({submitted: true, isHidden: true})}
+                    width={isIphoneX() ? wp(76) : wp(69)}
+                    onPress={() => this.setState({ submitted: true, isHidden: true })}
                   />
                 )}
-                {this.state.submitted
+                {submitted
                 && (
-                  <View style={styles.bottomline}>
+                  <View style={{ flexDirection: 'row', alignSelf: 'center', position: 'absolute', top: hp(6) }}>
                     <Text style={styles.greenMsg}>
                       Check your emails for reset instructions
                     </Text>
-                    <Image style={styles.checkmark} 
-                      source={require('../../../assets/images/GreenCheckmark.png')} />
+                    <Image
+                      style={styles.checkmark}
+                      source={greenCheckmark}
+                    />
                   </View>
                 )}
               </View>
             </View>
-          </KeyboardAwareScrollView>
-        </View>
+          </View>
+        </KeyboardAwareScrollView>
       </View>
     );
   }

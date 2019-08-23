@@ -19,6 +19,7 @@ import { NewPostView } from './Post';
 import { ProfileView } from './Profile';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PostView from './Main/LocationView';
+import ProfileStack from './Profile/ProfileStack';
 
 
 const WelcomeStack = createStackNavigator({
@@ -67,7 +68,7 @@ const MainTabNavigation = createBottomTabNavigator({
     }),
   },
   Profile: {
-    screen: ProfileView,
+    screen: ProfileStack,
     navigationOptions: () => ({
       tabBarLabel: 'Profile',
       tabBarIcon: () => (

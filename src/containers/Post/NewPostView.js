@@ -145,9 +145,8 @@ class NewPostView extends React.Component {
           placeholder="Content of your post, up to 300 chars."
           label="TEXT"
         />
-        
-        <SemblyLabel 
-          label={'LOCATION'} 
+        <SemblyLabel
+          label={'LOCATION'}
           secondLabel={'OPTIONAL'}
           fontSize= {14}
           secondFontSize= {10}
@@ -156,13 +155,9 @@ class NewPostView extends React.Component {
         <SemblyPlaceAutoComplete />
         <View style={{borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4}}/>
         </View>
-
         <SemblyLabel label="CATEGORY"/>
         <SemblyDropdown />
-        
         <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
-
-
         <SemblyLabel label="PHOTO" />
         <View style={{ height: '2%' }} />
         {this.state.avatarSource === null &&
@@ -199,7 +194,6 @@ class NewPostView extends React.Component {
             </ImageBackground>
           </View>
         )}
-
         <Text style={{
           color: '#C7CAD1',
           alignSelf: 'center',
@@ -208,7 +202,6 @@ class NewPostView extends React.Component {
         >
         Your post can contain text, photo or both.
         </Text>
-
         <View style={{ flex: 1 }} />
       </View>
     );

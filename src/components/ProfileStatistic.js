@@ -4,14 +4,14 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../styles/iphoneModelCheck';
 import theme from '../styles/theme';
 
 const styles = {
   container: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 };
 
@@ -31,8 +31,16 @@ class ProfileStatistic extends React.Component {
   render() {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        <Image source={this.props.statIcon} />
-        <Text>
+        <Image
+          source={this.props.statIcon}
+          style={{
+            width: hp(8),
+            resizeMode: 'contain',
+            maxHeight: hp(10),
+          }}
+        />
+        <View style={{ height: hp(1) }} />
+        <Text style={{ color: '#26315F', fontSize: wp(3.8), fontFamily: theme.fonts.bold }}>
           {this.props.statistic}
         </Text>
       </View>

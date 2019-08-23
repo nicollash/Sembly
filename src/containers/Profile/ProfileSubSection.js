@@ -7,21 +7,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 import theme from '../../styles/theme';
-import ProfileStatsBar from '../../components/ProfileStatsBar';
 
 const styles = {
   container: {
-    width: wp(80),
+    width: wp(90),
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
 };
 
 const caret = require('../../../assets/images/profileCaret.png');
 
-class ProfileTab extends React.Component {
+class ProfileSubSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,27 +34,39 @@ class ProfileTab extends React.Component {
   }
 
   render() {
+    const { active, sectionText } = this.props;
+
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        <Text>
-          {this.props.tabText}
-        </Text>
-        {this.props.available && (
-          <TouchableOpacity>
+        {active && (
+          <TouchableOpacity
+            style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}
+            hitSlop={{ bottom: 10, top: 10 }}
+          >
+            <Text style={{ fontFamily: theme.fonts.bold, fontSize: wp(4.5), color: '#26315F' }}>
+              {sectionText}
+            </Text>
             <Image source={caret} />
           </TouchableOpacity>
+        )}
+        {!active && (
+          <Text style={{ fontFamily: theme.fonts.bold, fontSize: wp(4.5), color: '#26315F' }}>
+            {sectionText}
+          </Text>
         )}
       </View>
     );
   }
 }
 
-ProfileTab.defaultProps = {
-  available: true,
+ProfileSubSection.defaultProps = {
+  active: true,
+  sectionText: 'New Section',
 };
 
-ProfileTab.propTypes = {
-  available: propTypes.bool,
+ProfileSubSection.propTypes = {
+  active: propTypes.bool,
+  sectionText: propTypes.string,
 };
 
 
@@ -66,4 +77,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default ProfileTab;
+export default ProfileSubSection;

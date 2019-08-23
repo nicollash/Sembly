@@ -80,7 +80,7 @@ const MainTabNavigation = createBottomTabNavigator({
         </View>
       ),
       tabBarOptions: {
-        activeTintColor: '#C5C5C5',
+        activeTintColor: '#5DFDCB',
         inactiveTintColor: '#C5C5C5',
         safeAreaInset: { bottom: isIphoneX() ? 15 : 20, top: isIphoneX() ? 4 : 9 },
         labelStyle: { height: hp(2) },

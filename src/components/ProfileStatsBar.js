@@ -2,23 +2,22 @@ import React from 'react';
 
 import {
   View,
-  Text,
-  Image,
-  TouchableOpacity,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../styles/iphoneModelCheck';
-import theme from '../styles/theme';
 import ProfileStatistic from './ProfileStatistic';
 
 const styles = {
   container: {
     flexDirection: 'row',
+    height: 75,
+    width: wp(80),
+    justifyContent: 'space-between',
   },
   separator: {
-    width: wp(0.2),
-    height: 5,
+    width: wp(0.1),
+    height: hp(6),
     backgroundColor: '#ddd',
+    alignSelf: 'center',
   },
 };
 

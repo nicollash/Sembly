@@ -19,8 +19,8 @@ const fonts = {
   boldItalic: 'Lato-BoldItalic',
   black: 'Lato-Black',
   blackItalic: 'Lato-BlackItalic',
-  extraBold: 'Nunito-ExtraBold',
-  extraBoldItalic: 'Nunito-ExtraBoldItalic',
+  // extraBold: 'Nunito-ExtraBold',
+  // extraBoldItalic: 'Nunito-ExtraBoldItalic',
 };
 
 // Themes definitions

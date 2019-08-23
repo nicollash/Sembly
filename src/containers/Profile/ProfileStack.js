@@ -2,18 +2,15 @@ import React from 'react';
 
 import {
   View,
-  Text
 } from 'react-native';
 
 import {
-  createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView,
+  createStackNavigator, createAppContainer,
 } from 'react-navigation';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 import RewardsView from './RewardsView';
 import ProfileView from './ProfileView';
-import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 
 const styles = {
   container: {
@@ -33,17 +30,6 @@ const Stack = createStackNavigator({
 });
 
 class ProfileStack extends React.Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     title: 'Your Profile',
-  //     headerTitleStyle: {
-  //       color: '#bbb',
-  //       fontSize: wp(4),
-  //     },
-  //     headerMode: 'card',
-  //   };
-  // };
-
   constructor(props) {
     super(props);
     this.state = {

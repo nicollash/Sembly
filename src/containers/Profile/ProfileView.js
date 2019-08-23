@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 import theme from '../../styles/theme';
 import ProfileStatsBar from '../../components/ProfileStatsBar';
-import ProfileTab from './ProfileTab';
+import ProfileSubSection from './ProfileSubSection';
 
 const styles = {
   container: {
@@ -21,9 +20,10 @@ const styles = {
   profileHeader: {
     flexDirection: 'row',
     width: '100%',
+    marginTop: hp(4),
   },
   separator: {
-    height: hp(0.2),
+    height: hp(0.1),
     backgroundColor: '#ddd',
     width: wp(90),
   },
@@ -33,6 +33,15 @@ const samplePlayer = 'https://i.pravatar.cc/300';
 const cameraButton = require('../../../assets/images/ButtonCameraPost.png');
 
 class ProfileView extends React.Component {
+  static navigationOptions = {
+    title: 'Your Profile',
+    headerTitleStyle: {
+      color: '#26315F',
+      fontSize: wp(4.4),
+      fontFamily: theme.fonts.regular,
+    },
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -50,41 +59,59 @@ class ProfileView extends React.Component {
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <View style={styles.profileHeader}>
           <View>
-            <Image source={{ uri: samplePlayer }} />
+            <Image source={{ uri: samplePlayer }} style={{ height: 100, width: 100, borderRadius: 15 }} />
             <TouchableOpacity>
               <Image
                 source={cameraButton}
-                style={{ height: hp(5), resizeMode: 'contain' }}
+                style={{
+                  height: hp(6),
+                  resizeMode: 'contain',
+                  position: 'absolute',
+                  top: hp(-4),
+                  left: 57,
+                }}
               />
             </TouchableOpacity>
           </View>
-          <Text style={{ fontSize: wp(4), fontFamily: theme.fonts.regular }}>
+          <Text style={{
+            fontSize: wp(5.5),
+            fontFamily: theme.fonts.bold,
+            color: '#26315F',
+            marginLeft: wp(6),
+            marginTop: hp(3),
+          }}
+          >
             Jeedee
           </Text>
         </View>
-        <View>
+        <View style={{ marginTop: hp(4) }}>
           <View style={styles.separator} />
         </View>
-        <View>
+        <View style={{ alignItems: 'center' }}>
           <ProfileStatsBar />
         </View>
-        <View>
-          <ProfileTab
-            tabText="Rewards Programs Coming Soon"
-            available="false"
+        <View style={{ marginTop: hp(3) }}>
+          <ProfileSubSection
+            sectionText="Rewards Programs Coming Soon"
+            active={false}
           />
         </View>
-        <View>
+        <View style={{ marginTop: hp(2.5) }}>
           <View style={styles.separator} />
         </View>
-        <View>
-          <ProfileTab
-            tabText="My Posts"
-            available
+        <View style={{ marginTop: hp(2.5) }}>
+          <ProfileSubSection
+            sectionText="My Posts"
+            active
           />
         </View>
-        <View>
+        <View style={{ marginTop: hp(2.5) }}>
           <View style={styles.separator} />
+        </View>
+        <View style={{ marginTop: hp(8), alignSelf: 'center' }}>
+          <Text style={{ color: '#6D7278', fontSize: wp(2.9), fontFamily: theme.fonts.bold }}>
+            @ 2019 Sembly 1.1
+          </Text>
         </View>
       </View>
     );

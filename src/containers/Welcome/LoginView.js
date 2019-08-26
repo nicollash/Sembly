@@ -7,10 +7,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import { SemblyButton, LoginForm } from "../../components";
-
+import firebase from 'react-native-firebase';
 import Theme from "../../styles/theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 
 const styles = {
   container: {
@@ -80,9 +81,21 @@ class LoginView extends React.Component {
     };
   }
 
+  handleLogin = () => {
+    //const { email, pasword } = this.state
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => this.props.navigation.navigate('MainApp'))
+      .catch(error => console.log(error))
+  }
+
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+    
+    
+  }
 
   render() {
     return (
@@ -125,7 +138,7 @@ class LoginView extends React.Component {
           <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
             <SemblyButton
               label="Login"
-              onPress={() => this.props.navigation.navigate('MainApp')}
+              onPress={this.handleLogin}
               width={isIphoneX() ? wp(75) : wp(69)}
             />
           </View>
@@ -183,3 +196,4 @@ const mapStateToProps = (state, ownProps) => {};
 const mapDispatchToProps = dispatch => ({});
 
 export default LoginView;
+ 

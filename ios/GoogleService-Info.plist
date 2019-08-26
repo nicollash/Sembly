@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>791030767677-mlkvjkmmneourq297e9ianglcl5hmlbi.apps.googleusercontent.com</string>
+	<string>785536719652-fltai0qvvvuesdfvit5vq1j03mo8bahl.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.791030767677-mlkvjkmmneourq297e9ianglcl5hmlbi</string>
+	<string>com.googleusercontent.apps.785536719652-fltai0qvvvuesdfvit5vq1j03mo8bahl</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA_R10QXxrV_YnOwpTsQEy1GOV3bvtEWQY</string>
+	<string>AIzaSyBo3Spa6nfTK-XwKktkrvHdGpew1hhVDkY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>791030767677</string>
+	<string>785536719652</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.postworld.sembly</string>
 	<key>PROJECT_ID</key>
-	<string>sembly</string>
+	<string>sembly-staging</string>
 	<key>STORAGE_BUCKET</key>
-	<string>sembly.appspot.com</string>
+	<string>sembly-staging.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:791030767677:ios:765c465ccea4228d</string>
+	<string>1:785536719652:ios:765c465ccea4228d</string>
 	<key>DATABASE_URL</key>
-	<string>https://sembly.firebaseio.com</string>
+	<string>https://sembly-staging.firebaseio.com</string>
 </dict>
 </plist>

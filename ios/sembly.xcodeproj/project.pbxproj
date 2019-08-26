@@ -58,13 +58,13 @@
 		4D6E329022B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
 		4D6E329122B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
 		4D6E329222B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
-		501FEC1322A94D360080706C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501FEC1222A94D360080706C /* GoogleService-Info.plist */; };
 		501FEC6B22AA09970080706C /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501FEC6822AA097F0080706C /* libRNGestureHandler.a */; };
 		5B41360F8C3E480E8E7DD9AB /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE8440A2D9B74664A490F1C3 /* Lato-HairlineItalic.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		91F73F980BCE481EBF3AB3E3 /* libReactNativeConfig-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7B8C311C6441FA8AD82028 /* libReactNativeConfig-tvOS.a */; };
 		995051A0B9764259B4500C7D /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1262A7ABA8A4A69A5732205 /* Lato-Hairline.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		B350781923145B6B003FF504 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B350781823145B6B003FF504 /* GoogleService-Info.plist */; };
 		B3854CEA230951620046E986 /* libFirebaseDatabase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3854CE9230951620046E986 /* libFirebaseDatabase.a */; };
 		BA2A1949E259489A82FE70C8 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C688AFF92AA04675B1C60FB0 /* Lato-BlackItalic.ttf */; };
 		EA1C7FEFB9C7462E86DD33F7 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BFAC12C666348D4AE596797 /* Lato-Regular.ttf */; };
@@ -419,7 +419,6 @@
 		4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splashScreen@2x.png"; sourceTree = "<group>"; };
 		4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splashScreen@3x.png"; sourceTree = "<group>"; };
 		4D6E328622B2ABDA00C5CC63 /* splashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashScreen.png; sourceTree = "<group>"; };
-		501FEC1222A94D360080706C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		501FEC3B22AA097F0080706C /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		556029755F374C9A87A1F9E0 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		5BFAC12C666348D4AE596797 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
@@ -436,6 +435,7 @@
 		9A02B2DF26324EC2B11CBB83 /* Nunito-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-BlackItalic.ttf"; path = "../assets/fonts/Nunito-BlackItalic.ttf"; sourceTree = "<group>"; };
 		A553670C086B4B45821091B5 /* Nunito-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-SemiBoldItalic.ttf"; path = "../assets/fonts/Nunito-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B350781823145B6B003FF504 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3854CE9230951620046E986 /* libFirebaseDatabase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseDatabase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3FE8E7D657440D98706498C /* Nunito-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraBoldItalic.ttf"; path = "../assets/fonts/Nunito-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		BB7B8C311C6441FA8AD82028 /* libReactNativeConfig-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libReactNativeConfig-tvOS.a"; sourceTree = "<group>"; };
@@ -600,7 +600,7 @@
 		13B07FAE1A68108700A75B9A /* sembly */ = {
 			isa = PBXGroup;
 			children = (
-				501FEC1222A94D360080706C /* GoogleService-Info.plist */,
+				B350781823145B6B003FF504 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -907,6 +907,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = L3UL8NTQ34;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1316,7 +1321,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				501FEC1322A94D360080706C /* GoogleService-Info.plist in Resources */,
 				2C32D45664DE4571BD3110D4 /* Lato-Black.ttf in Resources */,
 				BA2A1949E259489A82FE70C8 /* Lato-BlackItalic.ttf in Resources */,
 				49D4B82908734FBA9FB3BEE5 /* Lato-Bold.ttf in Resources */,
@@ -1324,6 +1328,7 @@
 				995051A0B9764259B4500C7D /* Lato-Hairline.ttf in Resources */,
 				5B41360F8C3E480E8E7DD9AB /* Lato-HairlineItalic.ttf in Resources */,
 				4D6E328722B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
+				B350781923145B6B003FF504 /* GoogleService-Info.plist in Resources */,
 				0D856855C7164677AFD2F10A /* Lato-Italic.ttf in Resources */,
 				19DE2DF97C7745BAB2381186 /* Lato-Light.ttf in Resources */,
 				4D6E328B22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "785536719652",
+    "firebase_url": "https://sembly-staging.firebaseio.com",
+    "project_id": "sembly-staging",
+    "storage_bucket": "sembly-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785536719652:android:765c465ccea4228d",
+        "android_client_info": {
+          "package_name": "com.postworld.sembly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785536719652-d9oa0hac8h6klnvc51snnjtipuf7hukm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAL2TQ96QBrpQPmO7c5o2oQ5sncVv3DLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785536719652-d9oa0hac8h6klnvc51snnjtipuf7hukm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "785536719652-fltai0qvvvuesdfvit5vq1j03mo8bahl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.postworld.sembly"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

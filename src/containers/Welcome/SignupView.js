@@ -14,6 +14,7 @@ import {
   fontFamily,
   KeyboardAvoidingView,
 } from 'react-native';
+import firebase from 'react-native-firebase';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -95,9 +96,18 @@ class SignupView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'ram@gmail.com',
+      password: 'ram@Ram',
     };
+  }
+
+  handleSignUp = () => {
+    console.log(this.state.password)
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => this.props.navigation.navigate('MainApp'))
+      .catch(error => console.log(error))
   }
 
   componentWillMount() {
@@ -160,7 +170,7 @@ class SignupView extends React.Component {
             <View style={{ marginTop: hp(2) }}>
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={() => this.props.navigation.navigate('Onboarding')}
+                onPress={this.handleSignUp}
                 label="Signup"
               />
             </View>

@@ -62,6 +62,9 @@ class NewPostView extends React.Component {
       title: 'New Post',
       headerTitleStyle: {
         color: '#26315F',
+        textAlign: 'center',
+        flexGrow:1,
+        alignSelf:'center',
         fontSize: 18,
       },
       headerMode: 'card',

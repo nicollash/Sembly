@@ -41,23 +41,26 @@ export function refreshFeed(type = 'hot', category = 'all') {
 
 // Authentication
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export function handleLogin(email, password) {
   return function handleLoginState(dispatch, getState) {
+    console.log("Reached handleLogin function in ~/actions, credentials are: " + email + password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(currentUser => dispatch({ type: UPDATE_CURRENT_USER, currentUser }))
-      .catch(error => dispatch({ LOGIN_ERROR: error.message }));
+      .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
+      // .catch(() => console.log("ERROR"));
   };
 }
 
-export const CREATE_NEW_USER = 'CREATE_NEW_USER';
 export function handleSignup(email, password) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(newUser => dispatch({ type: CREATE_NEW_USER, newUser }))
-      .catch(error => dispatch({ SIGNUP_ERROR: error.message }));
+      .then(currentUser => dispatch({ type: UPDATE_CURRENT_USER, currentUser }))
+      .catch(error => dispatch({ type: SIGNUP_ERROR, message: error.message }));
   };
 }

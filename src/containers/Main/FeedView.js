@@ -59,6 +59,7 @@ class FeedView extends React.Component {
   componentDidMount() {
     // this._panel.show(400);
     this.props.refreshFeed();
+    console.log('In FeedView, the user' + this.props.currentUser + " is connected");
   }
 
 
@@ -234,6 +235,7 @@ FeedView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   city: state.feed.city,
+  currentUser: state.user.currentUser,
 });
 
 const mapDispatchToProps = dispatch => ({

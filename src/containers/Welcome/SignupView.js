@@ -111,10 +111,11 @@ class SignupView extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.newUser !== undefined && prevProps.newUser === undefined) {
+    if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
       this.props.navigation.navigate('MainApp');
+      console.log("ENTEREDEIF");
     }
-    console.log("newly created: " + JSON.stringify(this.props.newUser));
+    console.log("newly created: " + JSON.stringify(this.props.currentUser));
   }
 
   render() {
@@ -174,7 +175,7 @@ class SignupView extends React.Component {
             <View style={{ marginTop: hp(2) }}>
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={this.props.handleSignup(this.state.email, this.state.password)}
+                onPress={() => this.props.handleSignup(this.state.email, this.state.password)}
                 label="Signup"
               />
             </View>
@@ -207,7 +208,6 @@ SignupView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
-  newUser: state.user.newUser,
   currentUser: state.user.currentUser,
 });
 

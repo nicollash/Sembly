@@ -76,15 +76,13 @@ const feed = (state = feedDefault, action) => {
 
 const userDefault = {
   currentUser: undefined,
-  newUser: undefined,
 };
 
 const user = (state = userDefault, action) => {
   switch (action.type) {
   case UPDATE_CURRENT_USER:
+    console.log("Entered SWITCH");
     return Object.assign({}, state, { currentUser: action.currentUser });
-  case CREATE_NEW_USER:
-    return Object.assign({}, state, { newUser: action.newUser });
   default:
     return state;
   }

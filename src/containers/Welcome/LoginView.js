@@ -91,6 +91,9 @@ class LoginView extends React.Component {
     if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
       this.props.navigation.navigate('MainApp');
     }
+    console.log("PreviousUser: " + JSON.stringify(prevProps.currentUser));
+    console.log("CurrentUser: " + JSON.stringify(this.props.currentUser));
+    // console.log("PreviousUser: " + prevProps.currentUser);
   }
 
   render() {
@@ -139,7 +142,7 @@ class LoginView extends React.Component {
           <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
             <SemblyButton
               label="Login"
-              onPress={this.props.handleLogin(this.state.email, this.state.password)}
+              onPress={() => this.props.handleLogin(this.state.email, this.state.password)}
               width={isIphoneX() ? wp(75) : wp(69)}
             />
           </View>

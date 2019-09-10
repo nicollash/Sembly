@@ -7,7 +7,10 @@ import {
   Image,
   ImageBackground,
   Modal,
+  Alert,
 } from 'react-native';
+import firebase from 'react-native-firebase';
+
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     justifyContent: 'flex-end',
-    flexDirection:'column'
+    flexDirection: 'column',
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -46,10 +49,7 @@ const styles = StyleSheet.create({
 });
 
 const options = {
-  title: 'Select Avatar',
-  // takePhotoButtonTitle: 'Take photo from camera',
-  // chooseFromLibraryButtonTitle: 'choose from lib',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+  title: 'Select Image',
   storageOptions: {
     skipBackup: true,
     path: 'images',
@@ -58,13 +58,14 @@ const options = {
 
 class NewPostView extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
     return {
       title: 'New Post',
       headerTitleStyle: {
         color: '#26315F',
         textAlign: 'center',
-        flexGrow:1,
-        alignSelf:'center',
+        flexGrow: 1,
+        alignSelf: 'center',
         fontSize: 18,
       },
       headerMode: 'card',
@@ -76,7 +77,7 @@ class NewPostView extends React.Component {
       ),
       headerRight: (
         <SemblyHeaderButton
-          onPress={navigation.getParam('submit')}
+          onPress={() => params.submit()}
           label="Post"
           red="true"
         />
@@ -86,17 +87,36 @@ class NewPostView extends React.Component {
 
   constructor(props) {
     super(props);
+    const user = firebase.auth().currentUser;
+
     this.state = {
+      currentPost: null,
       avatarSource: null,
       submitted: false,
+      post: {
+        title: '',
+        location: {
+          placeID: '',
+          formatedAddress: '',
+          coordinates: {
+            lat: '',
+            lon: '',
+          }
+        },
+        userID: '',
+        imgURL: '',
+        comments: [],
+        type: 'event',
+      }
     };
+
+    this.ref = firebase.firestore().collection('Posts');
   }
 
   componentWillMount() {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ submit: this.submit });
   }
 
   submit = () => {
@@ -104,31 +124,11 @@ class NewPostView extends React.Component {
       submitted: true,
     });
   }
-  
-  chooseImage = () => {
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-    
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = { uri: response.uri };
-    
-        this.setState({
-          avatarSource: source,
-        });
-      }
-    });
-  }
-  
+
   render() {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        {this.state.submitted 
+        {this.state.submitted
         && (
           <Modal
             visible
@@ -147,16 +147,17 @@ class NewPostView extends React.Component {
         <SemblyInput
           placeholder="Content of your post, up to 300 chars."
           label="TEXT"
+          valueChanged={str => this.setState({ post: { ...this.state.post, title: str } })}
         />
         <SemblyLabel
-          label={'LOCATION'}
-          secondLabel={'OPTIONAL'}
-          fontSize= {14}
-          secondFontSize= {10}
+          label="LOCATION"
+          secondLabel="OPTIONAL"
+          fontSize={14}
+          secondFontSize={10}
         />
-        <View style={{backgroundColor:'#ffffff',zIndex:10,elevation:(Platform.OS === 'ios' ? 3 : 0)}}>
-        <SemblyPlaceAutoComplete />
-        <View style={{borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4}}/>
+        <View style={{ backgroundColor: '#fff', zIndex: 10, elevation: (Platform.OS === 'ios' ? 3 : 0)}}>
+          <SemblyPlaceAutoComplete />
+          <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }}/>
         </View>
         <SemblyLabel label="CATEGORY"/>
         <SemblyDropdown />

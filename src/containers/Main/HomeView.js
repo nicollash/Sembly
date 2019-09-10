@@ -60,9 +60,10 @@ class HomeView extends React.Component {
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <SemblyMapView />
         <SlidingUpPanel
+          showBackdrop={false}
           height={deviceHeight}
           draggableRange={{ top: deviceHeight - 128, bottom: isIphoneX() ? 23 : 20 }}
-          friction={0.2}
+          friction={1}
           ref={(c) => {
             this._panel = c;
             SlidingPanelNavigationService.setPanel(c);
@@ -70,15 +71,16 @@ class HomeView extends React.Component {
         >
           {dragHandler => (
             <View style={styles.container}>
-                <View style={styles.dragHandler} {...dragHandler}>
-                  <TouchableOpacity
-                    hitSlop={{ top: 10, bottom: 10, left: 80, right: 80 }}
-                  >
-                    <Image source={require('../../../assets/images/FeedViewBar.png')} />
-                  </TouchableOpacity>
-                </View>
-          <SlidingPanelNavigator />
-          </View>)}
+              <View style={styles.dragHandler} {...dragHandler}>
+                <TouchableOpacity
+                  hitSlop={{ top: 10, bottom: 10, left: 80, right: 80 }}
+                >
+                  <Image source={require('../../../assets/images/FeedViewBar.png')} />
+                </TouchableOpacity>
+              </View>
+              <SlidingPanelNavigator />
+            </View>
+          )}
         </SlidingUpPanel>
       </View>
     );

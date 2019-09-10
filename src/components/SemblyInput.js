@@ -35,8 +35,8 @@ class SemblyInput extends React.Component {
         <SemblyLabel
           label={this.props.label} 
           secondLabel={this.props.secondLabel}
-          fontSize= {this.props.onFontSize}
-          secondFontSize= {this.props.onSecondFontSize}
+          fontSize={this.props.onFontSize}
+          secondFontSize={this.props.onSecondFontSize}
         />
         <TextInput
           style={styles.text}

@@ -3,6 +3,8 @@ package com.sembly;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.ReactNativeFirebaseAppPackage;
+import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
 import com.imagepicker.ImagePickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeFirebaseAppPackage(),
+            new ReactNativeFirebaseFirestorePackage(),
             new ImagePickerPackage(),
             new RNGestureHandlerPackage(),
             new RNFirebasePackage(),

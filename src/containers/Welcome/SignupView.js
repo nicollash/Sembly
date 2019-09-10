@@ -26,6 +26,9 @@ import {
 
 import Theme from '../../styles/theme';
 import SemblyBackCaret from '../../components/SemblyBackCaret';
+import { handleSignup } from '../../actions';
+
+console.disableYellowBox = true;
 
 const styles = {
   container: {
@@ -96,9 +99,8 @@ class SignupView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'ram@gmail.com',
-      password: 'ram@Ram',
-      errorMessage: null,
+      email: '',
+      password: '',
     };
   }
 
@@ -108,12 +110,11 @@ class SignupView extends React.Component {
   componentDidMount() {
   }
 
-  handleSignUp = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate('Onboarding'))
-      .catch(error => this.setState({ errorMessage: error.message }));
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.newUser !== undefined && prevProps.newUser === undefined) {
+      this.props.navigation.navigate('MainApp');
+    }
+    console.log("newly created: " + JSON.stringify(this.props.newUser));
   }
 
   render() {
@@ -173,7 +174,7 @@ class SignupView extends React.Component {
             <View style={{ marginTop: hp(2) }}>
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={this.handleSignUp}
+                onPress={this.props.handleSignup(this.state.email, this.state.password)}
                 label="Signup"
               />
             </View>
@@ -205,11 +206,14 @@ SignupView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
+const mapStateToProps = (state, ownProps) => ({
+  newUser: state.user.newUser,
+  currentUser: state.user.currentUser,
 });
 
-export default SignupView;
+const mapDispatchToProps = dispatch => ({
+  handleSignup: (a, b) => dispatch(handleSignup(a, b)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupView);
+ 

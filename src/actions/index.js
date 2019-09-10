@@ -1,3 +1,4 @@
+import firebase from 'react-native-firebase';
 import Post from '../domain/Post';
 import Event from '../domain/Event';
 import Category from '../domain/Category';
@@ -31,5 +32,32 @@ export function refreshFeed(type = 'hot', category = 'all') {
     // Update posts
     const posts = feedJSON.posts.map(p => Post.parse(p));
     dispatch({ type: UPDATE_POSTS, posts });
+  };
+}
+
+// //////////////////////////////////////////// //
+// ////////////////Firebase//////////////////// //
+// //////////////////////////////////////////// //
+
+// Authentication
+export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER';
+export function handleLogin(email, password) {
+  return function handleLoginState(dispatch, getState) {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(currentUser => dispatch({ type: UPDATE_CURRENT_USER, currentUser }))
+      .catch(error => dispatch({ LOGIN_ERROR: error.message }));
+  };
+}
+
+export const CREATE_NEW_USER = 'CREATE_NEW_USER';
+export function handleSignup(email, password) {
+  return function handleSignupState(dispatch, getState) {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(newUser => dispatch({ type: CREATE_NEW_USER, newUser }))
+      .catch(error => dispatch({ SIGNUP_ERROR: error.message }));
   };
 }

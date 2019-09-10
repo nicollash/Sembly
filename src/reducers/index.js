@@ -10,6 +10,9 @@ import {
   UPDATE_CATEGORY,
   UPDATE_POSTS,
   UPDATE_EVENTS,
+  // ---
+  UPDATE_CURRENT_USER,
+  CREATE_NEW_USER,
 } from '../actions';
 
 
@@ -71,11 +74,27 @@ const feed = (state = feedDefault, action) => {
   }
 };
 
+const userDefault = {
+  currentUser: undefined,
+  newUser: undefined,
+};
+
+const user = (state = userDefault, action) => {
+  switch (action.type) {
+  case UPDATE_CURRENT_USER:
+    return Object.assign({}, state, { currentUser: action.currentUser });
+  case CREATE_NEW_USER:
+    return Object.assign({}, state, { newUser: action.newUser });
+  default:
+    return state;
+  }
+};
 
 const semblyApp = combineReducers({
   appState,
   preferences,
   feed,
+  user,
 });
 
 const blacklisted = ['appState'];

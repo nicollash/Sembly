@@ -221,7 +221,6 @@ class FeedView extends React.Component {
           </ScrollView>
         </View>
       </View>
-
     );
   }
 }

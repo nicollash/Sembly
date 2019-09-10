@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
+import { handleLogin, updateLocation } from '../../actions';
 import { View, Image, StatusBar, Text, TouchableOpacity } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
@@ -77,7 +78,6 @@ class LoginView extends React.Component {
     this.state = {
       email: '',
       password: '',
-      errorMessage: null,
     };
   }
 
@@ -85,18 +85,12 @@ class LoginView extends React.Component {
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      this.props.navigation.navigate(user ? 'MainApp' : 'Welcome');
-    });
   }
 
-  handleLogin = () => {
-    const { email, password } = this.state;
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('MainApp'))
-      .catch(error => this.setState({ errorMessage: error.message }));
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
+      this.props.navigation.navigate('MainApp');
+    }
   }
 
   render() {
@@ -131,9 +125,9 @@ class LoginView extends React.Component {
               Sembly is a crowdsourced city discovery platform.
             </Text>
           </View>
-          {this.state.errorMessage && (
+          {this.props.LOGIN_ERROR && (
             <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10 }}>
-              {this.state.errorMessage}
+              {this.props.LOGIN_ERROR}
             </Text>
           )}
           <View accessibilityIgnoresInvertColors style={styles.form}>
@@ -145,7 +139,7 @@ class LoginView extends React.Component {
           <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
             <SemblyButton
               label="Login"
-              onPress={this.handleLogin}
+              onPress={this.props.handleLogin(this.state.email, this.state.password)}
               width={isIphoneX() ? wp(75) : wp(69)}
             />
           </View>
@@ -198,9 +192,13 @@ LoginView.defaultProps = {};
 
 LoginView.propTypes = {};
 
-const mapStateToProps = (state, ownProps) => {};
+const mapStateToProps = (state, ownProps) => ({
+  currentUser: state.user.currentUser,
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  handleLogin: (a, b) => dispatch(handleLogin(a, b)),
+});
 
-export default LoginView;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
  

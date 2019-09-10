@@ -88,6 +88,9 @@ const user = (state = userDefault, action) => {
   }
 };
 
+// Uncomment the line below and refresh once to simulate a fresh install
+// storage.clear();
+
 const semblyApp = combineReducers({
   appState,
   preferences,

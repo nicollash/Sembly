@@ -43,24 +43,31 @@ export function refreshFeed(type = 'hot', category = 'all') {
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
-export function handleLogin(email, password) {
+export function handleLogin(_email, _password) {
   return function handleLoginState(dispatch, getState) {
     console.log("Reached handleLogin function in ~/actions, credentials are: " + email + password);
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(currentUser => dispatch({ type: UPDATE_CURRENT_USER, currentUser }))
+      .signInWithEmailAndPassword(_email, _password)
+      .then((currentUser) => {
+        const { email, photoURL, displayName } = currentUser.user;
+        const user = { email, photoURL, displayName };
+        dispatch({ type: UPDATE_CURRENT_USER, user });
+      })
       .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
-      // .catch(() => console.log("ERROR"));
   };
 }
 
-export function handleSignup(email, password) {
+export function handleSignup(_email, password) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(currentUser => dispatch({ type: UPDATE_CURRENT_USER, currentUser }))
+      .createUserWithEmailAndPassword(_email, _password)
+      .then((currentUser) => {
+        const { email, photoURL, displayName } = currentUser.user;
+        const user = { email, photoURL, displayName };
+        dispatch({ type: UPDATE_CURRENT_USER, user });
+      })
       .catch(error => dispatch({ type: SIGNUP_ERROR, message: error.message }));
   };
 }

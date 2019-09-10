@@ -3,13 +3,14 @@ import { StatusBar, Image, View } from 'react-native';
 import _ from 'underscore';
 
 import {
-  createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView,
+  createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView, NavigationActions,
 } from 'react-navigation';
 
 import firebase from 'react-native-firebase';
 
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { isIphoneX } from '../styles/iphoneModelCheck';
 
 import ThemeContainer from '../styles/themeContainer';
@@ -19,7 +20,6 @@ import { LoginView, SignupView, OnboardingView, ForgotPasswordView } from './Wel
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import { ProfileView } from './Profile';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import PostView from './Main/LocationView';
 import ProfileStack from './Profile/ProfileStack';
 
@@ -96,11 +96,12 @@ const MainTabNavigation = createBottomTabNavigator({
 
 
 const RootStack = createStackNavigator({
-  RootTab: { 
+  RootTab: {
     screen: MainTabNavigation,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })},
+    })
+ },
   NewPost: { screen: NewPostView },
 }, {
   mode: 'modal',
@@ -112,6 +113,8 @@ const RootSwitchNavigation = createSwitchNavigator({
   Root: RootStack,
   MainApp: MainTabNavigation,
 });
+
+const Container = createAppContainer(RootSwitchNavigation);
 
 /*
 * Root of the Application
@@ -128,13 +131,23 @@ class AppRoot extends React.PureComponent {
   }
 
   componentDidMount() {
+    const { currentUser } = this.props;
+
+    if (currentUser === undefined) return;
+    console.log(currentUser);
+    this.navigator.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MainApp',
+        params: {},
+      }),
+    );
   }
 
   render() {
     return (
-      <ThemeContainer theme={'default'}>
-        <StatusBar barStyle={'default'} />
-        <RootSwitchNavigation ref={(nav) => { this.navigator = nav; }} />
+      <ThemeContainer theme="default">
+        <StatusBar barStyle="default" />
+        <Container ref={(nav) => { this.navigator = nav; }} />
       </ThemeContainer>
     );
   }
@@ -145,16 +158,14 @@ AppRoot.propTypes = {
 };
 
 AppRoot.defaultProps = {
-
+  currentUser: undefined,
 };
 
-const mapStateToProps = () => {
-  return {
-
-  };
-};
+const mapStateToProps = state => ({
+  currentUser: state.user.currentUser,
+});
 
 const mapDispatchToProps = () => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(RootSwitchNavigation));
+export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

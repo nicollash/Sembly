@@ -6,6 +6,8 @@ import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView,
 } from 'react-navigation';
 
+import firebase from 'react-native-firebase';
+
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../styles/iphoneModelCheck';
@@ -116,14 +118,23 @@ const RootSwitchNavigation = createSwitchNavigator({
 */
 
 class AppRoot extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
   componentWillMount() {
+  }
+
+  componentDidMount() {
   }
 
   render() {
     return (
       <ThemeContainer theme={'default'}>
-        <StatusBar barStyle={'default'} />   
-        <RootSwitchNavigation ref={nav => { this.navigator = nav; }} />
+        <StatusBar barStyle={'default'} />
+        <RootSwitchNavigation ref={(nav) => { this.navigator = nav; }} />
       </ThemeContainer>
     );
   }
@@ -145,17 +156,5 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = () => ({
 });
-/*
-export default class LoginView extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.logoContainer}>
-        </View>
 
-      </View>
-    );
-  }
-}
-*/
 export default connect(mapStateToProps, mapDispatchToProps)(createAppContainer(RootSwitchNavigation));

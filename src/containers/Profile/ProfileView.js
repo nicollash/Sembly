@@ -6,10 +6,13 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import firebase from 'react-native-firebase';
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../../styles/theme';
 import ProfileStatsBar from '../../components/ProfileStatsBar';
 import ProfileSubSection from './ProfileSubSection';
+import { SemblyHeaderButton } from '../../components';
 
 const styles = {
   container: {
@@ -33,13 +36,23 @@ const samplePlayer = 'https://i.pravatar.cc/300';
 const cameraButton = require('../../../assets/images/ButtonCameraPost.png');
 
 class ProfileView extends React.Component {
-  static navigationOptions = {
-    title: 'Your Profile',
-    headerTitleStyle: {
-      color: '#26315F',
-      fontSize: wp(4.4),
-      fontFamily: theme.fonts.regular,
-    },
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+      title: 'Your Profile',
+      headerTitleStyle: {
+        color: '#26315F',
+        fontSize: wp(4.4),
+        fontFamily: theme.fonts.regular,
+      },
+      headerRight: (
+        <SemblyHeaderButton
+          onPress={() => params.submit()}
+          label="Logout"
+          red="true"
+        />
+      ),
+    };
   };
 
   constructor(props) {
@@ -52,6 +65,13 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({ submit: this.signOutUser });
+  }
+
+  signOutUser = () => {
+    firebase.auth().signOut().then(() => {
+      this.props.navigation.navigate('Main');
+    });
   }
 
   render() {

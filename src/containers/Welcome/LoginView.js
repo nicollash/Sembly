@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-
+import firebase from 'react-native-firebase';
 import { View, Image, StatusBar, Text, TouchableOpacity } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
-
 import { SemblyButton, LoginForm } from "../../components";
-import firebase from 'react-native-firebase';
 import Theme from "../../styles/theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -66,6 +64,7 @@ const styles = {
   },
   signup: {
     marginTop: hp(4.5),
+    paddingBottom: 30,
   },
 };
 
@@ -78,23 +77,26 @@ class LoginView extends React.Component {
     this.state = {
       email: '',
       password: '',
+      errorMessage: null,
     };
   }
 
-  handleLogin = () => {
-    //const { email, pasword } = this.state
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate('MainApp'))
-      .catch(error => console.log(error))
+  componentWillMount() {
   }
 
-  componentWillMount() {}
-
   componentDidMount() {
-    
-    
+    firebase.auth().onAuthStateChanged((user) => {
+      this.props.navigation.navigate(user ? 'MainApp' : 'Welcome');
+    });
+  }
+
+  handleLogin = () => {
+    const { email, password } = this.state;
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => this.props.navigation.navigate('MainApp'))
+      .catch(error => this.setState({ errorMessage: error.message }));
   }
 
   render() {
@@ -129,6 +131,11 @@ class LoginView extends React.Component {
               Sembly is a crowdsourced city discovery platform.
             </Text>
           </View>
+          {this.state.errorMessage && (
+            <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10 }}>
+              {this.state.errorMessage}
+            </Text>
+          )}
           <View accessibilityIgnoresInvertColors style={styles.form}>
             <LoginForm
               emailChanged={value => this.setState({ email: value })}

@@ -15,6 +15,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import firebase from 'react-native-firebase';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -25,7 +26,6 @@ import {
 
 import Theme from '../../styles/theme';
 import SemblyBackCaret from '../../components/SemblyBackCaret';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const styles = {
   container: {
@@ -98,16 +98,8 @@ class SignupView extends React.Component {
     this.state = {
       email: 'ram@gmail.com',
       password: 'ram@Ram',
+      errorMessage: null,
     };
-  }
-
-  handleSignUp = () => {
-    console.log(this.state.password)
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate('MainApp'))
-      .catch(error => console.log(error))
   }
 
   componentWillMount() {
@@ -116,12 +108,18 @@ class SignupView extends React.Component {
   componentDidMount() {
   }
 
+  handleSignUp = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => this.props.navigation.navigate('Onboarding'))
+      .catch(error => this.setState({ errorMessage: error.message }));
+  }
+
   render() {
     return (
       <View style={styles.container}>
-
         <StatusBar barStyle="dark-content" />
-
         <View style={styles.backgroundContainer}>
           <Image
             source={backgroundPhoto}
@@ -158,6 +156,11 @@ class SignupView extends React.Component {
                 be ready to explore your city in a second.
               </Text>
             </View>
+            {this.state.errorMessage && (
+              <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10 }}>
+                {this.state.errorMessage}
+              </Text>
+            )}
             <View
               accessibilityIgnoresInvertColors
               style={styles.form}
@@ -193,8 +196,6 @@ class SignupView extends React.Component {
     );
   }
 }
-
-// this.props.navigation.navigate('Onboarding')
 
 SignupView.defaultProps = {
   onPress: null,

@@ -41,10 +41,10 @@ class SemblyHeaderButton extends React.Component {
         onPress={this.props.onPress}
         style={styles.container}
       >
-        {this.props.red === "true" 
+        {this.props.red
         && <Text style={styles.red}>{this.props.label}</Text>
         }
-        {this.props.red !== "true" 
+        {!this.props.red
         && <Text style={styles.text}>{this.props.label}</Text>
         }
       </TouchableOpacity>

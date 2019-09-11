@@ -42,16 +42,17 @@ class Post extends PostRecord<PostProps> {
 
   static parse(data) {
     return new Post({
-      id: data.id,
+      // id: data.id,
       title: data.title,
-      text: data.text,
-      category: data.category,
-      picture: data.picture,
-      createdAt: moment(data.createdAt),
-      location: new Location({ name: data.locationName, lat: data.latlng[0], lng: data.latlng[1] }),
-      comments: data.comments.map(comment => Comment.parse(comment)) || [],
-      user: User.parse(data.user),
-      liked: data.liked,
+      // text: data.text,
+      // category: data.category,
+      // picture: data.picture,
+      // createdAt: moment(data.createdAt),
+      // location: new Location({ name: data.locationName, lat: data.latlng[0], lng: data.latlng[1] }),
+      // comments: data.comments.map(comment => Comment.parse(comment)) || [],
+      comments: data.comments ? data.comments.map(comment => Comment.parse(comment)) : [],
+      // user: User.parse(data.user),
+      // liked: data.liked,
     });
   }
 }

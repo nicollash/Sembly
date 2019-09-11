@@ -16,6 +16,7 @@ import {
   SIGNUP_ERROR,
   // ---
   SEND_POST,
+  UPDATE_CITY,
 } from '../actions';
 
 
@@ -66,6 +67,8 @@ const feedDefault = {
 const feed = (state = feedDefault, action) => {
   switch (action.type) {
   // eslint-disable-next-line no-fallthrough
+  case UPDATE_CITY:
+    return Object.assign({}, state, { city: action.city });
   case UPDATE_CATEGORY:
     return Object.assign({}, state, { category: action.categories });
   case UPDATE_POSTS:
@@ -81,6 +84,11 @@ const userDefault = {
   currentUser: undefined,
   loginError: undefined,
   signupError: undefined,
+  location: {
+    name: 'Sherbrooke',
+    lat: 45.404476,
+    lon: -71.88835,
+  },
 };
 
 const user = (state = userDefault, action) => {

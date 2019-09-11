@@ -49,7 +49,6 @@ class FeedView extends React.Component {
       height: 0,
       selectedCategoryTitle: 'All',
       selectedCategoryIcon: icons[0],
-      liked: false,
     };
   }
 
@@ -59,15 +58,24 @@ class FeedView extends React.Component {
   componentDidMount() {
     // this._panel.show(400);
     this.props.refreshFeed();
-    console.log('In FeedView, the user' + JSON.stringify(this.props.currentUser) + " is connected");
   }
-
 
   render() {
     const screenHeight = Dimensions.get('window').height;
     const screenWidth = Dimensions.get('window').width;
 
     const { city } = this.props;
+
+    console.log(this.props.posts);
+    const posts = this.props.posts.map(post => (
+      <FeedUserPost
+        // userProfilePicture={{uri: 'https://i.pravatar.cc/300?img=67'}}
+        // userPostPicture={{uri:"https://placeimg.com/640/480/people"}}
+        // userName="Richard Haynes"
+        location={post.title}
+        // comments={post.}
+      />
+    ));
 
     return (
       <View style={{
@@ -135,7 +143,6 @@ class FeedView extends React.Component {
                   />
                 </ScrollView>
               </View>
-              
               <View style={{ marginTop: 6 }}>
                 <FeedSeparator />
               </View>
@@ -190,33 +197,14 @@ class FeedView extends React.Component {
               </View>
             </View>
             <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(5) : hp(13) }}>
-              <FeedUserPost
-                userProfilePicture={{uri:"https://i.pravatar.cc/300?img=10"}}
-                userPostPicture={{uri:"https://placeimg.com/640/480/arch"}}
-                userName="velvetcanyon"
-                location="One Harrahs Blvd"
-                comments={12}
-                userPostText="textest"
-              />
-
-              <FeedUserPost
-                userProfilePicture={{uri:"https://i.pravatar.cc/300?img=46"}}
-                userPostText="Does anyone know how many kilometres the walk is from the parking lot?
-                We will be travelling with a pram/stroller?"
-                userName="HazelAndPine"
-                location="705 Riverfront Dr"
-                comments={3}
-                moveOnPress={() => this.props.navigation.navigate('Post')}
-              />
-
-              <FeedUserPost
-                userProfilePicture={{uri:"https://i.pravatar.cc/300?img=67"}}
+              {/* <FeedUserPost
+                userProfilePicture={{uri: 'https://i.pravatar.cc/300?img=67'}}
                 userPostPicture={{uri:"https://placeimg.com/640/480/people"}}
                 userName="Richard Haynes"
                 location="Freedom Park Rd"
                 comments={0}
-              />
-
+              /> */}
+              {posts}
             </View>
             <View style={{ height: isIphoneX() ? 500 : 300 }} />
           </ScrollView>
@@ -236,6 +224,7 @@ FeedView.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   city: state.feed.city,
   currentUser: state.user.currentUser,
+  posts: state.feed.posts,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -11,10 +11,23 @@ exports.newPost = functions.https.onRequest((request, response) => {
     admin.firestore().collection('Posts').add(request.body)
     .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
-        return res.status(200).send('Your post has been submitted');
+        return response.status(200).send('Your post has been submitted');
     })
     .catch((error) => {
         console.log("Error adding document: ", error);
-        return res.status(400).send('');
+        return response.status(400).send('');
     });
+});
+
+exports.getFeed = functions.https.onRequest(async(request, response) => {
+    const posts = await admin.firestore().collection('Posts').get();
+    const events = await admin.firestore().collection('Events').get();
+    const categories = await admin.firestore().collection('Categories').get();
+    let feed = {
+        city: 'Seattle',
+        categories: categories.docs.map(doc => doc.data()),
+        posts: posts.docs.map(doc => doc.data()),
+        events: events.docs.map(doc => doc.data()),
+    };
+    return response.status(200).send(feed);
 });

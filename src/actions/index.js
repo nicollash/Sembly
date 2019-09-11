@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
 // const API_URL = ''
 
 // Temporary mock data
-const feedJSON = require('../domain/_mockFeed.json');
+// const feedJSON = require('../domain/_mockFeed.json');
 
 // AppState
 export const SET_PANEL_NAVIGATION = 'SET_PANEL_NAVIGATION';
@@ -17,24 +17,40 @@ export function setPanelNavigation(navigation) {
   };
 }
 
+export const UPDATE_CITY = 'UPDATE_CITY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export function refreshFeed(type = 'hot', category = 'all') {
   return function refreshFeedState(dispatch, getState) {
-    //location = getState().currentLocation;
+    const location = getState().user.location;
 
-    // Update categories
-    const categories = feedJSON.posts.map(c => Category.parse(c));
-    dispatch({ type: UPDATE_CATEGORY, categories });
+    fetch(`${API_URL}/getFeed`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      // body: { type, category, location },
+    })
+      .then(response => response.json())
+      .then((feedJSON) => {
+        // Update City
+        dispatch({ type: UPDATE_CITY, city: feedJSON.city });
+        // Update categories
+        console.log(feedJSON);
+        const categories = feedJSON.categories.map(c => Category.parse(c));
+        dispatch({ type: UPDATE_CATEGORY, categories });
 
-    // Update events
-    const events = feedJSON.events.map(e => Event.parse(e));
-    dispatch({ type: UPDATE_EVENTS, events });
+        // Update events
+        const events = feedJSON.events.map(e => Event.parse(e));
+        dispatch({ type: UPDATE_EVENTS, events });
 
-    // Update posts
-    const posts = feedJSON.posts.map(p => Post.parse(p));
-    dispatch({ type: UPDATE_POSTS, posts });
+        // Update posts
+        const posts = feedJSON.posts.map(p => Post.parse(p));
+        dispatch({ type: UPDATE_POSTS, posts });
+      })
+      .catch(e => console.log(e));
   };
 }
 

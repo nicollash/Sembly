@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import {
   View,
@@ -19,6 +20,7 @@ import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import { SemblyInput } from '../../components';
 import { Platform } from 'react-native'
+import { createNewPost } from '../../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,14 +49,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
-
-const options = {
-  title: 'Select Image',
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
 
 class NewPostView extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -90,33 +84,27 @@ class NewPostView extends React.Component {
     const user = firebase.auth().currentUser;
 
     this.state = {
-      currentPost: null,
-      avatarSource: null,
-      submitted: false,
       post: {
-        title: '',
         location: {
-          placeID: '',
-          formatedAddress: '',
-          coordinates: {
-            lat: '',
-            lon: '',
-          }
+          name: '',
+          lat: '',
+          lon: '',
         },
-        userID: '',
-        imgURL: '',
-        comments: [],
-        type: 'event',
-      }
+        category: '',
+        createdAt: '',
+        id: '',
+        picture: '',
+        text: '',
+        title: '',
+      },
     };
-
-    this.ref = firebase.firestore().collection('Posts');
   }
 
   componentWillMount() {
   }
 
   componentDidMount() {
+    this.props.createNewPost(this.state.post);
   }
 
   submit = () => {
@@ -187,7 +175,7 @@ class NewPostView extends React.Component {
             height: '21%',
           }}
           >
-            <ImageBackground 
+            <ImageBackground
               source={this.state.avatarSource} 
               style={styles.backgroundUpload}
               imageStyle={{ borderRadius: 15 }}
@@ -219,12 +207,11 @@ NewPostView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
+const mapStateToProps = (state, ownProps) => ({
 });
 
-export default NewPostView;
+const mapDispatchToProps = dispatch => ({
+  createNewPost: post => dispatch(createNewPost(post)),
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(NewPostView);

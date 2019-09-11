@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
-import { handleLogin, updateLocation } from '../../actions';
+import { handleLogin, updateLocation, clearLoginErrors, clearSignupErrors } from '../../actions';
 import { View, Image, StatusBar, Text, TouchableOpacity } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
@@ -85,15 +85,16 @@ class LoginView extends React.Component {
   }
 
   componentDidMount() {
+    this.props.clearSignupErrors();
+    this.props.clearLoginErrors();
+
+    this.setState({ email: '', password: '' });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
       this.props.navigation.navigate('MainApp');
     }
-    console.log("PreviousUser: " + JSON.stringify(prevProps.currentUser));
-    console.log("CurrentUser: " + JSON.stringify(this.props.currentUser));
-    // console.log("PreviousUser: " + prevProps.currentUser);
   }
 
   render() {
@@ -128,9 +129,9 @@ class LoginView extends React.Component {
               Sembly is a crowdsourced city discovery platform.
             </Text>
           </View>
-          {this.props.LOGIN_ERROR && (
-            <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10 }}>
-              {this.props.LOGIN_ERROR}
+          {this.props.loginError !== undefined && (
+            <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10, textAlign: 'center' }}>
+              {this.props.loginError}
             </Text>
           )}
           <View accessibilityIgnoresInvertColors style={styles.form}>
@@ -197,10 +198,13 @@ LoginView.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
   currentUser: state.user.currentUser,
+  loginError: state.user.loginError,
 });
 
 const mapDispatchToProps = dispatch => ({
   handleLogin: (a, b) => dispatch(handleLogin(a, b)),
+  clearLoginErrors: () => dispatch(clearLoginErrors()),
+  clearSignupErrors: () => dispatch(clearSignupErrors()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

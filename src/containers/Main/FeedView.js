@@ -59,7 +59,7 @@ class FeedView extends React.Component {
   componentDidMount() {
     // this._panel.show(400);
     this.props.refreshFeed();
-    console.log('In FeedView, the user' + this.props.currentUser + " is connected");
+    console.log('In FeedView, the user' + JSON.stringify(this.props.currentUser) + " is connected");
   }
 
 

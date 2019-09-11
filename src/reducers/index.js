@@ -12,7 +12,10 @@ import {
   UPDATE_EVENTS,
   // ---
   UPDATE_CURRENT_USER,
-  CREATE_NEW_USER,
+  LOGIN_ERROR,
+  SIGNUP_ERROR,
+  // ---
+  SEND_POST,
 } from '../actions';
 
 
@@ -76,13 +79,18 @@ const feed = (state = feedDefault, action) => {
 
 const userDefault = {
   currentUser: undefined,
+  loginError: undefined,
+  signupError: undefined,
 };
 
 const user = (state = userDefault, action) => {
   switch (action.type) {
   case UPDATE_CURRENT_USER:
-    console.log("Entered SWITCH");
-    return Object.assign({}, state, { currentUser: action.currentUser });
+    return Object.assign({}, state, { currentUser: action.user });
+  case LOGIN_ERROR:
+    return Object.assign({}, state, { loginError: action.message });
+  case SIGNUP_ERROR:
+    return Object.assign({}, state, { signupError: action.message });
   default:
     return state;
   }
@@ -98,7 +106,7 @@ const semblyApp = combineReducers({
   user,
 });
 
-const blacklisted = ['appState'];
+const blacklisted = ['appState', 'user.errorMessage'];
 const persistConfig = {
   timeout: 10000,
   key: 'root',

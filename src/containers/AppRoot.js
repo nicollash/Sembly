@@ -22,6 +22,8 @@ import { NewPostView } from './Post';
 import { ProfileView } from './Profile';
 import PostView from './Main/LocationView';
 import ProfileStack from './Profile/ProfileStack';
+import { dispatch } from 'rxjs/internal/observable/pairs';
+import { clearLoginErrors, clearSignupErrors } from '../actions';
 
 
 const WelcomeStack = createStackNavigator({
@@ -100,8 +102,8 @@ const RootStack = createStackNavigator({
     screen: MainTabNavigation,
     navigationOptions: ({ navigation }) => ({
       header: null,
-    })
- },
+    }),
+  },
   NewPost: { screen: NewPostView },
 }, {
   mode: 'modal',
@@ -143,6 +145,17 @@ class AppRoot extends React.PureComponent {
     );
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.currentUser === undefined && prevProps.currentUser !== undefined) {
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Welcome',
+          params: {},
+        }),
+      );
+    }
+  }
+
   render() {
     return (
       <ThemeContainer theme="default">
@@ -154,7 +167,6 @@ class AppRoot extends React.PureComponent {
 }
 
 AppRoot.propTypes = {
-
 };
 
 AppRoot.defaultProps = {
@@ -166,6 +178,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = () => ({
+  clearLoginErrors: () => dispatch(clearLoginErrors()),
+  clearSignupErrors: () => dispatch(clearSignupErrors()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

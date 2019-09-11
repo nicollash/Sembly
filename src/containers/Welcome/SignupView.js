@@ -26,7 +26,7 @@ import {
 
 import Theme from '../../styles/theme';
 import SemblyBackCaret from '../../components/SemblyBackCaret';
-import { handleSignup } from '../../actions';
+import { handleSignup, clearLoginErrors, clearSignupErrors } from '../../actions';
 
 console.disableYellowBox = true;
 
@@ -108,14 +108,16 @@ class SignupView extends React.Component {
   }
 
   componentDidMount() {
+    this.props.clearLoginErrors();
+    this.props.clearSignupErrors();
+    
+    this.setState({ email: '', password: '' });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
-      this.props.navigation.navigate('MainApp');
-      console.log("ENTEREDEIF");
+      this.props.navigation.navigate('Onboarding');
     }
-    console.log("newly created: " + JSON.stringify(this.props.currentUser));
   }
 
   render() {
@@ -158,9 +160,9 @@ class SignupView extends React.Component {
                 be ready to explore your city in a second.
               </Text>
             </View>
-            {this.state.errorMessage && (
-              <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10 }}>
-                {this.state.errorMessage}
+            {this.props.signupError !== undefined && (
+              <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10, textAlign: 'center' }}>
+                {this.props.signupError}
               </Text>
             )}
             <View
@@ -209,10 +211,13 @@ SignupView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   currentUser: state.user.currentUser,
+  signupError: state.user.signupError,
 });
 
 const mapDispatchToProps = dispatch => ({
   handleSignup: (a, b) => dispatch(handleSignup(a, b)),
+  clearLoginErrors: () => dispatch(clearLoginErrors()),
+  clearSignupErrors: () => dispatch(clearSignupErrors()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupView);

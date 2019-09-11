@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import {
   View,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import firebase from 'react-native-firebase';
+import { handleSignOut } from '../../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../../styles/theme';
@@ -65,13 +67,7 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ submit: this.signOutUser });
-  }
-
-  signOutUser = () => {
-    firebase.auth().signOut().then(() => {
-      this.props.navigation.navigate('Main');
-    });
+    this.props.navigation.setParams({ submit: this.props.handleSignOut });
   }
 
   render() {
@@ -145,11 +141,12 @@ ProfileView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
+const mapStateToProps = (state, ownProps) => ({
+  currentUser: state.user.currentUser,
 });
 
-export default ProfileView;
+const mapDispatchToProps = dispatch => ({
+  handleSignOut: () => dispatch(handleSignOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

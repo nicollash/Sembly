@@ -3,7 +3,8 @@ import Post from '../domain/Post';
 import Event from '../domain/Event';
 import Category from '../domain/Category';
 
-const API_URL = "http://localhost:5000/sembly-staging/us-central1";
+const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
+// const API_URL = ''
 
 // Temporary mock data
 const feedJSON = require('../domain/_mockFeed.json');

@@ -6,15 +6,15 @@ admin.initializeApp();
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 exports.newPost = functions.https.onRequest((request, response) => {
-    response.send(`Hello from Firebase my ${request.query.a}`);
+    // response.send(`Hello from Firebase my ${request.query.a}`);
     console.log(util.inspect(request.body, {showHidden: false, depth: null}))
     admin.firestore().collection('Posts').add(request.body)
-    .then(function(docRef) {
+    .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
-        return true;
+        return res.status(200).send('Your post has been submitted');
     })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-        return false;
+    .catch((error) => {
+        console.log("Error adding document: ", error);
+        return res.status(400).send('');
     });
 });

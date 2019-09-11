@@ -104,13 +104,14 @@ class NewPostView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.createNewPost(this.state.post);
+    this.props.navigation.setParams({ submit: this.submit });
   }
 
   submit = () => {
     this.setState({
-      submitted: true,
+      // submitted: true,
     });
+    this.props.createNewPost(this.state.post);
   }
 
   render() {

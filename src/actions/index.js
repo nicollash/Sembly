@@ -3,6 +3,8 @@ import Post from '../domain/Post';
 import Event from '../domain/Event';
 import Category from '../domain/Category';
 
+const API_URL = "http://localhost:5000/sembly-staging/us-central1";
+
 // Temporary mock data
 const feedJSON = require('../domain/_mockFeed.json');
 
@@ -114,6 +116,14 @@ export function createNewPost(post) {
   return function createNewPostState(dispatch, getState) {
     // const newPost = { ...post };
     console.log('NewPost found in ~/actions in CreateNewPost(): ' + JSON.stringify(post));
+    fetch(`${API_URL}/newPost`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(post),
+    });
     dispatch({ type: SEND_POST, post });
   };
 }

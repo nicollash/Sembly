@@ -1,9 +1,15 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const firebase = require('firebase');
 const util = require('util');
 var path = require('path');
 
+const { GeoCollectionReference, GeoFirestore, GeoQuery, GeoQuerySnapshot } = require('geofirestore');
+
 admin.initializeApp();
+
+const geofirestore = new GeoFirestore(admin.firestore());
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -27,9 +33,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     
     const { text, location, category } = request.body;
 
-    admin.firestore().collection('Posts').add({
+    geofirestore.collection('Posts').add({
         text,
-        location,
+        coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
         category,
         picture,
         user: {
@@ -50,10 +56,29 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getFeed = functions.https.onRequest(async(request, response) => {
-    const posts = await admin.firestore().collection('Posts').get();
-    const events = await admin.firestore().collection('Events').get();
+    console.log(util.inspect(request.query, {showHidden: false, depth: null}))
+
+    const { lat, lon } = { lat: parseFloat(request.query.lat), lon: parseFloat(request.query.lon) };
     const categories = await admin.firestore().collection('Categories').get();
-    const businesses = await admin.firestore().collection('Businesses').get();
+
+    const posts = await geofirestore.collection('Posts').limit(20)
+    .near({
+        center: new firebase.firestore.GeoPoint(lat, lon),
+        radius: 100,
+    }).get();
+
+    const events = await geofirestore.collection('Events').limit(5)
+    .near({
+        center: new firebase.firestore.GeoPoint(lat, lon),
+        radius: 100,
+    }).get();
+    
+    const businesses = await geofirestore.collection('Businesses').limit(20)
+    .near({
+        center: new firebase.firestore.GeoPoint(lat, lon),
+        radius: 100,
+    }).get();
+
     console.log(util.inspect(request.query, {showHidden: false, depth: null}))
     let feed = {
         city: 'Seattle',

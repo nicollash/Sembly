@@ -63,7 +63,6 @@ class SemblyMapView extends React.Component {
             pinColor="#DD485A"
             pinTag="RM"
           />
-
         </MapView>
       </View>
     );

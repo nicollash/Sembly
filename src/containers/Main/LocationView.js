@@ -11,7 +11,11 @@ import {
   Dimensions,
   StyleSheet,
   Share,
+  Linking,
+  Platform,
 } from 'react-native';
+
+import phoneFormat from 'phoneformat.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -46,7 +50,7 @@ class PostView extends React.Component {
     this.state = {
       height: 0,
       address: '1207 Harney St.',
-      phoneNumber: '(402) 504-4929',
+      phoneNumber: '4025044929',
     };
   }
 
@@ -54,6 +58,19 @@ class PostView extends React.Component {
   }
 
   componentDidMount() {
+  }
+
+  formatPhone(number) {
+    const identifier = number.substring(0, 3);
+    const middlePart = number.substring(3, 6);
+    const fourFinals = number.substring(6, 10);
+    return `(${identifier}) ${middlePart}-${fourFinals}`;
+  }
+
+  openMaps = () => {
+    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+    const url = scheme + `${this.state.lat}, ${this.state.lon}`;
+    Linking.openURL(url);
   }
 
   render() {
@@ -131,7 +148,9 @@ class PostView extends React.Component {
                     alignItems: 'center',
                   }}
                   >
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={this.openMaps}
+                    >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                         <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
                         <Text style={{
@@ -145,17 +164,20 @@ class PostView extends React.Component {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => { Linking.openURL(`telprompt:${this.state.phoneNumber}`); }}
+                    >
                       <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
                         <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
-                        <Text style={{
-                          fontSize: wp(3.3),
-                          color: '#000',
-                          fontFamily: Theme.fonts.bold,
-                          marginLeft: wp(0.5),
-                        }}
+                        <Text
+                          style={{
+                            fontSize: wp(3.3),
+                            color: '#000',
+                            fontFamily: Theme.fonts.bold,
+                            marginLeft: wp(0.5),
+                          }}
                         >
-                          {this.state.phoneNumber}
+                          {this.formatPhone(this.state.phoneNumber)}
                         </Text>
                       </View>
                     </TouchableOpacity>

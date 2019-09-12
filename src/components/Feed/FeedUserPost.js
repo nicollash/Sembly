@@ -153,7 +153,7 @@ class FeedUserPost extends React.Component {
           paddingBottom: 10,
         }}
         >
-          <TouchableOpacity>
+          <View>
             <View style={{
               flexDirection: 'row',
               width: 150,
@@ -163,7 +163,7 @@ class FeedUserPost extends React.Component {
               <View style={{ width: 5 }} />
               <Text style={[styles.postText, { marginTop: 1 }]}>{this.props.location}</Text>
             </View>
-          </TouchableOpacity>
+          </View>
           <TouchableOpacity
             style={{
               flexDirection: 'row',

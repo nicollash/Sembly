@@ -128,9 +128,12 @@ class AppRoot extends React.PureComponent {
     super(props);
     this.state = {
     };
+
+    this.gpsInterval = undefined;
   }
 
   componentWillMount() {
+
   }
 
   componentDidMount() {
@@ -148,6 +151,8 @@ class AppRoot extends React.PureComponent {
     if (currentUser !== undefined) {
       // Start geolocating
       this.geoLocate();
+
+      if (this.gpsInterval === undefined) this.gpsInterval = setInterval(this.geoLocate, 12000);
 
       this.navigator.dispatch(
         NavigationActions.navigate({

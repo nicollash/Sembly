@@ -4,7 +4,14 @@ const firebase = require('firebase');
 const util = require('util');
 var path = require('path');
 
+// GeoStore initialization
 const { GeoCollectionReference, GeoFirestore, GeoQuery, GeoQuerySnapshot } = require('geofirestore');
+
+// Google Maps initialization
+const googleMaps = require('@google/maps').createClient({
+    key: 'AIzaSyAJIDeViLfur4T_6BjordyY4EI03PDBv5A',
+    Promise: Promise,
+});
 
 admin.initializeApp();
 
@@ -32,10 +39,17 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     }
     
     const { text, location, category } = request.body;
+    console.log(location.lat);
+    geocode = await googleMaps.reverseGeocode({
+        latlng: [parseFloat(location.lat), parseFloat(location.lon)],
+    }).asPromise();
+
+    locationName = location.name === '' ? geocode.json.results[0].address_components[1].long_name : location.name;
 
     geofirestore.collection('Posts').add({
         text,
         coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
+        locationName,
         category,
         picture,
         user: {
@@ -59,6 +73,17 @@ exports.getFeed = functions.https.onRequest(async(request, response) => {
     console.log(util.inspect(request.query, {showHidden: false, depth: null}))
 
     const { lat, lon } = { lat: parseFloat(request.query.lat), lon: parseFloat(request.query.lon) };
+    // Get the name of the location
+    
+    geocode = await googleMaps.reverseGeocode({
+        latlng: [lat, lon],
+    }).asPromise();
+
+    locationName = geocode.json.results[0].address_components[2].long_name;
+
+ 
+
+    // Make database requests
     const categories = await admin.firestore().collection('Categories').get();
 
     const posts = await geofirestore.collection('Posts').limit(20)
@@ -81,7 +106,7 @@ exports.getFeed = functions.https.onRequest(async(request, response) => {
 
     console.log(util.inspect(request.query, {showHidden: false, depth: null}))
     let feed = {
-        city: 'Seattle',
+        city: locationName,
         categories: categories.docs.map(doc => { return { id: doc.id, ...doc.data() } }),
         posts: posts.docs.map(doc => { return { id: doc.id, ...doc.data() } }),
         events: events.docs.map(doc => { return { id: doc.id, ...doc.data() } }),

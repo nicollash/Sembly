@@ -95,7 +95,7 @@ class FeedUserPost extends React.Component {
               marginLeft: 7,
             }}
             >
-              {this.props.userName}
+              {this.props.username}
             </Text>
           </TouchableOpacity>
         </View>
@@ -207,7 +207,7 @@ class FeedUserPost extends React.Component {
 
 FeedUserPost.defaultProps = {
   userProfilePicture: require('../../../assets/images/ProfileIconTab.png'),
-  userName: 'User',
+  username: 'User',
   userPostPicture: null,
   location: 'Location',
   comments: '?',

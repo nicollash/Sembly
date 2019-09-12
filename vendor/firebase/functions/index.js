@@ -17,13 +17,20 @@ admin.initializeApp();
 
 const geofirestore = new GeoFirestore(admin.firestore());
 
+const getUser = async (req) => {
+    const idToken = req.get('Authorization').split('Bearer ')[1];
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    
+    return await admin.auth().getUser(decodedToken.uid);
+}
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 exports.newPost = functions.https.onRequest(async (request, response) => {
     // response.send(`Hello from Firebase my ${request.query.a}`);
     //console.log(util.inspect(request.body, {showHidden: false, depth: null}))
-
+    const user = await getUser(request);
+    
     // Setup image bucket
     let picture = '';
     if (request.body.pictureURI) {
@@ -53,9 +60,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
         category,
         picture,
         user: {
-            id: 0,
-            name: "Placeholder user",
-            avatar: "https://api.adorable.io/avatars/285/abott@adorable.png",
+            id: user.uid,
+            name: user.email.substring(0, user.email.indexOf("@")),
+            avatar: user.photoURL || 'https://api.adorable.io/avatars/285/abott@adorable.png',
         },
         comments: [],
     })

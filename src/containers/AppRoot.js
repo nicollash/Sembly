@@ -1,12 +1,14 @@
+/* eslint-disable no-console */
 import React from 'react';
-import { StatusBar, Image, View } from 'react-native';
+import { StatusBar, Image, View, Alert } from 'react-native';
 import _ from 'underscore';
 
 import {
-  createStackNavigator, createSwitchNavigator, createBottomTabNavigator, createAppContainer, SafeAreaView, NavigationActions,
+  createStackNavigator, createSwitchNavigator, createBottomTabNavigator,
+  createAppContainer, SafeAreaView, NavigationActions,
 } from 'react-navigation';
 
-import firebase from 'react-native-firebase';
+import Geolocation from 'react-native-geolocation-service';
 
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -16,14 +18,13 @@ import { isIphoneX } from '../styles/iphoneModelCheck';
 import ThemeContainer from '../styles/themeContainer';
 
 /* Views */
-import { LoginView, SignupView, OnboardingView, ForgotPasswordView } from './Welcome';
+import {
+  LoginView, SignupView, OnboardingView, ForgotPasswordView,
+} from './Welcome';
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
-import { ProfileView } from './Profile';
-import PostView from './Main/LocationView';
 import ProfileStack from './Profile/ProfileStack';
-import { dispatch } from 'rxjs/internal/observable/pairs';
-import { clearLoginErrors, clearSignupErrors } from '../actions';
+import { clearLoginErrors, clearSignupErrors, updateLocation } from '../actions';
 
 
 const WelcomeStack = createStackNavigator({
@@ -133,27 +134,40 @@ class AppRoot extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { currentUser } = this.props;
-
-    if (currentUser === undefined) return;
-    console.log(currentUser);
-    this.navigator.dispatch(
-      NavigationActions.navigate({
-        routeName: 'MainApp',
-        params: {},
-      }),
-    );
+    this.handleUserStatus();
+    console.log(this.props.location);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.currentUser === undefined && prevProps.currentUser !== undefined) {
+    if (this.props.currentUser !== prevProps.currentUser) this.handleUserStatus();
+  }
+
+  handleUserStatus = () => {
+    const { currentUser } = this.props;
+
+    if (currentUser !== undefined) {
+      // Start geolocating
+      this.geoLocate();
+
       this.navigator.dispatch(
         NavigationActions.navigate({
-          routeName: 'Welcome',
+          routeName: 'MainApp',
           params: {},
         }),
       );
     }
+  }
+
+  geoLocate = async () => {
+    console.log('locating...');
+    await Geolocation.requestAuthorization();
+    Geolocation.getCurrentPosition((success) => {
+      console.log(success);
+      this.props.updateLocation(success.coords.latitude, success.coords.longitude)
+    }, (error) => {
+      Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
+      console.warn(error);
+    }, { timeout: 10000 });
   }
 
   render() {
@@ -167,6 +181,7 @@ class AppRoot extends React.PureComponent {
 }
 
 AppRoot.propTypes = {
+
 };
 
 AppRoot.defaultProps = {
@@ -175,11 +190,13 @@ AppRoot.defaultProps = {
 
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
+  location: state.user.location,
 });
 
-const mapDispatchToProps = () => ({
+const mapDispatchToProps = (dispatch) => ({
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
+  updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

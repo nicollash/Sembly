@@ -18,6 +18,14 @@ export function setPanelNavigation(navigation) {
   };
 }
 
+// User
+export const UPDATE_LOCATION = 'UPDATE_LOCATION';
+export function updateLocation(lat = 0, lon = 0) {
+  return function updateLocationState(dispatch) {
+    dispatch({ type: UPDATE_LOCATION, lat, lon });
+  };
+}
+
 export const UPDATE_CITY = 'UPDATE_CITY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_POSTS = 'UPDATE_POSTS';

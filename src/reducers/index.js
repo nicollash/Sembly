@@ -11,7 +11,9 @@ import {
   UPDATE_POSTS,
   UPDATE_EVENTS,
   // ---
+  UPDATE_LOCATION,
   UPDATE_CURRENT_USER,
+  // ---
   LOGIN_ERROR,
   SIGNUP_ERROR,
   // ---
@@ -94,6 +96,8 @@ const userDefault = {
 
 const user = (state = userDefault, action) => {
   switch (action.type) {
+  case UPDATE_LOCATION:
+    return Object.assign({}, state, { location: { lat: action.lat, lon: action.lon } });
   case UPDATE_CURRENT_USER:
     return Object.assign({}, state, { currentUser: action.user });
   case LOGIN_ERROR:

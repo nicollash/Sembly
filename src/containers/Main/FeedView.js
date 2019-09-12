@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   PanResponder,
+  RefreshControl,
 } from 'react-native';
 
 // Redux
@@ -51,6 +52,7 @@ class FeedView extends React.Component {
       height: 0,
       selectedCategoryTitle: 'All',
       selectedCategoryIcon: icons[0],
+      refreshing: false,
     };
   }
 
@@ -61,8 +63,14 @@ class FeedView extends React.Component {
     // this._panel.show(400);
     this.props.refreshFeed();
 
-    console.log('this.props.posts = ' + JSON.stringify(this.props.posts));
+    console.log('this.props.users = ' + JSON.stringify(this.props.posts.user));
     console.log('this.props.events = ' + JSON.stringify(this.props.events));
+  }
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.props.refreshFeed();
+    this.setState({ refreshing: false });
   }
 
   render() {
@@ -78,7 +86,15 @@ class FeedView extends React.Component {
       }}
       >
         <View style={{ width: '100%', height: (screenHeight - this.state.height) }}>
-          <ScrollView style={{ width: screenWidth }}>
+          <ScrollView
+            style={{ width: screenWidth }}
+            refreshControl={(
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            )}
+          >
             <View style={{ height: staticContainer, marginTop: hp(2) }}>
               <View style={{ width: '100%', height: '13%' }}>
                 <FeedHeader city={city} />
@@ -144,9 +160,8 @@ class FeedView extends React.Component {
                   title="Events near you"
                 />
               </View>
-              <View>
+              <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
                 <FlatList
-                  refreshing
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   data={this.props.events}
@@ -154,6 +169,7 @@ class FeedView extends React.Component {
                     <FeedScrollPost
                       picture={item.picture}
                       title={item.title}
+                      onEventPress={() => this.props.navigation.navigate('Location')}
                     />
                   )}
                   ItemSeparatorComponent={() => (
@@ -194,7 +210,6 @@ class FeedView extends React.Component {
             </View>
             <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(5) : hp(13) }}>
               <FlatList
-                refreshing
                 data={this.props.posts}
                 renderItem={({ item }) => (
                   <FeedUserPost
@@ -202,11 +217,14 @@ class FeedView extends React.Component {
                     username={item.user.name}
                     userPostText={item.text}
                     userPostPicture={item.picture}
+                    moveOnPress={() => this.props.navigation.navigate('Post')}
                   />
+                )}
+                ListFooterComponent={() => (
+                  <View style={{ height: 100 }} />
                 )}
               />
             </View>
-            <View style={{ height: isIphoneX() ? 500 : 300 }} />
           </ScrollView>
         </View>
       </View>

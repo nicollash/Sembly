@@ -21,13 +21,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
     shadowColor: '#E0E0E0',
-    shadowRadius: 15,
-    shadowOffset: { height: 3 },
+    shadowRadius: 2,
+    shadowOffset: { height: 1 },
     shadowOpacity: 1,
   },
   imageContainer: {
     height: 94.9,
     width: 140,
+    // top: 1,
   },
   image: {
     height: '100%',
@@ -55,7 +56,10 @@ class FeedScrollPost extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={this.props.onEventPress}
+      >
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{ uri: this.props.picture }} />
         </View>

@@ -200,11 +200,11 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNFirebase (5.5.6):
+  - RNFirebase (5.5.3):
     - Firebase/Core
     - React
-    - RNFirebase/Crashlytics (= 5.5.6)
-  - RNFirebase/Crashlytics (5.5.6):
+    - RNFirebase/Crashlytics (= 5.5.3)
+  - RNFirebase/Crashlytics (5.5.3):
     - Crashlytics
     - Fabric
     - Firebase/Core
@@ -310,10 +310,10 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   React: a86b92f00edbe1873a63e4a212c29b7a7ad5224f
-  react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
+  react-native-geolocation: a7b94614afbd5fd8350e0233a2025c8228fc8041
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
-  RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
+  RNFirebase: 59efea4666efb0a268bc50d77f2498387e962915
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
 PODFILE CHECKSUM: 6c2fc471e410d590ec2dd359c2f43a3c1def1382

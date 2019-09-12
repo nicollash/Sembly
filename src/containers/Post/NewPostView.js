@@ -9,7 +9,7 @@ import {
   ImageBackground,
   Modal,
   Alert,
-} from 'react-native';
+ Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
@@ -19,7 +19,7 @@ import SemblyDropdown from '../../components/SemblyDropdown';
 import ImagePicker from 'react-native-image-picker';
 import {TouchableOpacity } from 'react-native-gesture-handler';
 import { SemblyInput } from '../../components';
-import { Platform } from 'react-native'
+;
 import { createNewPost } from '../../actions';
 
 const styles = StyleSheet.create({
@@ -86,16 +86,12 @@ class NewPostView extends React.Component {
     this.state = {
       post: {
         location: {
-          name: '',
-          lat: '',
-          lon: '',
+          name: 'Placeholder location',
+          lat: this.props.location.lat,
+          lon: this.props.location.lon,
         },
-        category: '',
-        createdAt: '',
-        id: '',
-        picture: '',
+        category: 'General',
         text: '',
-        title: '',
       },
     };
   }
@@ -106,6 +102,31 @@ class NewPostView extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({ submit: this.submit });
   }
+
+  chooseImage = () => {
+    ImagePicker.showImagePicker({
+      title: 'Select Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+        maxWidth: 900,
+        maxHeight: 900,
+        quality: 0.02,
+      },
+    }, (response) => {
+      if (response.didCancel) {
+        // User has cancelled image
+      } else if (response.error) {
+        Alert.alert('Content error', 'An error occured while picking your post picture. Please try again.');
+      } else {
+        this.setState({
+          post: { 
+            ...this.state.post, pictureURI: response.uri, pictureData: response.data,
+          },
+        });
+      }
+    });
+  };
 
   submit = () => {
     this.setState({
@@ -136,7 +157,7 @@ class NewPostView extends React.Component {
         <SemblyInput
           placeholder="Content of your post, up to 300 chars."
           label="TEXT"
-          valueChanged={str => this.setState({ post: { ...this.state.post, title: str } })}
+          valueChanged={text => this.setState({ post: { ...this.state.post, text } })}
         />
         <SemblyLabel
           label="LOCATION"
@@ -144,17 +165,17 @@ class NewPostView extends React.Component {
           fontSize={14}
           secondFontSize={10}
         />
-        <View style={{ backgroundColor: '#fff', zIndex: 10, elevation: (Platform.OS === 'ios' ? 3 : 0)}}>
+        <View style={{ backgroundColor: '#fff', zIndex: 10, elevation: (Platform.OS === 'ios' ? 3 : 0) }}>
           <SemblyPlaceAutoComplete />
-          <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }}/>
+          <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }} />
         </View>
-        <SemblyLabel label="CATEGORY"/>
+        <SemblyLabel label="CATEGORY" />
         <SemblyDropdown />
         <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
         <SemblyLabel label="PHOTO" />
         <View style={{ height: '2%' }} />
-        {this.state.post.picture === '' &&
-        (
+        {this.state.post.pictureURI === null
+        && (
           <View style={{
             backgroundColor: '#EBECEE',
             borderRadius: 15,
@@ -169,15 +190,15 @@ class NewPostView extends React.Component {
             </TouchableOpacity>
           </View>
         )}
-        {this.state.post.picture !== '' &&
-        (
+        {this.state.post.pictureURI !== null
+        && (
           <View style={{
             width: '100%',
             height: '21%',
           }}
           >
             <ImageBackground
-              source={this.state.avatarSource} 
+              source={{ uri: this.state.post.pictureURI }}
               style={styles.backgroundUpload}
               imageStyle={{ borderRadius: 15 }}
             >
@@ -209,6 +230,7 @@ NewPostView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
+  location: state.user.location,
 });
 
 const mapDispatchToProps = dispatch => ({

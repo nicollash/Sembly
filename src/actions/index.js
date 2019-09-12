@@ -31,11 +31,13 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
-export function refreshFeed(type = 'hot', category = 'all', location = { lat: 45.404476, lon: -71.88835 }) {
-  return function refreshFeedState(dispatch) {
-    const paramsObj = { type, category, location };
-    const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
+export function refreshFeed(type = 'hot', category = 'all', _location = undefined) {
+  return function refreshFeedState(dispatch, getState) {
+    const location = _location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : _location;
 
+    const paramsObj = { type, category, ...location };
+    const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
+    
     fetch(`${API_URL}/getFeed?${params}`, {
       method: 'GET',
       headers: {

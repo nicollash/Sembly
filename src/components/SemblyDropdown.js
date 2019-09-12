@@ -67,9 +67,7 @@ class SemblyDropdown extends React.Component {
               onValueChange= {this.updateCategory}
             >
               <Picker.Item label="General" value="General" />
-              <Picker.Item label="Events" value="Events" />
               <Picker.Item label="Food" value="Food" />
-              <Picker.Item label="Promos" value="Promos" />
               <Picker.Item label="Drinks" value="Drinks" />
             </Picker>
           </View>

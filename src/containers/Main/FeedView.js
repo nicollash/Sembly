@@ -5,6 +5,7 @@ import {
   Text,
   Image,
   ScrollView,
+  FlatList,
   TouchableOpacity,
   Dimensions,
   PanResponder,
@@ -22,6 +23,7 @@ import { refreshFeed } from '../../actions';
 import {
   FeedCategoryBar,
   FeedHorizontalScroll,
+  FeedScrollPost,
 } from '../../components';
 
 import FeedFilterBar from '../../components/Feed/FeedFilterBar';
@@ -58,25 +60,15 @@ class FeedView extends React.Component {
   componentDidMount() {
     // this._panel.show(400);
     this.props.refreshFeed();
+
+    console.log('this.props.posts = ' + JSON.stringify(this.props.posts));
+    console.log('this.props.events = ' + JSON.stringify(this.props.events));
   }
 
   render() {
     const screenHeight = Dimensions.get('window').height;
     const screenWidth = Dimensions.get('window').width;
-
     const { city } = this.props;
-
-    console.log(this.props.posts);
-    const posts = this.props.posts.map(post => (
-      <FeedUserPost
-        // userProfilePicture={{uri: 'https://i.pravatar.cc/300?img=67'}}
-        // userPostPicture={{uri:"https://placeimg.com/640/480/people"}}
-        // userName="Richard Haynes"
-        location={post.title}
-        // comments={post.}
-      />
-    ));
-
     return (
       <View style={{
         backgroundColor: '#fff',
@@ -146,31 +138,35 @@ class FeedView extends React.Component {
               <View style={{ marginTop: 6 }}>
                 <FeedSeparator />
               </View>
-
               <View style={{ justifyContent: 'center', marginTop: 3, marginBottom: 13 }}>
                 <FeedSubHeader
                   icon={icons[1]}
                   title="Events near you"
                 />
               </View>
-
               <View>
-                <ScrollView
+                <FlatList
+                  refreshing
                   horizontal
-                  style={{ width: '100%' }}
                   showsHorizontalScrollIndicator={false}
-                >
-                  <FeedHorizontalScroll
-                    image1={require('../../../assets/images/FeedScrollImage.png')}
-                    image2={require('../../../assets/images/FeedScrollImage2.png')}
-                    image3={require('../../../assets/images/FeedScrollImage3.png')}
-                    title1="Blues Fest 2019"
-                    title2="Food Festival"
-                    title3="Dog shows"
-                  />
-                </ScrollView>
+                  data={this.props.events}
+                  renderItem={({ item }) => (
+                    <FeedScrollPost
+                      picture={item.picture}
+                      title={item.title}
+                    />
+                  )}
+                  ItemSeparatorComponent={() => (
+                    <View style={{ width: 10 }} />
+                  )}
+                  ListHeaderComponent={() => (
+                    <View style={{ width: 15 }} />
+                  )}
+                  ListFooterComponent={() => (
+                    <View style={{ width: 15 }} />
+                  )}
+                />
               </View>
-
               <View style={{
                 marginTop: hp(2),
                 width: '100%',
@@ -197,14 +193,18 @@ class FeedView extends React.Component {
               </View>
             </View>
             <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(5) : hp(13) }}>
-              {/* <FeedUserPost
-                userProfilePicture={{uri: 'https://i.pravatar.cc/300?img=67'}}
-                userPostPicture={{uri:"https://placeimg.com/640/480/people"}}
-                userName="Richard Haynes"
-                location="Freedom Park Rd"
-                comments={0}
-              /> */}
-              {posts}
+              <FlatList
+                refreshing
+                data={this.props.posts}
+                renderItem={({ item }) => (
+                  <FeedUserPost
+                    location={item.title}
+                    username={item.user.name}
+                    userPostText={item.text}
+                    userPostPicture={item.picture}
+                  />
+                )}
+              />
             </View>
             <View style={{ height: isIphoneX() ? 500 : 300 }} />
           </ScrollView>
@@ -225,6 +225,7 @@ const mapStateToProps = (state, ownProps) => ({
   city: state.feed.city,
   currentUser: state.user.currentUser,
   posts: state.feed.posts,
+  events: state.feed.events,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -62,6 +62,7 @@ const feedDefault = {
   category: [],
   events: [],
   posts: [],
+  businesses: [],
 };
 
 const feed = (state = feedDefault, action) => {

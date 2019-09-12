@@ -21,24 +21,24 @@ export const UPDATE_CITY = 'UPDATE_CITY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
-export function refreshFeed(type = 'hot', category = 'all') {
-  return function refreshFeedState(dispatch, getState) {
-    const location = getState().user.location;
+export function refreshFeed(type = 'hot', category = 'all', location = { lat: 45.404476, lon: -71.88835 }) {
+  return function refreshFeedState(dispatch) {
+    const paramsObj = { type, category, location };
+    const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
 
-    fetch(`${API_URL}/getFeed`, {
+    fetch(`${API_URL}/getFeed?${params}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: { type, category, location },
     })
       .then(response => response.json())
       .then((feedJSON) => {
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
+        
         // Update categories
-        console.log(feedJSON);
         const categories = feedJSON.categories.map(c => Category.parse(c));
         dispatch({ type: UPDATE_CATEGORY, categories });
 

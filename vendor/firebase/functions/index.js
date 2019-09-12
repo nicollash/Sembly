@@ -23,11 +23,14 @@ exports.getFeed = functions.https.onRequest(async(request, response) => {
     const posts = await admin.firestore().collection('Posts').get();
     const events = await admin.firestore().collection('Events').get();
     const categories = await admin.firestore().collection('Categories').get();
+    const businesses = await admin.firestore().collection('Businesses').get();
+
     let feed = {
         city: 'Seattle',
         categories: categories.docs.map(doc => doc.data()),
         posts: posts.docs.map(doc => doc.data()),
         events: events.docs.map(doc => doc.data()),
+        businesses: businesses.docs.map(doc => doc.data()),
     };
     return response.status(200).send(feed);
 });

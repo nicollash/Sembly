@@ -2,6 +2,7 @@ import firebase from 'react-native-firebase';
 import Post from '../domain/Post';
 import Event from '../domain/Event';
 import Category from '../domain/Category';
+//import Business from '../domain/Business';
 
 const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
 // const API_URL = ''
@@ -21,6 +22,7 @@ export const UPDATE_CITY = 'UPDATE_CITY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
+export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed(type = 'hot', category = 'all', location = { lat: 45.404476, lon: -71.88835 }) {
   return function refreshFeedState(dispatch) {
     const paramsObj = { type, category, location };
@@ -37,7 +39,7 @@ export function refreshFeed(type = 'hot', category = 'all', location = { lat: 45
       .then((feedJSON) => {
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
-        
+
         // Update categories
         const categories = feedJSON.categories.map(c => Category.parse(c));
         dispatch({ type: UPDATE_CATEGORY, categories });
@@ -49,6 +51,10 @@ export function refreshFeed(type = 'hot', category = 'all', location = { lat: 45
         // Update posts
         const posts = feedJSON.posts.map(p => Post.parse(p));
         dispatch({ type: UPDATE_POSTS, posts });
+
+        // Update posts
+        //const businesses = feedJSON.posts.map(business => Business.parse(business));
+        //dispatch({ type: UPDATE_BUSINESSES, businesses });
       })
       .catch(e => console.log(e));
   };

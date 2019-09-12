@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: 'white',
-    shadowColor: '#F0F0F0',
-    shadowRadius: 4,
-    shadowOffset: { height: 3, width: 3 },
+    backgroundColor: '#fff',
+    shadowColor: '#E0E0E0',
+    shadowRadius: 15,
+    shadowOffset: { height: 3 },
     shadowOpacity: 1,
   },
   imageContainer: {
@@ -57,7 +57,7 @@ class FeedScrollPost extends React.Component {
     return (
       <TouchableOpacity style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={this.props.image} />
+          <Image style={styles.image} source={{ uri: this.props.picture }} />
         </View>
         <View style={{
           flexDirection: 'row',
@@ -78,7 +78,7 @@ class FeedScrollPost extends React.Component {
 
 
 FeedScrollPost.defaultProps = {
-  image: null,
+  picture: null,
   title: 'blank',
 };
 

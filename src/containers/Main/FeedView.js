@@ -23,6 +23,7 @@ import { refreshFeed } from '../../actions';
 import {
   FeedCategoryBar,
   FeedHorizontalScroll,
+  FeedScrollPost,
 } from '../../components';
 
 import FeedFilterBar from '../../components/Feed/FeedFilterBar';
@@ -145,14 +146,24 @@ class FeedView extends React.Component {
               </View>
               <View>
                 <FlatList
+                  refreshing
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   data={this.props.events}
-                  renderItem={item => (
-                    <FeedHorizontalScroll
-                      image={item.image}
-                      title1={item.title}
+                  renderItem={({ item }) => (
+                    <FeedScrollPost
+                      picture={item.picture}
+                      title={item.title}
                     />
+                  )}
+                  ItemSeparatorComponent={() => (
+                    <View style={{ width: 10 }} />
+                  )}
+                  ListHeaderComponent={() => (
+                    <View style={{ width: 15 }} />
+                  )}
+                  ListFooterComponent={() => (
+                    <View style={{ width: 15 }} />
                   )}
                 />
               </View>
@@ -183,12 +194,14 @@ class FeedView extends React.Component {
             </View>
             <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(5) : hp(13) }}>
               <FlatList
+                refreshing
                 data={this.props.posts}
                 renderItem={({ item }) => (
                   <FeedUserPost
                     location={item.title}
                     username={item.user.name}
                     userPostText={item.text}
+                    userPostPicture={item.picture}
                   />
                 )}
               />

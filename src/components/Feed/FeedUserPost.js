@@ -99,7 +99,7 @@ class FeedUserPost extends React.Component {
             </Text>
           </TouchableOpacity>
         </View>
-        {this.props.userPostPicture !== null && (
+        {this.props.userPostPicture !== '' && (
           <TouchableOpacity
             activeOpacity={this.props.NotTouchable}
             style={{
@@ -113,7 +113,7 @@ class FeedUserPost extends React.Component {
             onPress={this.props.moveOnPress}
           >
             <Image
-              source={this.props.userPostPicture}
+              source={{ uri: this.props.userPostPicture }}
               style={{
                 height: '100%',
                 width: '100%',
@@ -122,7 +122,7 @@ class FeedUserPost extends React.Component {
             />
           </TouchableOpacity>
         )}
-        {this.props.userPostPicture === null && (
+        {this.props.userPostPicture === '' && (
           <TouchableOpacity 
             style={{
               marginLeft: 15,

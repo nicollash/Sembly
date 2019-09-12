@@ -153,7 +153,7 @@ class NewPostView extends React.Component {
         <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
         <SemblyLabel label="PHOTO" />
         <View style={{ height: '2%' }} />
-        {this.state.avatarSource === null &&
+        {this.state.post.picture === '' &&
         (
           <View style={{
             backgroundColor: '#EBECEE',
@@ -169,7 +169,7 @@ class NewPostView extends React.Component {
             </TouchableOpacity>
           </View>
         )}
-        {this.state.avatarSource !== null &&
+        {this.state.post.picture !== '' &&
         (
           <View style={{
             width: '100%',

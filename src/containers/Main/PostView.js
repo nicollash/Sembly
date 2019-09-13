@@ -75,6 +75,10 @@ class PostView extends React.Component {
     const screenHeight = Dimensions.get('window').height;
     const screenWidth = Dimensions.get('window').width;
 
+    const { navigation } = this.props;
+    const post = navigation.getParam('post');
+
+    console.log(JSON.stringify(post));
     return (
       <View style={{
         flex: 1,
@@ -88,8 +92,8 @@ class PostView extends React.Component {
             <View style={{ flex: 1 }}>
               <View style={{ flex: 1 }}>
                 <PostViewUserPost
-                  userName="HazelAndPine"
-                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=46"}}
+                  userName={post.user.name}
+                  userProfilePicture={{ uri: "https://i.pravatar.cc/300?img=46" }}
                   location="705 Riverfront Dr"
                   backPress={() => this.props.navigation.navigate('Feed')}
                 />
@@ -103,7 +107,6 @@ class PostView extends React.Component {
           </ScrollView>
         </View>
       </View>
-
     );
   }
 }
@@ -115,8 +118,8 @@ PostView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
+const mapStateToProps = (state, ownProps) => ({
+});
 
 const mapDispatchToProps = dispatch => ({
 

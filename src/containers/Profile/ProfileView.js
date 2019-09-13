@@ -68,6 +68,8 @@ class ProfileView extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ submit: this.props.handleSignOut });
+
+    console.log("Profile INFORMSTIONS: " + JSON.stringify(this.props.currentUser))
   }
 
   render() {
@@ -97,7 +99,7 @@ class ProfileView extends React.Component {
             marginTop: hp(3),
           }}
           >
-            Jeedee
+            {this.props.currentUser.displayName}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>

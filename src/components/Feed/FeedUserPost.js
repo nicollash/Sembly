@@ -11,6 +11,8 @@ import {
   Animated,
   Easing,
   Dimensions,
+  Linking,
+  Platform,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
@@ -42,6 +44,12 @@ class FeedUserPost extends React.Component {
   }
 
   componentDidMount() {
+  }
+
+  openMaps = () => {
+    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+    const url = scheme + `${this.state.lat}, ${this.state.lon}`;
+    Linking.openURL(url);
   }
 
   render() {
@@ -79,11 +87,12 @@ class FeedUserPost extends React.Component {
             <View>
               <Image
                 style={{
-                  height: profilePictureHeight,
+                  height: 32,
                   width: 32,
-                  borderRadius: profilePictureHeight / 2,
+                  borderRadius: 16,
+                  resizeMode: 'cover',
                 }}
-                source={this.props.userProfilePicture}
+                source={{ uri: this.props.userProfilePicture }}
               />
             </View>
             <Text style={{
@@ -153,7 +162,9 @@ class FeedUserPost extends React.Component {
           paddingBottom: 10,
         }}
         >
-          <View>
+          <TouchableOpacity
+            onPress={this.openMaps}
+          >
             <View style={{
               flexDirection: 'row',
               width: 150,
@@ -163,12 +174,13 @@ class FeedUserPost extends React.Component {
               <View style={{ width: 5 }} />
               <Text style={[styles.postText, { marginTop: 1 }]}>{this.props.location}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               flexDirection: 'row',
             }}
             onPress={this.props.moveOnPress}
+            activeOpacity={0.9}
           >
             <Image source={require('../../../assets/images/PhotoPostBubble.png')} />
             <View style={{ width: '8%' }} />
@@ -210,7 +222,7 @@ FeedUserPost.defaultProps = {
   username: 'User',
   userPostPicture: null,
   location: 'Location',
-  comments: '?',
+  comments: null,
   NotTouchable: 0.2,
   userPostText: null,
   moveOnPress: null,

@@ -10,12 +10,14 @@ import {
 } from 'react-native';
 
 import Theme from '../../styles/theme';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   headerText: {
     fontSize: 36,
     fontFamily: Theme.fonts.bold,
     color: '#1F1F1F',
+    maxWidth: wp(70),
   },
 });
 
@@ -29,7 +31,6 @@ class FeedHeader extends React.Component {
   render() {
     return (
       <View style={{
-        flex: 1,
         width: '100%',
         marginTop: -15,
         flexDirection: 'row',

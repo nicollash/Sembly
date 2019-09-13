@@ -84,7 +84,12 @@ const feed = (state = feedDefault, action) => {
 };
 
 const userDefault = {
-  currentUser: undefined,
+  currentUser: {
+    posts: 2,
+    comments: 81,
+    likes: 9,
+    name: 'Roger',
+  },
   loginError: undefined,
   signupError: undefined,
   location: {

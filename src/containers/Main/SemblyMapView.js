@@ -30,9 +30,40 @@ class SemblyMapView extends React.Component {
 
   componentDidMount() {
     requestLocationPermission();
+
+    console.log("Events locations :" + JSON.stringify(this.props.events));
+    console.log("Posts locations :" + JSON.stringify(this.props.posts));
+    console.log("businnesss locations :" + JSON.stringify(this.props.businesses));
   }
 
   render() {
+    const eventPins = this.props.events.map(event => (
+      <SemblyMapPin
+        latitude={event.location.lat}
+        longitude={event.location.lng}
+        pinColor="#927FE8"
+        pinTag="TH"
+        onPress={() => NavigationService.navigate('Location', { event })}
+      />
+    ));
+    const postPins = this.props.posts.map(post => (
+      <SemblyMapPin
+        latitude={post.location.lat}
+        longitude={post.location.lng}
+        pinColor="#927FE8"
+        pinTag="TH"
+        onPress={() => NavigationService.navigate('Location', { post })}
+      />
+    ));
+    const businessPins = this.props.businesses.map(business => (
+      <SemblyMapPin
+        latitude={business.location.lat}
+        longitude={business.location.lng}
+        pinColor="#927FE8"
+        pinTag="TH"
+        onPress={() => NavigationService.navigate('Location', { business })}
+      />
+    ));
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
@@ -44,25 +75,9 @@ class SemblyMapView extends React.Component {
             longitudeDelta: 0.0421,
           }}
         >
-          <SemblyMapPin
-            latitude={41.2565}
-            longitude={-95.9345}
-            pinColor="#32C5FF"
-            pinIcon={require('../../../assets/images/MapPinPicture.png')}
-          />
-          <SemblyMapPin
-            latitude={41.2665}
-            longitude={-95.9354}
-            pinColor="#927FE8"
-            pinTag="TH"
-            onPress={() => NavigationService.navigate('Location')}
-          />
-          <SemblyMapPin
-            latitude={41.2365}
-            longitude={-95.9454}
-            pinColor="#DD485A"
-            pinTag="RM"
-          />
+          {eventPins}
+          {postPins}
+          {businessPins}
         </MapView>
       </View>
     );
@@ -100,10 +115,12 @@ SemblyMapView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
+  businesses: state.feed.businesses,
+  events: state.feed.events,
+  posts: state.feed.posts,
 });
 
 const mapDispatchToProps = dispatch => ({
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SemblyMapView);

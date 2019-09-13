@@ -81,7 +81,7 @@ exports.getFeed = functions.https.onRequest(async(request, response) => {
 
     console.log(util.inspect(request.query, {showHidden: false, depth: null}))
     let feed = {
-        city: 'Seattle',
+        city: 'Montreala',
         categories: categories.docs.map(doc => { return { id: doc.id, ...doc.data() } }),
         posts: posts.docs.map(doc => { return { id: doc.id, ...doc.data() } }),
         events: events.docs.map(doc => { return { id: doc.id, ...doc.data() } }),

@@ -96,7 +96,7 @@ class FeedView extends React.Component {
             )}
           >
             <View style={{ height: staticContainer, marginTop: hp(2) }}>
-              <View style={{ width: '100%', height: '13%' }}>
+              <View style={{ width: '100%' }}>
                 <FeedHeader city={city} />
               </View>
               <View style={{ height: 43, width: '100%', marginTop: 3 }}>
@@ -154,35 +154,39 @@ class FeedView extends React.Component {
               <View style={{ marginTop: 6 }}>
                 <FeedSeparator />
               </View>
-              <View style={{ justifyContent: 'center', marginTop: 3, marginBottom: 13 }}>
-                <FeedSubHeader
-                  icon={icons[1]}
-                  title="Events near you"
-                />
-              </View>
-              <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
-                <FlatList
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  data={this.props.events}
-                  renderItem={({ item }) => (
-                    <FeedScrollPost
-                      picture={item.picture}
-                      title={item.title}
-                      onEventPress={() => this.props.navigation.navigate('Location')}
+              {this.props.events.length > 0 && (
+                <View>
+                  <View style={{ justifyContent: 'center', marginTop: 3, marginBottom: 13 }}>
+                    <FeedSubHeader
+                      icon={icons[1]}
+                      title="Events near you"
                     />
-                  )}
-                  ItemSeparatorComponent={() => (
-                    <View style={{ width: 10 }} />
-                  )}
-                  ListHeaderComponent={() => (
-                    <View style={{ width: 15 }} />
-                  )}
-                  ListFooterComponent={() => (
-                    <View style={{ width: 15 }} />
-                  )}
-                />
-              </View>
+                  </View>
+                  <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
+                    <FlatList
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      data={this.props.events}
+                      renderItem={({ item }) => (
+                        <FeedScrollPost
+                          picture={item.picture}
+                          title={item.title}
+                          onEventPress={() => this.props.navigation.navigate('Location')}
+                        />
+                      )}
+                      ItemSeparatorComponent={() => (
+                        <View style={{ width: 10 }} />
+                      )}
+                      ListHeaderComponent={() => (
+                        <View style={{ width: 15 }} />
+                      )}
+                      ListFooterComponent={() => (
+                        <View style={{ width: 15 }} />
+                      )}
+                    />
+                  </View>
+                </View>
+              )}
               <View style={{
                 marginTop: hp(2),
                 width: '100%',
@@ -217,7 +221,9 @@ class FeedView extends React.Component {
                     username={item.user.name}
                     userPostText={item.text}
                     userPostPicture={item.picture}
-                    moveOnPress={() => this.props.navigation.navigate('Post')}
+                    userProfilePicture={item.user.avatar}
+                    moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
+                    comments={item.comments.length}
                   />
                 )}
                 ListFooterComponent={() => (

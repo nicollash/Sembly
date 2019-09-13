@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-
 import {
   TouchableOpacity,
   StyleSheet,
@@ -10,8 +8,17 @@ import {
   Text,
 } from 'react-native';
 
-import Theme from '../../styles/theme';
+// Redux
+import { connect } from 'react-redux';
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
+
+// Actions
+import { refreshFeed } from '../../actions';
+// Theme
+import Theme from '../../styles/theme';
+// Components
 import FeedFilterButton from './FeedFilterButton';
 
 const styles = StyleSheet.create({
@@ -46,7 +53,11 @@ class FeedFilterBar extends React.Component {
       <FeedFilterButton
         title={button}
         tint={idx === this.state.activeIndex ? this.state.tintcolor[1] : this.state.tintcolor[0]}
-        actionOnPress={() => this.setState({ activeIndex: idx })}
+        actionOnPress={() => {
+          this.setState({ activeIndex: idx });
+          this.props.refreshFeed({ type: this.state.buttons[this.state.activeIndex] });
+          console.log('refreshFeed filter: ' + this.state.buttons[this.state.activeIndex]);
+        }}
       />
     ));
     return (
@@ -59,20 +70,22 @@ class FeedFilterBar extends React.Component {
 
 
 FeedFilterBar.defaultProps = {
-
 };
 
 FeedFilterBar.propTypes = {
-
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
+const mapStateToProps = (state, ownProps) => ({
+  city: state.feed.city,
+  currentUser: state.user.currentUser,
+  posts: state.feed.posts,
+  events: state.feed.events,
+  categories: state.feed.categories,
 });
 
-export default FeedFilterBar;
+const mapDispatchToProps = dispatch => ({
+  refreshFeed: () => dispatch(refreshFeed()),
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(FeedFilterBar);

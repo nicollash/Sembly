@@ -62,6 +62,7 @@ const preferences = (state = preferencesDefault, action) => {
 const feedDefault = {
   city: 'Omaha',
   categories: [],
+  filters: [],
   events: [],
   posts: [],
   businesses: [],

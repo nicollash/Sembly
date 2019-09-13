@@ -61,8 +61,6 @@ class PostView extends React.Component {
     super(props);
 
     this.state = {
-      newComment: '',
-      noOfComments: 3,
     };
   }
 
@@ -81,15 +79,14 @@ class PostView extends React.Component {
 
     console.log(JSON.stringify(post));
     return (
+      <ScrollView style={{ height: 1000, width: wp(100) }}>
       <View style={{
-        flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
         borderRadius: 12,
       }}
       >
         <View style={{ height: screenHeight, width: screenWidth }}>
-          <ScrollView style={{ width: '100%' }}>
             <View>
               <PostViewUserPost
                 text={post.text}
@@ -109,9 +106,9 @@ class PostView extends React.Component {
               />
             </View> */}
             <View style={{ height: isIphoneX() ? 240 : 100 }} />
-          </ScrollView>
         </View>
       </View>
+      </ScrollView>
     );
   }
 }

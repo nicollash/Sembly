@@ -42,15 +42,11 @@ const icons = [
   require('../../../assets/images/SemblyDrinksIcon.png')
 ];
 
-const deviceHeight = Dimensions.get('window').height;
-const staticContainer = deviceHeight * 0.36;
-
 class FeedView extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      height: 0,
       selectedCategoryTitle: 'All',
       selectedCategoryIcon: icons[0],
       refreshing: false,
@@ -83,7 +79,7 @@ class FeedView extends React.Component {
         borderRadius: 10,
       }}
       >
-        <View style={{ width: '100%', height: (screenHeight - this.state.height) }}>
+        <View style={{ width: '100%', height: (screenHeight) }}>
           <ScrollView
             style={{ width: screenWidth }}
             refreshControl={(
@@ -169,7 +165,7 @@ class FeedView extends React.Component {
               alignItems: 'center',
             }}
             >
-              <View style={{ alignSelf: 'center', left: '35%' }}>
+              <View style={{ marginLeft: 10 }}>
                 <FeedSubHeader
                   icon={this.state.selectedCategoryIcon}
                   title={this.state.selectedCategoryTitle}
@@ -179,7 +175,7 @@ class FeedView extends React.Component {
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  style={{ alignSelf: 'center' }}
+                  // style={{ alignSelf: 'center' }}
                 >
                   <FeedFilterBar />
                 </ScrollView>
@@ -199,9 +195,6 @@ class FeedView extends React.Component {
                     comments={item.comments.length}
                   />
                 )}
-                // ListFooterComponent={() => (
-                //   <View style={{ height: hp(20) }} />
-                // )}
               />
               <View style={{ height: isIphoneX() ? 200 : hp(20) }} />
             </View>

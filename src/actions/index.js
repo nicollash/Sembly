@@ -28,6 +28,7 @@ export function updateLocation(lat = 0, lon = 0) {
 
 export const UPDATE_CITY = 'UPDATE_CITY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
+export const UPDATE_FILTER = 'UPDATE_FILTER';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';

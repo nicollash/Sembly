@@ -79,7 +79,7 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarIcon: () => (
         <View>
           <Image
-            source={require('../../assets/images/ProfileIconTab.png')}
+            source={{ uri: this.fetchProfilePicture }}
             style={{ marginTop: !isIphoneX() ? hp(-1) : 0 }}
           />
         </View>
@@ -138,7 +138,6 @@ class AppRoot extends React.PureComponent {
 
   componentDidMount() {
     this.handleUserStatus();
-    console.log(this.props.location);
   }
 
   componentDidUpdate(prevProps) {
@@ -164,16 +163,18 @@ class AppRoot extends React.PureComponent {
   }
 
   geoLocate = async () => {
-    console.log('locating...');
+    // console.log('locating...');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
-      console.log(success);
+      // console.log(success);
       this.props.updateLocation(success.coords.latitude, success.coords.longitude)
     }, (error) => {
       Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
       console.warn(error);
     }, { timeout: 10000 });
   }
+
+  fetchProfilePicture = () => this.props.currentUser.avatar;
 
   render() {
     return (

@@ -148,10 +148,10 @@ class AppRoot extends React.PureComponent {
     const { currentUser } = this.props;
 
     if (currentUser !== undefined) {
-      // Start geolocating
-      this.geoLocate();
-
-      if (this.gpsInterval === undefined) this.gpsInterval = setInterval(this.geoLocate, 12000);
+      if (this.gpsInterval === undefined) {
+        this.geoLocate();
+        this.gpsInterval = setInterval(this.geoLocate, 12000);
+      }
 
       this.navigator.dispatch(
         NavigationActions.navigate({
@@ -166,11 +166,12 @@ class AppRoot extends React.PureComponent {
     // console.log('locating...');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
-      // console.log(success);
+      //console.log(success);
       this.props.updateLocation(success.coords.latitude, success.coords.longitude)
     }, (error) => {
       Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
-      console.warn(error);
+      clearInterval(this.gpsInterval);
+      //console.warn(error);
     }, { timeout: 10000 });
   }
 

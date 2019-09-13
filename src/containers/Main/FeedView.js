@@ -221,7 +221,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshFeed: () => dispatch(refreshFeed()),
+  refreshFeed: () => dispatch(refreshFeed({})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedView);

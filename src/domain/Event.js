@@ -43,7 +43,7 @@ class Event extends EventRecord<EventProps> {
       text: data.text,
       picture: data.picture,
       happeningOn: moment(data.happeningOn),
-      location: new Location(data.location),
+      location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
       //
       interested: data.interested,
       going: data.going,

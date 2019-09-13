@@ -6,13 +6,13 @@ import _ from 'underscore';
 const LocationRecord = Immutable.Record({
   name: '',
   lat: 0,
-  lng: 0,
+  lon: 0,
 });
 
 const LocationProps = {
   name: PropTypes.name,
   lat: PropTypes.number,
-  lng: PropTypes.number,
+  lon: PropTypes.number,
 };
 
 class Location extends LocationRecord<LocationProps> {
@@ -20,7 +20,7 @@ class Location extends LocationRecord<LocationProps> {
     return new Location({
       name: data.name,
       lat: data.lat,
-      lng: data.lng,
+      lon: data.lon,
     });
   }
 }

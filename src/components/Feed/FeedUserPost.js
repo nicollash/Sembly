@@ -63,7 +63,7 @@ class FeedUserPost extends React.Component {
         borderRadius: 10,
         borderWidth: 2,
         borderColor: '#F0F0F0',
-        minHeight: 60,
+        minHeight: 30,
         maxHeight: 500,
         maxWidth: wp(95),
       }}
@@ -115,20 +115,32 @@ class FeedUserPost extends React.Component {
               marginTop: 5,
               alignSelf: 'center',
               marginLeft: '2.5%',
-              minHeight: 100,
-              maxHeight: 200,
+              minHeight: 80,
               width: '95%',
             }}
             onPress={this.props.moveOnPress}
           >
-            <Image
-              source={{ uri: this.props.userPostPicture }}
-              style={{
-                height: '100%',
-                width: '100%',
-                borderRadius: 8,
-              }}
-            />
+            <View style={{ minHeight: 100, maxHeight: 200 }}>
+              <Image
+                source={{ uri: this.props.userPostPicture }}
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 8,
+                }}
+              />
+            </View>
+            <Text style={{
+              marginTop: 7,
+              fontSize: 14,
+              fontFamily: Theme.fonts.regular,
+              lineHeight: 19,
+              color: '#26315F',
+              marginBottom: 10,
+            }}
+            >
+              {this.props.userPostText}
+            </Text>
           </TouchableOpacity>
         )}
         {this.props.userPostPicture === '' && (
@@ -180,7 +192,7 @@ class FeedUserPost extends React.Component {
               flexDirection: 'row',
             }}
             onPress={this.props.moveOnPress}
-            activeOpacity={0.9}
+            activeOpacity={0.4}
           >
             <Image source={require('../../../assets/images/PhotoPostBubble.png')} />
             <View style={{ width: '8%' }} />

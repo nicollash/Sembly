@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
 import {
   View,
 } from 'react-native';
@@ -43,18 +45,21 @@ class ProfileStatsBar extends React.Component {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <ProfileStatistic
-          statistic="3 posts"
+          statistic="0"
           statIcon={postsIcon}
+          type="posts"
         />
         <View style={styles.separator} />
         <ProfileStatistic
-          statistic="15 comments"
+          statistic="0"
           statIcon={commentsIcon}
+          type="comments"
         />
         <View style={styles.separator} />
         <ProfileStatistic
-          statistic="8 likes"
+          statistic="0"
           statIcon={likesIcon}
+          type="likes"
         />
       </View>
     );
@@ -68,11 +73,11 @@ ProfileStatsBar.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
+const mapStateToProps = (state, ownProps) => ({
+  currentUser: state.user.currenUser,
 });
 
-export default ProfileStatsBar;
+const mapDispatchToProps = dispatch => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileStatsBar);

@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  FlatList,
   Dimensions,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -89,20 +90,24 @@ class PostView extends React.Component {
       >
         <View style={{ height: screenHeight, width: screenWidth }}>
           <ScrollView style={{ width: '100%' }}>
-            <View style={{ flex: 1 }}>
-              <View style={{ flex: 1 }}>
-                <PostViewUserPost
-                  userName={post.user.name}
-                  userProfilePicture={{ uri: "https://i.pravatar.cc/300?img=46" }}
-                  location="705 Riverfront Dr"
-                  backPress={() => this.props.navigation.navigate('Feed')}
-                />
-              </View>
-              <PostViewCommentHeader />
-            </View>
             <View>
-              <PostViewCommentSection />
+              <PostViewUserPost
+                text={post.text}
+                username={post.user.name}
+                userProfilePicture={{ uri: post.user.avatar }}
+                userPostPicture={post.picture}
+                location={post.location.name}
+                backPress={() => this.props.navigation.navigate('Feed')}
+              />
+              <PostViewCommentHeader
+                comments={post.comments.length}
+              />
             </View>
+            {/* <View>
+              <FlatList
+                data={}
+              />
+            </View> */}
             <View style={{ height: isIphoneX() ? 240 : 100 }} />
           </ScrollView>
         </View>

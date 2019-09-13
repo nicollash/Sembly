@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#26315F',
     fontFamily: Theme.fonts.bold,
+    // maxWidth: '60%',
   },
   distance: {
     top: 1,
@@ -72,7 +73,7 @@ class FeedScrollPost extends React.Component {
           height: 28,
         }}
         >
-          <Text style={styles.title}>{this.props.title}</Text>
+          <Text style={styles.title}>{this.props.title.substring(0, 16)}</Text>
           <Text style={styles.distance}>{this.props.distance}</Text>
         </View>
       </TouchableOpacity>

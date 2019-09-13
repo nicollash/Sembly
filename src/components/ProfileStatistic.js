@@ -41,7 +41,7 @@ class ProfileStatistic extends React.Component {
         />
         <View style={{ height: hp(1) }} />
         <Text style={{ color: '#26315F', fontSize: wp(3.8), fontFamily: theme.fonts.bold }}>
-          {this.props.statistic}
+          {this.props.statistic} {this.props.type}
         </Text>
       </View>
     );

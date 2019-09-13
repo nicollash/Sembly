@@ -2,9 +2,6 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import Theme from '../../styles/theme';
-
-
 import {
   TouchableOpacity,
   StyleSheet,
@@ -12,6 +9,7 @@ import {
   Image,
   View,
 } from 'react-native';
+import Theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -21,6 +19,8 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 8,
     borderWidth: 1,
+    paddingHorizontal: 10,
+    minWidth: 50,
   },
   title: {
     fontSize: 18,
@@ -37,35 +37,29 @@ class FeedCategoryButton extends React.Component {
 
   render() {
     return (
-      <View>
-        <TouchableOpacity
-          style={[styles.buttonContainer,
-            { backgroundColor: this.props.bgColor },
-            { borderColor: this.props.bordercolor },
-            { width: this.props.buttonWidth }]}
-          onPress={this.props.actionOnPress}
-        >
-          <View>
-            <Image source={this.props.icon} />
-          </View>
-          <View>
-            <Text style={[styles.title, { color: this.props.titleColor }]}>
-              {'  '}
-              {this.props.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <View style={{ width: this.props.outerWidth }} />
-      </View>
+      <TouchableOpacity
+        style={[styles.buttonContainer,
+          { backgroundColor: this.props.backgroundColor },
+          { borderColor: this.props.border }]}
+        onPress={this.props.onPress}
+      >
+        <View>
+          <Image source={this.props.icon} />
+        </View>
+        <View>
+          <Text style={[styles.title, { color: this.props.titleColor }]}>
+            {'  '}
+            {this.props.title}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }
 
 FeedCategoryButton.defaultProps = {
-  bgColor: 'white',
-  borderColor: 'black',
-  buttonWidth: 120,
-  outerWidth: 0,
+  backgroundColor: '#ddd',
+  border: '#000',
 };
 
 FeedCategoryButton.propTypes = {

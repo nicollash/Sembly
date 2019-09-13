@@ -9,8 +9,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-
-import Theme from '../styles/theme';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import theme from '../styles/theme';
 
 const styles = StyleSheet.create({
   roundInput: {
@@ -29,8 +29,6 @@ class PostViewCommentHeader extends React.Component {
     super(props);
 
     this.state = {
-      noOfComments: 3,
-      comment: null,
     };
   }
 
@@ -42,14 +40,14 @@ class PostViewCommentHeader extends React.Component {
 
   render() {
     return (
-      <View style={{ marginTop: 1 }}>
-        <View style={{ flexDirection: 'row', left: '40%' }}>
+      <View style={{ marginTop: 10 }}>
+        <View style={{ flexDirection: 'row', left: wp(7.5) }}>
           <Image
             source={require('../../assets/images/PostViewCommentIcon.png')} 
             style={{ marginRight: '1.5%' }}
           />
-          <Text style={{ color: '#26315F', fontSize: 16 }}>
-            {this.state.noOfComments}
+          <Text style={{ color: '#26315F', fontSize: 16, fontFamily: theme.fonts.bold }}>
+            {this.props.comments}
             {' '}
             comments
           </Text>

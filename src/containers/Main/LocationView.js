@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import {
   View,
@@ -9,13 +10,13 @@ import {
   TouchableOpacity,
   PanResponder,
   Dimensions,
+  FlatList,
   StyleSheet,
   Share,
   Linking,
   Platform,
 } from 'react-native';
 
-import phoneFormat from 'phoneformat.js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -67,13 +68,15 @@ class PostView extends React.Component {
     return `(${identifier}) ${middlePart}-${fourFinals}`;
   }
 
-  openMaps = () => {
+  openMaps = (lat, lng) => {
     const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    const url = scheme + `${this.state.lat}, ${this.state.lon}`;
+    const url = scheme + lat + ',' + lng;
     Linking.openURL(url);
   }
 
   render() {
+    const location = this.props.navigation.getParam('location', 'NOLOCATION');
+    console.log(location);
     const screenHeight = Dimensions.get('window').height;
     return (
       <View style={{ flex: 1 }}>
@@ -85,43 +88,45 @@ class PostView extends React.Component {
               borderRadius: 12,
             }}
             >
-              <View style={{ minHeight: 252, width: '100%', justifyContent: 'space-between' }}>
-                <View style={{ minHeight: 190, maxHeight: 230, width: '100%' }}>
+              <View style={{ width: '100%', justifyContent: 'space-between' }}>
+                <View style={{ minHeight: 190, width: '100%' }}>
                   <ImageBackground
-                    source={require('../../../assets/images/LocationViewPicture.png')}
+                    source={{ uri: location.picture }}
                     style={{ flex: 1 }}
                   />
                 </View>
-                <View style={{ minHeight: 75, maxHeight: 120, marginTop: hp(1) }}>
+                <View style={{ marginTop: hp(1) }}>
                   <View style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    width: '92%',
-                    left: '26%',
+                    width: '96%',
                     marginTop: '0.2%',
                   }}
                   >
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('Feed')}
-                        style={{ marginLeft: wp(-2) }}
-                        hitSlop={{ bottom: 10, top: 5, right: 5, left: 5 }}
-                      >
-                        <Image source={require('../../../assets/images/PostViewGoBackButton.png')} />
-                      </TouchableOpacity>
-                      <Text style={{ left: '35%', fontSize: 22, color: 'black', fontFamily: Theme.fonts.bold }}>
-                        The Hive
-                      </Text>
-                      <View style={{ width: '8%' }} />
-                      <SemblyRedeemButton onTop="0%" />
-                    </View>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('Feed')}
+                      style={{ marginLeft: wp(4) }}
+                      hitSlop={{ bottom: 10, top: 5, right: 5, left: 5 }}
+                    >
+                      <Image source={require('../../../assets/images/PostViewGoBackButton.png')} />
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        marginLeft: wp(3),
+                        fontSize: 22,
+                        color: '#000',
+                        fontFamily: Theme.fonts.bold,
+                        maxWidth: wp(82),
+                      }}
+                    >
+                      {location.title}
+                    </Text>
                     <TouchableOpacity
                       onPress={() => Share.share({
                         title: 'title test',
                         message: 'this is a test',
                       })}
-                      style={{ marginRight: wp(1) }}
+                      style={{ position: 'absolute', alignSelf: 'center', right: -8, bottom: 6 }}
                     >
                       <Image
                         style={{ tintColor: '#000' }}
@@ -129,16 +134,16 @@ class PostView extends React.Component {
                       />
                     </TouchableOpacity>
                   </View>
-                  <View>
+                  <View style={{ marginTop: 3 }}>
                     <Text style={{
                       marginLeft: wp(10),
-                      width: '80%',
+                      width: '87%',
                       fontSize: wp(3.5),
                       fontFamily: Theme.fonts.regular,
                       color: '#000',
                     }}
                     >
-                      An easy-going cocktail bar with live music on Fridays and Saturdays
+                      {location.text}
                     </Text>
                   </View>
 
@@ -149,7 +154,7 @@ class PostView extends React.Component {
                   }}
                   >
                     <TouchableOpacity
-                      onPress={this.openMaps}
+                      onPress={() => this.openMaps(location.location.lat, location.location.lng)}
                     >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                         <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
@@ -181,51 +186,33 @@ class PostView extends React.Component {
                         </Text>
                       </View>
                     </TouchableOpacity>
+                    <View style={{ position: 'absolute', right: 10, bottom: 7 }}>
+                      <SemblyRedeemButton />
+                    </View>
                   </View>
                 </View>
               </View>
               <View style={styles.separatorBar} />
-              <View style={{
-                flex: 1,
-                width: '100%',
-                marginLeft: 20,
-                marginTop: hp(-1),
-              }}
-              >
-                <FeedUserPost
-                  NotTouchable
-                  userName="BloomingAlchemy"
-                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=60"}}
-                  userPostText="Super place, my co-workers and I went there last friday to relax after a stressful week, the ambiance was AWESOME !"
-                  location="Harney St."
-                  comments={2}
+              <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
+                <FlatList
+                  data={this.props.posts} // add filter to fetch posts that are related to the location/event/business
+                  renderItem={({ item }) => (
+                    <FeedUserPost
+                      location={item.title}
+                      username={item.user.name}
+                      userPostText={item.text}
+                      userPostPicture={item.picture}
+                      userProfilePicture={item.user.avatar}
+                      moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
+                      comments={item.comments.length}
+                    />
+                  )}
+                  ListFooterComponent={() => (
+                    <View style={{ height: 100 }} />
+                  )}
                 />
-                <FeedUserPost
-                  NotTouchable
-                  userName="girlganggoodies"
-                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=40"}}
-                  userPostText="Had a BLAST, must-see place I'm telling you !"
-                  location="1207 Harney St."
-                  comments={0}
-                />
-                <FeedUserPost
-                  NotTouchable
-                  userName="girlganggoodies"
-                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=49"}}
-                  userPostText="Had a great time with friends, we were able to bypass the long line so that was cool.  Drinks were just right and the dance floor was decent."
-                  location="Harney St."
-                  comments={4}
-                />
-                <FeedUserPost
-                  NotTouchable
-                  userName="girlganggoodies"
-                  userProfilePicture={{uri:"https://i.pravatar.cc/300?img=45"}}
-                  userPostText="This is one of the only bar with a decently sized dance floor downtown. They open the designated dance floor after 11pm and they also have a $5 cover for guys starting at that time. Girls get in free. They also have a comfortable seating sections so you dont have to sit at the bar if you dont want to. They also have a drink special wheel. It does get busy quick so get in line. Oh btw there is always a food truck right outside this bar. #Convenient"
-                  location="Omaha, Harney Street"
-                  comments={3}
-                />
-                <View style={{ height: isIphoneX() ? 240 : 170 }} />
               </View>
+              <View style={{ height: isIphoneX() ? hp(6) : hp(5) }} />
             </View>
           </ScrollView>
         </View>
@@ -241,10 +228,11 @@ PostView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
+const mapStateToProps = (state, ownProps) => ({
+  posts: state.feed.posts,
+});
 
 const mapDispatchToProps = dispatch => ({
 });
 
-export default PostView;
+export default connect(mapStateToProps, mapDispatchToProps)(PostView);

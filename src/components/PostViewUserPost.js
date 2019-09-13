@@ -12,7 +12,7 @@ import {
   Easing,
   Dimensions,
 } from 'react-native';
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Theme from '../styles/theme';
 import FeedSeparator from './Feed/FeedSeparator';
 
@@ -24,6 +24,12 @@ const styles = StyleSheet.create({
     color: '#B9BDC5',
     fontSize: 11,
     fontFamily: Theme.fonts.bold,
+  },
+  separatorBar: {
+    width: wp(92),
+    borderWidth: 0.5,
+    borderColor: '#D8D8D8',
+    alignSelf: 'center',
   },
 });
 
@@ -45,7 +51,6 @@ class PostViewUserPost extends React.Component {
   render() {
     return (
       <View style={{
-        flex: 1,
         width: '95%',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -56,13 +61,11 @@ class PostViewUserPost extends React.Component {
       >
         <View style={{
           flexDirection: 'row',
-          height: '17%',
           width: '91%',
           alignSelf: 'center',
           justifyContent: 'flex-start',
           alignItems: 'center',
-          marginTop: 10,
-          marginLeft: 0,
+          marginTop: 5,
         }}
         >
           <TouchableOpacity
@@ -73,14 +76,13 @@ class PostViewUserPost extends React.Component {
             <Image source={require('../../assets/images/PostViewGoBackButton.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={{
-            width: 120,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            left: '8%',
+            marginLeft: 20,
           }}
           >
-            <View style={{ marginLeft: 10 }}>
+            <View>
               <Image style={{ height: 32, width: 32, borderRadius: 16 }} source={this.props.userProfilePicture} />
             </View>
             <Text style={{
@@ -88,11 +90,11 @@ class PostViewUserPost extends React.Component {
               fontSize: 15,
               fontFamily: Theme.fonts.bold,
               alignSelf: 'flex-end',
-              bottom: '5%',
+              bottom: '4%',
+              marginLeft: 8,
             }}
             >
-              {'   '}
-              {this.props.userName}
+              {this.props.username}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -102,12 +104,14 @@ class PostViewUserPost extends React.Component {
             <Image source={require('../../assets/images/PostViewShareButton.png')} />
           </TouchableOpacity>
         </View>
-        {this.props.userPostPicture !== null && (
-          <View style={{ left: '1%' }}>
-            <Image source={this.props.userPostPicture} />
+        {this.props.userPostPicture !== '' && (
+          <View style={{ marginTop: 9, left: 10, minHeight: 100, maxHeight: 200, width: '95%' }}>
+            <Image
+              source={{ uri: this.props.userPostPicture }}
+              style={{ height: '100%', width: '100%', resizeMode: 'cover', borderRadius: 8 }} />
           </View>
         )}
-        {this.props.userPostText !== null && (
+        {this.props.userPostText !== '' && (
           <Text style={{
             marginLeft: 28,
             marginTop: 10,
@@ -118,8 +122,7 @@ class PostViewUserPost extends React.Component {
             marginBottom: 10,
           }}
           >
-            Does anyone know how many kilometres the walk is from the parking lot?
-                We will be travelling with a pram/stroller?
+            {this.props.text}
           </Text>
         )}
         <View style={{
@@ -132,7 +135,7 @@ class PostViewUserPost extends React.Component {
           marginTop: '3%',
         }}
         >
-          <View style={{
+          <TouchableOpacity style={{
             flexDirection: 'row',
             width: '44%',
             height: '130%',
@@ -143,11 +146,9 @@ class PostViewUserPost extends React.Component {
             <Text style={[styles.postText, { marginTop: '1%' }]}>
               {this.props.location}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View style={{
             flexDirection: 'row',
-            // position: 'absolute',
-            // right: '4%',
             marginLeft: '35%',
           }}
           >
@@ -171,9 +172,8 @@ class PostViewUserPost extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-
-        <View style={{ top: '10%', alignSelf: 'center' }}>
-          <FeedSeparator />
+        <View style={{ marginTop: 25, alignSelf: 'center' }}>
+          <View style={styles.separatorBar} />
         </View>
       </View>
     );
@@ -183,7 +183,7 @@ class PostViewUserPost extends React.Component {
 
 PostViewUserPost.defaultProps = {
   userProfilePicture: require('../../assets/images/ProfileIconTab.png'),
-  userName: "no Name",
+  username: 'SemblyUser',
   userPostPicture: null,
   location: "no Location",
   comments: 9,

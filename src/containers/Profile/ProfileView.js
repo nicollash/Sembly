@@ -77,7 +77,7 @@ class ProfileView extends React.Component {
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <View style={styles.profileHeader}>
           <View>
-            <Image source={{ uri: samplePlayer }} style={{ height: 100, width: 100, borderRadius: 15 }} />
+            <Image source={{ uri: this.props.currentUser.avatar }} style={{ height: 100, width: 100, borderRadius: 15 }} />
             <TouchableOpacity>
               <Image
                 source={cameraButton}
@@ -99,7 +99,7 @@ class ProfileView extends React.Component {
             marginTop: hp(3),
           }}
           >
-            {this.props.currentUser.displayName}
+            {this.props.currentUser.name}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>

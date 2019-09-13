@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontFamily: Theme.fonts.bold,
     color: '#1F1F1F',
-    maxWidth: wp(70),
+    maxWidth: wp(80),
   },
 });
 
@@ -29,6 +29,7 @@ class FeedHeader extends React.Component {
   }
 
   render() {
+    const { city } = this.props;
     return (
       <View style={{
         width: '100%',
@@ -42,7 +43,7 @@ class FeedHeader extends React.Component {
           source={require('../../../assets/images/SemblyLogo.png')} 
           style={{ marginLeft: '5%', marginRight: '3%' }}
         />
-        <Text style={styles.headerText}>Discover {this.props.city}</Text>
+        <Text style={[styles.headerText, { lineHeight: this.props.city.length > 8 ? 35 : undefined }]}>Discover {city}</Text>
       </View>
     );
   }

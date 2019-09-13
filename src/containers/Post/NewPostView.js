@@ -81,9 +81,11 @@ class NewPostView extends React.Component {
 
   constructor(props) {
     super(props);
-    const user = firebase.auth().currentUser;
+    // const user = firebase.auth().currentUser;
 
     this.state = {
+      submitted: false,
+      showSpinner: false,
       post: {
         location: {
           name: 'Placeholder location',
@@ -116,7 +118,7 @@ class NewPostView extends React.Component {
       },
     }, (response) => {
       if (response.didCancel) {
-        // User has cancelled image
+        // User has cancelled imagespo
       } else if (response.error) {
         Alert.alert('Content error', 'An error occured while picking your post picture. Please try again.');
       } else {
@@ -130,10 +132,9 @@ class NewPostView extends React.Component {
   };
 
   submit = () => {
-    this.setState({
-      // submitted: true,
-    });
+    this.setState({ showSpinner: true });
     this.props.createNewPost(this.state.post);
+    this.setState({ showSpinner: false });
   }
 
   render() {

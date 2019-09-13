@@ -47,11 +47,14 @@ export function refreshFeed(type = 'hot', category = 'all', _location = undefine
     })
       .then(response => response.json())
       .then((feedJSON) => {
+        console.log('feedJSON: ' + JSON.stringify(feedJSON));
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
         // Update categories
+        console.log('Categories: '+ JSON.stringify(feedJSON.categories));
         const categories = feedJSON.categories.map(c => Category.parse(c));
+        console.log('Parsed Categories: ' + categories);
         dispatch({ type: UPDATE_CATEGORY, categories });
 
         // Update events
@@ -83,8 +86,8 @@ export function handleLogin(_email, _password) {
       .auth()
       .signInWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        const { email, photoUrl, displayName } = currentUser.user;
-        const user = { email, photoUrl, displayName };
+        const { email, photoURL, displayName, likesCount, commentsCount, postsCount } = currentUser.user;
+        const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
         dispatch({ type: UPDATE_CURRENT_USER, user });
       })
       // .catch(console.log('.catch() block of LoginFunction'));
@@ -110,18 +113,14 @@ export function handleSignup(_email, _password) {
 }
 
 export function handleSignOut() {
-  console.log('Inside \'mainFunction() block\' of handleSignOut from ~/actions');
   return function handleSignOutState(dispatch, getState) {
-    console.log('Inside \'functionState() block\' of handleSignOut from ~/actions');
     firebase
       .auth()
       .signOut()
-      // .then(() => console.log('Inside then() block of SignOut Function'))
       .then(() => {
         const user = undefined;
         dispatch({ type: UPDATE_CURRENT_USER, user });
       })
-      // .catch(() => console.log('Inside \'.catch() block\' of handleSignOut from ~/actions'));
       .catch(e => console.log('Can\'t log out'));
   };
 }

@@ -61,7 +61,7 @@ const preferences = (state = preferencesDefault, action) => {
 
 const feedDefault = {
   city: 'Omaha',
-  category: [],
+  categories: [],
   events: [],
   posts: [],
   businesses: [],
@@ -73,7 +73,7 @@ const feed = (state = feedDefault, action) => {
   case UPDATE_CITY:
     return Object.assign({}, state, { city: action.city });
   case UPDATE_CATEGORY:
-    return Object.assign({}, state, { category: action.categories });
+    return Object.assign({}, state, { categories: action.categories });
   case UPDATE_POSTS:
     return Object.assign({}, state, { posts: action.posts });
   case UPDATE_EVENTS:
@@ -85,10 +85,10 @@ const feed = (state = feedDefault, action) => {
 
 const userDefault = {
   currentUser: {
-    posts: 2,
-    comments: 81,
-    likes: 9,
-    name: 'Roger',
+    postsCount: 2,
+    commentsCount: 81,
+    likesCount: 9,
+    displayName: 'Roger',
   },
   loginError: undefined,
   signupError: undefined,

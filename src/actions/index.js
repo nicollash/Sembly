@@ -33,6 +33,7 @@ export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed(type = 'hot', category = 'all', _location = undefined) {
   return async function refreshFeedState(dispatch, getState) {
+    console.log("Refreshing feed...");
     const location = _location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : _location;
 
     const paramsObj = { type, category, ...location };
@@ -47,14 +48,11 @@ export function refreshFeed(type = 'hot', category = 'all', _location = undefine
     })
       .then(response => response.json())
       .then((feedJSON) => {
-        console.log('feedJSON: ' + JSON.stringify(feedJSON));
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
         // Update categories
-        console.log('Categories: '+ JSON.stringify(feedJSON.categories));
         const categories = feedJSON.categories.map(c => Category.parse(c));
-        console.log('Parsed Categories: ' + categories);
         dispatch({ type: UPDATE_CATEGORY, categories });
 
         // Update events

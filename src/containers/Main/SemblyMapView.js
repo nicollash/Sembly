@@ -28,6 +28,11 @@ const styles = {
 
 class SemblyMapView extends React.Component {
   componentWillMount() {
+    this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
+  }
+
+  updateFeed = () => {
+    this.props.refreshFeed(this.state.latitude, this.state.longitude);
   }
 
   componentDidMount() {
@@ -77,7 +82,11 @@ class SemblyMapView extends React.Component {
             longitudeDelta: 0.0421,
           }}
           showsUserLocation={true}
-          onRegionChange={(e) => this.props.refreshFeed(e.latitude, e.longitude)}
+          onRegionChange={(e) => { 
+            //this.props.refreshFeed(e.latitude, e.longitude)
+            this.setState({latitude: e.latitude, longitude: e.longitude});
+            this.debounceUpdateFeed();
+          }}
         >
           {eventPins}
           {postPins}

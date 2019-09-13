@@ -9,7 +9,7 @@ import {
   ImageBackground,
   Modal,
   Alert,
- Platform } from 'react-native';
+  Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
@@ -167,7 +167,13 @@ class NewPostView extends React.Component {
           secondFontSize={10}
         />
         <View style={{ backgroundColor: '#fff', zIndex: 10, elevation: (Platform.OS === 'ios' ? 3 : 0) }}>
-          <SemblyPlaceAutoComplete />
+          <SemblyPlaceAutoComplete onResult={(location) => {
+            this.setState({
+              post: { 
+                ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },
+              },
+            });
+          }} />
           <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }} />
         </View>
         <SemblyLabel label="CATEGORY" />

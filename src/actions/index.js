@@ -32,7 +32,7 @@ export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed(type = 'hot', category = 'all', _location = undefined) {
-  return function refreshFeedState(dispatch, getState) {
+  return async function refreshFeedState(dispatch, getState) {
     const location = _location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : _location;
 
     const paramsObj = { type, category, ...location };
@@ -145,15 +145,15 @@ export function clearSignupErrors() {
 
 export const SEND_POST = 'SEND_POST';
 export function createNewPost(post) {
-  console.log('NewPost found in ~/actions in CreateNewPost(): ' + JSON.stringify(post));
-  return function createNewPostState(dispatch, getState) {
-    // const newPost = { ...post };
-    console.log('NewPost found in ~/actions in CreateNewPost(): ' + JSON.stringify(post));
+  return async function createNewPostState(dispatch, getState) {
+    const token = await firebase.auth().currentUser.getIdToken();
+    console.log(token);
     fetch(`${API_URL}/newPost`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
     });

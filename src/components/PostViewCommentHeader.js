@@ -6,9 +6,11 @@ import {
   Text,
   TextInput,
   Image,
-  ScrollView,
-  TouchableOpacity,
 } from 'react-native';
+
+import { connect } from 'react-redux';
+import { addComment } from '../actions';
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../styles/theme';
 
@@ -29,6 +31,7 @@ class PostViewCommentHeader extends React.Component {
     super(props);
 
     this.state = {
+      comment: '',
     };
   }
 
@@ -58,7 +61,13 @@ class PostViewCommentHeader extends React.Component {
             style={{ left: '5%' }}
             placeholder="Comment on this post"
             placeholderTextColor="#B6B8C5"
-            onChangeText={comment => this.setState({ newComment: comment })}
+            onChangeText={comment => this.setState({ comment })}
+            onSubmitEditing={() => { 
+              this.props.addComment(this.props.postID, this.state.comment);
+              this.setState({comment: ''})
+            }
+            returnKeyType="send"
+            returnKeyLabel="done"
           />
         </View>
       </View>
@@ -75,10 +84,11 @@ PostViewCommentHeader.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state, ownProps) => ({
 });
 
-export default PostViewCommentHeader;
+const mapDispatchToProps = dispatch => ({
+  addComment: (postID, text) => dispatch(addComment({ postID, text })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostViewCommentHeader);

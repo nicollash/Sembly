@@ -96,6 +96,37 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     });
 });
 
+exports.addComment = functions.https.onRequest(async (request, response) => {
+  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
+  
+  const user = await getUser(request);
+
+  const postID = request.body.postID;
+  const text = request.body.text;
+  const comment = {
+    text,
+    createdAt: moment().format(),
+    author: {
+      id: user.uid,
+      name: user.email.substring(0, user.email.indexOf("@")),
+      avatar:
+        user.photoURL ||
+        "https://api.adorable.io/avatars/285/abott@adorable.png"
+    },
+  }
+
+  geofirestore.collection("Posts").doc(`${postID.id}`).update({
+    comments: firebase.firestore.FieldValue.arrayUnion(comment)
+  }).then(() => {
+    return response.status(200).send("Your post has been submitted");
+  }
+  ).catch(() => {
+    return response.status(400).send("");
+  });
+
+
+});
+
 exports.getFeed = functions.https.onRequest(async (request, response) => {
   console.log(util.inspect(request.query, { showHidden: false, depth: null }));
 

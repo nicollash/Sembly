@@ -186,7 +186,7 @@ PostViewUserPost.defaultProps = {
   username: 'SemblyUser',
   userPostPicture: null,
   location: "no Location",
-  comments: 9,
+  comments: 0,
 };
 
 PostViewUserPost.propTypes = {

@@ -186,7 +186,7 @@ class FeedView extends React.Component {
                 data={this.props.posts}
                 renderItem={({ item }) => (
                   <FeedUserPost
-                    location={item.title}
+                    location={item.location.name}
                     username={item.user.name}
                     userPostText={item.text}
                     userPostPicture={item.picture}

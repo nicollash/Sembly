@@ -52,7 +52,7 @@ class LocationView extends React.Component {
       height: 0,
       address: '1207 Harney St.',
       phoneNumber: '4025044929',
-      dateOfEvent: '14:30, 12 of November',
+      dateOfEvent: '2019/09/22 @2:00 PM',
     };
   }
 
@@ -90,19 +90,19 @@ class LocationView extends React.Component {
               borderRadius: 12,
             }}
             >
-              <View style={{ width: '100%', justifyContent: 'space-between' }}>
+              <View style={{ width: '100%' }}>
                 <View style={{ minHeight: 190, width: '100%' }}>
                   <ImageBackground
                     source={{ uri: location.picture }}
                     style={{ flex: 1 }}
                   />
                 </View>
-                <View style={{ marginTop: hp(1) }}>
+                <View style={{ marginTop: 10 }}>
                   <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     width: '96%',
-                    marginTop: '0.2%',
+                    marginTop: 1,
                   }}
                   >
                     <TouchableOpacity
@@ -119,6 +119,7 @@ class LocationView extends React.Component {
                         color: '#000',
                         fontFamily: Theme.fonts.bold,
                         maxWidth: wp(82),
+                        textAlign: 'center',
                       }}
                     >
                       {location.title}
@@ -184,7 +185,7 @@ class LocationView extends React.Component {
                               marginLeft: wp(0.5),
                             }}
                             >
-                              {this.state.phoneNumber}
+                              Date:{' '}
                             </Text>
                           )}
 

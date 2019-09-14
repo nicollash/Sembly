@@ -6,7 +6,7 @@ import Category from '../domain/Category';
 
 import _ from 'underscore';
 
-const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
+const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
 // const API_URL = ''
 
 // Temporary mock data
@@ -30,6 +30,7 @@ export function updateLocation(lat = 0, lon = 0) {
 
 export const UPDATE_CITY = 'UPDATE_CITY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
+export const UPDATE_FEED_LOADING = 'UPDATE_FEED_LOADING';
 export const UPDATE_FILTER = 'UPDATE_FILTER';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
@@ -42,7 +43,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
 
     const paramsObj = { type, category, ..._location };
     const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
-    
+    dispatch({ type: UPDATE_FEED_LOADING, status: true });
     fetch(`${API_URL}/getFeed?${params}`, {
       method: 'GET',
       headers: {
@@ -71,8 +72,13 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
         // Update posts
         const posts = feedJSON.posts.map(p => Post.parse(p));
         dispatch({ type: UPDATE_POSTS, posts });
+
+        dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
-      .catch(e => console.log(e));
+      .catch((e) => { 
+        console.log(e);
+        dispatch({ type: UPDATE_FEED_LOADING, status: false });
+      });
   };
 }
 

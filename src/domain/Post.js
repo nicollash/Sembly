@@ -41,6 +41,7 @@ class Post extends PostRecord<PostProps> {
   }
 
   static parse(data) {
+    console.log(data.comments);
     return new Post({
       id: data.id,
       title: data.title ? data.title : '',

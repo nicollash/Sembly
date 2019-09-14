@@ -85,18 +85,13 @@ const feed = (state = feedDefault, action) => {
 };
 
 const userDefault = {
-  currentUser: {
-    postsCount: 2,
-    commentsCount: 81,
-    likesCount: 9,
-    displayName: 'Roger',
-  },
+  currentUser: undefined,
   loginError: undefined,
   signupError: undefined,
   location: {
-    name: 'Sherbrooke',
-    lat: 45.404476,
-    lon: -71.88835,
+    name: 'Omaha',
+    lat: 41.25861,
+    lon: -95.93779,
   },
 };
 
@@ -116,7 +111,7 @@ const user = (state = userDefault, action) => {
 };
 
 // Uncomment the line below and refresh once to simulate a fresh install
-// storage.clear();
+//storage.clear();
 
 const semblyApp = combineReducers({
   appState,

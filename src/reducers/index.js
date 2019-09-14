@@ -7,7 +7,9 @@ import _ from 'underscore';
 import {
   SET_PANEL_NAVIGATION,
   // ---
+  UPDATE_FEED_LOADING,
   UPDATE_CATEGORY,
+  UPDATE_BUSINESSES,
   UPDATE_POSTS,
   UPDATE_EVENTS,
   // ---
@@ -60,6 +62,7 @@ const preferences = (state = preferencesDefault, action) => {
 };
 
 const feedDefault = {
+  isLoading: false,
   city: 'Omaha',
   categories: [],
   filters: [],
@@ -71,6 +74,8 @@ const feedDefault = {
 const feed = (state = feedDefault, action) => {
   switch (action.type) {
   // eslint-disable-next-line no-fallthrough
+  case UPDATE_FEED_LOADING:
+    return Object.assign({}, state, { isLoading: action.status });
   case UPDATE_CITY:
     return Object.assign({}, state, { city: action.city });
   case UPDATE_CATEGORY:
@@ -79,6 +84,8 @@ const feed = (state = feedDefault, action) => {
     return Object.assign({}, state, { posts: action.posts });
   case UPDATE_EVENTS:
     return Object.assign({}, state, { events: action.events });
+  case UPDATE_BUSINESSES:
+    return Object.assign({}, state, { businesses: action.businesses });
   default:
     return state;
   }

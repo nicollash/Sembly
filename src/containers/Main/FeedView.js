@@ -106,7 +106,7 @@ class FeedView extends React.Component {
             style={{ width: screenWidth }}
             refreshControl={(
               <RefreshControl
-                refreshing={this.state.refreshing}
+                refreshing={this.props.isLoading}
                 onRefresh={this._onRefresh}
               />
             )}
@@ -243,6 +243,7 @@ FeedView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
+  isLoading: state.feed.isLoading,
   city: state.feed.city,
   currentUser: state.user.currentUser,
   posts: state.feed.posts,

@@ -64,8 +64,8 @@ class PostViewCommentHeader extends React.Component {
             onChangeText={comment => this.setState({ comment })}
             onSubmitEditing={() => { 
               this.props.addComment(this.props.postID, this.state.comment);
-              this.setState({comment: ''})
-            }
+              this.setState({comment: ''});
+            }}
             returnKeyType="send"
             returnKeyLabel="done"
           />

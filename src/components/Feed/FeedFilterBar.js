@@ -36,7 +36,7 @@ class FeedFilterBar extends React.Component {
 
     this.state = {
       buttons: ['Hot', 'Best', 'New'],
-      tintcolor: ['#CCCCCC', '#77FED4'],
+      tintColor: ['#CCCCCC', '#77FED4'],
       activeIndex: 0,
     };
   }
@@ -47,16 +47,16 @@ class FeedFilterBar extends React.Component {
   componentDidMount() {
   }
 
+  componentWillUpdate() {
+  }
 
   render() {
     const buttons = this.state.buttons.map((button, idx) => (
       <FeedFilterButton
         title={button}
-        tint={idx === this.state.activeIndex ? this.state.tintcolor[1] : this.state.tintcolor[0]}
+        tint={idx === this.state.activeIndex ? this.state.tintColor[1] : this.state.tintColor[0]}
         actionOnPress={() => {
-          this.setState({ activeIndex: idx });
-          this.props.refreshFeed(this.state.buttons[this.state.activeIndex]);
-          console.log('refreshFeed filter: ' + this.state.buttons[this.state.activeIndex]);
+          this.setState({ activeIndex: idx }, () => this.props.refreshFeed(this.state.buttons[this.state.activeIndex]));
         }}
       />
     ));
@@ -85,7 +85,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshFeed: () => dispatch(refreshFeed()),
+  refreshFeed: a => dispatch(refreshFeed({ type: a })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedFilterBar);

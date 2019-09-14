@@ -67,10 +67,33 @@ class FeedView extends React.Component {
     this.setState({ refreshing: false });
   }
 
+  findDistance = (lat1, lon1, lat2, lon2, unit) => {
+    if ((lat1 === lat2) && (lon1 === lon2)) {
+      return 0;
+    }
+    {
+      const radlat1 = Math.PI * lat1 / 180;
+      const radlat2 = Math.PI * lat2 / 180;
+      const theta = lon1 - lon2;
+      const radtheta = Math.PI * theta / 180;
+      let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = dist * 180 / Math.PI;
+      dist = dist * 60 * 1.1515;
+      if (unit === 'K') { dist *= 1.609344; }
+      if (unit === 'N') { dist *= 0.8684; }
+      dist = dist.toFixed(1);
+      return dist === 0.0 ? 0.1 : dist;
+    }
+  }
+
   render() {
     const screenHeight = Dimensions.get('window').height;
     const screenWidth = Dimensions.get('window').width;
-    const { city, categories } = this.props;
+    const { city, categories, events, posts, navigation, location } = this.props;
     return (
       <View style={{
         backgroundColor: '#fff',
@@ -105,7 +128,8 @@ class FeedView extends React.Component {
                       titleColor={item.textColor}
                       backgroundColor={item.color}
                       border={item.border}
-                      onPress={() => this.setState({ selectedCategoryTitle: item.title, selectedCategoryIcon: icons[item.icon] })}
+                      onPress={() => this.setState({ selectedCategoryTitle: item.title, selectedCategoryIcon: icons[item.icon] },
+                        () => this.props.refreshFeed(this.state.selectedCategoryTitle))}
                     />
                   )}
                   ItemSeparatorComponent={() => (
@@ -123,7 +147,7 @@ class FeedView extends React.Component {
             <View style={{ marginTop: 10 }}>
               <FeedSeparator />
             </View>
-            {this.props.events.length > 0 && (
+            {events.length > 0 && (
               <View>
                 <View style={{ justifyContent: 'center', marginTop: 1, marginBottom: 13 }}>
                   <FeedSubHeader
@@ -135,12 +159,19 @@ class FeedView extends React.Component {
                   <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={this.props.events}
+                    data={events.sort((a, b) => this.findDistance(
+                      location.lat, location.lon, a.location.lat, a.location.lon,
+                    ) > this.findDistance(
+                      location.lat, location.lon, b.location.lat, b.location.lon,
+                    ))}
                     renderItem={({ item }) => (
                       <FeedScrollPost
                         picture={item.picture}
                         title={item.title}
-                        onEventPress={() => this.props.navigation.navigate('Location', { location: item })}
+                        onEventPress={() => navigation.navigate('Location', { location: item })}
+                        distance={this.findDistance(
+                          location.lat, location.lon, item.location.lat, item.location.lon, 'N',
+                        )}
                       />
                     )}
                     ItemSeparatorComponent={() => (
@@ -183,7 +214,7 @@ class FeedView extends React.Component {
             </View>
             <View style={{ left: '2.8%', marginTop: isIphoneX() ? 6 : 5 }}>
               <FlatList
-                data={this.props.posts}
+                data={posts}
                 renderItem={({ item }) => (
                   <FeedUserPost
                     location={item.location.name}
@@ -191,7 +222,7 @@ class FeedView extends React.Component {
                     userPostText={item.text}
                     userPostPicture={item.picture}
                     userProfilePicture={item.user.avatar}
-                    moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
+                    moveOnPress={() => navigation.navigate('Post', { post: item })}
                     comments={item.comments.length}
                   />
                 )}
@@ -218,10 +249,11 @@ const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
   events: state.feed.events,
   categories: state.feed.categories,
+  location: state.user.location,
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshFeed: () => dispatch(refreshFeed({})),
+  refreshFeed: a => dispatch(refreshFeed({ category: a })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedView);

@@ -132,9 +132,8 @@ class NewPostView extends React.Component {
   };
 
   submit = () => {
-    this.setState({ showSpinner: true });
-    this.props.createNewPost(this.state.post);
-    this.setState({ showSpinner: false });
+    this.setState({ submitted: true, showSpinner: true },
+      () => this.props.createNewPost(this.state.post));
   }
 
   render() {

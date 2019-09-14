@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class PostView extends React.Component {
+class LocationView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -52,6 +52,7 @@ class PostView extends React.Component {
       height: 0,
       address: '1207 Harney St.',
       phoneNumber: '4025044929',
+      dateOfEvent: '14:30, 12 of November',
     };
   }
 
@@ -61,25 +62,26 @@ class PostView extends React.Component {
   componentDidMount() {
   }
 
-  formatPhone(number) {
-    const identifier = number.substring(0, 3);
-    const middlePart = number.substring(3, 6);
-    const fourFinals = number.substring(6, 10);
-    return `(${identifier}) ${middlePart}-${fourFinals}`;
-  }
-
   openMaps = (lat, lng) => {
     const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
     const url = scheme + lat + ',' + lng;
     Linking.openURL(url);
   }
 
+  formatPhone = (number) => {
+    const regionCode = number.substring(0, 3);
+    const middlePart = number.substring(3, 6);
+    const fourFinals = number.substring(6, 10);
+    return `(${regionCode}) ${middlePart}-${fourFinals}`;
+  }
+
   render() {
-    const location = this.props.navigation.getParam('location', 'NOLOCATION');
-    console.log(location);
+    const { navigation } = this.props;
+    const location = navigation.getParam('location', e => console.warn(e));
+
     const screenHeight = Dimensions.get('window').height;
     return (
-      <View style={{ flex: 1 }}>
+      <View>
         <View style={{ height: (screenHeight - this.state.height) }}>
           <ScrollView>
             <View style={{
@@ -146,7 +148,6 @@ class PostView extends React.Component {
                       {location.text}
                     </Text>
                   </View>
-
                   <View style={{
                     flexDirection: 'row',
                     marginLeft: wp(10),
@@ -173,7 +174,20 @@ class PostView extends React.Component {
                       onPress={() => { Linking.openURL(`telprompt:${this.state.phoneNumber}`); }}
                     >
                       <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
-                        <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                        {location.constructor.name === 'Business'
+                          ? <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                          : (
+                            <Text style={{
+                              fontSize: wp(3.3),
+                              color: '#000',
+                              fontFamily: Theme.fonts.bold,
+                              marginLeft: wp(0.5),
+                            }}
+                            >
+                              {this.state.phoneNumber}
+                            </Text>
+                          )}
+
                         <Text
                           style={{
                             fontSize: wp(3.3),
@@ -182,14 +196,13 @@ class PostView extends React.Component {
                             marginLeft: wp(0.5),
                           }}
                         >
-                          {this.formatPhone(this.state.phoneNumber)}
+                          {location.constructor.name === 'Business' ? this.formatPhone(this.state.phoneNumber) : this.state.dateOfEvent }
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    <View style={{ position: 'absolute', right: 10, bottom: 7 }}>
-                      {//<SemblyRedeemButton />
-                      }
-                    </View>
+                    {/* <View style={{ position: 'absolute', right: 10, bottom: 7 }}> */}
+                    {/* <SemblyRedeemButton /> */}
+                    {/* </View> */}
                   </View>
                 </View>
               </View>
@@ -222,10 +235,10 @@ class PostView extends React.Component {
   }
 }
 
-PostView.defaultProps = {
+LocationView.defaultProps = {
 };
 
-PostView.propTypes = {
+LocationView.propTypes = {
 };
 
 
@@ -236,4 +249,4 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostView);
+export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

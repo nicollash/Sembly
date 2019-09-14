@@ -80,13 +80,13 @@ class PostView extends React.Component {
     console.log(JSON.stringify(post));
     return (
       <ScrollView style={{ height: 1000, width: wp(100) }}>
-      <View style={{
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        borderRadius: 12,
-      }}
-      >
-        <View style={{ height: screenHeight, width: screenWidth }}>
+        <View style={{
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          borderRadius: 12,
+        }}
+        >
+          <View style={{ height: screenHeight, width: screenWidth }}>
             <View>
               <PostViewUserPost
                 text={post.text}
@@ -107,8 +107,8 @@ class PostView extends React.Component {
               />
             </View> */}
             <View style={{ height: isIphoneX() ? 240 : 100 }} />
+          </View>
         </View>
-      </View>
       </ScrollView>
     );
   }

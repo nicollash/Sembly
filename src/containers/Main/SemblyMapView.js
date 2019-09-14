@@ -21,7 +21,7 @@ import { refreshFeed } from '../../actions';
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     width: '100%',
   },
 };
@@ -31,17 +31,13 @@ class SemblyMapView extends React.Component {
     this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
   }
 
-  updateFeed = () => {
-    this.props.refreshFeed(this.state.latitude, this.state.longitude);
-  }
-
   componentDidMount() {
     requestLocationPermission();
   }
 
-  generatePinTag = (name) => {
-    return name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
-  }
+  updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);
+
+  generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
 
   render() {
     const eventPins = this.props.events.map(event => (
@@ -50,7 +46,7 @@ class SemblyMapView extends React.Component {
         longitude={event.location.lon}
         pinColor="#927FE8"
         pinTag={event.title ? this.generatePinTag(event.title) : ''}
-        onPress={() => NavigationService.navigate('Location', { event })}
+        onPress={() => NavigationService.navigate('Location', { location: event })}
       />
     ));
     const postPins = this.props.posts.map(post => (
@@ -59,7 +55,7 @@ class SemblyMapView extends React.Component {
         longitude={post.location.lon}
         pinColor="#BADAFF"
         pinTag={post.user.name ? this.generatePinTag(post.user.name) : ''}
-        onPress={() => NavigationService.navigate('Location', { post })}
+        onPress={() => NavigationService.navigate('Location', { location: post })}
       />
     ));
     const businessPins = this.props.businesses.map(business => (
@@ -68,7 +64,7 @@ class SemblyMapView extends React.Component {
         longitude={business.location.lon}
         pinColor="#341C79"
         pinTag={business.name ? this.generatePinTag(business.name) : ''}
-        onPress={() => NavigationService.navigate('Location', { business })}
+        onPress={() => NavigationService.navigate('Location', { location: business })}
       />
     ));
     return (
@@ -81,10 +77,10 @@ class SemblyMapView extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-          showsUserLocation={true}
-          onRegionChange={(e) => { 
+          showsUserLocation
+          onRegionChange={(e) => {
             //this.props.refreshFeed(e.latitude, e.longitude)
-            this.setState({latitude: e.latitude, longitude: e.longitude});
+            this.setState({ latitude: e.latitude, longitude: e.longitude });
             this.debounceUpdateFeed();
           }}
         >

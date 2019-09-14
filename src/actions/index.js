@@ -69,10 +69,6 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
   };
 }
 
-// //////////////////////////////////////////// //
-// ////////////////Firebase//////////////////// //
-// //////////////////////////////////////////// //
-
 // Authentication
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
@@ -175,3 +171,9 @@ export function addComment({ postID = undefined, text = '' }) {
     dispatch({ type: ADD_COMMENT, comment });
   };
 }
+
+// Like Post
+// export const LIKE_POST = 'LIKE_POST';
+// export function likePost({ postID = undefined }) {
+//   const 
+// }

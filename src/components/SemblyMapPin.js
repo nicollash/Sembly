@@ -84,7 +84,7 @@ class SemblyMapPin extends React.Component {
 }
 
 SemblyMapPin.defaultProps = {
-  pinColor: 'white',
+  pinColor: '#fff',
   pinIcon: null,
   onPress: null,
 };

@@ -55,7 +55,7 @@ class FeedFilterBar extends React.Component {
         tint={idx === this.state.activeIndex ? this.state.tintcolor[1] : this.state.tintcolor[0]}
         actionOnPress={() => {
           this.setState({ activeIndex: idx });
-          this.props.refreshFeed({ type: this.state.buttons[this.state.activeIndex] });
+          this.props.refreshFeed(this.state.buttons[this.state.activeIndex]);
           console.log('refreshFeed filter: ' + this.state.buttons[this.state.activeIndex]);
         }}
       />

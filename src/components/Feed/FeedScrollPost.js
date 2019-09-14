@@ -1,5 +1,5 @@
 import React from 'react';
-
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
@@ -55,6 +55,13 @@ class FeedScrollPost extends React.Component {
   componentDidMount() {
   }
 
+  seeMore = (str) => {
+    if (str > 17) {
+      return '..';
+    }
+    return null;
+  }
+
   render() {
     return (
       <TouchableOpacity
@@ -73,8 +80,11 @@ class FeedScrollPost extends React.Component {
           height: 28,
         }}
         >
-          <Text style={styles.title}>{this.props.title.substring(0, 16)}</Text>
-          <Text style={styles.distance}>{this.props.distance}</Text>
+          <Text style={styles.title}>
+            {this.props.title.substring(0, 16)}
+            {this.seeMore(this.props.title.length)}
+          </Text>
+          <Text style={styles.distance}>{this.props.distance} mi</Text>
         </View>
       </TouchableOpacity>
     );
@@ -85,10 +95,11 @@ class FeedScrollPost extends React.Component {
 FeedScrollPost.defaultProps = {
   picture: null,
   title: 'blank',
+  distance: '?',
 };
 
 FeedScrollPost.propTypes = {
-
+  distance: propTypes.number,
 };
 
 

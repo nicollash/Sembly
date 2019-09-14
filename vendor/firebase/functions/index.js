@@ -137,8 +137,8 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     lon: parseFloat(request.query.lon)
   };
 
-  httpRequest(`http://localhost:5000/sembly-staging/us-central1/getEvents?lat=${lat}&lon=${lon}`);
-  httpRequest(`http://localhost:5000/sembly-staging/us-central1/getBusinesses?lat=${lat}&lon=${lon}`);
+  httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getEvents?lat=${lat}&lon=${lon}`);
+  httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getBusinesses?lat=${lat}&lon=${lon}`);
 
   geocode = await googleMaps
     .reverseGeocode({

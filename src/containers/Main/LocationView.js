@@ -155,7 +155,7 @@ class LocationView extends React.Component {
                   }}
                   >
                     <TouchableOpacity
-                      onPress={() => this.openMaps(location.location.lat, location.location.lng)}
+                      onPress={() => this.openMaps(location.location.lat, location.location.lon)}
                     >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                         <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />

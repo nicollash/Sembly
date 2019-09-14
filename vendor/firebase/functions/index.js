@@ -8,6 +8,9 @@ var moment = require("moment");
 // Fetch
 const httpRequest = require('request');
 
+// UUIDv4
+const uuid = require('uuidv4').default;
+
 // GeoStore initialization
 const {
   GeoCollectionReference,
@@ -47,14 +50,16 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
   let picture = "";
   if (request.body.pictureURI) {
     const filename = path.parse(request.body.pictureURI).base;
-
+    
     const imagesBucket = admin.storage().bucket("sembly-staging.appspot.com");
-    const imageFile = await imagesBucket.file(`images/posts/1234${filename}`);
-    await imageFile.save(Buffer.from(request.body.pictureData, "base64"));
+    const imageFile = await imagesBucket.file(`images/posts/${uuid()}${filename}`);
+    await imageFile.save(Buffer.from(request.body.pictureData, "base64"), {
+      metadata: { contentType: 'image/jpeg' },
+    });
 
     // Get the file URL
-    const metaData = await imageFile.getMetadata();
-    picture = metaData[0].mediaLink;
+    picture = (await imageFile.getSignedUrl({ action: 'read', expires: '03-17-2025' }))[0];
+
   }
 
   const { text, location, category } = request.body;
@@ -75,6 +80,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     .add({
       text,
       coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
+      createdAt: moment().format(),
       locationName,
       category,
       picture,
@@ -130,7 +136,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getFeed = functions.https.onRequest(async (request, response) => {
-  console.log(util.inspect(request.query, { showHidden: false, depth: null }));
+  //console.log(util.inspect(request.query, { showHidden: false, depth: null }));
 
   const { lat, lon } = {
     lat: parseFloat(request.query.lat),

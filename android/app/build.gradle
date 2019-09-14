@@ -138,6 +138,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-fs')
+    implementation project(':react-native-image-resizer')
     implementation project(':@react-native-firebase_app')
     implementation project(':@react-native-firebase_firestore')
     implementation project(':react-native-image-picker')

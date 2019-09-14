@@ -10,7 +10,10 @@ import {
   Modal,
   Alert,
   Platform } from 'react-native';
-import firebase from 'react-native-firebase';
+
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
+
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
@@ -88,7 +91,7 @@ class NewPostView extends React.Component {
       showSpinner: false,
       post: {
         location: {
-          name: 'Placeholder location',
+          name: '',
           lat: this.props.location.lat,
           lon: this.props.location.lon,
         },
@@ -122,10 +125,19 @@ class NewPostView extends React.Component {
       } else if (response.error) {
         Alert.alert('Content error', 'An error occured while picking your post picture. Please try again.');
       } else {
-        this.setState({
-          post: { 
-            ...this.state.post, pictureURI: response.uri, pictureData: response.data,
-          },
+        ImageResizer.createResizedImage(response.uri, 900, 900, 'JPEG', 0.9, 0).then(async (res) => {
+          const data = await RNFS.readFile(
+            res.path,
+            'base64',
+          );
+          
+          this.setState({
+            post: { 
+              ...this.state.post, pictureURI: res.uri, pictureData: data,
+            },
+          });
+        }).catch((err) => {
+          console.log(err);
         });
       }
     });
@@ -133,7 +145,10 @@ class NewPostView extends React.Component {
 
   submit = () => {
     this.setState({ submitted: true, showSpinner: true },
-      () => this.props.createNewPost(this.state.post));
+      () => {
+        this.props.createNewPost(this.state.post);
+        setTimeout(() => this.props.navigation.goBack(), 3000);
+      });
   }
 
   render() {

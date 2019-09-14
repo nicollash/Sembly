@@ -43,6 +43,10 @@ target 'sembly' do
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
 
 
+  pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'semblyTests' do
     inherit! :search_paths
     # Pods for testing

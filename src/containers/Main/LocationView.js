@@ -187,7 +187,8 @@ class PostView extends React.Component {
                       </View>
                     </TouchableOpacity>
                     <View style={{ position: 'absolute', right: 10, bottom: 7 }}>
-                      <SemblyRedeemButton />
+                      {//<SemblyRedeemButton />
+                      }
                     </View>
                   </View>
                 </View>

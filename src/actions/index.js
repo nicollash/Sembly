@@ -64,10 +64,6 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
         // Update posts
         const posts = feedJSON.posts.map(p => Post.parse(p));
         dispatch({ type: UPDATE_POSTS, posts });
-
-        // Update posts
-        //const businesses = feedJSON.posts.map(business => Business.parse(business));
-        //dispatch({ type: UPDATE_BUSINESSES, businesses });
       })
       .catch(e => console.log(e));
   };
@@ -141,7 +137,6 @@ export function clearSignupErrors() {
 
 
 // New Post
-
 export const SEND_POST = 'SEND_POST';
 export function createNewPost(post) {
   return async function createNewPostState(dispatch, getState) {
@@ -157,5 +152,26 @@ export function createNewPost(post) {
       body: JSON.stringify(post),
     });
     dispatch({ type: SEND_POST, post });
+  };
+}
+
+// Add comment
+export const ADD_COMMENT = 'ADD_COMMENT';
+export function addComment({ postID = undefined, text = '' }) {
+  const comment = { postID, text };
+  return async function addCommentState(dispatch, getState) {
+    const token = await firebase.auth().currentUser.getIdToken();
+    
+    console.log(`${API_URL}/addComment`);
+    fetch(`${API_URL}/addComment`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(comment),
+    });
+    dispatch({ type: ADD_COMMENT, comment });
   };
 }

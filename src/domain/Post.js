@@ -47,7 +47,7 @@ class Post extends PostRecord<PostProps> {
       text: data.text,
       category: data.category,
       picture: data.picture,
-      location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
+      location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude, name: data.locationName }),
       // createdAt: moment(data.createdAt),
       // location: new Location({ name: data.locationName, lat: data.latlng[0], lng: data.latlng[1] }),
       // comments: data.comments.map(comment => Comment.parse(comment)) || [],

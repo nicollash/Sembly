@@ -20,6 +20,7 @@
     "firebase-functions": "^3.1.0",
     "geofirestore": "^3.3.1",
     "google-maps": "^3.3.0",
+    "moment": "^2.24.0",
     "request": "^2.81.0"
   },
   "devDependencies": {

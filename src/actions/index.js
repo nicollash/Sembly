@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase';
 import Post from '../domain/Post';
 import Event from '../domain/Event';
+import Business from '../domain/Business';
 import Category from '../domain/Category';
 
 import _ from 'underscore';
@@ -58,6 +59,10 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
         // Update categories
         const categories = feedJSON.categories.map(c => Category.parse(c));
         dispatch({ type: UPDATE_CATEGORY, categories });
+
+        // Update businesses
+        const businesses = feedJSON.businesses.map(e => Business.parse(e));
+        dispatch({ type: UPDATE_BUSINESSES, businesses });
 
         // Update events
         const events = feedJSON.events.map(e => Event.parse(e));

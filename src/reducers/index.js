@@ -8,6 +8,7 @@ import {
   SET_PANEL_NAVIGATION,
   // ---
   UPDATE_CATEGORY,
+  UPDATE_BUSINESSES,
   UPDATE_POSTS,
   UPDATE_EVENTS,
   // ---
@@ -79,6 +80,8 @@ const feed = (state = feedDefault, action) => {
     return Object.assign({}, state, { posts: action.posts });
   case UPDATE_EVENTS:
     return Object.assign({}, state, { events: action.events });
+  case UPDATE_BUSINESSES:
+    return Object.assign({}, state, { businesses: action.businesses });
   default:
     return state;
   }

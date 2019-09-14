@@ -6,7 +6,7 @@ var path = require("path");
 var moment = require("moment");
 
 // Fetch
-const request = require('request');
+const httpRequest = require('request');
 
 // GeoStore initialization
 const {
@@ -49,7 +49,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     const filename = path.parse(request.body.pictureURI).base;
 
     const imagesBucket = admin.storage().bucket("sembly-staging.appspot.com");
-    const imageFile = await imagesBucket.file(`images/posts/${filename}`);
+    const imageFile = await imagesBucket.file(`images/posts/1234${filename}`);
     await imageFile.save(Buffer.from(request.body.pictureData, "base64"));
 
     // Get the file URL
@@ -136,7 +136,9 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     lat: parseFloat(request.query.lat),
     lon: parseFloat(request.query.lon)
   };
-  // Get the name of the location
+
+  httpRequest(`http://localhost:5000/sembly-staging/us-central1/getEvents?lat=${lat}&lon=${lon}`);
+  httpRequest(`http://localhost:5000/sembly-staging/us-central1/getBusinesses?lat=${lat}&lon=${lon}`);
 
   geocode = await googleMaps
     .reverseGeocode({
@@ -258,12 +260,12 @@ exports.getBusinesses = functions.https.onRequest(async (req, res) => {
     const { lat, lon, radius } = {
       lat: parseFloat(req.query.lat),
       lon: parseFloat(req.query.lon),
-      radius: parseInt(req.query.radius) || 50
+      radius: parseInt(req.query.radius) || 100
     };
 
     const fields = 'id,about,cover,description,location,name,phone';
   
-    request(
+    httpRequest(
         `https://graph.facebook.com/v3.2/search?type=place&center=${lat},${lon}&distance=${radius}&fields=${fields}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`,
         (error, response, body) => {
         //console.log(util.inspect(body, {showHidden: false, depth: null}))
@@ -290,6 +292,8 @@ exports.getBusinesses = functions.https.onRequest(async (req, res) => {
           batch.set(doc, business);
         });
         
-        batch.commit().then(() => res.status(200).send("Done") );
+        batch.commit().then(() => {
+          return res.status(200).send("Done") 
+        }).catch(e => console.log);
       });
   });

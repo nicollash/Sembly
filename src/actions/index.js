@@ -2,7 +2,8 @@ import firebase from 'react-native-firebase';
 import Post from '../domain/Post';
 import Event from '../domain/Event';
 import Category from '../domain/Category';
-//import Business from '../domain/Business';
+
+import _ from 'underscore';
 
 const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
 // const API_URL = ''
@@ -50,6 +51,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
     })
       .then(response => response.json())
       .then((feedJSON) => {
+        console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
@@ -157,8 +159,7 @@ export function addComment({ postID = undefined, text = '' }) {
   const comment = { postID, text };
   return async function addCommentState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
-    
-    console.log(`${API_URL}/addComment`);
+
     fetch(`${API_URL}/addComment`, {
       method: 'POST',
       headers: {
@@ -168,6 +169,9 @@ export function addComment({ postID = undefined, text = '' }) {
       },
       body: JSON.stringify(comment),
     });
+
+
+
     dispatch({ type: ADD_COMMENT, comment });
   };
 }

@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const firebase = require("firebase");
 const util = require("util");
 var path = require("path");
+var moment = require("moment");
 
 // Fetch
 const request = require('request');
@@ -84,7 +85,6 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
           user.photoURL ||
           "https://api.adorable.io/avatars/285/abott@adorable.png"
       },
-      comments: []
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
@@ -115,12 +115,14 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     },
   }
 
-  geofirestore.collection("Posts").doc(`${postID.id}`).update({
-    comments: firebase.firestore.FieldValue.arrayUnion(comment)
-  }).then(() => {
+  console.log(util.inspect(comment, {showHidden: false, depth: null}))
+
+  admin.firestore().collection("Posts").doc(`${postID}`).collection('comments').add(comment).then(() => {
+    console.log("added document");
     return response.status(200).send("Your post has been submitted");
   }
   ).catch(() => {
+    console.log("error");
     return response.status(400).send("");
   });
 
@@ -177,15 +179,19 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     })
     .get();
 
-  console.log(util.inspect(request.query, { showHidden: false, depth: null }));
+
   let feed = {
     city: locationName,
     categories: categories.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
-    posts: posts.docs.map(doc => {
-      return { id: doc.id, ...doc.data() };
-    }),
+    posts: await Promise.all(posts.docs.map(async doc => {
+      const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get()
+      return { 
+        id: doc.id, ...doc.data(),
+        comments: comments.docs.map(comment => comment.data()),
+      };
+    })),
     events: events.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
@@ -193,6 +199,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
       return { id: doc.id, ...doc.data() };
     })
   };
+  console.log(util.inspect(feed, { showHidden: false, depth: null }));
   return response.status(200).send(feed);
 });
 

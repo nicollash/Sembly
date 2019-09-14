@@ -61,9 +61,11 @@ class PostViewCommentHeader extends React.Component {
             style={{ left: '5%' }}
             placeholder="Comment on this post"
             placeholderTextColor="#B6B8C5"
+            value={this.state.comment} 
             onChangeText={comment => this.setState({ comment })}
             onSubmitEditing={() => { 
-              this.props.addComment(this.props.postID, this.state.comment);
+              const comment = this.state.comment;
+              this.props.addComment(this.props.postID, comment);
               this.setState({comment: ''});
             }}
             returnKeyType="send"

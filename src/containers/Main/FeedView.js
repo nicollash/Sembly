@@ -97,7 +97,6 @@ class FeedView extends React.Component {
     return (
       <View style={{
         backgroundColor: '#fff',
-        flex: 1,
         alignItems: 'center',
         borderRadius: 10,
       }}
@@ -227,7 +226,7 @@ class FeedView extends React.Component {
                   />
                 )}
               />
-              <View style={{ height: isIphoneX() ? 200 : hp(20) }} />
+              <View style={{ height: isIphoneX() ? 200 : 200 }} />
             </View>
           </ScrollView>
         </View>

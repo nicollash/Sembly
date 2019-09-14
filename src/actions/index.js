@@ -5,7 +5,6 @@ import Business from '../domain/Business';
 import Category from '../domain/Category';
 
 import _ from 'underscore';
-import { getFeed } from '../../vendor/firebase/functions';
 
 const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
 //const API_URL = 'http://localhost:5000/sembly-staging/us-central1';

@@ -4,6 +4,7 @@
  *
  * @format
  */
+const blacklist = require('metro-config/src/defaults/blacklist');
 
 module.exports = {
   transformer: {
@@ -13,5 +14,5 @@ module.exports = {
         inlineRequires: false,
       },
     }),
-  },
+  }
 };

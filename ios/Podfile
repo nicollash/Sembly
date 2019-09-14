@@ -47,6 +47,14 @@ target 'sembly' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      if target.name == "React"
+        target.remove_from_project
+      end
+    end
+  end
+  
   target 'semblyTests' do
     inherit! :search_paths
     # Pods for testing

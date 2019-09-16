@@ -6,9 +6,15 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import firebase from 'react-native-firebase';
-import { handleSignOut } from '../../actions';
+
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
+import ImagePicker from 'react-native-image-picker';
+
+import { handleSignOut, setProfilePicture } from '../../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../../styles/theme';
@@ -60,6 +66,9 @@ class ProfileView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      profile: {
+        photoURL: this.props.photoURL || undefined,
+      },
     };
   }
 
@@ -68,17 +77,58 @@ class ProfileView extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ submit: this.props.handleSignOut });
-
-    console.log("Profile INFORMSTIONS: " + JSON.stringify(this.props.currentUser))
   }
 
+  componentDidUpdate() {
+  }
+
+  chooseImage = () => {
+    ImagePicker.showImagePicker({
+      title: 'Select Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+        maxWidth: 900,
+        maxHeight: 900,
+        quality: 0.02,
+      },
+    }, (response) => {
+      if (response.didCancel) {
+        // User has cancelled imagespo
+      } else if (response.error) {
+        Alert.alert('Content error', 'An error occured while picking your post picture. Please try again.');
+      } else {
+        ImageResizer.createResizedImage(response.uri, 900, 900, 'JPEG', 0.9, 0).then(async (res) => {
+          const data = await RNFS.readFile(
+            res.path,
+            'base64',
+          );
+          this.setState({
+            profile: {
+              ...this.state.profile, pictureURI: res.uri, pictureData: data,
+            },
+          });
+          this.props.setProfilePicture(this.state.profile.pictureURI);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    });
+  };
+
   render() {
+    console.log("Current User: " + JSON.stringify(this.props.currentUser))
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <View style={styles.profileHeader}>
           <View>
-            <Image source={{ uri: this.props.currentUser.avatar }} style={{ height: 100, width: 100, borderRadius: 15 }} />
-            <TouchableOpacity>
+            <Image
+              source={{ uri: this.state.profile.photoURL }}
+              style={{ height: 100, width: 100, borderRadius: 15 }}
+            />
+            <TouchableOpacity
+              onPress={() => this.chooseImage()}
+            >
               <Image
                 source={cameraButton}
                 style={{
@@ -99,7 +149,7 @@ class ProfileView extends React.Component {
             marginTop: hp(3),
           }}
           >
-            {this.props.currentUser.name}
+            Your Name
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>
@@ -145,10 +195,13 @@ ProfileView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   currentUser: state.user.currentUser,
+  photoURL: state.user.photoURL,
+  displayName: state.user.displayName,
 });
 
 const mapDispatchToProps = dispatch => ({
   handleSignOut: () => dispatch(handleSignOut()),
+  setProfilePicture: photo => dispatch(setProfilePicture(photo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

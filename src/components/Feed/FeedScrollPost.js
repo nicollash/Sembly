@@ -56,7 +56,7 @@ class FeedScrollPost extends React.Component {
   }
 
   seeMore = (str) => {
-    if (str > 17) {
+    if (str > 16) {
       return '..';
     }
     return null;
@@ -81,7 +81,7 @@ class FeedScrollPost extends React.Component {
         }}
         >
           <Text style={styles.title}>
-            {this.props.title.substring(0, 16)}
+            {this.props.title.substring(0, 15)}
             {this.seeMore(this.props.title.length)}
           </Text>
           <Text style={styles.distance}>{this.props.distance} mi</Text>

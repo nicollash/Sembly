@@ -100,6 +100,8 @@ const userDefault = {
     lat: 41.25861,
     lon: -95.93779,
   },
+  photoURL: undefined,
+  displayName: 'roger',
 };
 
 const user = (state = userDefault, action) => {

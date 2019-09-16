@@ -38,7 +38,6 @@ export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed({ type = 'hot', category = 'all', location = undefined }) {
   return async function refreshFeedState(dispatch, getState) {
     console.log("Refreshing feed...");
-    console.log(location);
     const _location = location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : location;
 
     const paramsObj = { type, category, ..._location };
@@ -106,20 +105,18 @@ export function handleSignup(_email, _password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
-      // .then(() => console.log('Entered .then() block scope of handleSignup'))
       .then((currentUser) => {
-        const { email, photoUrl, displayName } = currentUser.user;
-        const user = { email, photoUrl, displayName };
+        const { email, photoURL, displayName, likesCount, commentsCount, postsCount } = currentUser.user;
+        const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
         dispatch({ type: UPDATE_CURRENT_USER, user });
       })
-      // .catch(() => console.log('Entered .catch() block scope of handleSignup'));
       .catch(error => dispatch({ type: SIGNUP_ERROR, message: error.message }));
   };
 }
 
 export function handleSignOut() {
-  return function handleSignOutState(dispatch, getState) {
-    firebase
+  return async function handleSignOutState(dispatch, getState) {
+    await firebase
       .auth()
       .signOut()
       .then(() => {
@@ -141,6 +138,24 @@ export function clearSignupErrors() {
   return function clearAuthErrorsState(dispatch, getState) {
     const message = undefined;
     dispatch({ type: SIGNUP_ERROR, message });
+  };
+}
+
+// Profile Changes
+export function setProfilePicture(photo) {
+  return async function setProfilePictureState(dispatch, getState) {
+    console.log('Return function of setProfilePicture');
+    await firebase
+      .auth()
+      .currentUser
+      .updateProfile({
+        photoURL: photo,
+      })
+      .then((user) => {
+        // console.log('then() block of setProfile Picture');
+        dispatch({ type: UPDATE_CURRENT_USER, user });
+      })
+      .catch(e => console.log('error'));
   };
 }
 

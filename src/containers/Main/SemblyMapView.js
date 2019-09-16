@@ -49,7 +49,6 @@ class SemblyMapView extends React.Component {
         onPress={() => NavigationService.navigate('Location', { location: event })}
       />
     ));
-    console.log( this.props.posts);
     const postPins = this.props.posts.map(post => (
       <SemblyMapPin
         latitude={post.location.lat}

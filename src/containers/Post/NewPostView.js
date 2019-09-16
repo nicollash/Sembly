@@ -132,7 +132,7 @@ class NewPostView extends React.Component {
           );
           
           this.setState({
-            post: { 
+            post: {
               ...this.state.post, pictureURI: res.uri, pictureData: data,
             },
           });

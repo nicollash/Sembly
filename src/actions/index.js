@@ -100,14 +100,14 @@ export function handleLogin(_email, _password) {
 }
 
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
-export function handleSignup(_email, _password) {
+export function handleSignup(_email, _password, name) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        const { email, photoURL, displayName, likesCount, commentsCount, postsCount } = currentUser.user;
-        const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
+        const { email, photoURL, displayName } = currentUser.user;
+        const user = { email, photoURL, displayName };
         dispatch({ type: UPDATE_CURRENT_USER, user });
       })
       .catch(error => dispatch({ type: SIGNUP_ERROR, message: error.message }));
@@ -151,8 +151,9 @@ export function setProfilePicture(photo) {
       .updateProfile({
         photoURL: photo,
       })
-      .then((user) => {
-        // console.log('then() block of setProfile Picture');
+      .then((currentUser) => {
+        const { email, photoURL, displayName, likesCount, commentsCount, postsCount } = currentUser.user;
+        const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
         dispatch({ type: UPDATE_CURRENT_USER, user });
       })
       .catch(e => console.log('error'));
@@ -187,7 +188,6 @@ export function addComment({ postID = undefined, text = '' }) {
   const comment = { postID, text };
   return async function addCommentState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
-
     fetch(`${API_URL}/addComment`, {
       method: 'POST',
       headers: {

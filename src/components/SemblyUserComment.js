@@ -79,12 +79,11 @@ class SemblyUserComment extends React.Component {
             </Text>
           </TouchableOpacity>
           <Text style={{ top: '3%', right: '40%', color: '#B9BDC5', fontSize: 11 }}>
-            {this.props.hoursLapsed}
+            {this.props.timeElapsed}
             {' '}
-            hours ago
+            minutes ago
           </Text>
         </View>
-
         <View style={styles.commentContent}>
           <Text style={styles.commentText}>
             {this.props.userComment}

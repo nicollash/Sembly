@@ -1,5 +1,7 @@
 import React from 'react';
 
+import _ from 'underscore';
+
 import {
   View,
   Text,
@@ -57,7 +59,6 @@ class FeedView extends React.Component {
   }
 
   componentDidMount() {
-    // this._panel.show(400);
     this.props.refreshFeed();
   }
 
@@ -94,6 +95,7 @@ class FeedView extends React.Component {
     const screenHeight = Dimensions.get('window').height;
     const screenWidth = Dimensions.get('window').width;
     const { city, categories, events, posts, navigation, location } = this.props;
+    console.log(posts);
     return (
       <View style={{
         backgroundColor: '#fff',
@@ -158,7 +160,7 @@ class FeedView extends React.Component {
                   <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={events.sort((a, b) => this.findDistance(
+                    data={_.sample(events || [], 5).sort((a, b) => this.findDistance(
                       location.lat, location.lon, a.location.lat, a.location.lon,
                     ) > this.findDistance(
                       location.lat, location.lon, b.location.lat, b.location.lon,

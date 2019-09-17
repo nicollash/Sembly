@@ -177,7 +177,7 @@ class SignupView extends React.Component {
             <View style={{ marginTop: hp(2) }}>
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={() => this.props.handleSignup(this.state.email, this.state.password)}
+                onPress={() => this.props.handleSignup(this.state.email, this.state.password, this.state.password.split('@')[0]) }
                 label="Signup"
               />
             </View>
@@ -215,7 +215,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSignup: (a, b) => dispatch(handleSignup(a, b)),
+  handleSignup: (a, b, c) => dispatch(handleSignup(a, b, c)),
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
 });

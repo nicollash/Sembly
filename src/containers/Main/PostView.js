@@ -19,6 +19,7 @@ import Theme from '../../styles/theme';
 import {
   FeedCategoryBar,
   FeedHorizontalScroll,
+  SemblyUserComment,
 } from '../../components';
 
 import FeedSeparator from '../../components/Feed/FeedSeparator';
@@ -99,11 +100,29 @@ class PostView extends React.Component {
                 comments={post.comments.length}
               />
             </View>
-            {/* <View>
+            <View>
               <FlatList
-                data={}
+                showsHorizontalScrollIndicator={false}
+                data={post.comments}
+                renderItem={({ item }) => (
+                  <SemblyUserComment
+                    userName={item.user.displayName}
+                    userPicture={item.user.photoURL}
+                    timeElapsed={item.createdAt}
+                    userComment={item.text}
+                  />
+                )}
+                ItemSeparatorComponent={() => (
+                  <View style={{ width: 10 }} />
+                )}
+                ListHeaderComponent={() => (
+                  <View style={{ width: 15 }} />
+                )}
+                ListFooterComponent={() => (
+                  <View style={{ width: 15 }} />
+                )}
               />
-            </View> */}
+            </View>
             <View style={{ height: isIphoneX() ? 240 : 100 }} />
           </View>
         </View>

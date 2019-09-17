@@ -76,7 +76,7 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ submit: this.props.handleSignOut });
+    this.props.navigation.setParams({ submit: () => this.props.handleSignOut() });
   }
 
   componentDidUpdate() {

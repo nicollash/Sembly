@@ -94,6 +94,10 @@ class FeedView extends React.Component {
   render() {
     const screenHeight = Dimensions.get('window').height;
     const { city, categories, events, posts, navigation, location } = this.props;
+<<<<<<< HEAD
+=======
+    console.log("render feed");
+>>>>>>> 9b92fe3ebc294b101e851c30b78cffe04bfb6314
     return (
       <ScrollView
         refreshControl={(

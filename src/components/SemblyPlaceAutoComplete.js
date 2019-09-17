@@ -88,9 +88,9 @@ class SemblyPlaceAutoComplete extends React.Component {
         }}
 
         query={{
-          key: 'AIzaSyAg0JOwrY-auLunyROB_18Qb9Q_fpzd9As',
+          key: 'AIzaSyBuV7du242le6JCps9J0rRf_tSPOIh8Qbc',
           language: 'en',
-          types: '(cities)',
+          types: 'establishment',
         }}
 
         styles={styles}
@@ -100,14 +100,14 @@ class SemblyPlaceAutoComplete extends React.Component {
 
         GooglePlacesSearchQuery={{
           rankby: 'distance',
-          type: 'city',
+          type: 'restaurant',
         }}
 
         GooglePlacesDetailsQuery={{
           fields: 'formatted_address',
         }}
         placeholderTextColor="#C7CAD1"
-        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
+        //filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
         renderLeftButton={() => (
           <Image source={locationIcon} style={{ alignSelf:'center', marginTop: 7, left: 10 }} />
         )}

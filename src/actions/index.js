@@ -202,12 +202,12 @@ export function addComment({ postID = undefined, text = '' }) {
       const c = new Comment({
         text,
         createdAt: moment(),
-        author: new User(getState().user.currentUser),
+        author: new User({ name: getState().user.currentUser.displayName }),
       });
 
       const post = _.findWhere(getState().feed.posts, { id: postID });
       
-      const posts = _.union(_.without(getState().feed.posts, post), [post.set('comments', _.union(post.comments, [c]))]);
+      const posts = _.union([post.set('comments', _.union([c], post.comments))], _.without(getState().feed.posts, post));
       
       dispatch({ type: UPDATE_POSTS, posts });
 
@@ -221,6 +221,14 @@ export function toggleLike({ postID = undefined }) {
   return async function toggleLikeState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
 
+    const post = _.findWhere(getState().feed.posts, { id: postID });
+    const index = _.indexOf(getState().feed.posts, post);
+    
+    const posts = [...getState().feed.posts];
+    posts[index] = post.set('liked', !post.get('liked'));
+
+    dispatch({ type: UPDATE_POSTS, posts });
+
     fetch(`${API_URL}/toggleLike`, {
       method: 'POST',
       headers: {
@@ -230,13 +238,8 @@ export function toggleLike({ postID = undefined }) {
       },
       body: JSON.stringify({ postID }),
     }).then(() => {
-      // Success, toggle like
-      const post = _.findWhere(getState().feed.posts, { id: postID });
       
-      const posts = _.union(_.without(getState().feed.posts, post), [post.set('liked', !post.get('liked'))]);
-      console.log(posts);
-      dispatch({ type: UPDATE_POSTS, posts });
-    });
+    }).catch(err => console.log(err));
   };
 }
 

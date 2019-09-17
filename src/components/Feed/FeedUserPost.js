@@ -1,5 +1,8 @@
 import React from 'react';
 
+import _ from 'underscore';
+
+import { connect } from "react-redux";
 
 import {
   TouchableOpacity,
@@ -10,10 +13,11 @@ import {
   Linking,
   Platform,
 } from 'react-native';
-import {
-  widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import Theme from '../../styles/theme';
+import { toggleLike } from '../../actions';
 
 const styles = StyleSheet.create({
   container: {},
@@ -30,12 +34,14 @@ class FeedUserPost extends React.Component {
   componentDidMount() {}
 
   openMaps = () => {
-    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    const url = scheme + `${this.state.lat}, ${this.state.lon}`;
-    Linking.openURL(url);
+   // const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+   // const url = scheme + `${this.state.lat}, ${this.state.lon}`;
+   // Linking.openURL(url);
   };
 
   render() {
+    const post = _.findWhere(this.props.posts, { id: this.props.postID });
+
     return (
       <View
         style={{
@@ -48,7 +54,7 @@ class FeedUserPost extends React.Component {
           borderColor: '#F0F0F0',
           minHeight: 30,
           maxHeight: 500,
-          maxWidth: wp(95)
+          maxWidth: wp(95),
         }}
       >
         <View
@@ -59,14 +65,14 @@ class FeedUserPost extends React.Component {
             justifyContent: 'flex-start',
             alignItems: 'center',
             marginTop: 5,
-            marginLeft: 12
+            marginLeft: 12,
           }}
         >
           <TouchableOpacity
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <View>
@@ -75,9 +81,9 @@ class FeedUserPost extends React.Component {
                   height: 32,
                   width: 32,
                   borderRadius: 16,
-                  resizeMode: 'cover'
+                  resizeMode: 'cover',
                 }}
-                source={{ uri: this.props.userProfilePicture }}
+                source={{ uri: post.user.avatar }}
               />
             </View>
             <Text
@@ -90,11 +96,12 @@ class FeedUserPost extends React.Component {
                 marginLeft: 7
               }}
             >
-              {this.props.username}
+              {post.liked ? "Y" : "N"}
+              {post.user.name}
             </Text>
           </TouchableOpacity>
         </View>
-        {this.props.userPostPicture !== '' && (
+        {post.picture !== '' && (
           <TouchableOpacity
             activeOpacity={this.props.NotTouchable}
             style={{
@@ -108,7 +115,7 @@ class FeedUserPost extends React.Component {
           >
             <View style={{ minHeight: 100, maxHeight: 200 }}>
               <Image
-                source={{ uri: this.props.userPostPicture }}
+                source={{ uri: post.picture }}
                 style={{
                   height: '100%',
                   width: '100%',
@@ -123,14 +130,14 @@ class FeedUserPost extends React.Component {
                 fontFamily: Theme.fonts.regular,
                 lineHeight: 19,
                 color: '#26315F',
-                marginBottom: 10
+                marginBottom: 10,
               }}
             >
-              {this.props.userPostText}
+              {post.text}
             </Text>
           </TouchableOpacity>
         )}
-        {this.props.userPostPicture === '' && (
+        {post.picture === '' && (
           <TouchableOpacity
             style={{
               marginLeft: 15,
@@ -148,7 +155,7 @@ class FeedUserPost extends React.Component {
                 marginBottom: 10
               }}
             >
-              {this.props.userPostText}
+              {post.text}
             </Text>
           </TouchableOpacity>
         )}
@@ -160,14 +167,14 @@ class FeedUserPost extends React.Component {
             width: '90%',
             marginLeft: '6%',
             marginTop: 10,
-            paddingBottom: 10
+            paddingBottom: 10,
           }}
         >
           <TouchableOpacity onPress={this.openMaps}>
             <View
               style={{
                 flexDirection: 'row',
-                width: 150
+                width: 150,
               }}
             >
               <Image
@@ -175,13 +182,13 @@ class FeedUserPost extends React.Component {
               />
               <View style={{ width: 5 }} />
               <Text style={[styles.postText, { marginTop: 1 }]}>
-                {this.props.location}
+                {post.location.name}
               </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              flexDirection: 'row'
+              flexDirection: 'row',
             }}
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
@@ -191,26 +198,26 @@ class FeedUserPost extends React.Component {
             />
             <View style={{ width: '8%' }} />
             <Text style={[styles.postText, { marginTop: 2 }]}>
-              {this.props.comments}
+              {post.comments.length}
             </Text>
           </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
-              marginLeft: '18%'
+              marginLeft: '18%',
             }}
           >
             <TouchableOpacity
-              onPress={() => this.setState({ liked: !this.state.liked })}
+              onPress={() => this.props.toggleLike(post.id)}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image
-                  style={this.props.liked ? {} : { tintColor: '#B9BDC5' }}
+                  style={post.liked ? {} : { tintColor: '#B9BDC5' }}
                   source={require('../../../assets/images/LikedPost.png')}
                 />
                 <View style={{ width: 7 }} />
                 <Text style={styles.postText}>
-                  {this.props.likes} {this.props.likes > 1 ? 'Likes' : 'Like'}
+                  {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -223,19 +230,19 @@ class FeedUserPost extends React.Component {
 
 FeedUserPost.defaultProps = {
   userProfilePicture: require('../../../assets/images/ProfileIconTab.png'),
-  username: 'User',
-  userPostPicture: null,
-  location: 'Location',
-  comments: null,
-  NotTouchable: 0.2,
-  userPostText: null,
-  moveOnPress: null,
-  likes: 0,
-  liked: false,
+  postID: 0,
 };
 
-FeedUserPost.propTypes = {};
+const mapStateToProps = (state) => ({
+  posts: state.feed.posts,
+});
 
+const mapDispatchToProps = dispatch => ({
+  toggleLike: (postID) => dispatch(toggleLike({postID})),
+});
 
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FeedUserPost);
 
-export default FeedUserPost;

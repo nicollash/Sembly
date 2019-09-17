@@ -127,14 +127,22 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
 
   admin.firestore().collection("Posts").doc(`${postID}`).collection('comments').add(comment).then(() => {
     console.log("added document");
-    return response.status(200).send("Your post has been submitted");
+    return response.status(200).send("Your comment has been submitted");
   }
   ).catch(() => {
     console.log("error");
     return response.status(400).send("");
   });
+});
 
+exports.toggleLike = functions.https.onRequest(async (request, response) => {
+  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
+  
+  const user = await getUser(request);
 
+  const postID = request.body.postID;
+
+  return response.status(200).send("Your like has been submitted");
 });
 
 exports.getFeed = functions.https.onRequest(async (request, response) => {

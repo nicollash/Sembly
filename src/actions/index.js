@@ -208,7 +208,7 @@ export function addComment({ postID = undefined, text = '' }) {
       const post = _.findWhere(getState().feed.posts, { id: postID });
       
       const posts = _.union(_.without(getState().feed.posts, post), [post.set('comments', _.union(post.comments, [c]))]);
-      console.log(posts);
+      
       dispatch({ type: UPDATE_POSTS, posts });
 
     });
@@ -234,7 +234,7 @@ export function toggleLike({ postID = undefined }) {
       const post = _.findWhere(getState().feed.posts, { id: postID });
       
       const posts = _.union(_.without(getState().feed.posts, post), [post.set('liked', !post.get('liked'))]);
-
+      console.log(posts);
       dispatch({ type: UPDATE_POSTS, posts });
     });
   };

@@ -216,13 +216,7 @@ class FeedView extends React.Component {
                 data={posts}
                 renderItem={({ item }) => (
                   <FeedUserPost
-                    location={item.location.name}
-                    username={item.user.name}
-                    userPostText={item.text}
-                    likes={item.likes}
-                    liked={item.liked}
-                    userPostPicture={item.picture}
-                    userProfilePicture={item.user.avatar}
+                    postID={item.id}
                     moveOnPress={() => navigation.navigate('Post', { post: item })}
                     comments={item.comments.length}
                   />

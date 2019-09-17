@@ -55,7 +55,7 @@ class Post extends PostRecord<PostProps> {
       // comments: data.comments.map(comment => Comment.parse(comment)) || [],
       comments: data.comments ? data.comments.map(comment => Comment.parse(comment)) : [],
       user: User.parse(data.user),
-      // liked: data.liked,
+      liked: data.liked || false,
     });
   }
 }

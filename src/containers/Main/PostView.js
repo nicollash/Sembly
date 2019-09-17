@@ -46,7 +46,7 @@ class PostView extends React.Component {
 
     const { navigation } = this.props;
     const post = _.findWhere(this.props.posts, { id: navigation.getParam('post').id });
-    console.log(post.comments);
+    
     return (
       <ScrollView style={{ height: 1000, width: wp(100) }}>
         <View style={{
@@ -58,12 +58,14 @@ class PostView extends React.Component {
           <View style={{ height: screenHeight, width: screenWidth }}>
             <View>
               <PostViewUserPost
+                postID={post.id}
                 text={post.text}
                 username={post.user.name}
                 userProfilePicture={{ uri: post.user.avatar }}
                 userPostPicture={post.picture}
                 location={post.location.name}
                 likes={post.likes}
+                liked={post.liked}
                 backPress={() => this.props.navigation.navigate('Feed')}
               />
               <PostViewCommentHeader

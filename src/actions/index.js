@@ -225,8 +225,9 @@ export function toggleLike({ postID = undefined }) {
     const index = _.indexOf(getState().feed.posts, post);
     
     const posts = [...getState().feed.posts];
+    const likes = post.get('likes');
     posts[index] = post.set('liked', !post.get('liked'));
-
+    posts[index] = posts[index].set('likes', posts[index].get('liked') ? likes + 1 : likes - 1);
     dispatch({ type: UPDATE_POSTS, posts });
 
     fetch(`${API_URL}/toggleLike`, {

@@ -19,6 +19,7 @@ const PostRecord = Immutable.Record({
   comments: [],
   user: new User(),
   liked: false,
+  likes: 0,
 });
 
 const PostProps = {

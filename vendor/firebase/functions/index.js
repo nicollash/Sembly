@@ -82,7 +82,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     .add({
       text,
       coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
-      createdAt: moment().format(),
+      createdAt: moment().toDate(),
       locationName,
       category,
       picture,
@@ -113,7 +113,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
   const text = request.body.text;
   const comment = {
     text,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdAt: moment().toDate(),
     author: {
       id: user.uid,
       name: user.email.substring(0, user.email.indexOf("@")),
@@ -216,7 +216,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
       return { id: doc.id, ...doc.data() };
     }),
     posts: await Promise.all(_.sortBy(posts.docs, orderField).map(async doc => {
-      const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get()
+      const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
       return { 
         id: doc.id, ...doc.data(),
         comments: comments.docs.map(comment => comment.data()),
@@ -256,7 +256,6 @@ exports.getEvents = functions.https.onRequest(async (request, response) => {
       // venue.address.latitude
       // venue.address.longitude
       let batch = geofirestore.batch();
-      let events = [];
       res.events.forEach(ev => {
         const event = {
           id: `eb-${ev.id}`,

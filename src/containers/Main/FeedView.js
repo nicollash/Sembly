@@ -219,6 +219,7 @@ class FeedView extends React.Component {
                     location={item.location.name}
                     username={item.user.name}
                     userPostText={item.text}
+                    likes={item.likes}
                     userPostPicture={item.picture}
                     userProfilePicture={item.user.avatar}
                     moveOnPress={() => navigation.navigate('Post', { post: item })}
@@ -236,6 +237,7 @@ class FeedView extends React.Component {
 }
 
 FeedView.defaultProps = {
+  likes: 0,
 };
 
 FeedView.propTypes = {

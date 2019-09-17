@@ -59,7 +59,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
 
         // Update categories
         const categories = feedJSON.categories.map(c => Category.parse(c));
-        dispatch({ type: UPDATE_CATEGORY, categories });
+        dispatch({ type: UPDATE_CATEGORY, categories: _.sortBy(categories, 'id') });
 
         // Update businesses
         const businesses = feedJSON.businesses.map(e => Business.parse(e));
@@ -205,11 +205,11 @@ export function addComment({ postID = undefined, text = '' }) {
         author: new User(getState().user.currentUser),
       });
 
-      const post = _.findWhere(getState().feed.posts, { id: postID }).set('comments', _.union(post.comments, [c]));
+      const post = _.findWhere(getState().feed.posts, { id: postID });
       
-      const posts = _.union(_.without(getState().feed.posts, [post]));
+      const posts = _.union(_.without(getState().feed.posts, post), [post.set('comments', _.union(post.comments, [c]))]);
       console.log(posts);
-      //dispatch({ type: UPDATE_POSTS, posts });
+      dispatch({ type: UPDATE_POSTS, posts });
 
     });
     

@@ -153,22 +153,11 @@ class PostViewUserPost extends React.Component {
           }}
           >
             <TouchableOpacity onPress={() => this.setState({ liked: !this.state.liked })}>
-              {this.state.liked
-              && (
-                <View style={{ flexDirection: 'row' }}>
-                  <Image source={require('../../assets/images/LikedPost.png')} />
-                  <View style={{ width: '12%' }} />
-                  <Text style={styles.postText}>Liked</Text>
-                </View>
-              )}
-              {!this.state.liked
-              && (
-                <View style={{ flexDirection: 'row' }}>
-                  <Image style={{ tintColor: '#B9BDC5' }} source={require('../../assets/images/LikedPost.png')} />
-                  <View style={{ width: '12%' }} />
-                  <Text style={styles.postText}>Like</Text>
-                </View>
-              )}
+              <View style={{ flexDirection: 'row' }}>
+                <Image style={this.state.liked ? {} : { tintColor: '#B9BDC5' }} source={require('../../assets/images/LikedPost.png')} />
+                <View style={{ width: '12%' }} />
+                <Text style={styles.postText}>{this.props.likes} {this.props.likes > 1 ? "Likes" : "Like" }</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -187,6 +176,7 @@ PostViewUserPost.defaultProps = {
   userPostPicture: null,
   location: "no Location",
   comments: 0,
+  likes: 0,
 };
 
 PostViewUserPost.propTypes = {

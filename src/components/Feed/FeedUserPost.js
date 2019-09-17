@@ -204,22 +204,11 @@ class FeedUserPost extends React.Component {
           }}
           >
             <TouchableOpacity onPress={() => this.setState({ liked: !this.state.liked })}>
-              {this.state.liked
-              && (
                 <View style={{ flexDirection: 'row' }}>
-                  <Image source={require('../../../assets/images/LikedPost.png')} />
+                  <Image style={this.state.liked ? {} : { tintColor: '#B9BDC5' }} source={require('../../../assets/images/LikedPost.png')} />
                   <View style={{ width: 7 }} />
-                  <Text style={[styles.postText, { marginTop: 2 }]}>Liked</Text>
+                  <Text style={styles.postText}>{this.props.likes} {this.props.likes > 1 ? "Likes" : "Like" }</Text>
                 </View>
-              )}
-              {!this.state.liked
-              && (
-                <View style={{ flexDirection: 'row' }}>
-                  <Image style={{ tintColor: '#B9BDC5' }} source={require('../../../assets/images/LikedPost.png')} />
-                  <View style={{ width: 7 }} />
-                  <Text style={[styles.postText, { marginTop: 2 }]}>Like</Text>
-                </View>
-              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -238,6 +227,7 @@ FeedUserPost.defaultProps = {
   NotTouchable: 0.2,
   userPostText: null,
   moveOnPress: null,
+  likes: 0,
 };
 
 FeedUserPost.propTypes = {

@@ -38,7 +38,7 @@ class SemblyMapPin extends React.Component {
         >
           <View>
             <Image
-              source={require('../../assets/images/SemblyMapPinTemplate.png')}
+              source={require('../../assets/images/MapPinTemplate.png')}
               style={{ tintColor: this.props.pinColor }}
             />
             {this.props.pinIcon !== null && (

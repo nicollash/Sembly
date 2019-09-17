@@ -50,9 +50,9 @@ class LocationView extends React.Component {
 
     this.state = {
       height: 0,
-      address: '1207 Harney St.',
-      phoneNumber: '4025044929',
-      dateOfEvent: '2019/09/22 @2:00 PM',
+      address: '-----',
+      phoneNumber: '-----',
+      dateOfEvent: '2019/--/-- @-:-- PM',
     };
   }
 
@@ -122,7 +122,7 @@ class LocationView extends React.Component {
                         textAlign: 'center',
                       }}
                     >
-                      {location.title}
+                      {location.title || location.name}
                     </Text>
                     <TouchableOpacity
                       onPress={() => Share.share({
@@ -146,7 +146,7 @@ class LocationView extends React.Component {
                       color: '#000',
                     }}
                     >
-                      {location.text}
+                      {location.text || location.about}
                     </Text>
                   </View>
                   <View style={{

@@ -14,7 +14,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const styles = StyleSheet.create({
   headerText: {
-    fontSize: 36,
+    fontSize: 34,
     fontFamily: Theme.fonts.bold,
     color: '#1F1F1F',
     maxWidth: wp(80),

@@ -76,8 +76,6 @@ class PostView extends React.Component {
 
     const { navigation } = this.props;
     const post = navigation.getParam('post');
-
-    console.log(JSON.stringify(post));
     return (
       <ScrollView style={{ height: 1000, width: wp(100) }}>
         <View style={{

@@ -80,7 +80,6 @@ class SemblyPlaceAutoComplete extends React.Component {
         renderDescription={row => row.description}
 
         onPress={(data, details = null) => {
-          console.log(details);
           this.props.onResult({ 
             name: details.vicinity,
             lat: details.geometry.location.lat, 

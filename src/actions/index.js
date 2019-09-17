@@ -217,6 +217,29 @@ export function addComment({ postID = undefined, text = '' }) {
   };
 }
 
+export function toggleLike({ postID = undefined }) {
+  return async function toggleLikeState(dispatch, getState) {
+    const token = await firebase.auth().currentUser.getIdToken();
+
+    fetch(`${API_URL}/toggleLike`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ postID }),
+    }).then(() => {
+      // Success, toggle like
+      const post = _.findWhere(getState().feed.posts, { id: postID });
+      
+      const posts = _.union(_.without(getState().feed.posts, post), [post.set('liked', !post.get('liked'))]);
+
+      dispatch({ type: UPDATE_POSTS, posts });
+    });
+  };
+}
+
 // Like Post
 // export const LIKE_POST = 'LIKE_POST';
 // export function likePost({ postID = undefined }) {

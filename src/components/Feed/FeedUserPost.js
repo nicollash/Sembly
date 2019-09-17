@@ -2,7 +2,7 @@ import React from 'react';
 
 import _ from 'underscore';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
 import {
   TouchableOpacity,
@@ -10,8 +10,6 @@ import {
   Image,
   View,
   Text,
-  Linking,
-  Platform,
 } from 'react-native';
 
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -96,7 +94,6 @@ class FeedUserPost extends React.Component {
                 marginLeft: 7
               }}
             >
-              {post.liked ? "Y" : "N"}
               {post.user.name}
             </Text>
           </TouchableOpacity>
@@ -109,7 +106,7 @@ class FeedUserPost extends React.Component {
               alignSelf: 'center',
               marginLeft: '2.5%',
               minHeight: 80,
-              width: '95%'
+              width: '95%',
             }}
             onPress={this.props.moveOnPress}
           >
@@ -119,7 +116,7 @@ class FeedUserPost extends React.Component {
                 style={{
                   height: '100%',
                   width: '100%',
-                  borderRadius: 8
+                  borderRadius: 8,
                 }}
               />
             </View>
@@ -142,7 +139,7 @@ class FeedUserPost extends React.Component {
             style={{
               marginLeft: 15,
               marginTop: 15,
-              width: '90%'
+              width: '90%',
             }}
             onPress={this.props.moveOnPress}
           >
@@ -152,7 +149,7 @@ class FeedUserPost extends React.Component {
                 fontFamily: Theme.fonts.regular,
                 lineHeight: 19,
                 color: '#26315F',
-                marginBottom: 10
+                marginBottom: 10,
               }}
             >
               {post.text}

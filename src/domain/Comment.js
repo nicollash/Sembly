@@ -21,7 +21,7 @@ class Comment extends CommentRecord<CommentProps> {
     return new Comment({
       text: data.text,
       createdAt: moment(data.createdAt),
-      author: new User(data.user),
+      user: new User(data.author),
     });
   }
 }

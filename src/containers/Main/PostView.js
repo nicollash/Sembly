@@ -9,6 +9,7 @@ import {
   View,
   ScrollView,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
@@ -45,6 +46,7 @@ class PostView extends React.Component {
 
     const { navigation } = this.props;
     const post = _.findWhere(this.props.posts, { id: navigation.getParam('post').id });
+    console.log(post.comments);
     return (
       <ScrollView style={{ height: 1000, width: wp(100) }}>
         <View style={{
@@ -75,9 +77,9 @@ class PostView extends React.Component {
                 data={post.comments}
                 renderItem={({ item }) => (
                   <SemblyUserComment
-                    userName={item.user.displayName}
-                    userPicture={item.user.photoURL}
-                    timeElapsed={item.createdAt}
+                    userName={item.user.name}
+                    userPicture={item.user.avatar}
+                    timeElapsed={item.createdAt.fromNow()}
                     userComment={item.text}
                   />
                 )}

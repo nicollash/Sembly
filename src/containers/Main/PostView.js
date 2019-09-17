@@ -9,6 +9,7 @@ import {
   View,
   ScrollView,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';

@@ -26,7 +26,10 @@ class FeedSeparator extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../../../assets/images/HomeViewHorizontalBorderLine.png')} />
+        <Image
+          source={require('../../../assets/images/HomeViewHorizontalBorderLine.png')}
+          style={{ width: this.props.width }}
+        />
         <View style={{ height: '1.5%' }} />
       </View>
     );
@@ -34,6 +37,7 @@ class FeedSeparator extends React.Component {
 }
 
 FeedSeparator.defaultProps = {
+  width: 400,
 };
 
 FeedSeparator.propTypes = {

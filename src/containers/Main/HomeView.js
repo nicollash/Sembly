@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -22,11 +23,16 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = {
   container: {
-    flex: 1,
+    // flex: 1,
+    height: hp(100),
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    borderTopRightRadius: hp(2),
+  },
+  panel: {
+    // flex: 1,
+    height: hp(100),
+    backgroundColor: '#fff',
     borderTopLeftRadius: hp(2),
+    borderTopRightRadius: hp(2),
   },
   dragHandler: {
     alignSelf: 'stretch',
@@ -52,7 +58,7 @@ class HomeView extends React.Component {
   }
 
   componentDidMount() {
-    this._panel.show(400);
+    this._panel.show(1000);
   }
 
   render() {
@@ -61,16 +67,16 @@ class HomeView extends React.Component {
         <SemblyMapView />
         <SlidingUpPanel
           showBackdrop={false}
-          height={deviceHeight}
-          draggableRange={{ top: deviceHeight - 128, bottom: isIphoneX() ? 23 : 20 }}
-          friction={1}
+          height={hp(100)}
+          draggableRange={{ top: hp(100) - 128, bottom: isIphoneX() ? 90 : 90 }}
+          friction={0.1}
           ref={(c) => {
             this._panel = c;
             SlidingPanelNavigationService.setPanel(c);
           }}
         >
           {dragHandler => (
-            <View style={styles.container}>
+            <View style={styles.panel}>
               <View style={styles.dragHandler} {...dragHandler}>
                 <TouchableOpacity
                   hitSlop={{ top: 10, bottom: 10, left: 80, right: 80 }}

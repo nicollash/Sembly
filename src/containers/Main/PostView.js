@@ -48,7 +48,7 @@ class PostView extends React.Component {
     const post = _.findWhere(this.props.posts, { id: navigation.getParam('post').id });
     console.log(post.comments);
     return (
-      <ScrollView style={{ height: 1000, width: wp(100) }}>
+      <ScrollView style={{ width: wp(100) }}>
         <View style={{
           justifyContent: 'flex-start',
           alignItems: 'center',
@@ -71,9 +71,9 @@ class PostView extends React.Component {
                 comments={post.comments.length}
               />
             </View>
-            <View>
+            <View style={{ marginTop: -60 }}>
               <FlatList
-                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 data={post.comments}
                 renderItem={({ item }) => (
                   <SemblyUserComment
@@ -84,13 +84,7 @@ class PostView extends React.Component {
                   />
                 )}
                 ItemSeparatorComponent={() => (
-                  <View style={{ width: 10 }} />
-                )}
-                ListHeaderComponent={() => (
-                  <View style={{ width: 15 }} />
-                )}
-                ListFooterComponent={() => (
-                  <View style={{ width: 15 }} />
+                  <View style={{ height: 8 }} />
                 )}
               />
             </View>

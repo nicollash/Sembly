@@ -5,7 +5,7 @@ import _ from 'underscore';
 
 import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator,
-  createAppContainer, SafeAreaView, NavigationActions,
+  createAppContainer, SafeAreaView, NavigationActions, withNavigationFocus,
 } from 'react-navigation';
 
 import Geolocation from 'react-native-geolocation-service';
@@ -133,7 +133,6 @@ class AppRoot extends React.PureComponent {
   }
 
   componentWillMount() {
-
   }
 
   componentDidMount() {
@@ -141,7 +140,16 @@ class AppRoot extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
+    console.log('approot: ' + JSON.stringify(prevProps.currentUser) + 'now:' + JSON.stringify(this.props.currentUser));
     if (this.props.currentUser !== prevProps.currentUser) this.handleUserStatus();
+    if (this.props.currentUser === undefined) {
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Welcome',
+          params: {},
+        }),
+      );
+    }
   }
 
   handleUserStatus = () => {
@@ -152,7 +160,6 @@ class AppRoot extends React.PureComponent {
         this.geoLocate();
         this.gpsInterval = setInterval(this.geoLocate, 12000);
       }
-
       this.navigator.dispatch(
         NavigationActions.navigate({
           routeName: 'MainApp',

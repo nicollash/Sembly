@@ -23,13 +23,12 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = {
   container: {
-    // flex: 1,
-    height: hp(100),
+    flex: 1,
     backgroundColor: '#fff',
   },
   panel: {
-    // flex: 1,
-    height: hp(100),
+    flex: 1,
+    // height: hp(100),
     backgroundColor: '#fff',
     borderTopLeftRadius: hp(2),
     borderTopRightRadius: hp(2),
@@ -58,8 +57,18 @@ class HomeView extends React.Component {
   }
 
   componentDidMount() {
-    this._panel.show(1000);
+    this._panel.show(400);
   }
+
+  componentDidUpdate() {
+  }
+
+  // _panelHeight = (h) => {
+  //   if (h === undefined) {
+  //     return 900;
+  //   }
+  //   return 
+  // }
 
   render() {
     return (
@@ -68,12 +77,13 @@ class HomeView extends React.Component {
         <SlidingUpPanel
           showBackdrop={false}
           height={hp(100)}
-          draggableRange={{ top: hp(100) - 128, bottom: isIphoneX() ? 90 : 90 }}
+          draggableRange={{ top: hp(100) - 128, bottom: isIphoneX() ? 22 : 20 }}
           friction={0.1}
           ref={(c) => {
             this._panel = c;
             SlidingPanelNavigationService.setPanel(c);
           }}
+          // onDragStart={() => console.log(this._panel)}
         >
           {dragHandler => (
             <View style={styles.panel}>

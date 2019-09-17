@@ -161,7 +161,7 @@ class PostViewUserPost extends React.Component {
           <View
             style={{
               flexDirection: 'row',
-              marginLeft: '35%'
+              marginLeft: '35%',
             }}
           >
             <TouchableOpacity

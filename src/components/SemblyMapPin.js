@@ -45,36 +45,14 @@ class SemblyMapPin extends React.Component {
               <Image
                 source={this.props.pinIcon}
                 style={{
-                  zIndex: 69,
                   position: 'absolute',
-                  top: '5%',
+                  top: 2.5,
                   alignSelf: 'center',
+                  height: 25,
+                  maxWidth: 22,
+                  resizeMode: 'contain',
                 }}
               />
-            )}
-            {this.props.pinIcon === null && (
-              <View style={{
-                height: 23,
-                width: 23,
-                borderRadius: 25,
-                backgroundColor: 'white',
-                position: 'absolute',
-                alignSelf: 'center',
-                top: '5%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              >
-                <Text style={{
-                  color: this.props.pinColor,
-                  fontSize: 11,
-                  fontFamily: Theme.fonts.black,
-                  textAlign: 'center',
-                }}
-                >
-                  {this.props.pinTag}
-                </Text>
-              </View>
             )}
           </View>
         </TouchableOpacity>

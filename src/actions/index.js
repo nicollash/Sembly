@@ -8,7 +8,8 @@ import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
 
-const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
+const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+//  __DEV__ ? : http://localhost:5000/sembly-staging/us-central1
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -167,7 +168,8 @@ export const SEND_POST = 'SEND_POST';
 export function createNewPost(post) {
   return async function createNewPostState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
-    console.log(token);
+    console.log('token' + token);
+    console.log(`${API_URL}/newPost`);
     fetch(`${API_URL}/newPost`, {
       method: 'POST',
       headers: {

@@ -94,7 +94,6 @@ class FeedView extends React.Component {
   render() {
     const screenHeight = Dimensions.get('window').height;
     const { city, categories, events, posts, navigation, location } = this.props;
-
     return (
       <ScrollView
         refreshControl={(
@@ -103,7 +102,8 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         )}
-        contentInset={{ top: 0, bottom: 200, left: 0, right: 0}}
+        contentInset={{ top: 0, bottom: 0, left: 0, right: 0 }}
+        automaticallyAdjustContentInsets={false}
       >
         <View style={{ marginTop: 22 }}>
           <View style={{ width: '100%' }}>
@@ -118,7 +118,7 @@ class FeedView extends React.Component {
                 <FeedCategoryButton
                   icon={icons[item.icon]}
                   title={item.title}
-                  titleColor={item.textColor}
+                  titleColor="#26315F"
                   backgroundColor={item.color}
                   border={item.border}
                   onPress={() => this.setState({ selectedCategoryTitle: item.title, selectedCategoryIcon: icons[item.icon] },

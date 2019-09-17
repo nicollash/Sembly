@@ -131,7 +131,7 @@ class NewPostView extends React.Component {
             res.path,
             'base64',
           );
-          
+          console.log(res.uri + data);
           this.setState({
             post: {
               ...this.state.post, pictureURI: res.uri, pictureData: data,

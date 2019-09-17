@@ -17,6 +17,13 @@ import { PermissionsAndroid } from 'react-native';
 // Actions
 import { refreshFeed } from '../../actions';
 
+const icons = [
+  require('../../../assets/images/SemblyAllIcon.png'),
+  require('../../../assets/images/SemblyEventsIcon.png'),
+  require('../../../assets/images/SemblyBurgerIcon.png'),
+  require('../../../assets/images/SemblyPromosIcon.png'),
+  require('../../../assets/images/SemblyDrinksIcon.png')
+];
 
 const styles = {
   container: {
@@ -45,17 +52,18 @@ class SemblyMapView extends React.Component {
         latitude={event.location.lat}
         longitude={event.location.lon}
         pinColor="#927FE8"
-        pinTag={event.title ? this.generatePinTag(event.title) : ''}
+        pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
         onPress={() => NavigationService.navigate('Location', { location: event })}
       />
     ));
-    
     const postPins = this.props.posts.map(post => (
       <SemblyMapPin
         latitude={post.location.lat}
         longitude={post.location.lon}
         pinColor="#BADAFF"
-        pinTag={post.user.name ? this.generatePinTag(post.user.name) : ''}
+        pinIcon={post.category !== 'General'
+          ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
+          : icons[0]}
         onPress={() => NavigationService.navigate('Location', { location: post })}
       />
     ));
@@ -129,6 +137,7 @@ const mapStateToProps = (state, ownProps) => ({
   events: state.feed.events,
   posts: state.feed.posts,
   location: state.user.location,
+  categories: state.feed.categories,
 });
 
 const mapDispatchToProps = dispatch => ({

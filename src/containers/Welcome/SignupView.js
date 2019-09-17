@@ -114,11 +114,11 @@ class SignupView extends React.Component {
     this.setState({ email: '', password: '' });
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
-      this.props.navigation.navigate('Onboarding');
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
+  //     this.props.navigation.navigate('Onboarding');
+  //   }
+  // }
 
   render() {
     return (
@@ -177,7 +177,10 @@ class SignupView extends React.Component {
             <View style={{ marginTop: hp(2) }}>
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={() => this.props.handleSignup(this.state.email, this.state.password, this.state.password.split('@')[0]) }
+                onPress={() => {
+                  this.props.handleSignup(this.state.email, this.state.password, this.state.password.split('@')[0]);
+                  this.props.navigation.navigate('Onboarding');
+                }}
                 label="Signup"
               />
             </View>

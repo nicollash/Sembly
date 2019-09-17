@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#26315F',
     fontFamily: Theme.fonts.bold,
-    // maxWidth: '60%',
+    maxWidth: '70%',
   },
   distance: {
     top: 1,
@@ -56,10 +56,10 @@ class FeedScrollPost extends React.Component {
   }
 
   seeMore = (str) => {
-    if (str > 16) {
-      return '..';
+    if (str.length > 16) {
+      return str + '..';
     }
-    return null;
+    return str;
   }
 
   render() {
@@ -81,8 +81,7 @@ class FeedScrollPost extends React.Component {
         }}
         >
           <Text style={styles.title}>
-            {this.props.title.substring(0, 15)}
-            {this.seeMore(this.props.title.length)}
+            {this.seeMore(this.props.title)}
           </Text>
           <Text style={styles.distance}>{this.props.distance} mi</Text>
         </View>

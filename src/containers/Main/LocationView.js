@@ -210,7 +210,7 @@ class LocationView extends React.Component {
               <View style={styles.separatorBar} />
               <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
                 <FlatList
-                  data={this.props.posts} // add filter to fetch posts that are related to the location/event/business
+                  data={location.posts} // add filter to fetch posts that are related to the location/event/business
                   renderItem={({ item }) => (
                     <FeedUserPost
                       location={item.title}
@@ -244,7 +244,7 @@ LocationView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
-  posts: state.feed.posts,
+  
 });
 
 const mapDispatchToProps = dispatch => ({

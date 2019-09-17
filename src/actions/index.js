@@ -1,13 +1,14 @@
 import firebase from 'react-native-firebase';
+import _ from 'underscore';
+import moment from 'moment';
 import Post from '../domain/Post';
+import Comment from '../domain/Comment';
 import Event from '../domain/Event';
+import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
 
-import _ from 'underscore';
-
-const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-//const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
+const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -181,10 +182,22 @@ export function addComment({ postID = undefined, text = '' }) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(comment),
+    }).then(() => {
+      // Success, create the mock comment
+      const c = new Comment({
+        text,
+        createdAt: moment(),
+        author: new User(getState().user.currentUser),
+      });
+
+      const post = _.findWhere(getState().feed.posts, { id: postID }).set('comments', _.union(post.comments, [c]));
+      
+      const posts = _.union(_.without(getState().feed.posts, [post]));
+      console.log(posts);
+      //dispatch({ type: UPDATE_POSTS, posts });
+
     });
-
-
-
+    
     dispatch({ type: ADD_COMMENT, comment });
   };
 }

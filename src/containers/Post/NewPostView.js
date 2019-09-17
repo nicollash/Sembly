@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'underscore';
 
 import {
   View,
@@ -9,20 +10,20 @@ import {
   ImageBackground,
   Modal,
   Alert,
-  Platform } from 'react-native';
+  Platform,
+} from 'react-native';
 
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
+import ImagePicker from 'react-native-image-picker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
-import ImagePicker from 'react-native-image-picker';
-import {TouchableOpacity } from 'react-native-gesture-handler';
 import { SemblyInput } from '../../components';
-;
 import { createNewPost } from '../../actions';
 
 const styles = StyleSheet.create({
@@ -192,7 +193,7 @@ class NewPostView extends React.Component {
           <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }} />
         </View>
         <SemblyLabel label="CATEGORY" />
-        <SemblyDropdown />
+        <SemblyDropdown values={_.pluck(this.props.categories, 'title')} onChange={(category) => { this.setState({ post: { ...this.state.post, category }}) }} />
         <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
         <SemblyLabel label="PHOTO" />
         <View style={{ height: '2%' }} />
@@ -253,6 +254,7 @@ NewPostView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   location: state.user.location,
+  categories: state.feed.categories,
 });
 
 const mapDispatchToProps = dispatch => ({

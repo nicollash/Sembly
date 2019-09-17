@@ -4,6 +4,8 @@ import moment from 'moment';
 
 // Local dependencies
 import Location from './Location';
+import Post from './Post';
+
 
 
 const EventRecord = Immutable.Record({
@@ -42,6 +44,7 @@ class Event extends EventRecord<EventProps> {
       title: data.title,
       text: data.text,
       picture: data.picture,
+      posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
       happeningOn: moment(data.happeningOn),
       location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
       //

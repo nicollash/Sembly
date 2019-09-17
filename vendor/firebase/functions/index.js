@@ -11,6 +11,9 @@ const httpRequest = require('request');
 // UUIDv4
 const uuid = require('uuidv4').default;
 
+// Underscore
+const _ = require('underscore');
+
 // GeoStore initialization
 const {
   GeoCollectionReference,
@@ -79,7 +82,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     .add({
       text,
       coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
-      createdAt: moment().format(),
+      createdAt: moment().toDate(),
       locationName,
       category,
       picture,
@@ -110,7 +113,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
   const text = request.body.text;
   const comment = {
     text,
-    createdAt: moment().format(),
+    createdAt: moment().toDate(),
     author: {
       id: user.uid,
       name: user.email.substring(0, user.email.indexOf("@")),
@@ -124,26 +127,36 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
 
   admin.firestore().collection("Posts").doc(`${postID}`).collection('comments').add(comment).then(() => {
     console.log("added document");
-    return response.status(200).send("Your post has been submitted");
+    return response.status(200).send("Your comment has been submitted");
   }
   ).catch(() => {
     console.log("error");
     return response.status(400).send("");
   });
+});
 
+exports.toggleLike = functions.https.onRequest(async (request, response) => {
+  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
+  
+  const user = await getUser(request);
 
+  const postID = request.body.postID;
+
+  return response.status(200).send("Your like has been submitted");
 });
 
 exports.getFeed = functions.https.onRequest(async (request, response) => {
   //console.log(util.inspect(request.query, { showHidden: false, depth: null }));
 
-  const { lat, lon } = {
+  const { lat, lon, type, category } = {
     lat: parseFloat(request.query.lat),
-    lon: parseFloat(request.query.lon)
+    lon: parseFloat(request.query.lon),
+    type: request.query.type,
+    category: request.query.category,
   };
 
-  httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getEvents?lat=${lat}&lon=${lon}`);
-  httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getBusinesses?lat=${lat}&lon=${lon}`);
+  //httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getEvents?lat=${lat}&lon=${lon}`);
+  //httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getBusinesses?lat=${lat}&lon=${lon}`);
 
   geocode = await googleMaps
     .reverseGeocode({
@@ -151,7 +164,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     })
     .asPromise();
 
-  locationName = geocode.json.results[0].address_components[2].long_name;
+  locationName = geocode.json.results[0].address_components[3].short_name;
 
   // Make database requests
   const categories = await admin
@@ -159,18 +172,36 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     .collection("Categories")
     .get();
 
-  const posts = await geofirestore
+  let posts = await geofirestore
     .collection("Posts")
     .limit(20)
     .near({
       center: new firebase.firestore.GeoPoint(lat, lon),
       radius: 100
-    })
-    .get();
+    });
+
+  // Filter by type unless type is all
+  if (category.toLowerCase() !== 'all') posts = posts.where('category', "==", category);
+
+  // Filter by type
+  let orderField = '';
+  switch(type) {
+    case 'Hot':
+      orderField = "comments_count";
+      break;
+    case 'Best':
+      orderField = "likes_count";
+      break;
+    case 'New':
+      orderField = "timeStamp";
+      break;
+  }
+
+  posts = await posts.get();
 
   const events = await geofirestore
     .collection("Events")
-    .limit(5)
+    .limit(20)
     .near({
       center: new firebase.firestore.GeoPoint(lat, lon),
       radius: 100
@@ -179,7 +210,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
 
   const businesses = await geofirestore
     .collection("Businesses")
-    .limit(20)
+    .limit(30)
     .near({
       center: new firebase.firestore.GeoPoint(lat, lon),
       radius: 100
@@ -192,8 +223,8 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     categories: categories.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
-    posts: await Promise.all(posts.docs.map(async doc => {
-      const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get()
+    posts: await Promise.all(_.sortBy(posts.docs, orderField).map(async doc => {
+      const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
       return { 
         id: doc.id, ...doc.data(),
         comments: comments.docs.map(comment => comment.data()),
@@ -206,7 +237,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
       return { id: doc.id, ...doc.data() };
     })
   };
-  console.log(util.inspect(feed, { showHidden: false, depth: null }));
+  //console.log(util.inspect(feed, { showHidden: false, depth: null }));
   return response.status(200).send(feed);
 });
 
@@ -233,7 +264,6 @@ exports.getEvents = functions.https.onRequest(async (request, response) => {
       // venue.address.latitude
       // venue.address.longitude
       let batch = geofirestore.batch();
-      let events = [];
       res.events.forEach(ev => {
         const event = {
           id: `eb-${ev.id}`,

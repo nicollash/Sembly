@@ -52,7 +52,7 @@ class PostViewCommentHeader extends React.Component {
           <Text style={{ color: '#26315F', fontSize: 16, fontFamily: theme.fonts.bold }}>
             {this.props.comments}
             {' '}
-            comments
+            {this.props.comments > 1 ? 'comments' : 'comment'}
           </Text>
         </View>
         <View style={{ height: '12.5%' }} />

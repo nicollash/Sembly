@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { connect } from 'react-redux';
+import _ from 'underscore';
+
+import { connect } from "react-redux";
 
 import {
   TouchableOpacity,
@@ -8,22 +10,17 @@ import {
   Image,
   View,
   Text,
-  Animated,
-  Easing,
-  Dimensions,
   Linking,
   Platform,
 } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import Theme from '../../styles/theme';
-
+import { toggleLike } from '../../actions';
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   postText: {
     color: '#B9BDC5',
     fontSize: 11,
@@ -32,57 +29,51 @@ const styles = StyleSheet.create({
 });
 
 class FeedUserPost extends React.Component {
-  constructor(props) {
-    super(props);
+  componentWillMount() {}
 
-    this.state = {
-      liked: false,
-    };
-  }
-
-  componentWillMount() {
-  }
-
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   openMaps = () => {
-    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    const url = scheme + `${this.state.lat}, ${this.state.lon}`;
-    Linking.openURL(url);
-  }
+   // const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+   // const url = scheme + `${this.state.lat}, ${this.state.lon}`;
+   // Linking.openURL(url);
+  };
 
   render() {
-    const profilePictureHeight = 32;
+    const post = _.findWhere(this.props.posts, { id: this.props.postID });
+
     return (
-      <View style={{
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        left: '1%',
-        marginBottom: 8,
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor: '#F0F0F0',
-        minHeight: 30,
-        maxHeight: 500,
-        maxWidth: wp(95),
-      }}
-      >
-        <View style={{
-          flexDirection: 'row',
-          height: 32,
-          width: '100%',
+      <View
+        style={{
+          alignItems: 'flex-start',
           justifyContent: 'flex-start',
-          alignItems: 'center',
-          marginTop: 5,
-          marginLeft: 12,
+          left: '1%',
+          marginBottom: 8,
+          borderRadius: 10,
+          borderWidth: 2,
+          borderColor: '#F0F0F0',
+          minHeight: 30,
+          maxHeight: 500,
+          maxWidth: wp(95),
         }}
-        >
-          <TouchableOpacity style={{
+      >
+        <View
+          style={{
             flexDirection: 'row',
+            height: 32,
+            width: '100%',
             justifyContent: 'flex-start',
             alignItems: 'center',
+            marginTop: 5,
+            marginLeft: 12,
           }}
+        >
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}
           >
             <View>
               <Image
@@ -92,23 +83,25 @@ class FeedUserPost extends React.Component {
                   borderRadius: 16,
                   resizeMode: 'cover',
                 }}
-                source={{ uri: this.props.userProfilePicture }}
+                source={{ uri: post.user.avatar }}
               />
             </View>
-            <Text style={{
-              color: '#26315F',
-              fontSize: 15,
-              fontFamily: Theme.fonts.bold,
-              alignSelf: 'center',
-              marginTop: 2,
-              marginLeft: 7,
-            }}
+            <Text
+              style={{
+                color: '#26315F',
+                fontSize: 15,
+                fontFamily: Theme.fonts.bold,
+                alignSelf: 'center',
+                marginTop: 2,
+                marginLeft: 7
+              }}
             >
-              {this.props.username}
+              {post.liked ? "Y" : "N"}
+              {post.user.name}
             </Text>
           </TouchableOpacity>
         </View>
-        {this.props.userPostPicture !== '' && (
+        {post.picture !== '' && (
           <TouchableOpacity
             activeOpacity={this.props.NotTouchable}
             style={{
@@ -116,75 +109,81 @@ class FeedUserPost extends React.Component {
               alignSelf: 'center',
               marginLeft: '2.5%',
               minHeight: 80,
-              width: '95%',
+              width: '95%'
             }}
             onPress={this.props.moveOnPress}
           >
             <View style={{ minHeight: 100, maxHeight: 200 }}>
               <Image
-                source={{ uri: this.props.userPostPicture }}
+                source={{ uri: post.picture }}
                 style={{
                   height: '100%',
                   width: '100%',
-                  borderRadius: 8,
+                  borderRadius: 8
                 }}
               />
             </View>
-            <Text style={{
-              marginTop: 7,
-              fontSize: 14,
-              fontFamily: Theme.fonts.regular,
-              lineHeight: 19,
-              color: '#26315F',
-              marginBottom: 10,
-            }}
+            <Text
+              style={{
+                marginTop: 7,
+                fontSize: 14,
+                fontFamily: Theme.fonts.regular,
+                lineHeight: 19,
+                color: '#26315F',
+                marginBottom: 10,
+              }}
             >
-              {this.props.userPostText}
+              {post.text}
             </Text>
           </TouchableOpacity>
         )}
-        {this.props.userPostPicture === '' && (
-          <TouchableOpacity 
+        {post.picture === '' && (
+          <TouchableOpacity
             style={{
               marginLeft: 15,
               marginTop: 15,
-              width: '90%',
+              width: '90%'
             }}
             onPress={this.props.moveOnPress}
           >
-            <Text style={{
-              fontSize: 14,
-              fontFamily: Theme.fonts.regular,
-              lineHeight: 19,
-              color: '#26315F',
-              marginBottom: 10,
-            }}
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: Theme.fonts.regular,
+                lineHeight: 19,
+                color: '#26315F',
+                marginBottom: 10
+              }}
             >
-              {this.props.userPostText}
+              {post.text}
             </Text>
           </TouchableOpacity>
         )}
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          width: '90%',
-          marginLeft: '6%',
-          marginTop: 10,
-          paddingBottom: 10,
-        }}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            width: '90%',
+            marginLeft: '6%',
+            marginTop: 10,
+            paddingBottom: 10,
+          }}
         >
-          <TouchableOpacity
-            onPress={this.openMaps}
-          >
-            <View style={{
-              flexDirection: 'row',
-              width: 150,
-            }}
+          <TouchableOpacity onPress={this.openMaps}>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: 150,
+              }}
             >
-              <Image source={require('../../../assets/images/PhotoPostLocationIcon.png')} />
+              <Image
+                source={require('../../../assets/images/PhotoPostLocationIcon.png')}
+              />
               <View style={{ width: 5 }} />
-              <Text style={[styles.postText, { marginTop: 1 }]}>{this.props.location}</Text>
+              <Text style={[styles.postText, { marginTop: 1 }]}>
+                {post.location.name}
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -194,32 +193,33 @@ class FeedUserPost extends React.Component {
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
           >
-            <Image source={require('../../../assets/images/PhotoPostBubble.png')} />
+            <Image
+              source={require('../../../assets/images/PhotoPostBubble.png')}
+            />
             <View style={{ width: '8%' }} />
-            <Text style={[styles.postText, { marginTop: 2 }]}>{this.props.comments}</Text>
+            <Text style={[styles.postText, { marginTop: 2 }]}>
+              {post.comments.length}
+            </Text>
           </TouchableOpacity>
-          <View style={{
-            flexDirection: 'row',
-            marginLeft: '18%',
-          }}
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: '18%',
+            }}
           >
-            <TouchableOpacity onPress={() => this.setState({ liked: !this.state.liked })}>
-              {this.state.liked
-              && (
-                <View style={{ flexDirection: 'row' }}>
-                  <Image source={require('../../../assets/images/LikedPost.png')} />
-                  <View style={{ width: 7 }} />
-                  <Text style={[styles.postText, { marginTop: 2 }]}>Liked</Text>
-                </View>
-              )}
-              {!this.state.liked
-              && (
-                <View style={{ flexDirection: 'row' }}>
-                  <Image style={{ tintColor: '#B9BDC5' }} source={require('../../../assets/images/LikedPost.png')} />
-                  <View style={{ width: 7 }} />
-                  <Text style={[styles.postText, { marginTop: 2 }]}>Like</Text>
-                </View>
-              )}
+            <TouchableOpacity
+              onPress={() => this.props.toggleLike(post.id)}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  style={post.liked ? {} : { tintColor: '#B9BDC5' }}
+                  source={require('../../../assets/images/LikedPost.png')}
+                />
+                <View style={{ width: 7 }} />
+                <Text style={styles.postText}>
+                  {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -228,27 +228,21 @@ class FeedUserPost extends React.Component {
   }
 }
 
-
 FeedUserPost.defaultProps = {
   userProfilePicture: require('../../../assets/images/ProfileIconTab.png'),
-  username: 'User',
-  userPostPicture: null,
-  location: 'Location',
-  comments: null,
-  NotTouchable: 0.2,
-  userPostText: null,
-  moveOnPress: null,
+  postID: 0,
 };
 
-FeedUserPost.propTypes = {
-};
-
-
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
+const mapStateToProps = (state) => ({
+  posts: state.feed.posts,
 });
 
-export default FeedUserPost;
+const mapDispatchToProps = dispatch => ({
+  toggleLike: (postID) => dispatch(toggleLike({postID})),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FeedUserPost);
+

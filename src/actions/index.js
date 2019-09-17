@@ -1,13 +1,14 @@
 import firebase from 'react-native-firebase';
+import _ from 'underscore';
+import moment from 'moment';
 import Post from '../domain/Post';
+import Comment from '../domain/Comment';
 import Event from '../domain/Event';
+import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
 
-import _ from 'underscore';
-
-const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-//const API_URL = 'http://localhost:5000/sembly-staging/us-central1';
+const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -58,7 +59,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
 
         // Update categories
         const categories = feedJSON.categories.map(c => Category.parse(c));
-        dispatch({ type: UPDATE_CATEGORY, categories });
+        dispatch({ type: UPDATE_CATEGORY, categories: _.sortBy(categories, 'id') });
 
         // Update businesses
         const businesses = feedJSON.businesses.map(e => Business.parse(e));
@@ -196,11 +197,46 @@ export function addComment({ postID = undefined, text = '' }) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(comment),
+    }).then(() => {
+      // Success, create the mock comment
+      const c = new Comment({
+        text,
+        createdAt: moment(),
+        author: new User(getState().user.currentUser),
+      });
+
+      const post = _.findWhere(getState().feed.posts, { id: postID });
+      
+      const posts = _.union(_.without(getState().feed.posts, post), [post.set('comments', _.union(post.comments, [c]))]);
+      
+      dispatch({ type: UPDATE_POSTS, posts });
+
     });
-
-
-
+    
     dispatch({ type: ADD_COMMENT, comment });
+  };
+}
+
+export function toggleLike({ postID = undefined }) {
+  return async function toggleLikeState(dispatch, getState) {
+    const token = await firebase.auth().currentUser.getIdToken();
+
+    fetch(`${API_URL}/toggleLike`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ postID }),
+    }).then(() => {
+      // Success, toggle like
+      const post = _.findWhere(getState().feed.posts, { id: postID });
+      
+      const posts = _.union(_.without(getState().feed.posts, post), [post.set('liked', !post.get('liked'))]);
+      console.log(posts);
+      dispatch({ type: UPDATE_POSTS, posts });
+    });
   };
 }
 

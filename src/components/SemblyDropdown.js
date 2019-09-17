@@ -21,7 +21,7 @@ class SemblyDropdown extends React.Component {
 
     this.state = {
       open: false,
-      category: 'General',
+      value: 'General',
     };
   }
 
@@ -32,11 +32,13 @@ class SemblyDropdown extends React.Component {
   componentDidMount() {
   }
 
-  updateCategory = (category) => {
-    this.setState({ category });
+  updateValue = (value) => {
+    this.setState({ value });
+    this.props.onChange(value);
   }
 
   render() {
+    const items = this.props.values.map(val => <Picker.Item label={val} value={val} />);
     return (
       <TouchableOpacity onPress={() => this.setState({ open: !this.state.open })}>
         <View style={{
@@ -51,7 +53,7 @@ class SemblyDropdown extends React.Component {
             fontSize: 18,
             marginLeft: '4%',
           }}
-          >{this.state.category}
+          >{this.state.value}
           </Text>
           <Image style={{ alignSelf: 'center', marginRight: '4%' }} source={require('../../assets/images/DropdownArrow.png')} />
         </View>
@@ -62,13 +64,11 @@ class SemblyDropdown extends React.Component {
                 height: '25%',
                 zIndex: 10
               }}
-              selectedValue={this.state.category}
+              selectedValue={this.state.value}
               mode="dialog"
-              onValueChange= {this.updateCategory}
+              onValueChange={this.updateValue}
             >
-              <Picker.Item label="General" value="General" />
-              <Picker.Item label="Food" value="Food" />
-              <Picker.Item label="Drinks" value="Drinks" />
+              {items}
             </Picker>
           </View>
         )}
@@ -80,6 +80,8 @@ class SemblyDropdown extends React.Component {
 SemblyDropdown.defaultProps = {
   label: 'Button',
   onPress: null,
+  onChange: null,
+  values: [],
 };
 
 SemblyDropdown.propTypes = {

@@ -1,9 +1,9 @@
 import Immutable from 'immutable';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 // Local dependencies
 import Location from './Location';
+import Post from './Post';
 
 
 const BusinessRecord = Immutable.Record({
@@ -35,7 +35,7 @@ class Business extends BusinessRecord<BusinessProps> {
       about: data.about,
       description: data.description,
       picture: data.picture,
-      // TODO: Parse this properly
+      posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
       location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
       phone: data.phone,
       //

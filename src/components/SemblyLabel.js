@@ -11,12 +11,11 @@ const styles = StyleSheet.create({
     color: '#C7CAD1',
     fontSize: 14,
     paddingHorizontal: '4%',
-    paddingTop: '6%'
+    paddingTop: '6%',
   },
 });
 class SemblyLabel extends React.Component {
   componentWillMount() {
-
   }
 
   componentDidMount() {

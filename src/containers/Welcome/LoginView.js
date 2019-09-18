@@ -3,7 +3,14 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
 import { handleLogin, updateLocation, clearLoginErrors, clearSignupErrors } from '../../actions';
-import { View, Image, StatusBar, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image, 
+  StatusBar, 
+  Text, 
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 import { SemblyButton, LoginForm } from "../../components";
@@ -78,6 +85,7 @@ class LoginView extends React.Component {
     this.state = {
       email: '',
       password: '',
+      spinnerActive: false,
     };
   }
 
@@ -97,7 +105,11 @@ class LoginView extends React.Component {
     }
   }
 
+  handleSpinner = () => {
+  }
+
   render() {
+    console.log(this.props.loginError);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -141,11 +153,21 @@ class LoginView extends React.Component {
             />
           </View>
           <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
-            <SemblyButton
-              label="Login"
-              onPress={() => this.props.handleLogin(this.state.email, this.state.password)}
-              width={isIphoneX() ? wp(75) : wp(69)}
-            />
+            {this.state.spinnerActive && (
+              <View style={{ height: 30 }}>
+                <ActivityIndicator />
+              </View>
+            )}
+            {!this.state.spinnerActive && (
+              <SemblyButton
+                label="Login"
+                onPress={() => {
+                  this.props.handleLogin(this.state.email, this.state.password);
+                  this.handleSpinner();
+                }}
+                width={isIphoneX() ? wp(75) : wp(69)}
+              />
+            )}
           </View>
           <View>
             <TouchableOpacity

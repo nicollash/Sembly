@@ -7,11 +7,11 @@ import {
   Image,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
+import { isIphoneX } from '../../../styles/iphoneModelCheck';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import Theme from '../../styles/theme';
-import { SemblyButton } from '../../components';
+import Theme from '../../../styles/theme';
+import { SemblyButton } from '../../../components';
 
 
 const styles = {
@@ -53,7 +53,7 @@ const styles = {
   },
 };
 
-const shadow = require('../../../assets/images/shadowOrb.png');
+const shadow = require('../../../../assets/images/shadowOrb.png');
 
 class OnboardingView extends React.Component {
   static navigationOptions = {
@@ -69,19 +69,19 @@ class OnboardingView extends React.Component {
           title: 'Welcome to Sembly',
           text: `A local platform for sharing and
     discovering what your city is all about.`,
-          image: <Image source={require('../../../assets/images/cityscapeOnboarding1.png')} />,
+          image: <Image source={require('../../../../assets/images/cityscapeOnboarding1.png')} />,
         },
         {
           title: 'Local and social',
           text: `Local conversations, insights, events, food, \n promotions - and more. All powered by
     the community and you.`,
-          image: <Image source={require('../../../assets/images/villageOnboarding2.png')} />,
+          image: <Image source={require('../../../../assets/images/villageOnboarding2.png')} />,
         },
         {
           title: 'Your city. Together.',
           text: `Explore an interactive map and tag your favorite spots, find exclusive promotions,
     and things to do with the ultimate local\nplatform.`,
-          image: <Image source={require('../../../assets/images/rainbowFieldsOnboarding3.png')} />,
+          image: <Image source={require('../../../../assets/images/rainbowFieldsOnboarding3.png')} />,
         }],
       activeSlide: 0,
     };
@@ -107,7 +107,7 @@ class OnboardingView extends React.Component {
         <Text style={styles.title}>{ item.title }</Text>
         <Text style={styles.description}>{ item.text }</Text>
         <View style={{ marginTop: isIphoneX() ? hp(4) : hp(2.5) }}>
-          {index >= this.state.entries.length - 1
+          {index === this.state.entries.length - 1
               && (
                 <SemblyButton
                   label="Get Started"
@@ -116,6 +116,7 @@ class OnboardingView extends React.Component {
                   width={wp(60)}
                 />
               )}
+          {/* {index } */}
         </View>
       </View>
 

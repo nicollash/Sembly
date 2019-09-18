@@ -67,7 +67,7 @@ class ProfileView extends React.Component {
     super(props);
     this.state = {
       profile: {
-        photoURL: this.props.photoURL || undefined,
+        pictureURI: this.props.photoURL || undefined,
       },
     };
   }
@@ -127,7 +127,7 @@ class ProfileView extends React.Component {
         <View style={styles.profileHeader}>
           <View>
             <Image
-              source={{ uri: this.state.profile.photoURL }}
+              source={{ uri: this.state.profile.pictureURI }}
               style={{ height: 100, width: 100, borderRadius: 15 }}
             />
             <TouchableOpacity
@@ -153,7 +153,7 @@ class ProfileView extends React.Component {
             marginTop: hp(3),
           }}
           >
-            Your Name
+            {this.props.displayName}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>

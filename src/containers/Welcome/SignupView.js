@@ -179,7 +179,7 @@ class SignupView extends React.Component {
                 width={isIphoneX() ? wp(76) : wp(69)}
                 onPress={() => {
                   this.props.handleSignup(this.state.email, this.state.password, this.state.password.split('@')[0]);
-                  this.props.navigation.navigate('Onboarding');
+                  this.props.navigation.navigate('Profile');
                 }}
                 label="Signup"
               />

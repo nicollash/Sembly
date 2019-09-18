@@ -19,7 +19,7 @@ import ThemeContainer from '../styles/themeContainer';
 
 /* Views */
 import {
-  LoginView, SignupView, OnboardingView, ForgotPasswordView,
+  LoginView, SignupView, OnboardingView, ForgotPasswordView, ProfileView,
 } from './Welcome';
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
@@ -31,6 +31,7 @@ const WelcomeStack = createStackNavigator({
   Main: LoginView,
   ForgotPassword: ForgotPasswordView,
   Signup: SignupView,
+  Profile: ProfileView,
   Onboarding: OnboardingView,
 }, { headerMode: 'none' });
 

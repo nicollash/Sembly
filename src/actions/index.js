@@ -96,7 +96,6 @@ export function handleLogin(_email, _password) {
         const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
         dispatch({ type: UPDATE_CURRENT_USER, user });
       })
-      // .catch(console.log('.catch() block of LoginFunction'));
       .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
   };
 }

@@ -18,7 +18,6 @@ import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
@@ -103,8 +102,7 @@ class NewPostView extends React.Component {
     };
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
   componentDidMount() {
     this.props.navigation.setParams({ submit: this.submit });

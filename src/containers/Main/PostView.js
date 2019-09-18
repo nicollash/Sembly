@@ -24,8 +24,6 @@ import {
 import PostViewUserPost from '../../components/PostViewUserPost';
 import PostViewCommentHeader from '../../components/PostViewCommentHeader';
 
-
-
 class PostView extends React.Component {
   constructor(props) {
     super(props);

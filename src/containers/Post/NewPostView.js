@@ -183,7 +183,7 @@ class NewPostView extends React.Component {
           secondFontSize={10}
         />
         <View style={{ backgroundColor: '#fff', zIndex: 10, elevation: (Platform.OS === 'ios' ? 3 : 0) }}>
-          <SemblyPlaceAutoComplete onResult={(location) => {
+          <SemblyPlaceAutoComplete latitude={this.props.location.lat} longitude={this.props.location.lon} onResult={(location) => {
             this.setState({
               post: { 
                 ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },

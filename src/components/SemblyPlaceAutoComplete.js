@@ -2,11 +2,17 @@ import React from 'react';
 
 import {
   StyleSheet,
-  Image,
+  View,
   Platform,
+  TouchableOpacity,
+  Text,
 } from 'react-native';
 
+import _ from 'underscore';
+
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
+import Autocomplete from 'react-native-autocomplete-input';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,6 +53,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 2,
     marginTop: -10,
+    width: 100,
   },
   description: {
     color: '#26315F',
@@ -57,62 +64,55 @@ const styles = StyleSheet.create({
   },
 });
 
-const locationIcon = require('../../assets/images/LocationIcon.png');
-
 class SemblyPlaceAutoComplete extends React.Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+    this.state = { businesses: [], query: '' };
+  }
 
+  componentWillMount() {
   }
 
   componentDidMount() {
   }
 
+  launchQuery = (text) => {
+    if (text === '') return;
+    
+    //console.log(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`);
+
+    fetch(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name,location&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`)
+      .then(results => results.json())
+      .then((json) => {
+        console.log(json);
+        this.setState({businesses: json.data});
+      });
+  }
+
   render() {
+    const { businesses, query } = this.state;
+
     return (
-      <GooglePlacesAutocomplete
-        placeholder="Current Location"
-        minLength={2}
-        autoFocus={false}
-        returnKeyType="search"
-        keyboardAppearance="light"
-        listViewDisplayed="true"
-        fetchDetails
-        renderDescription={row => row.description}
-
-        onPress={(data, details = null) => {
-          this.props.onResult({ 
-            name: details.vicinity,
-            lat: details.geometry.location.lat, 
-            lon: details.geometry.location.lng,
-          });
-        }}
-
-        query={{
-          key: 'AIzaSyBuV7du242le6JCps9J0rRf_tSPOIh8Qbc',
-          language: 'en',
-          types: 'establishment',
-        }}
-
-        styles={styles}
-        currentLocation={false}
-        currentLocationLabel="Current location"
-        nearbyPlacesAPI="GooglePlacesSearch"
-
-        GooglePlacesSearchQuery={{
-          rankby: 'distance',
-          type: 'restaurant',
-        }}
-
-        GooglePlacesDetailsQuery={{
-          fields: 'formatted_address',
-        }}
-        placeholderTextColor="#C7CAD1"
-        //filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
-        renderLeftButton={() => (
-          <Image source={locationIcon} style={{ alignSelf:'center', marginTop: 7, left: 10 }} />
-        )}
-        debounce={200}
-      />
+      <View style={styles.container}>
+        <Autocomplete
+          autoCapitalize="none"
+          autoCorrect={false}
+          containerStyle={styles.textInputContainer}
+          data={this.state.businesses}
+          defaultValue={query}
+          hideResults={this.state.businesses.length <= 0}
+          onChangeText={text => this.launchQuery(text)}
+          placeholder="Add location"
+          listContainerStyle={styles.listView}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => this.setState({ query: item.name, businesses: [] })}>
+              <Text style={styles.description}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     );
   }
 }

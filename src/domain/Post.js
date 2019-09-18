@@ -20,6 +20,7 @@ const PostRecord = Immutable.Record({
   user: new User(),
   liked: false,
   likes: 0,
+  showOnMap: true,
 });
 
 const PostProps = {
@@ -34,6 +35,7 @@ const PostProps = {
   user: PropTypes.instanceOf(User),
   likes: PropTypes.number,
   liked: PropTypes.bool,
+  showOnMap: PropTypes.bool,
 };
 
 class Post extends PostRecord<PostProps> {
@@ -57,6 +59,7 @@ class Post extends PostRecord<PostProps> {
       comments: data.comments ? data.comments.map(comment => Comment.parse(comment)) : [],
       user: User.parse(data.user),
       liked: data.liked || false,
+      showOnMap: data.showOnMap || true,
     });
   }
 }

@@ -26,6 +26,8 @@ import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput } from '../../components';
 import { createNewPost } from '../../actions';
 
+const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -183,24 +185,29 @@ class NewPostView extends React.Component {
             secondLabel="OPTIONAL"
             fontSize={14}
             secondFontSize={10}
-            marginLeft={5}
+            marginLeft={4}
           />
-          <View>
-            <SemblyPlaceAutoComplete latitude={this.props.location.lat} longitude={this.props.location.lon} onResult={(location) => {
-              this.setState({
-                post: {
-                  ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },
-                },
-              });
-            }}
-            />
-            <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }} />
+          <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}>
+            <Image source={pin} style={{ height: 15, marginLeft: -15 }} />
+            <View style={{ marginLeft: 2 }}>
+              <SemblyPlaceAutoComplete latitude={this.props.location.lat} longitude={this.props.location.lon} onResult={(location) => {
+                this.setState({
+                  post: {
+                    ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },
+                  },
+                });
+              }}
+              />
+            </View>
           </View>
+          <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: 5 }} />
         </View>
         <View style={{ marginTop: 20 }}>
           <SemblyLabel label="CATEGORY" marginLeft={5} />
-          <SemblyDropdown values={_.pluck(this.props.categories, 'title')} onChange={(category) => { this.setState({ post: { ...this.state.post, category }}) }} />
-          <Image style={{ marginTop: 8, width: '100%' }} source={require('../../../assets/images/BorderLine.png')} />
+          <View style={{ width: wp(92), marginLeft: -12 }}>
+            <SemblyDropdown values={_.pluck(this.props.categories, 'title')} onChange={(category) => { this.setState({ post: { ...this.state.post, category }}) }} />
+          </View>
+          <Image style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }} source={require('../../../assets/images/BorderLine.png')} />
         </View>
         <View style={{ marginTop: 20 }}>
           <SemblyLabel label="PHOTO" marginLeft={5} />

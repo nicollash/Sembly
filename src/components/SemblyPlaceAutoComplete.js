@@ -18,16 +18,13 @@ const styles = StyleSheet.create({
   container: {
     // zIndex: (Platform.OS === 'ios' ? 10 : 0),
     overflow: 'visible',
-    marginBottom: 45,
-    flex: 0.2,
-    // height: 40,
+    // flex: 0.2,
   },
   inputContainerStyle: {
     borderWidth: 0,
-    marginLeft: 20,
   },
   textInputContainer: {
-    marginLeft: -13.5,
+    marginLeft: 5,
   },
   listView: {
     position: 'absolute',
@@ -39,12 +36,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 2,
-    width: '100%',
+    width: 300,
   },
   location: {
     color: '#26315F',
-    fontSize: 16,
-    marginLeft: 3,
+    fontSize: 17,
   },
   predefinedPlacesDescription: {
     color: '#1faadb',
@@ -72,7 +68,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       .then(results => results.json())
       .then((json) => {
         console.log(json);
-        this.setState({businesses: json.data});
+        this.setState({ businesses: json.data });
       });
   }
 
@@ -87,11 +83,13 @@ class SemblyPlaceAutoComplete extends React.Component {
           inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.textInputContainer}
           listContainerStyle={styles.listView}
-          data={this.state.businesses}
+          data={businesses}
           defaultValue={query}
-          hideResults={this.state.businesses.length <= 0}
+          hideResults={businesses.length <= 0}
           onChangeText={text => this.launchQuery(text)}
           placeholder="Add location"
+          placeholderTextColor="#C7CAD1"
+          style={{ fontSize: 17 }}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.setState({ query: item.name, businesses: [] })}>
               <Text style={styles.location}>

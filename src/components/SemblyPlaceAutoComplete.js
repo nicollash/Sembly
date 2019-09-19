@@ -20,44 +20,31 @@ const styles = StyleSheet.create({
     overflow: 'visible',
     marginBottom: 45,
     flex: 0.2,
+    // height: 40,
+  },
+  inputContainerStyle: {
+    borderWidth: 0,
+    marginLeft: 20,
   },
   textInputContainer: {
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-    height: 41,
-    overflow: 'visible',
-    backgroundColor: '#ffffff',
     marginLeft: -13.5,
-
-  },
-  textInput: {
-    backgroundColor: 'transparent',
-    fontSize: 18,
-    lineHeight: 22.5,
-    paddingBottom: 0,
-    flex: 1,
-    color: '#26315F',
   },
   listView: {
     position: 'absolute',
-    top: (Platform.OS === 'ios' ? 50 : 0),
-    backgroundColor: 'white',
+    left: 8,
+    top: (Platform.OS === 'ios' ? 40 : 0),
     elevation: 1,
-    zIndex: 10,
-    borderWidth: 1,
     borderRadius: 2,
-    borderColor: '#ddd',
-    borderBottomWidth: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 2,
-    marginTop: -10,
-    width: 100,
+    width: '100%',
   },
-  description: {
+  location: {
     color: '#26315F',
     fontSize: 16,
+    marginLeft: 3,
   },
   predefinedPlacesDescription: {
     color: '#1faadb',
@@ -97,16 +84,17 @@ class SemblyPlaceAutoComplete extends React.Component {
         <Autocomplete
           autoCapitalize="none"
           autoCorrect={false}
+          inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.textInputContainer}
+          listContainerStyle={styles.listView}
           data={this.state.businesses}
           defaultValue={query}
           hideResults={this.state.businesses.length <= 0}
           onChangeText={text => this.launchQuery(text)}
           placeholder="Add location"
-          listContainerStyle={styles.listView}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.setState({ query: item.name, businesses: [] })}>
-              <Text style={styles.description}>
+              <Text style={styles.location}>
                 {item.name}
               </Text>
             </TouchableOpacity>

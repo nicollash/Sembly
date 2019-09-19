@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
   text: {
     color: '#C7CAD1',
     fontSize: 14,
-    paddingHorizontal: '4%',
-    paddingTop: '6%',
   },
 });
 class SemblyLabel extends React.Component {
@@ -23,7 +21,13 @@ class SemblyLabel extends React.Component {
 
   render() {
     return (
-      <Text style={[styles.text, { fontSize: this.props.fontSize }]}>
+      <Text style={[styles.text,
+        {
+          fontSize: this.props.fontSize,
+          marginLeft: this.props.marginLeft,
+        },
+      ]}
+      >
         {this.props.label}{' '}
         <Text style={[styles.text, { fontSize: this.props.secondFontSize }]}>
           {this.props.secondLabel}
@@ -36,6 +40,7 @@ class SemblyLabel extends React.Component {
 SemblyLabel.defaultProps = {
   label: 'label',
   fontSize: 14,
+  marginLeft: 0,
 };
 
 SemblyLabel.propTypes = {

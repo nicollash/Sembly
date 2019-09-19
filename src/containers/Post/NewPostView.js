@@ -17,6 +17,7 @@ import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
@@ -28,10 +29,8 @@ import { createNewPost } from '../../actions';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '90%',
+    width: '82%',
     alignSelf: 'center',
-    justifyContent: 'flex-end',
-    flexDirection: 'column',
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -169,41 +168,54 @@ class NewPostView extends React.Component {
             </View>
           </Modal>
         )}
-        <SemblyInput
-          placeholder="Content of your post, up to 300 chars."
-          label="TEXT"
-          valueChanged={text => this.setState({ post: { ...this.state.post, text } })}
-        />
-        <SemblyLabel
-          label="LOCATION"
-          secondLabel="OPTIONAL"
-          fontSize={14}
-          secondFontSize={10}
-        />
-        <View style={{ backgroundColor: '#fff', zIndex: 10, elevation: (Platform.OS === 'ios' ? 3 : 0) }}>
-          <SemblyPlaceAutoComplete latitude={this.props.location.lat} longitude={this.props.location.lon} onResult={(location) => {
-            this.setState({
-              post: { 
-                ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },
-              },
-            });
-          }} />
-          <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }} />
+        <View style={{ marginTop: 25 }}>
+          <SemblyInput
+            marginLeft={5}
+            placeholder="Content of your post, up to 300 chars."
+            label="TEXT"
+            valueChanged={text => this.setState({ post: { ...this.state.post, text } })}
+            spacing={5}
+          />
         </View>
-        <SemblyLabel label="CATEGORY" />
-        <SemblyDropdown values={_.pluck(this.props.categories, 'title')} onChange={(category) => { this.setState({ post: { ...this.state.post, category }}) }} />
-        <Image style={{ marginTop: '4%' }} source={require('../../../assets/images/BorderLine.png')} />
-        <SemblyLabel label="PHOTO" />
-        <View style={{ height: '2%' }} />
+        <View style={{ marginTop: 20, zIndex: 1 }}>
+          <SemblyLabel
+            label="LOCATION"
+            secondLabel="OPTIONAL"
+            fontSize={14}
+            secondFontSize={10}
+            marginLeft={5}
+          />
+          <View>
+            <SemblyPlaceAutoComplete latitude={this.props.location.lat} longitude={this.props.location.lon} onResult={(location) => {
+              this.setState({
+                post: {
+                  ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },
+                },
+              });
+            }}
+            />
+            <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: -4 }} />
+          </View>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <SemblyLabel label="CATEGORY" marginLeft={5} />
+          <SemblyDropdown values={_.pluck(this.props.categories, 'title')} onChange={(category) => { this.setState({ post: { ...this.state.post, category }}) }} />
+          <Image style={{ marginTop: 8, width: '100%' }} source={require('../../../assets/images/BorderLine.png')} />
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <SemblyLabel label="PHOTO" marginLeft={5} />
+        </View>
         {this.state.post.pictureURI === ''
         && (
           <View style={{
             backgroundColor: '#EBECEE',
             borderRadius: 15,
-            width: '100%',
-            height: '21%',
+            width: wp(90),
+            height: 170,
             alignItems: 'center',
+            alignSelf: 'center',
             justifyContent: 'center',
+            marginTop: 10,
           }}
           >
             <TouchableOpacity onPress={this.chooseImage}>
@@ -214,8 +226,10 @@ class NewPostView extends React.Component {
         {this.state.post.pictureURI !== ''
         && (
           <View style={{
-            width: '100%',
-            height: '21%',
+            width: wp(90),
+            height: 170,
+            marginTop: 10,
+            alignSelf: 'center',
           }}
           >
             <ImageBackground
@@ -237,7 +251,6 @@ class NewPostView extends React.Component {
         >
         Your post can contain text, photo or both.
         </Text>
-        <View style={{ flex: 1 }} />
       </View>
     );
   }

@@ -30,6 +30,7 @@ class PostViewUserPost extends React.Component {
   componentDidMount() {}
 
   render() {
+    const { post = {} } = this.props;
     return (
       <View
         style={{
@@ -38,7 +39,7 @@ class PostViewUserPost extends React.Component {
           justifyContent: 'flex-start',
           alignSelf: 'center',
           marginBottom: '2%',
-          borderRadius: 10
+          borderRadius: 10,
         }}
       >
         <View
@@ -48,7 +49,7 @@ class PostViewUserPost extends React.Component {
             alignSelf: 'center',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            marginTop: 5
+            marginTop: 5,
           }}
         >
           <TouchableOpacity
@@ -65,13 +66,13 @@ class PostViewUserPost extends React.Component {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginLeft: 20
+              marginLeft: 20,
             }}
           >
             <View>
               <Image
                 style={{ height: 32, width: 32, borderRadius: 16 }}
-                source={this.props.userProfilePicture}
+                source={{ uri: post.user.avatar }}
               />
             </View>
             <Text
@@ -81,10 +82,10 @@ class PostViewUserPost extends React.Component {
                 fontFamily: Theme.fonts.bold,
                 alignSelf: 'flex-end',
                 bottom: '4%',
-                marginLeft: 8
+                marginLeft: 8,
               }}
             >
-              {this.props.username}
+              {post.user.name}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -96,7 +97,7 @@ class PostViewUserPost extends React.Component {
             />
           </TouchableOpacity>
         </View>
-        {this.props.userPostPicture !== '' && (
+        {post.picture !== '' && (
           <View
             style={{
               marginTop: 9,
@@ -107,7 +108,7 @@ class PostViewUserPost extends React.Component {
             }}
           >
             <Image
-              source={{ uri: this.props.userPostPicture }}
+              source={{ uri: post.picture }}
               style={{
                 height: '100%',
                 width: '100%',
@@ -117,7 +118,7 @@ class PostViewUserPost extends React.Component {
             />
           </View>
         )}
-        {this.props.userPostText !== '' && (
+        {post.text !== '' && (
           <Text
             style={{
               marginLeft: 28,
@@ -126,10 +127,10 @@ class PostViewUserPost extends React.Component {
               fontFamily: Theme.fonts.regular,
               lineHeight: 19,
               color: '#26315F',
-              marginBottom: 10
+              marginBottom: 10,
             }}
           >
-            {this.props.text}
+            {post.text}
           </Text>
         )}
         <View
@@ -140,14 +141,14 @@ class PostViewUserPost extends React.Component {
             alignSelf: 'center',
             width: '90%',
             marginLeft: '3%',
-            marginTop: '3%'
+            marginTop: '3%',
           }}
         >
           <TouchableOpacity
             style={{
               flexDirection: 'row',
               width: '44%',
-              height: '130%'
+              height: '130%',
             }}
           >
             <Image
@@ -155,7 +156,7 @@ class PostViewUserPost extends React.Component {
             />
             <View style={{ width: '5%' }} />
             <Text style={[styles.postText, { marginTop: '1%' }]}>
-              {this.props.location}
+              {post.location.name}
             </Text>
           </TouchableOpacity>
           <View
@@ -165,16 +166,16 @@ class PostViewUserPost extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.props.toggleLike(this.props.postID)}
+              onPress={() => this.props.toggleLike(post.id)}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image
-                  style={this.props.liked ? {} : { tintColor: '#B9BDC5' }}
+                  style={post.liked ? {} : { tintColor: '#B9BDC5' }}
                   source={require('../../assets/images/LikedPost.png')}
                 />
                 <View style={{ width: '12%' }} />
                 <Text style={styles.postText}>
-                  {this.props.likes} {this.props.likes > 1 ? 'Likes' : 'Like'}
+                  {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -202,10 +203,10 @@ PostViewUserPost.propTypes = {};
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-  toggleLike: (postID) => dispatch(toggleLike({postID}))
+  toggleLike: postID => dispatch(toggleLike({ postID }))
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PostViewUserPost);

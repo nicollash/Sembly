@@ -56,14 +56,7 @@ class PostView extends React.Component {
           <View style={{ height: screenHeight, width: screenWidth }}>
             <View>
               <PostViewUserPost
-                postID={post.id}
-                text={post.text}
-                username={post.user.name}
-                userProfilePicture={{ uri: post.user.avatar }}
-                userPostPicture={post.picture}
-                location={post.location.name}
-                likes={post.likes}
-                liked={post.liked}
+                post={post}
                 backPress={() => this.props.navigation.navigate('Feed')}
               />
               <PostViewCommentHeader
@@ -77,10 +70,11 @@ class PostView extends React.Component {
                 data={post.comments}
                 renderItem={({ item }) => (
                   <SemblyUserComment
-                    userName={item.user.name}
-                    userPicture={item.user.avatar}
-                    timeElapsed={item.createdAt.fromNow()}
-                    userComment={item.text}
+                    // userName={item.user.name}
+                    // userPicture={item.user.avatar}
+                    // timeElapsed={item.createdAt.fromNow()}
+                    // userComment={item.text}
+                    user={item}
                   />
                 )}
                 ItemSeparatorComponent={() => (

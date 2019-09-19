@@ -49,6 +49,7 @@ class SemblyUserComment extends React.Component {
   }
 
   render() {
+    const { user = {} } = this.props;
     return (
       <View style={styles.commentContainer}>
         <View style={{
@@ -63,7 +64,7 @@ class SemblyUserComment extends React.Component {
             <View style={{ height: '100%' }}>
               <Image
                 style={{ height: 32, width: 32, borderRadius: 16, marginTop: 4, marginRight: 5 }}
-                source={this.props.userPicture}
+                source={{ uri: user.user.avatar }}
                 resizeMode="contain"
               />
             </View>
@@ -75,16 +76,16 @@ class SemblyUserComment extends React.Component {
               top: 11,
             }}
             >
-              {this.props.userName}
+              {user.user.name}
             </Text>
           </TouchableOpacity>
           <Text style={{ top: '3%', right: '40%', color: '#B9BDC5', fontSize: 11 }}>
-            {this.props.timeElapsed}
+            {user.createdAt.fromNow()}
           </Text>
         </View>
         <View style={styles.commentContent}>
           <Text style={styles.commentText}>
-            {this.props.userComment}
+            {user.text}
           </Text>
         </View>
       </View>

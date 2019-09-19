@@ -51,6 +51,7 @@ class SemblyPlaceAutoComplete extends React.Component {
   constructor(props) {
     super(props);
     this.state = { businesses: [], query: '' };
+    this.debounceQuery = _.debounce(this.launchQuery, 800)
   }
 
   componentWillMount() {
@@ -59,12 +60,12 @@ class SemblyPlaceAutoComplete extends React.Component {
   componentDidMount() {
   }
 
-  launchQuery = (text) => {
-    if (text === '') return;
+  launchQuery = () => {
+    if (this.state.query === '') return;
     
     //console.log(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`);
 
-    fetch(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name,location&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`)
+    fetch(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name,location&q=${this.state.query}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`)
       .then(results => results.json())
       .then((json) => {
         console.log(json);
@@ -86,7 +87,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           data={businesses}
           defaultValue={query}
           hideResults={businesses.length <= 0}
-          onChangeText={text => this.launchQuery(text)}
+          onChangeText={query => this.setState({query}, this.debounceQuery) }
           placeholder="Add location"
           placeholderTextColor="#C7CAD1"
           style={{ fontSize: 17 }}

@@ -10,14 +10,16 @@ import {
   ImageBackground,
   Modal,
   Alert,
-  Platform,
+  ActivityIndicator,
 } from 'react-native';
 
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
@@ -89,7 +91,6 @@ class NewPostView extends React.Component {
 
     this.state = {
       submitted: false,
-      showSpinner: false,
       post: {
         location: {
           name: '',
@@ -109,64 +110,90 @@ class NewPostView extends React.Component {
     this.props.navigation.setParams({ submit: this.submit });
   }
 
-  chooseImage = () => {
-    ImagePicker.showImagePicker({
-      title: 'Select Image',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-        maxWidth: 900,
-        maxHeight: 900,
-        quality: 0.02,
-      },
-    }, (response) => {
-      if (response.didCancel) {
-        // User has cancelled imagespo
-      } else if (response.error) {
-        Alert.alert('Content error', 'An error occured while picking your post picture. Please try again.');
-      } else {
-        ImageResizer.createResizedImage(response.uri, 900, 900, 'JPEG', 0.9, 0).then(async (res) => {
-          const data = await RNFS.readFile(
-            res.path,
-            'base64',
-          );
-          console.log(res.uri + data);
-          this.setState({
-            post: {
-              ...this.state.post, pictureURI: res.uri, pictureData: data,
-            },
-          });
-        }).catch((err) => {
-          console.log(err);
-        });
+  componentDidUpdate(prevProps) {
+    if (prevProps.sendingPost && !this.props.sendingPost) {
+      setTimeout(() => { 
+        this.props.navigation.goBack(), 2000);
       }
-    });
+    }
+  }
+
+  chooseImage = () => {
+    ImagePicker.showImagePicker(
+      {
+        title: 'Select Image',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+          maxWidth: 900,
+          maxHeight: 900,
+          quality: 0.02,
+        },
+      },
+      (response) => {
+        if (response.didCancel) {
+          // User has cancelled imagespo
+        } else if (response.error) {
+          Alert.alert(
+            'Content error',
+            'An error occured while picking your post picture. Please try again.',
+          );
+        } else {
+          ImageResizer.createResizedImage(
+            response.uri,
+            900,
+            900,
+            'JPEG',
+            0.9,
+            0,
+          )
+            .then(async (res) => {
+              const data = await RNFS.readFile(res.path, 'base64');
+              console.log(res.uri + data);
+              this.setState({
+                post: {
+                  ...this.state.post,
+                  pictureURI: res.uri,
+                  pictureData: data,
+                },
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      },
+    );
   };
 
   submit = () => {
-    this.setState({ submitted: true, showSpinner: true },
-      () => {
-        this.props.createNewPost(this.state.post);
-        setTimeout(() => this.props.navigation.goBack(), 3000);
-      });
-  }
+    this.props.createNewPost(this.state.post);
+    this.setState({ submitted: true });
+    // () => {
+
+    //  setTimeout(() => this.props.navigation.goBack(), 3000);
+    // });
+  };
 
   render() {
+    const { sendingPost } = this.props;
+
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
-        {this.state.submitted
-        && (
-          <Modal
-            visible
-            animationType="fade"
-            transparent
-          >
+        {this.state.submitted && (
+          <Modal visible animationType="fade" transparent>
             <View
               accessibilityIgnoresInvertColors
               style={styles.postContainer}
             />
+
             <View style={styles.successAlert}>
-              <Image source={require('../../../assets/images/PostSubmitted.png')} />
+              {!sendingPost && (
+                <Image
+                  source={require('../../../assets/images/PostSubmitted.png')}
+                />
+              )}
+              {sendingPost && <ActivityIndicator size="large" />}
             </View>
           </Modal>
         )}
@@ -175,7 +202,8 @@ class NewPostView extends React.Component {
             marginLeft={5}
             placeholder="Content of your post, up to 300 chars."
             label="TEXT"
-            valueChanged={text => this.setState({ post: { ...this.state.post, text } })}
+            valueChanged={text => this.setState({ post: { ...this.state.post, text } })
+            }
             spacing={5}
           />
         </View>
@@ -190,54 +218,78 @@ class NewPostView extends React.Component {
           <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}>
             <Image source={pin} style={{ height: 15, marginLeft: -15 }} />
             <View style={{ marginLeft: 2 }}>
-              <SemblyPlaceAutoComplete latitude={this.props.location.lat} longitude={this.props.location.lon} onResult={(location) => {
-                this.setState({
-                  post: {
-                    ...this.state.post, location: { name: location.name, lat: location.lat, lon: location.lon },
-                  },
-                });
-              }}
+              <SemblyPlaceAutoComplete
+                latitude={this.props.location.lat}
+                longitude={this.props.location.lon}
+                onResult={(location) => {
+                  this.setState({
+                    post: {
+                      ...this.state.post,
+                      location: {
+                        name: location.name,
+                        lat: location.lat,
+                        lon: location.lon,
+                      },
+                    },
+                  });
+                }}
               />
             </View>
           </View>
-          <View style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 0.5, marginTop: 5 }} />
+          <View
+            style={{
+              borderBottomColor: '#D8D8D8',
+              borderBottomWidth: 0.5,
+              marginTop: 5,
+            }}
+          />
         </View>
         <View style={{ marginTop: 20 }}>
           <SemblyLabel label="CATEGORY" marginLeft={5} />
           <View style={{ width: wp(92), marginLeft: -12 }}>
-            <SemblyDropdown values={_.pluck(this.props.categories, 'title')} onChange={(category) => { this.setState({ post: { ...this.state.post, category }}) }} />
+            <SemblyDropdown
+              values={_.pluck(this.props.categories, 'title')}
+              onChange={(category) => {
+                this.setState({ post: { ...this.state.post, category } });
+              }}
+            />
           </View>
-          <Image style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }} source={require('../../../assets/images/BorderLine.png')} />
+          <Image
+            style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
+            source={require('../../../assets/images/BorderLine.png')}
+          />
         </View>
         <View style={{ marginTop: 20 }}>
           <SemblyLabel label="PHOTO" marginLeft={5} />
         </View>
-        {this.state.post.pictureURI === ''
-        && (
-          <View style={{
-            backgroundColor: '#EBECEE',
-            borderRadius: 15,
-            width: wp(90),
-            height: 170,
-            alignItems: 'center',
-            alignSelf: 'center',
-            justifyContent: 'center',
-            marginTop: 10,
-          }}
+        {this.state.post.pictureURI === '' && (
+          <View
+            style={{
+              backgroundColor: '#EBECEE',
+              borderRadius: 15,
+              width: wp(90),
+              height: 170,
+              alignItems: 'center',
+              alignSelf: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
           >
             <TouchableOpacity onPress={this.chooseImage}>
-              <Image source={require('../../../assets/images/ButtonCameraPost.png')} />
+              <Image
+                source={require('../../../assets/images/ButtonCameraPost.png')}
+              />
             </TouchableOpacity>
           </View>
         )}
-        {this.state.post.pictureURI !== ''
-        && (
-          <View style={{
-            width: wp(90),
-            height: 170,
-            marginTop: 10,
-            alignSelf: 'center',
-          }}
+        {this.state.post.pictureURI !== '' && (
+          <View
+            style={{
+              width: wp(90),
+              height: 170,
+              marginTop: 10,
+              alignSelf: 'center',
+            }}
           >
             <ImageBackground
               source={{ uri: this.state.post.pictureURI }}
@@ -245,38 +297,42 @@ class NewPostView extends React.Component {
               imageStyle={{ borderRadius: 15 }}
             >
               <TouchableOpacity onPress={this.chooseImage}>
-                <Image source={require('../../../assets/images/ButtonCameraPost.png')} />
+                <Image
+                  source={require('../../../assets/images/ButtonCameraPost.png')}
+                />
               </TouchableOpacity>
             </ImageBackground>
           </View>
         )}
-        <Text style={{
-          color: '#C7CAD1',
-          alignSelf: 'center',
-          marginTop: '6%',
-        }}
+        <Text
+          style={{
+            color: '#C7CAD1',
+            alignSelf: 'center',
+            marginTop: '6%',
+          }}
         >
-        Your post can contain text, photo or both.
+          Your post can contain text, photo or both.
         </Text>
       </View>
     );
   }
 }
 
-NewPostView.defaultProps = {
-};
+NewPostView.defaultProps = {};
 
-NewPostView.propTypes = {
-};
-
+NewPostView.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
   location: state.user.location,
   categories: state.feed.categories,
+  sendingPost: state.appState.sendingPost,
 });
 
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPostView);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewPostView);

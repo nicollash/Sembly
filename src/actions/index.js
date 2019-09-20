@@ -165,12 +165,11 @@ export function setProfilePicture(photo) {
 
 
 // New Post
-export const SEND_POST = 'SEND_POST';
+export const SENDING_POST = 'SENDING_POST';
 export function createNewPost(post) {
-  return async function createNewPostState(dispatch, getState) {
+  return async function createNewPostState(dispatch) {
+    dispatch({ type: SENDING_POST, sendingPost: true });
     const token = await firebase.auth().currentUser.getIdToken();
-    console.log('token' + token);
-    console.log(`${API_URL}/newPost`);
     fetch(`${API_URL}/newPost`, {
       method: 'POST',
       headers: {
@@ -179,8 +178,10 @@ export function createNewPost(post) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    });
-    //dispatch({ type: SEND_POST, post });
+    }).then(() => dispatch({ type: SENDING_POST, sendingPost: false }).catch(() => {
+      dispatch({ type: SENDING_POST, sendingPost: false });
+    }));
+    
     // Refresh feed, for now
     dispatch(refreshFeed());
   };

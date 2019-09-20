@@ -6,13 +6,12 @@ import moment from 'moment';
 import Location from './Location';
 import Post from './Post';
 
-
-
 const EventRecord = Immutable.Record({
   id: 0,
   title: '',
   text: '',
   picture: '',
+  posts: [],
   happeningOn: moment(),
   location: new Location(),
 
@@ -27,6 +26,7 @@ const EventProps = {
   title: PropTypes.string,
   text: PropTypes.string,
   picture: PropTypes.string,
+  posts: PropTypes.arrayOf(Post),
   happeningOn: PropTypes.object,
   location: PropTypes.instanceOf(Location),
   //

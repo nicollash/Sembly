@@ -39,8 +39,10 @@ export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed({ type = 'hot', category = 'all', location = undefined }) {
   return async function refreshFeedState(dispatch, getState) {
-    console.log("Refreshing feed...");
+
     const _location = location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : location;
+
+    const token = await firebase.auth().currentUser.getIdToken();
 
     const paramsObj = { type, category, ..._location };
     const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
@@ -50,11 +52,11 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(response => response.json())
       .then((feedJSON) => {
-        console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 

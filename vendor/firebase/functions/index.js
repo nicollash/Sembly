@@ -142,7 +142,23 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
 
   const postID = request.body.postID;
 
-  return response.status(200).send("Your like has been submitted");
+  console.log(user.uid);
+  
+  const post = await admin.firestore().collection(`Posts`).where(admin.firestore.FieldPath.documentId(), `==`, postID);
+  const liked = await post.where(`d.likes`, "array-contains", user.uid).get()
+  
+  
+  if (liked.docs.length) {
+    admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayRemove(user.uid) }).then(() => {
+      console.log("Removed like");
+      return response.status(200).send("");
+    }).catch(err => console.log(err));
+  }else{
+    admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayUnion(user.uid) }).then(() => {
+      console.log("Added like");
+      return response.status(200).send("");
+    }).catch(err => console.log(err));
+  }
 });
 
 exports.getFeed = functions.https.onRequest(async (request, response) => {
@@ -154,6 +170,8 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     type: request.query.type,
     category: request.query.category,
   };
+
+  const user = await getUser(request);
 
   //httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getEvents?lat=${lat}&lon=${lon}`);
   //httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getBusinesses?lat=${lat}&lon=${lon}`);
@@ -225,8 +243,11 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     }),
     posts: await Promise.all(_.sortBy(posts.docs, orderField).map(async doc => {
       const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
+      console.log(doc.data().likes);
       return { 
         id: doc.id, ...doc.data(),
+        likesCount: (doc.data().likes || []).length,
+        liked: (doc.data().likes || []).includes(user.uid),
         comments: comments.docs.map(comment => comment.data()),
       };
     })),

@@ -1,21 +1,23 @@
-import firebase from 'react-native-firebase';
-import _ from 'underscore';
-import moment from 'moment';
-import Post from '../domain/Post';
-import Comment from '../domain/Comment';
-import Event from '../domain/Event';
-import User from '../domain/User';
-import Business from '../domain/Business';
-import Category from '../domain/Category';
+import firebase from "react-native-firebase";
+import _ from "underscore";
+import moment from "moment";
+import Post from "../domain/Post";
+import Comment from "../domain/Comment";
+import Event from "../domain/Event";
+import User from "../domain/User";
+import Business from "../domain/Business";
+import Category from "../domain/Category";
 
 //const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
+const API_URL = __DEV__
+  ? "http://localhost:5000/sembly-staging/us-central1"
+  : "https://us-central1-sembly-staging.cloudfunctions.net";
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
 
 // AppState
-export const SET_PANEL_NAVIGATION = 'SET_PANEL_NAVIGATION';
+export const SET_PANEL_NAVIGATION = "SET_PANEL_NAVIGATION";
 export function setPanelNavigation(navigation) {
   return function setPanelNavigationState(dispatch) {
     dispatch({ type: SET_PANEL_NAVIGATION, navigation });
@@ -23,46 +25,60 @@ export function setPanelNavigation(navigation) {
 }
 
 // User
-export const UPDATE_LOCATION = 'UPDATE_LOCATION';
+export const UPDATE_LOCATION = "UPDATE_LOCATION";
 export function updateLocation(lat = 0, lon = 0) {
   return function updateLocationState(dispatch) {
     dispatch({ type: UPDATE_LOCATION, lat, lon });
   };
 }
 
-export const UPDATE_CITY = 'UPDATE_CITY';
-export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
-export const UPDATE_FEED_LOADING = 'UPDATE_FEED_LOADING';
-export const UPDATE_FILTER = 'UPDATE_FILTER';
-export const UPDATE_POSTS = 'UPDATE_POSTS';
-export const UPDATE_EVENTS = 'UPDATE_EVENTS';
-export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
-export function refreshFeed({ type = 'hot', category = 'all', location = undefined }) {
+export const UPDATE_CITY = "UPDATE_CITY";
+export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
+export const UPDATE_FEED_LOADING = "UPDATE_FEED_LOADING";
+export const UPDATE_FILTER = "UPDATE_FILTER";
+export const UPDATE_POSTS = "UPDATE_POSTS";
+export const UPDATE_EVENTS = "UPDATE_EVENTS";
+export const UPDATE_BUSINESSES = "UPDATE_BUSINESSES";
+export function refreshFeed({
+  type = "hot",
+  category = "all",
+  location = undefined
+}) {
   return async function refreshFeedState(dispatch, getState) {
-
-    const _location = location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : location;
+    const _location =
+      location === undefined
+        ? {
+            lat: getState().user.location.lat,
+            lon: getState().user.location.lon
+          }
+        : location;
 
     const token = await firebase.auth().currentUser.getIdToken();
 
     const paramsObj = { type, category, ..._location };
-    const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
+    const params = Object.keys(paramsObj)
+      .map(key => `${key}=${encodeURIComponent(paramsObj[key])}`)
+      .join("&");
     dispatch({ type: UPDATE_FEED_LOADING, status: true });
     fetch(`${API_URL}/getFeed?${params}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(response => response.json())
-      .then((feedJSON) => {
+      .then(feedJSON => {
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
         // Update categories
         const categories = feedJSON.categories.map(c => Category.parse(c));
-        dispatch({ type: UPDATE_CATEGORY, categories: _.sortBy(categories, 'id') });
+        dispatch({
+          type: UPDATE_CATEGORY,
+          categories: _.sortBy(categories, "id")
+        });
 
         // Update businesses
         const businesses = feedJSON.businesses.map(e => Business.parse(e));
@@ -78,7 +94,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
-      .catch((e) => { 
+      .catch(e => {
         console.log(e);
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
@@ -86,14 +102,14 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
 }
 
 // Authentication
-export const UPDATE_USER = 'UPDATE_USER';
-export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const UPDATE_USER = "UPDATE_USER";
+export const LOGIN_ERROR = "LOGIN_ERROR";
 export function handleLogin(_email, _password) {
   return function handleLoginState(dispatch, getState) {
     firebase
       .auth()
       .signInWithEmailAndPassword(_email, _password)
-      .then((currentUser) => {
+      .then(currentUser => {
         const { email, displayName, photoURL } = currentUser.user;
         const user = { email, displayName, photoURL };
         dispatch({ type: UPDATE_USER, user });
@@ -102,14 +118,14 @@ export function handleLogin(_email, _password) {
   };
 }
 
-export const SIGNUP_ERROR = 'SIGNUP_ERROR';
+export const SIGNUP_ERROR = "SIGNUP_ERROR";
 export function handleSignup(_email, _password) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
-      .then((currentUser) => {
-        console.log('handleSignup', currentUser);
+      .then(currentUser => {
+        console.log("handleSignup", currentUser);
         const { email } = currentUser.user;
         const user = { email };
         dispatch({ type: UPDATE_USER, user });
@@ -129,11 +145,11 @@ export function handleSignOut() {
           email: undefined,
           displayName: undefined,
           photoURL: undefined,
-          location: { lat: undefined, lon: undefined, name: undefined },
+          location: { lat: undefined, lon: undefined, name: undefined }
         };
         dispatch({ type: UPDATE_USER, user });
       })
-      .catch(e => console.log('Can\'t log out'));
+      .catch(e => console.log("Can't log out"));
   };
 }
 
@@ -150,17 +166,16 @@ export function clearSignupErrors() {
 }
 
 // Profile Changes
-export function updateUserProfile({
-  name = undefined,
-  photo = undefined,
-}) {
-  console.log('photo', photo);
-  console.log('name', name);
+export function updateUserProfile({ name = undefined, photo = undefined }) {
+  console.log("photo", photo);
+  console.log("name", name);
   return async function updateUserProfileState(dispatch, getState) {
-    await firebase.auth().currentUser.updateProfile({
-      displayName: name,
-      photoURL: photo,
-    })
+    await firebase
+      .auth()
+      .currentUser.updateProfile({
+        displayName: name,
+        photoURL: photo
+      })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
         console.log(currentUser);
@@ -173,60 +188,86 @@ export function updateUserProfile({
   };
 }
 
+export const UPDATE_USER_POSTS = "UPDATE_USER_POSTS";
+export function getUserPosts() {
+  return async function getUserPostsState(dispatch, getState) {
+    const uid = firebase.auth().currentUser.uid;
+    const token = await firebase.auth().currentUser.getIdToken();
+    fetch(`${API_URL}/getPosts?userID=${uid}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(postsJSON => {
+        dispatch({
+          type: UPDATE_USER_POSTS,
+          posts: postsJSON.map(p => Post.parse(p))
+        });
+      });
+  };
+}
 
 // New Post
-export const SENDING_POST = 'SENDING_POST';
+export const SENDING_POST = "SENDING_POST";
 export function createNewPost(post) {
   return async function createNewPostState(dispatch) {
     dispatch({ type: SENDING_POST, sendingPost: true });
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/newPost`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(post),
-    }).then(() => dispatch({ type: SENDING_POST, sendingPost: false }).catch(() => {
-      dispatch({ type: SENDING_POST, sendingPost: false });
-    }));
-    
+      body: JSON.stringify(post)
+    }).then(() =>
+      dispatch({ type: SENDING_POST, sendingPost: false }).catch(() => {
+        dispatch({ type: SENDING_POST, sendingPost: false });
+      })
+    );
+
     // Refresh feed, for now
     dispatch(refreshFeed());
   };
 }
 
 // Add comment
-export const ADD_COMMENT = 'ADD_COMMENT';
-export function addComment({ postID = undefined, text = '' }) {
+export const ADD_COMMENT = "ADD_COMMENT";
+export function addComment({ postID = undefined, text = "" }) {
   const comment = { postID, text };
   return async function addCommentState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/addComment`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(comment),
+      body: JSON.stringify(comment)
     }).then(() => {
       // Success, create the mock comment
       const c = new Comment({
         text,
         createdAt: moment(),
-        author: new User({ name: getState().user.currentUser.displayName }),
+        author: new User({ name: getState().user.currentUser.displayName })
       });
 
       const post = _.findWhere(getState().feed.posts, { id: postID });
-      
-      const posts = _.union([post.set('comments', _.union([c], post.comments))], _.without(getState().feed.posts, post));
-      
-      dispatch({ type: UPDATE_POSTS, posts });
 
+      const posts = _.union(
+        [post.set("comments", _.union([c], post.comments))],
+        _.without(getState().feed.posts, post)
+      );
+
+      dispatch({ type: UPDATE_POSTS, posts });
     });
-    
+
     dispatch({ type: ADD_COMMENT, comment });
   };
 }
@@ -237,35 +278,38 @@ export function toggleLike({ postID = undefined }) {
 
     const post = _.findWhere(getState().feed.posts, { id: postID });
     const index = _.indexOf(getState().feed.posts, post);
-    
+
     const posts = [...getState().feed.posts];
-    const likes = post.get('likes');
-    posts[index] = post.set('liked', !post.get('liked'));
-    posts[index] = posts[index].set('likes', posts[index].get('liked') ? likes + 1 : likes - 1);
+    const likes = post.get("likes");
+    posts[index] = post.set("liked", !post.get("liked"));
+    posts[index] = posts[index].set(
+      "likes",
+      posts[index].get("liked") ? likes + 1 : likes - 1
+    );
     dispatch({ type: UPDATE_POSTS, posts });
 
     fetch(`${API_URL}/toggleLike`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ postID }),
-    }).then(() => {
-      
-    }).catch(err => console.log(err));
+      body: JSON.stringify({ postID })
+    })
+      .then(() => {})
+      .catch(err => console.log(err));
   };
 }
 
 // Like Post
 // export const LIKE_POST = 'LIKE_POST';
 // export function likePost({ postID = undefined }) {
-//   const 
+//   const
 // }
 
-export const PREVIOUS_SCREEN = 'PREVIOUS_SCREEN';
-export function setPreviousScreen(screen = 'Profile') {
+export const PREVIOUS_SCREEN = "PREVIOUS_SCREEN";
+export function setPreviousScreen(screen = "Profile") {
   return function setPreviousScreenState(dispatch, getState) {
     dispatch({ type: PREVIOUS_SCREEN, screen });
   };

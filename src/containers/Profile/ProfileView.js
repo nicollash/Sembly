@@ -162,9 +162,9 @@ class ProfileView extends React.Component {
         </View>
         <View style={{ alignItems: 'center' }}>
           <ProfileStatsBar
-            posts={this.props.user.posts}
-            comments={this.props.user.comments}
-            likes={this.props.user.likes}
+            posts={this.props.posts}
+            comments={this.props.comments}
+            likes={this.props.likes}
           />
         </View>
         <View style={{ marginTop: hp(3) }}>
@@ -206,6 +206,9 @@ const mapStateToProps = (state, ownProps) => ({
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
   email: state.user.email,
+  posts: state.user.posts,
+  likes: state.user.likes,
+  comments: state.user.comments,
 });
 
 const mapDispatchToProps = dispatch => ({

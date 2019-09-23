@@ -161,6 +161,22 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   }
 });
 
+exports.getPosts = functions.https.onRequest(async (request, response) => {
+  const userPosts = await admin.firestore().collection(`Posts`).where('d.user.id', `==`, request.query.userID).get();
+  
+  const posts = await Promise.all(userPosts.docs.map(async doc => {
+    const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
+    return { 
+      id: doc.id, ...doc.data(),
+      likesCount: (doc.data().likes || []).length,
+      liked: (doc.data().likes || []).includes(request.query.userID),
+      comments: comments.docs.map(comment => comment.data()),
+    };
+  }));
+
+  return response.status(200).send(posts);
+});
+
 exports.getFeed = functions.https.onRequest(async (request, response) => {
   //console.log(util.inspect(request.query, { showHidden: false, depth: null }));
 

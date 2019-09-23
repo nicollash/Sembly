@@ -41,7 +41,7 @@ const styles = {
   },
 };
 
-const samplePlayer = 'https://i.pravatar.cc/300';
+const samplePlayer = 'https://api.adorable.io/avatars/285/abott@adorable.png';
 const cameraButton = require('../../../assets/images/ButtonCameraPost.png');
 
 class ProfileView extends React.Component {
@@ -127,7 +127,7 @@ class ProfileView extends React.Component {
         <View style={styles.profileHeader}>
           <View>
             <Image
-              source={{ uri: this.props.photoURL }}
+              source={{ uri: this.props.photoURL || samplePlayer }}
               style={{ height: 100, width: 100, borderRadius: 15 }}
             />
             <TouchableOpacity
@@ -161,7 +161,11 @@ class ProfileView extends React.Component {
           <View style={styles.separator} />
         </View>
         <View style={{ alignItems: 'center' }}>
-          <ProfileStatsBar />
+          <ProfileStatsBar
+            posts={this.props.user.posts}
+            comments={this.props.user.comments}
+            likes={this.props.user.likes}
+          />
         </View>
         <View style={{ marginTop: hp(3) }}>
           <ProfileSubSection

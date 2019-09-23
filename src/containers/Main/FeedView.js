@@ -41,7 +41,7 @@ const icons = [
   require('../../../assets/images/SemblyEventsIcon.png'),
   require('../../../assets/images/SemblyBurgerIcon.png'),
   require('../../../assets/images/SemblyPromosIcon.png'),
-  require('../../../assets/images/SemblyDrinksIcon.png')
+  require('../../../assets/images/artsIcon.png')
 ];
 
 class FeedView extends React.Component {
@@ -121,7 +121,9 @@ class FeedView extends React.Component {
                 <FeedCategoryButton
                   icon={icons[item.icon]}
                   title={item.title}
-                  titleColor="#26315F"
+                  titleColor={
+                    item.title === this.state.selectedCategoryTitle && item.title !== 'All' ? '#fff' : '#26315F'
+                  }
                   backgroundColor={item.color}
                   border={item.border}
                   onPress={() => this.setState({ selectedCategoryTitle: item.title, selectedCategoryIcon: icons[item.icon] },

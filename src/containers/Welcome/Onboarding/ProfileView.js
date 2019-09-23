@@ -8,6 +8,7 @@ import {
   StatusBar,
   Text,
   Alert,
+  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
 
@@ -85,6 +86,7 @@ class ProfileView extends React.Component {
       profile: {
         displayName: '',
         pictureURI: undefined,
+        spinnerActive: false,
       },
     };
   }
@@ -131,6 +133,13 @@ class ProfileView extends React.Component {
       }
     });
   };
+
+  handleSpinner = () => {
+    this.setState({ spinnerActive: true });
+    setTimeout(() => {
+      this.setState({ spinnerActive: false });
+    }, 4000);
+  }
 
   render() {
     console.log(this.props.user.displayName);
@@ -211,15 +220,25 @@ class ProfileView extends React.Component {
                 />
               </View>
             </View>
-            <View style={{ marginTop: hp(6) }}>
-              <SemblyButton
-                width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={() => {
-                  this.props.updateUserProfile(this.state.profile.displayName, this.state.profile.pictureURI);
-                  this.props.navigation.navigate('Onboarding');
-                }}
-                label="I'm ready"
-              />
+            <View style={{ marginTop: isIphoneX() ? hp(6) : hp(5) }}>
+              {this.state.spinnerActive && (
+                <View style={styles.spinnerContainer}>
+                  <ActivityIndicator />
+                </View>
+              )}
+              {!this.state.spinnerActive && (
+                <SemblyButton
+                  width={isIphoneX() ? wp(76) : wp(69)}
+                  onPress={() => {
+                    this.props.updateUserProfile(this.state.profile.displayName, this.state.profile.pictureURI);
+                    this.handleSpinner();
+                    setTimeout(() => {
+                      this.props.navigation.navigate('Onboarding');
+                    }, 1500);
+                  }}
+                  label="I'm ready"
+                />
+              )}
             </View>
           </View>
         </KeyboardAwareScrollView>

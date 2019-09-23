@@ -154,7 +154,7 @@ class ProfileView extends React.Component {
               marginTop: hp(3),
             }}
           >
-            {this.props.displayName || 'Your Name'}
+            {this.props.displayName || this.props.email.split('@')[0]}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>
@@ -201,6 +201,7 @@ ProfileView.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
+  email: state.user.email,
 });
 
 const mapDispatchToProps = dispatch => ({

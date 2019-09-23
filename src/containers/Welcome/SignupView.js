@@ -205,8 +205,10 @@ class SignupView extends React.Component {
                     this.props.handleSignup(this.state.email, this.state.password);
                     this.handleSpinner();
                     setTimeout(() => {
-                      this.props.signupError ? undefined : this.props.navigation.navigate('Profile');
-                    }, 5000);
+                      this.props.signupError
+                        ? this.setState({ spinnerActive: false }) && this.props.clearSignupErrors
+                        : this.props.navigation.navigate('Profile');
+                    }, 1000);
                   }}
                   label="Signup"
                 />

@@ -151,21 +151,25 @@ export function clearSignupErrors() {
 
 // Profile Changes
 export function updateUserProfile({
-  name = 'Rejean',
+  name = undefined,
   photo = undefined,
 }) {
   console.log('photo', photo);
+  console.log('name', name);
   return async function updateUserProfileState(dispatch, getState) {
     await firebase.auth().currentUser.updateProfile({
       displayName: name,
       photoURL: photo,
     })
-      .then((currentUser) => {
-        const { email } = currentUser.user;
-        const user = { email, displayName: name, photoURL: photo };
+      .then(() => {
+        const currentUser = firebase.auth().currentUser;
+        console.log(currentUser);
+        const { displayName, photoURL } = currentUser;
+        console.log(displayName, photoURL);
+        const user = { displayName, photoURL };
         dispatch({ type: UPDATE_USER, user });
       })
-      .catch(e => console.warn(e));
+      .catch(e => console.log(e));
   };
 }
 

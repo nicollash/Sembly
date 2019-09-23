@@ -19,7 +19,7 @@ import {
   LOGIN_ERROR,
   SIGNUP_ERROR,
   // ---
-  SEND_POST,
+  SENDING_POST,
   UPDATE_CITY,
   PREVIOUS_SCREEN,
 } from '../actions';
@@ -33,12 +33,15 @@ import {
 const appStateDefault = {
   panelNavigation: null,
   previousScreen: undefined,
+  sendingPost: false,
 };
 
 const appState = (state = appStateDefault, action) => {
   switch (action.type) {
   case SET_PANEL_NAVIGATION:
     return Object.assign({}, state, { panelNavigation: action.navigation });
+  case SENDING_POST:
+    return Object.assign({}, state, { sendingPost: action.sendingPost });
   // eslint-disable-next-line no-fallthrough
   case PREVIOUS_SCREEN:
     return Object.assign({}, state, { previousScreen: action.screen });

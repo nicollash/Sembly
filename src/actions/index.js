@@ -8,8 +8,8 @@ import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
 
-const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-//  __DEV__ ? : http://localhost:5000/sembly-staging/us-central1
+//const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -39,8 +39,10 @@ export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed({ type = 'hot', category = 'all', location = undefined }) {
   return async function refreshFeedState(dispatch, getState) {
-    console.log("Refreshing feed...");
+
     const _location = location === undefined ? { lat: getState().user.location.lat, lon: getState().user.location.lon } : location;
+
+    const token = await firebase.auth().currentUser.getIdToken();
 
     const paramsObj = { type, category, ..._location };
     const params = Object.keys(paramsObj).map(key => `${key}=${encodeURIComponent(paramsObj[key])}`).join('&');
@@ -50,11 +52,11 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(response => response.json())
       .then((feedJSON) => {
-        console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
@@ -169,12 +171,11 @@ export function updateUserProfile({
 
 
 // New Post
-export const SEND_POST = 'SEND_POST';
+export const SENDING_POST = 'SENDING_POST';
 export function createNewPost(post) {
-  return async function createNewPostState(dispatch, getState) {
+  return async function createNewPostState(dispatch) {
+    dispatch({ type: SENDING_POST, sendingPost: true });
     const token = await firebase.auth().currentUser.getIdToken();
-    console.log('token' + token);
-    console.log(`${API_URL}/newPost`);
     fetch(`${API_URL}/newPost`, {
       method: 'POST',
       headers: {
@@ -183,8 +184,10 @@ export function createNewPost(post) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    });
-    //dispatch({ type: SEND_POST, post });
+    }).then(() => dispatch({ type: SENDING_POST, sendingPost: false }).catch(() => {
+      dispatch({ type: SENDING_POST, sendingPost: false });
+    }));
+    
     // Refresh feed, for now
     dispatch(refreshFeed());
   };

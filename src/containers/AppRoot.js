@@ -25,6 +25,7 @@ import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import ProfileStack from './Profile/ProfileStack';
 import { clearLoginErrors, clearSignupErrors, updateLocation } from '../actions';
+import firebase from 'react-native-firebase';
 
 
 const WelcomeStack = createStackNavigator({
@@ -81,7 +82,12 @@ const MainTabNavigation = createBottomTabNavigator({
         <View>
           <Image
             source={{ uri: this.fetchProfilePicture }}
-            style={{ marginTop: !isIphoneX() ? hp(-1) : 0 }}
+            style={{
+              marginTop: !isIphoneX() ? hp(-1) : 0,
+              height: 30,
+              width: 30,
+              borderRadius: 25,
+            }}
           />
         </View>
       ),
@@ -133,41 +139,39 @@ class AppRoot extends React.PureComponent {
     this.gpsInterval = undefined;
   }
 
-  componentWillMount() {
-  }
-
   componentDidMount() {
-    this.handleUserStatus();
+    this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+      this.setState({
+        user,
+      }, () => {
+        if (this.state.user) {
+          if (this.props.previousScreen !== 'SignupView') {
+            this.navigator.dispatch(
+              NavigationActions.navigate({
+                routeName: 'MainApp',
+                params: {},
+              }),
+            );
+          }
+        }
+      });
+    });
   }
 
-  componentDidUpdate(prevProps) {
-    console.log('approot: ' + JSON.stringify(prevProps.currentUser) + 'now:' + JSON.stringify(this.props.currentUser));
-    if (this.props.currentUser !== prevProps.currentUser) this.handleUserStatus();
-    if (this.props.currentUser === undefined) {
-      this.navigator.dispatch(
-        NavigationActions.navigate({
-          routeName: 'Welcome',
-          params: {},
-        }),
-      );
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.state.user) {} else {
+  //     this.navigator.dispatch(
+  //       NavigationActions.navigate({
+  //         routeName: 'Welcome',
+  //         params: {},
+  //       }),
+  //     );
+  //   }
+  // }
 
-  handleUserStatus = () => {
-    const { currentUser } = this.props;
-
-    if (currentUser !== undefined) {
-      if (this.gpsInterval === undefined) {
-        this.geoLocate();
-        this.gpsInterval = setInterval(this.geoLocate, 12000);
-      }
-      this.navigator.dispatch(
-        NavigationActions.navigate({
-          routeName: 'MainApp',
-          params: {},
-        }),
-      );
-    }
+  componentWillUnmount() {
+    console.log('approot will unmount');
+    this.authSubscription();
   }
 
   geoLocate = async () => {
@@ -183,9 +187,16 @@ class AppRoot extends React.PureComponent {
     }, { timeout: 10000 });
   }
 
-  fetchProfilePicture = () => this.props.currentUser.avatar;
+  fetchProfilePicture = () => {
+    console.log('fetched profile pic');
+    // const user = firebase.auth().currentUser;
+    // return user.photoURL;
+    return 'https://images-na.ssl-images-amazon.com/images/I/715vwvP5ZEL._SY355_.png';
+  }
 
   render() {
+    console.log('state user', this.state.user);
+    console.log('prop user', this.props.user);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />
@@ -196,19 +207,18 @@ class AppRoot extends React.PureComponent {
 }
 
 AppRoot.propTypes = {
-
 };
 
 AppRoot.defaultProps = {
-  currentUser: undefined,
 };
 
 const mapStateToProps = state => ({
-  currentUser: state.user.currentUser,
   location: state.user.location,
+  user: state.user,
+  previousScreen: state.appState.previousScreen,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),

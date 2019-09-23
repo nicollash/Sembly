@@ -14,13 +14,14 @@ import {
   UPDATE_EVENTS,
   // ---
   UPDATE_LOCATION,
-  UPDATE_CURRENT_USER,
+  UPDATE_USER,
   // ---
   LOGIN_ERROR,
   SIGNUP_ERROR,
   // ---
   SEND_POST,
   UPDATE_CITY,
+  PREVIOUS_SCREEN,
 } from '../actions';
 
 
@@ -31,6 +32,7 @@ import {
 
 const appStateDefault = {
   panelNavigation: null,
+  previousScreen: undefined,
 };
 
 const appState = (state = appStateDefault, action) => {
@@ -38,6 +40,8 @@ const appState = (state = appStateDefault, action) => {
   case SET_PANEL_NAVIGATION:
     return Object.assign({}, state, { panelNavigation: action.navigation });
   // eslint-disable-next-line no-fallthrough
+  case PREVIOUS_SCREEN:
+    return Object.assign({}, state, { previousScreen: action.screen });
   default:
     return state;
   }
@@ -92,7 +96,6 @@ const feed = (state = feedDefault, action) => {
 };
 
 const userDefault = {
-  currentUser: undefined,
   loginError: undefined,
   signupError: undefined,
   location: {
@@ -101,15 +104,16 @@ const userDefault = {
     lon: -95.93779,
   },
   photoURL: undefined,
-  displayName: 'roger',
+  displayName: undefined,
+  email: '',
 };
 
 const user = (state = userDefault, action) => {
   switch (action.type) {
   case UPDATE_LOCATION:
     return Object.assign({}, state, { location: { lat: action.lat, lon: action.lon } });
-  case UPDATE_CURRENT_USER:
-    return Object.assign({}, state, { currentUser: action.user });
+  case UPDATE_USER:
+    return Object.assign({}, state, action.user);
   case LOGIN_ERROR:
     return Object.assign({}, state, { loginError: action.message });
   case SIGNUP_ERROR:

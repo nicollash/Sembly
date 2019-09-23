@@ -48,12 +48,7 @@ class LocationView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      height: 0,
-      address: '-----',
-      phoneNumber: '-----',
-      dateOfEvent: '2019/--/-- @-:-- PM',
-    };
+    this.state = {};
   }
 
   componentWillMount() {
@@ -62,10 +57,8 @@ class LocationView extends React.Component {
   componentDidMount() {
   }
 
-  openMaps = (lat, lng) => {
-    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    const url = scheme + lat + ',' + lng;
-    Linking.openURL(url);
+  updateMap = (a, b) => {
+    console.log(a, b);
   }
 
   formatPhone = (number) => {
@@ -80,9 +73,11 @@ class LocationView extends React.Component {
     const location = navigation.getParam('location', e => console.warn(e));
 
     const screenHeight = Dimensions.get('window').height;
+
+    console.log('location', location);
     return (
       <View>
-        <View style={{ height: (screenHeight - this.state.height) }}>
+        <View style={{ height: (screenHeight) }}>
           <ScrollView>
             <View style={{
               justifyContent: 'flex-start',
@@ -156,7 +151,7 @@ class LocationView extends React.Component {
                   }}
                   >
                     <TouchableOpacity
-                      onPress={() => this.openMaps(location.location.lat, location.location.lon)}
+                      onPress={() => this.updateMap(location.location.lat, location.location.lon)}
                     >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                         <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
@@ -167,40 +162,40 @@ class LocationView extends React.Component {
                           fontFamily: Theme.fonts.bold,
                         }}
                         >
-                          {this.state.address}
+                          {location.location.name}
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => { Linking.openURL(`telprompt:${this.state.phoneNumber}`); }}
-                    >
-                      <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
-                        {location.constructor.name === 'Business'
-                          ? <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
-                          : (
-                            <Text style={{
+                    {location.constructor.name === 'Business' && (
+                      <TouchableOpacity
+                        onPress={() => { Linking.openURL(`telprompt:${'phonenumber'}`); }}
+                      >
+                        <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
+                          <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                          <Text
+                            style={{
                               fontSize: wp(3.3),
                               color: '#000',
                               fontFamily: Theme.fonts.bold,
                               marginLeft: wp(0.5),
                             }}
-                            >
-                              Date:{' '}
-                            </Text>
-                          )}
-
-                        <Text
-                          style={{
-                            fontSize: wp(3.3),
-                            color: '#000',
-                            fontFamily: Theme.fonts.bold,
-                            marginLeft: wp(0.5),
-                          }}
-                        >
-                          {location.constructor.name === 'Business' ? this.formatPhone(this.state.phoneNumber) : this.state.dateOfEvent }
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
+                          >
+                            {this.formatPhone('phonenumber')}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                    {location.constructor.name === 'Event' && (
+                      <Text style={{
+                        fontSize: wp(3.3),
+                        color: '#000',
+                        fontFamily: Theme.fonts.bold,
+                        marginLeft: wp(0.5),
+                      }}
+                      >
+                        {location.happeningOn.fromNow()}
+                      </Text>
+                    )}
                     {/* <View style={{ position: 'absolute', right: 10, bottom: 7 }}> */}
                     {/* <SemblyRedeemButton /> */}
                     {/* </View> */}
@@ -244,7 +239,6 @@ LocationView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
-  
 });
 
 const mapDispatchToProps = dispatch => ({

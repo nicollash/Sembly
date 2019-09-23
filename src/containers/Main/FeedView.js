@@ -60,6 +60,7 @@ class FeedView extends React.Component {
 
   componentDidMount() {
     this.props.refreshFeed();
+    console.log('user', this.props.user);
   }
 
   _onRefresh = () => {
@@ -103,8 +104,9 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         )}
-        contentInset={{ top: 0, bottom: 0, left: 0, right: 0 }}
-        automaticallyAdjustContentInsets={false}
+        automaticallyAdjustContentInsets={true}
+        // contentInsetAdjustmentBehavior="always"
+        // contentInset={{ bottom: this.state.height }}
       >
         <View style={{ marginTop: 22 }}>
           <View style={{ width: '100%' }}>
@@ -227,11 +229,11 @@ FeedView.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   isLoading: state.feed.isLoading,
   city: state.feed.city,
-  currentUser: state.user.currentUser,
   posts: state.feed.posts,
   events: state.feed.events,
   categories: state.feed.categories,
   location: state.user.location,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -13,6 +13,7 @@ import {
   fontSize,
   fontFamily,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -26,7 +27,7 @@ import {
 
 import Theme from '../../styles/theme';
 import SemblyBackCaret from '../../components/SemblyBackCaret';
-import { handleSignup, clearLoginErrors, clearSignupErrors } from '../../actions';
+import { handleSignup, clearLoginErrors, clearSignupErrors, setPreviousScreen } from '../../actions';
 
 console.disableYellowBox = true;
 
@@ -79,6 +80,7 @@ const styles = {
   },
   form: {
     marginTop: !isIphoneX() ? hp(-2) : 0,
+    marginLeft: 26,
     alignSelf: 'center',
     width: '90%',
     justifyContent: 'flex-end',
@@ -110,17 +112,13 @@ class SignupView extends React.Component {
   componentDidMount() {
     this.props.clearLoginErrors();
     this.props.clearSignupErrors();
+    this.props.setPreviousScreen('SignupView');
     
     this.setState({ email: '', password: '' });
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
-  //     this.props.navigation.navigate('Onboarding');
-  //   }
-  // }
-
   render() {
+    console.log(this.props.signupError);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -178,8 +176,10 @@ class SignupView extends React.Component {
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
                 onPress={() => {
-                  this.props.handleSignup(this.state.email, this.state.password, this.state.password.split('@')[0]);
-                  this.props.navigation.navigate('Profile');
+                  this.props.handleSignup(this.state.email, this.state.password);
+                  setTimeout(() => {
+                    this.props.signupError ? undefined : this.props.navigation.navigate('Profile');
+                  }, 5000);
                 }}
                 label="Signup"
               />
@@ -213,14 +213,14 @@ SignupView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
-  currentUser: state.user.currentUser,
   signupError: state.user.signupError,
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSignup: (a, b, c) => dispatch(handleSignup(a, b, c)),
+  handleSignup: (email, password) => dispatch(handleSignup(email, password)),
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
+  setPreviousScreen: screen => dispatch(setPreviousScreen(screen)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupView);

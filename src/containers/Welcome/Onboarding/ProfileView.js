@@ -26,7 +26,7 @@ import {
 
 import Theme from '../../../styles/theme';
 import SemblyBackCaret from '../../../components/SemblyBackCaret';
-import { handleSignup, clearLoginErrors, clearSignupErrors } from '../../../actions';
+import { handleSignup, clearLoginErrors, clearSignupErrors, setProfilePicture, updateUserProfile } from '../../../actions';
 
 console.disableYellowBox = true;
 
@@ -83,8 +83,8 @@ class ProfileView extends React.Component {
     super(props);
     this.state = {
       profile: {
-        name: '',
-        pictureURI: this.props.photoURL || undefined,
+        displayName: '',
+        pictureURI: undefined,
       },
     };
   }
@@ -125,7 +125,6 @@ class ProfileView extends React.Component {
               ...this.state.profile, pictureURI: res.uri, pictureData: data,
             },
           });
-          this.props.setProfilePicture(this.state.profile.pictureURI);
         }).catch((err) => {
           console.log(err);
         });
@@ -134,6 +133,7 @@ class ProfileView extends React.Component {
   };
 
   render() {
+    console.log(this.props.user.displayName);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -194,30 +194,32 @@ class ProfileView extends React.Component {
                   }}
                 />
               </TouchableOpacity>
-              <View style={{ marginLeft: 10, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ marginLeft: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
                 <SemblyInput
+                  type="username"
                   label="DISPLAY NAME"
                   placeholder="Enter you name"
-                  valueChanged={val => this.setState({ profile: { nameInput: val } })}
+                  valueChanged={(val) => {
+                    this.setState({
+                      profile: {
+                        ...this.state.profile,
+                        displayName: val,
+                      },
+                    });
+                  }}
                   secured={false}
                 />
               </View>
             </View>
             <View style={{ marginTop: hp(6) }}>
-            {/* <SemblyInput
-                  label="DISPLAY NAME"
-                  placeholder="Enter you name"
-                  valueChanged={val => this.setState({ profile: { nameInput: val } })}
-                  secured={false}
-                />
               <SemblyButton
                 width={isIphoneX() ? wp(76) : wp(69)}
                 onPress={() => {
-                  this.props.handleSignup(this.state.email, this.state.password, this.state.password.split('@')[0]);
+                  this.props.updateUserProfile(this.state.profile.displayName, this.state.profile.pictureURI);
                   this.props.navigation.navigate('Onboarding');
                 }}
                 label="I'm ready"
-              /> */}
+              />
             </View>
           </View>
         </KeyboardAwareScrollView>
@@ -234,12 +236,12 @@ ProfileView.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  currentUser: state.user.currentUser,
   signupError: state.user.signupError,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSignup: (a, b, c) => dispatch(handleSignup(a, b, c)),
+  updateUserProfile: (name, photo) => dispatch(updateUserProfile({ name, photo })),
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
 });

@@ -17,21 +17,25 @@ class LoginForm extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SemblyInput
-          label="EMAIL"
-          placeholder="your@email.com"
-          returnKey="next"
-          valueChanged={str => this.props.emailChanged(str)}
-          secured={false}
-        />
-        <SemblyInput
-          label="PASSWORD"
-          placeholder="**********"
-          returnKey="done"
-          valueChanged={(str) => this.props.passwordChanged(str)}
-          ref={input => this.props.nextInput = input}
-          secured
-        />
+        <View style={{ marginTop: 25 }}>
+          <SemblyInput
+            label="EMAIL"
+            placeholder="your@email.com"
+            returnKey="next"
+            valueChanged={str => this.props.emailChanged(str)}
+          />
+        </View>
+        <View style={{ marginTop: 15 }}>
+          <SemblyInput
+            label="PASSWORD"
+            placeholder="***************"
+            returnKey="done"
+            valueChanged={(str) => this.props.passwordChanged(str)}
+            ref={input => this.props.nextInput = input}
+            secured
+            multiline={false}
+          />
+        </View>
       </View>
     );
   }

@@ -14,13 +14,14 @@ import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
 
-import { handleSignOut, setProfilePicture } from '../../actions';
+import { handleSignOut, setProfilePicture, updateUserProfile } from '../../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../../styles/theme';
 import ProfileStatsBar from '../../components/ProfileStatsBar';
 import ProfileSubSection from './ProfileSubSection';
 import { SemblyHeaderButton } from '../../components';
+import { TextInput } from 'react-native-gesture-handler';
 
 const styles = {
   container: {
@@ -78,7 +79,7 @@ class ProfileView extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({ submit: () => {
       this.props.handleSignOut();
-      this.props.navigation.navigate('Login');
+      this.props.navigation.navigate('Welcome');
     },
     });
   }
@@ -112,7 +113,7 @@ class ProfileView extends React.Component {
               ...this.state.profile, pictureURI: res.uri, pictureData: data,
             },
           });
-          this.props.setProfilePicture(this.state.profile.pictureURI);
+          this.props.updateUserProfile(this.state.profile.pictureURI);
         }).catch((err) => {
           console.log(err);
         });
@@ -121,13 +122,12 @@ class ProfileView extends React.Component {
   };
 
   render() {
-    console.log("Current User: " + JSON.stringify(this.props.currentUser))
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <View style={styles.profileHeader}>
           <View>
             <Image
-              source={{ uri: this.state.profile.pictureURI }}
+              source={{ uri: this.props.photoURL }}
               style={{ height: 100, width: 100, borderRadius: 15 }}
             />
             <TouchableOpacity
@@ -145,15 +145,16 @@ class ProfileView extends React.Component {
               />
             </TouchableOpacity>
           </View>
-          <Text style={{
-            fontSize: wp(5.5),
-            fontFamily: theme.fonts.bold,
-            color: '#26315F',
-            marginLeft: wp(6),
-            marginTop: hp(3),
-          }}
+          <Text
+            style={{
+              fontSize: wp(5.5),
+              fontFamily: theme.fonts.bold,
+              color: '#26315F',
+              marginLeft: wp(6),
+              marginTop: hp(3),
+            }}
           >
-            {this.props.displayName}
+            {this.props.displayName || 'Your Name'}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>
@@ -198,14 +199,13 @@ ProfileView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
-  currentUser: state.user.currentUser,
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
 });
 
 const mapDispatchToProps = dispatch => ({
   handleSignOut: () => dispatch(handleSignOut()),
-  setProfilePicture: photo => dispatch(setProfilePicture(photo)),
+  updateUserProfile: photo => dispatch(updateUserProfile({ photo })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

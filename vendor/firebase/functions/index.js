@@ -113,7 +113,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
   const text = request.body.text;
   const comment = {
     text,
-    createdAt: moment().toDate(),
+    createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
     author: {
       id: user.uid,
       name: user.email.substring(0, user.email.indexOf("@")),

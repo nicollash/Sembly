@@ -1,5 +1,7 @@
 import React from 'react';
 
+import moment from 'moment';
+
 import {
   StyleSheet,
   View,
@@ -60,14 +62,12 @@ class SemblyUserComment extends React.Component {
           alignSelf: 'center',
         }}
         >
-          <TouchableOpacity style={{ flexDirection: 'row', width: '40%', height: '70%' }}>
-            <View style={{ height: '100%' }}>
-              <Image
-                style={{ height: 32, width: 32, borderRadius: 16, marginTop: 4, marginRight: 5 }}
-                source={{ uri: user.user.avatar }}
-                resizeMode="contain"
-              />
-            </View>
+          <TouchableOpacity style={{ flexDirection: 'row' }}>
+            <Image
+              style={{ height: 32, width: 32, borderRadius: 16, marginTop: 4, marginRight: 5 }}
+              source={{ uri: user.user.avatar }}
+              resizeMode="cover"
+            />
             <Text style={{
               fontFamily: Theme.fonts.bold,
               color: '#26315F',
@@ -80,7 +80,7 @@ class SemblyUserComment extends React.Component {
             </Text>
           </TouchableOpacity>
           <Text style={{ top: '3%', right: '40%', color: '#B9BDC5', fontSize: 11 }}>
-            {user.createdAt.fromNow()}
+            {user.createdAt}
           </Text>
         </View>
         <View style={styles.commentContent}>

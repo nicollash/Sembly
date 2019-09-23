@@ -35,16 +35,16 @@ const styles = {
 
 class SemblyMapView extends React.Component {
   componentWillMount() {
-    this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
+    // this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
   }
 
   componentDidMount() {
     requestLocationPermission();
   }
 
-  updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);
+  // updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);
 
-  generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
+  // generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
 
   render() {
     const eventPins = this.props.events.map(event => (
@@ -72,7 +72,7 @@ class SemblyMapView extends React.Component {
         latitude={business.location.lat}
         longitude={business.location.lon}
         pinColor="#333434"
-        pinTag={business.name ? this.generatePinTag(business.name) : ''}
+        pinIcon={business.picture}
         onPress={() => NavigationService.navigate('Location', { location: business })}
       />
     ));
@@ -90,7 +90,7 @@ class SemblyMapView extends React.Component {
           onRegionChange={(e) => {
             //this.props.refreshFeed(e.latitude, e.longitude)
             this.setState({ latitude: e.latitude, longitude: e.longitude });
-            this.debounceUpdateFeed();
+            // this.debounceUpdateFeed();
           }}
         >
           {eventPins}

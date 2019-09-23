@@ -60,6 +60,7 @@ const styles = {
   },
   form: {
     marginTop: isIphoneX() ? hp(-1) : hp(-3),
+    marginLeft: 30,
     alignSelf: 'center',
     width: '90%',
     justifyContent: 'center',
@@ -99,17 +100,18 @@ class LoginView extends React.Component {
     this.setState({ email: '', password: '' });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.currentUser !== undefined && prevProps.currentUser === undefined) {
-      this.props.navigation.navigate('MainApp');
-    }
-  }
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       this.props.navigation.navigate('MainApp');
+  //     } return;
+  //   });
+  // }
 
   handleSpinner = () => {
   }
 
   render() {
-    console.log(this.props.loginError);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -219,7 +221,6 @@ LoginView.defaultProps = {};
 LoginView.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
-  currentUser: state.user.currentUser,
   loginError: state.user.loginError,
 });
 

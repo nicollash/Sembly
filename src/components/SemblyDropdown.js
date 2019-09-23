@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Picker,
   Image,
-  Modal,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -43,9 +42,9 @@ class SemblyDropdown extends React.Component {
       <TouchableOpacity onPress={() => this.setState({ open: !this.state.open })}>
         <View style={{
           justifyContent: 'space-between',
-          marginTop: '3%',
+          marginTop: 6,
           flexDirection: 'row',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
         >
           <Text style={{
@@ -53,24 +52,19 @@ class SemblyDropdown extends React.Component {
             fontSize: 18,
             marginLeft: '4%',
           }}
-          >{this.state.value}
+          >
+            {this.state.value}
           </Text>
           <Image style={{ alignSelf: 'center', marginRight: '4%' }} source={require('../../assets/images/DropdownArrow.png')} />
         </View>
         {this.state.open && (
-          <View>
-            <Picker
-              style={{
-                height: '25%',
-                zIndex: 10
-              }}
-              selectedValue={this.state.value}
-              mode="dialog"
-              onValueChange={this.updateValue}
-            >
-              {items}
-            </Picker>
-          </View>
+          <Picker
+            selectedValue={this.state.value}
+            mode="dialog"
+            onValueChange={this.updateValue}
+          >
+            {items}
+          </Picker>
         )}
       </TouchableOpacity>
     );

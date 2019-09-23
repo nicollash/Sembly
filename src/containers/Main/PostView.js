@@ -70,10 +70,6 @@ class PostView extends React.Component {
                 data={post.comments}
                 renderItem={({ item }) => (
                   <SemblyUserComment
-                    // userName={item.user.name}
-                    // userPicture={item.user.avatar}
-                    // timeElapsed={item.createdAt.fromNow()}
-                    // userComment={item.text}
                     user={item}
                   />
                 )}

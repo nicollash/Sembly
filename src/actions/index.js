@@ -84,7 +84,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
 }
 
 // Authentication
-export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER';
+export const UPDATE_USER = 'UPDATE_USER';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export function handleLogin(_email, _password) {
   return function handleLoginState(dispatch, getState) {
@@ -92,24 +92,26 @@ export function handleLogin(_email, _password) {
       .auth()
       .signInWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        const { email, photoURL, displayName, likesCount, commentsCount, postsCount } = currentUser.user;
-        const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
-        dispatch({ type: UPDATE_CURRENT_USER, user });
+        const { email, displayName, photoURL } = currentUser.user;
+        const user = { email, displayName, photoURL };
+        dispatch({ type: UPDATE_USER, user });
       })
       .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
   };
 }
 
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
-export function handleSignup(_email, _password, name) {
+export function handleSignup(_email, _password) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        const { email, photoURL, displayName } = currentUser.user;
-        const user = { email, photoURL, displayName };
-        dispatch({ type: UPDATE_CURRENT_USER, user });
+        console.log('handleSignup', currentUser);
+        const { email } = currentUser.user;
+        const user = { email };
+        dispatch({ type: UPDATE_USER, user });
+        dispatch({ type: SIGNUP_ERROR, message: undefined });
       })
       .catch(error => dispatch({ type: SIGNUP_ERROR, message: error.message }));
   };
@@ -121,8 +123,13 @@ export function handleSignOut() {
       .auth()
       .signOut()
       .then(() => {
-        const user = undefined;
-        dispatch({ type: UPDATE_CURRENT_USER, user });
+        const user = {
+          email: undefined,
+          displayName: undefined,
+          photoURL: undefined,
+          location: { lat: undefined, lon: undefined, name: undefined },
+        };
+        dispatch({ type: UPDATE_USER, user });
       })
       .catch(e => console.log('Can\'t log out'));
   };
@@ -130,34 +137,33 @@ export function handleSignOut() {
 
 export function clearLoginErrors() {
   return function clearAuthErrorsState(dispatch, getState) {
-    const message = undefined;
-    dispatch({ type: LOGIN_ERROR, message });
+    dispatch({ type: LOGIN_ERROR, message: undefined });
   };
 }
 
 export function clearSignupErrors() {
   return function clearAuthErrorsState(dispatch, getState) {
-    const message = undefined;
-    dispatch({ type: SIGNUP_ERROR, message });
+    dispatch({ type: SIGNUP_ERROR, message: undefined });
   };
 }
 
 // Profile Changes
-export function setProfilePicture(photo) {
-  return async function setProfilePictureState(dispatch, getState) {
-    console.log('Return function of setProfilePicture');
-    await firebase
-      .auth()
-      .currentUser
-      .updateProfile({
-        photoURL: photo,
-      })
+export function updateUserProfile({
+  name = 'Rejean',
+  photo = undefined,
+}) {
+  console.log('photo', photo);
+  return async function updateUserProfileState(dispatch, getState) {
+    await firebase.auth().currentUser.updateProfile({
+      displayName: name,
+      photoURL: photo,
+    })
       .then((currentUser) => {
-        const { email, photoURL, displayName, likesCount, commentsCount, postsCount } = currentUser.user;
-        const user = { email, photoURL, displayName, likesCount, commentsCount, postsCount };
-        dispatch({ type: UPDATE_CURRENT_USER, user });
+        const { email } = currentUser.user;
+        const user = { email, displayName: name, photoURL: photo };
+        dispatch({ type: UPDATE_USER, user });
       })
-      .catch(e => console.log('error'));
+      .catch(e => console.warn(e));
   };
 }
 
@@ -250,3 +256,10 @@ export function toggleLike({ postID = undefined }) {
 // export function likePost({ postID = undefined }) {
 //   const 
 // }
+
+export const PREVIOUS_SCREEN = 'PREVIOUS_SCREEN';
+export function setPreviousScreen(screen = 'Profile') {
+  return function setPreviousScreenState(dispatch, getState) {
+    dispatch({ type: PREVIOUS_SCREEN, screen });
+  };
+}

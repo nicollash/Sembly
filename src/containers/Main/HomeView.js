@@ -63,27 +63,20 @@ class HomeView extends React.Component {
   componentDidUpdate() {
   }
 
-  // _panelHeight = (h) => {
-  //   if (h === undefined) {
-  //     return 900;
-  //   }
-  //   return 
-  // }
-
   render() {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <SemblyMapView />
         <SlidingUpPanel
           showBackdrop={false}
-          height={hp(100)}
           draggableRange={{ top: hp(100) - 128, bottom: isIphoneX() ? 22 : 20 }}
           friction={0.1}
           ref={(c) => {
             this._panel = c;
             SlidingPanelNavigationService.setPanel(c);
           }}
-          // onDragStart={() => console.log(this._panel)}
+          // onDragStart={() => this.setState({ }) }
+          // onDragEnd={() => }
         >
           {dragHandler => (
             <View style={styles.panel}>

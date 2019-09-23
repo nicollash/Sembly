@@ -112,9 +112,9 @@ class NewPostView extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.sendingPost && !this.props.sendingPost) {
-      setTimeout(() => { 
-        this.props.navigation.goBack(), 2000);
-      }
+      setTimeout(() => {
+        this.props.navigation.goBack();
+      }, 2000);
     }
   }
 

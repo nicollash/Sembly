@@ -75,6 +75,13 @@ const styles = {
     marginTop: hp(4.5),
     paddingBottom: 30,
   },
+  spinnerContainer: {
+    paddingVertical: hp(1.55),
+    borderRadius: hp(4),
+    alignSelf: 'center',
+    width: isIphoneX() ? wp(75) : wp(69),
+    backgroundColor: '#F7567C',
+  },
 };
 
 const logo = require('../../../assets/images/sembly.png');
@@ -109,6 +116,10 @@ class LoginView extends React.Component {
   // }
 
   handleSpinner = () => {
+    this.setState({ spinnerActive: true });
+    setTimeout(() => {
+      this.setState({ spinnerActive: false });
+    }, 4000);
   }
 
   render() {
@@ -156,7 +167,7 @@ class LoginView extends React.Component {
           </View>
           <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
             {this.state.spinnerActive && (
-              <View style={{ height: 30 }}>
+              <View style={styles.spinnerContainer}>
                 <ActivityIndicator />
               </View>
             )}

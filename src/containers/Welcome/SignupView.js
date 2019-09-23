@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   fontSize,
   fontFamily,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
 } from 'react-native';
@@ -91,6 +92,13 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  spinnerContainer: {
+    paddingVertical: hp(1.55),
+    borderRadius: hp(4),
+    alignSelf: 'center',
+    width: isIphoneX() ? wp(76) : wp(69),
+    backgroundColor: '#F7567C',
+  },
 };
 
 const logo = require('../../../assets/images/sembly.png');
@@ -103,6 +111,7 @@ class SignupView extends React.Component {
     this.state = {
       email: '',
       password: '',
+      spinnerActive: false,
     };
   }
 
@@ -115,6 +124,17 @@ class SignupView extends React.Component {
     this.props.setPreviousScreen('SignupView');
     
     this.setState({ email: '', password: '' });
+  }
+
+  componentWillUnmount() {
+    this.props.setPreviousScreen(undefined);
+  }
+
+  handleSpinner = () => {
+    this.setState({ spinnerActive: true });
+    setTimeout(() => {
+      this.setState({ spinnerActive: false });
+    }, 4000);
   }
 
   render() {
@@ -172,17 +192,25 @@ class SignupView extends React.Component {
                 passwordChanged={value => this.setState({ password: value })}
               />
             </View>
-            <View style={{ marginTop: hp(2) }}>
-              <SemblyButton
-                width={isIphoneX() ? wp(76) : wp(69)}
-                onPress={() => {
-                  this.props.handleSignup(this.state.email, this.state.password);
-                  setTimeout(() => {
-                    this.props.signupError ? undefined : this.props.navigation.navigate('Profile');
-                  }, 5000);
-                }}
-                label="Signup"
-              />
+            <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
+              {this.state.spinnerActive && (
+                <View style={styles.spinnerContainer}>
+                  <ActivityIndicator />
+                </View>
+              )}
+              {!this.state.spinnerActive && (
+                <SemblyButton
+                  width={isIphoneX() ? wp(76) : wp(69)}
+                  onPress={() => {
+                    this.props.handleSignup(this.state.email, this.state.password);
+                    this.handleSpinner();
+                    setTimeout(() => {
+                      this.props.signupError ? undefined : this.props.navigation.navigate('Profile');
+                    }, 5000);
+                  }}
+                  label="Signup"
+                />
+              )}
             </View>
             <View style={styles.footer}>
               <Text style={{

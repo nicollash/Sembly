@@ -331,3 +331,10 @@ export function setPreviousScreen(screen = "Profile") {
     dispatch({ type: PREVIOUS_SCREEN, screen });
   };
 }
+
+export const UPDATE_MAP = 'UPDATE_MAP';
+export function updateMap(lat, lon) {
+  return function updateMapState(dispatch, getState) {
+    dispatch({ type: UPDATE_MAP, lat, lon });
+  };
+}

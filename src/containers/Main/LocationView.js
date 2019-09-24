@@ -20,6 +20,8 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
+import { formatPhone } from '../../helpers/appFunctions';
+
 import navigation from 'react-navigation';
 import Theme from '../../styles/theme';
 
@@ -27,13 +29,8 @@ import {
   FeedCategoryBar,
   FeedHorizontalScroll,
 } from '../../components';
-
-import FeedSeparator from '../../components/Feed/FeedSeparator';
-import FeedHeader from '../../components/Feed/FeedHeader';
-import PostViewUserPost from '../../components/PostViewUserPost';
-import PostViewCommentSection from '../../components/PostViewCommentSection';
-import SemblyRedeemButton from '../../components/SemblyRedeemButton';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
+import { UPDATE_MAP, updateMap } from '../../actions';
 
 const styles = StyleSheet.create({
   separatorBar: {
@@ -55,17 +52,6 @@ class LocationView extends React.Component {
   }
 
   componentDidMount() {
-  }
-
-  updateMap = (a, b) => {
-    console.log(a, b);
-  }
-
-  formatPhone = (number) => {
-    const regionCode = number.substring(0, 3);
-    const middlePart = number.substring(3, 6);
-    const fourFinals = number.substring(6, 10);
-    return `(${regionCode}) ${middlePart}-${fourFinals}`;
   }
 
   render() {
@@ -151,7 +137,7 @@ class LocationView extends React.Component {
                   }}
                   >
                     <TouchableOpacity
-                      onPress={() => this.updateMap(location.location.lat, location.location.lon)}
+                      onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
                     >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                         <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
@@ -162,14 +148,13 @@ class LocationView extends React.Component {
                           fontFamily: Theme.fonts.bold,
                         }}
                         >
-                          {/* {location.location.name} */}
-                          Zimbabwe
+                          {location.location.name}
                         </Text>
                       </View>
                     </TouchableOpacity>
                     {location.constructor.name === 'Business' && (
                       <TouchableOpacity
-                        onPress={() => { Linking.openURL(`telprompt:${5143131323}`); }}
+                        onPress={() => { Linking.openURL(`telprompt:${location.phoneNumber}`); }}
                       >
                         <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
                           <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
@@ -181,7 +166,7 @@ class LocationView extends React.Component {
                               marginLeft: wp(0.5),
                             }}
                           >
-                            {this.formatPhone(11232312)}
+                            {formatPhone(location.phoneNumber)}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -249,6 +234,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

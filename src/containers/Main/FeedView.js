@@ -21,6 +21,8 @@ import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
+import { getDistance, usableHeight } from '../../helpers/appFunctions';
+
 // Actions
 import { refreshFeed } from '../../actions';
 
@@ -82,29 +84,6 @@ class FeedView extends React.Component {
     this.setState({ refreshing: false });
   }
 
-  findDistance = (lat1, lon1, lat2, lon2, unit) => {
-    if ((lat1 === lat2) && (lon1 === lon2)) {
-      return 0;
-    }
-    {
-      const radlat1 = Math.PI * lat1 / 180;
-      const radlat2 = Math.PI * lat2 / 180;
-      const theta = lon1 - lon2;
-      const radtheta = Math.PI * theta / 180;
-      let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-      if (dist > 1) {
-        dist = 1;
-      }
-      dist = Math.acos(dist);
-      dist = dist * 180 / Math.PI;
-      dist = dist * 60 * 1.1515;
-      if (unit === 'K') { dist *= 1.609344; }
-      if (unit === 'N') { dist *= 0.8684; }
-      dist = dist.toFixed(1);
-      return dist === 0.0 ? 0.1 : dist;
-    }
-  }
-  
   render() {
     const screenHeight = Dimensions.get('window').height;
     const { city, categories, events, posts, navigation, location } = this.props;
@@ -118,7 +97,7 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         )}
-        style={{ flex: 1 }}
+        contentContainerStyle={{ height: usableHeight }}
       >
         <View style={{ width: '100%', marginTop: 22 }}>
           <FeedHeader city={city} />
@@ -159,19 +138,19 @@ class FeedView extends React.Component {
             </View>
             {events.length > 0 && (
               <View>
-                <View style={{ justifyContent: 'center', marginTop: 3, marginBottom: 14 }}>
+                <View style={{ justifyContent: 'center', marginTop: 3 }}>
                   <FeedSubHeader
                     icon={icons[1]}
                     title="Events near you"
                   />
                 </View>
-                <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
+                <View style={{ marginTop: 12, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
                   <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={_.sample(events || [], 5).sort((a, b) => this.findDistance(
+                    data={_.sample(events || [], 5).sort((a, b) => getDistance(
                       location.lat, location.lon, a.location.lat, a.location.lon,
-                    ) > this.findDistance(
+                    ) > getDistance(
                       location.lat, location.lon, b.location.lat, b.location.lon,
                     ))}
                     renderItem={({ item }) => (
@@ -179,7 +158,7 @@ class FeedView extends React.Component {
                         picture={item.picture}
                         title={item.title}
                         onEventPress={() => navigation.navigate('Location', { location: item })}
-                        distance={this.findDistance(
+                        distance={getDistance(
                           location.lat, location.lon, item.location.lat, item.location.lon, 'N',
                         )}
                       />
@@ -230,6 +209,9 @@ class FeedView extends React.Component {
                 )}
               />
             </View>
+            {/* {posts.length < 1 && (
+              <View style={{ height: 200 }} />
+            )} */}
           </View>
         )}
         {this.state.selectedCategoryTitle === 'Promos' && (

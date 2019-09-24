@@ -23,6 +23,8 @@ import {
   UPDATE_CITY,
   PREVIOUS_SCREEN,
   UPDATE_USER_POSTS,
+  LOCALISATION,
+  UPDATE_MAP,
 } from '../actions';
 
 
@@ -130,6 +132,24 @@ const user = (state = userDefault, action) => {
   }
 };
 
+const mapDefault = {
+  activeLocation: {
+    // lat: userDefault.location.lat,
+    // lon: userDefault.location.lon,
+    lat: 5,
+    lon: 5,
+  },
+};
+
+const map = (state = mapDefault, action) => {
+  switch (action.type) {
+  case UPDATE_MAP:
+    return Object.assign({}, state, { activeLocation: { lat: action.lat, lon: action.lon } });
+  default:
+    return state;
+  }
+};
+
 // Uncomment the line below and refresh once to simulate a fresh install
 // storage.clear();
 
@@ -138,6 +158,7 @@ const semblyApp = combineReducers({
   preferences,
   feed,
   user,
+  map,
 });
 
 const blacklisted = ['appState', 'user.errorMessage'];

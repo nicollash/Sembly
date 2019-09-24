@@ -4,6 +4,8 @@ import {
   StyleSheet,
   TextInput,
   View,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -21,6 +23,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
+
+
 class SemblyInput extends React.Component {
   componentWillMount() {
   }
@@ -30,30 +39,32 @@ class SemblyInput extends React.Component {
 
   render() {
     return (
-      <View>
-        <SemblyLabel
-          label={this.props.label}
-          secondLabel={this.props.secondLabel}
-          fontSize={this.props.onFontSize}
-          secondFontSize={this.props.onSecondFontSize}
-          marginLeft={this.props.marginLeft}
-        />
-        <View style={{ height: this.props.spacing}} />
-        <TextInput
-          multiline={this.props.multiline}
-          textContentType={this.props.type}
-          style={styles.input}
-          placeholder={this.props.placeholder}
-          placeholderTextColor="#C7CAD1"
-          autoCapitalize="none"
-          autoCorrect={false}
-          secureTextEntry={this.props.secured}
-          onChangeText={str => this.props.valueChanged(str)}
-          returnKeyType={this.props.returnKey}
-          ref={input => this.props.nextInput = input}
-          secured={this.props.secured}
-        />
-      </View>
+      <DismissKeyboard>
+        <View>
+          <SemblyLabel
+            label={this.props.label}
+            secondLabel={this.props.secondLabel}
+            fontSize={this.props.onFontSize}
+            secondFontSize={this.props.onSecondFontSize}
+            marginLeft={this.props.marginLeft}
+          />
+          <View style={{ height: this.props.spacing}} />
+          <TextInput
+            multiline={this.props.multiline}
+            textContentType={this.props.type}
+            style={styles.input}
+            placeholder={this.props.placeholder}
+            placeholderTextColor="#C7CAD1"
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={this.props.secured}
+            onChangeText={str => this.props.valueChanged(str)}
+            returnKeyType={this.props.returnKey}
+            ref={input => this.props.nextInput = input}
+            secured={this.props.secured}
+          />
+        </View>
+      </DismissKeyboard>
     );
   }
 }

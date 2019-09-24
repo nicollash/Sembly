@@ -109,6 +109,7 @@ const userDefault = {
   photoURL: undefined,
   displayName: undefined,
   email: '',
+  postsCount: 0,
 };
 
 const user = (state = userDefault, action) => {

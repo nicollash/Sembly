@@ -16,7 +16,7 @@ import {
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
@@ -26,7 +26,7 @@ import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput } from '../../components';
-import { createNewPost } from '../../actions';
+import { createNewPost, updateUserProfile } from '../../actions';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
@@ -168,6 +168,7 @@ class NewPostView extends React.Component {
 
   submit = () => {
     this.props.createNewPost(this.state.post);
+    this.props.updateUserProfile(this.props.postsCount += 1);
     this.setState({ submitted: true });
     // () => {
 
@@ -179,141 +180,148 @@ class NewPostView extends React.Component {
     const { sendingPost } = this.props;
 
     return (
-      <View accessibilityIgnoresInvertColors style={styles.container}>
-        {this.state.submitted && (
-          <Modal visible animationType="fade" transparent>
-            <View
-              accessibilityIgnoresInvertColors
-              style={styles.postContainer}
-            />
-
-            <View style={styles.successAlert}>
-              {!sendingPost && (
-                <Image
-                  source={require('../../../assets/images/PostSubmitted.png')}
-                />
-              )}
-              {sendingPost && <ActivityIndicator size="large" />}
-            </View>
-          </Modal>
-        )}
-        <View style={{ marginTop: 25 }}>
-          <SemblyInput
-            marginLeft={5}
-            placeholder="Content of your post, up to 300 chars."
-            label="TEXT"
-            valueChanged={text => this.setState({ post: { ...this.state.post, text } })
-            }
-            spacing={5}
-          />
-        </View>
-        <View style={{ marginTop: 20, zIndex: 1 }}>
-          <SemblyLabel
-            label="LOCATION"
-            secondLabel="OPTIONAL"
-            fontSize={14}
-            secondFontSize={10}
-            marginLeft={4}
-          />
-          <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}>
-            <Image source={pin} style={{ height: 15, marginLeft: -15 }} />
-            <View style={{ marginLeft: 2 }}>
-              <SemblyPlaceAutoComplete
-                latitude={this.props.location.lat}
-                longitude={this.props.location.lon}
-                onResult={(location) => {
-                  this.setState({
-                    post: {
-                      ...this.state.post,
-                      location: {
-                        name: location.name,
-                        lat: location.lat,
-                        lon: location.lon,
-                      },
-                    },
-                  });
-                }}
+      <ScrollView>
+        <View accessibilityIgnoresInvertColors style={styles.container}>
+          {this.state.submitted && (
+            <Modal visible animationType="fade" transparent>
+              <View
+                accessibilityIgnoresInvertColors
+                style={styles.postContainer}
               />
-            </View>
+
+              <View style={styles.successAlert}>
+                {!sendingPost && (
+                  <Image
+                    source={require('../../../assets/images/PostSubmitted.png')}
+                  />
+                )}
+                {sendingPost && (
+                  <ActivityIndicator
+                    size="large"
+                    style={{ top: 180 }}
+                  />
+                )}
+              </View>
+            </Modal>
+          )}
+          <View style={{ marginTop: 25 }}>
+            <SemblyInput
+              marginLeft={5}
+              placeholder="Content of your post, up to 300 chars."
+              label="TEXT"
+              valueChanged={text => this.setState({ post: { ...this.state.post, text } })
+              }
+              spacing={5}
+            />
           </View>
-          <View
-            style={{
-              borderBottomColor: '#D8D8D8',
-              borderBottomWidth: 0.5,
-              marginTop: 5,
-            }}
-          />
-        </View>
-        <View style={{ marginTop: 20 }}>
-          <SemblyLabel label="CATEGORY" marginLeft={5} />
-          <View style={{ width: wp(92), marginLeft: -12 }}>
-            <SemblyDropdown
-              values={_.pluck(this.props.categories, 'title')}
-              onChange={(category) => {
-                this.setState({ post: { ...this.state.post, category } });
+          <View style={{ marginTop: 20, zIndex: 1 }}>
+            <SemblyLabel
+              label="LOCATION"
+              secondLabel="OPTIONAL"
+              fontSize={14}
+              secondFontSize={10}
+              marginLeft={4}
+            />
+            <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}>
+              <Image source={pin} style={{ height: 15, marginLeft: -15 }} />
+              <View style={{ marginLeft: 2 }}>
+                <SemblyPlaceAutoComplete
+                  latitude={this.props.location.lat}
+                  longitude={this.props.location.lon}
+                  onResult={(location) => {
+                    this.setState({
+                      post: {
+                        ...this.state.post,
+                        location: {
+                          name: location.name,
+                          lat: location.lat,
+                          lon: location.lon,
+                        },
+                      },
+                    });
+                  }}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                borderBottomColor: '#D8D8D8',
+                borderBottomWidth: 0.5,
+                marginTop: 5,
               }}
             />
           </View>
-          <Image
-            style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
-            source={require('../../../assets/images/BorderLine.png')}
-          />
-        </View>
-        <View style={{ marginTop: 20 }}>
-          <SemblyLabel label="PHOTO" marginLeft={5} />
-        </View>
-        {this.state.post.pictureURI === '' && (
-          <View
-            style={{
-              backgroundColor: '#EBECEE',
-              borderRadius: 15,
-              width: wp(90),
-              height: 170,
-              alignItems: 'center',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              marginTop: 10,
-            }}
-          >
-            <TouchableOpacity onPress={this.chooseImage}>
-              <Image
-                source={require('../../../assets/images/ButtonCameraPost.png')}
+          <View style={{ marginTop: 20 }}>
+            <SemblyLabel label="CATEGORY" marginLeft={5} />
+            <View style={{ width: wp(92), marginLeft: -12 }}>
+              <SemblyDropdown
+                values={_.pluck(this.props.categories, 'title')}
+                onChange={(category) => {
+                  this.setState({ post: { ...this.state.post, category } });
+                }}
               />
-            </TouchableOpacity>
+            </View>
+            <Image
+              style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
+              source={require('../../../assets/images/BorderLine.png')}
+            />
           </View>
-        )}
-        {this.state.post.pictureURI !== '' && (
-          <View
-            style={{
-              width: wp(90),
-              height: 170,
-              marginTop: 10,
-              alignSelf: 'center',
-            }}
-          >
-            <ImageBackground
-              source={{ uri: this.state.post.pictureURI }}
-              style={styles.backgroundUpload}
-              imageStyle={{ borderRadius: 15 }}
+          <View style={{ marginTop: 20 }}>
+            <SemblyLabel label="PHOTO" marginLeft={5} />
+          </View>
+          {this.state.post.pictureURI === '' && (
+            <View
+              style={{
+                backgroundColor: '#EBECEE',
+                borderRadius: 15,
+                width: wp(90),
+                height: 170,
+                alignItems: 'center',
+                alignSelf: 'center',
+                justifyContent: 'center',
+                marginTop: 10,
+              }}
             >
               <TouchableOpacity onPress={this.chooseImage}>
                 <Image
                   source={require('../../../assets/images/ButtonCameraPost.png')}
                 />
               </TouchableOpacity>
-            </ImageBackground>
-          </View>
-        )}
-        <Text
-          style={{
-            color: '#C7CAD1',
-            alignSelf: 'center',
-            marginTop: '6%',
-          }}
-        >
-          Your post can contain text, photo or both.
-        </Text>
-      </View>
+            </View>
+          )}
+          {this.state.post.pictureURI !== '' && (
+            <View
+              style={{
+                width: wp(90),
+                height: 170,
+                marginTop: 10,
+                alignSelf: 'center',
+              }}
+            >
+              <ImageBackground
+                source={{ uri: this.state.post.pictureURI }}
+                style={styles.backgroundUpload}
+                imageStyle={{ borderRadius: 15 }}
+              >
+                <TouchableOpacity onPress={this.chooseImage}>
+                  <Image
+                    source={require('../../../assets/images/ButtonCameraPost.png')}
+                  />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          )}
+          <Text
+            style={{
+              color: '#C7CAD1',
+              alignSelf: 'center',
+              marginTop: '6%',
+            }}
+          >
+            Your post can contain text, photo or both.
+          </Text>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -326,10 +334,12 @@ const mapStateToProps = (state, ownProps) => ({
   location: state.user.location,
   categories: state.feed.categories,
   sendingPost: state.appState.sendingPost,
+  postsCount: state.user.postsCount,
 });
 
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
+  updateUserProfile: posts => dispatch(updateUserProfile({ postsCount: posts })),
 });
 
 export default connect(

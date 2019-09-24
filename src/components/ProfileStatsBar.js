@@ -45,19 +45,19 @@ class ProfileStatsBar extends React.Component {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <ProfileStatistic
-          statistic={this.props.posts}
+          statistic={this.props.posts || 0}
           statIcon={postsIcon}
           type="posts"
         />
         <View style={styles.separator} />
         <ProfileStatistic
-          statistic={this.props.comments}
+          statistic={this.props.comments || 0}
           statIcon={commentsIcon}
           type="comments"
         />
         <View style={styles.separator} />
         <ProfileStatistic
-          statistic={this.props.likes}
+          statistic={this.props.likes || 0}
           statIcon={likesIcon}
           type="likes"
         />

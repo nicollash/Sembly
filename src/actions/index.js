@@ -8,8 +8,8 @@ import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
 
-//const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
+const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+// const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -94,8 +94,8 @@ export function handleLogin(_email, _password) {
       .auth()
       .signInWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        const { email, displayName, photoURL } = currentUser.user;
-        const user = { email, displayName, photoURL };
+        const { email, displayName, photoURL, postsCount } = currentUser.user;
+        const user = { email, displayName, photoURL, postsCount };
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
@@ -153,9 +153,9 @@ export function clearSignupErrors() {
 export function updateUserProfile({
   name = undefined,
   photo = undefined,
+  postsCount,
 }) {
-  console.log('photo', photo);
-  console.log('name', name);
+  console.log(photo);
   return async function updateUserProfileState(dispatch, getState) {
     await firebase.auth().currentUser.updateProfile({
       displayName: name,
@@ -164,9 +164,10 @@ export function updateUserProfile({
       .then(() => {
         const currentUser = firebase.auth().currentUser;
         console.log(currentUser);
+        const userTest = getState().user;
+        console.log(userTest);
         const { displayName, photoURL } = currentUser;
-        console.log(displayName, photoURL);
-        const user = { displayName, photoURL };
+        const user = { displayName, photoURL, postsCount };
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(e => console.log(e));

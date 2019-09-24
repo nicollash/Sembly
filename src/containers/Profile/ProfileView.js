@@ -68,7 +68,7 @@ class ProfileView extends React.Component {
     super(props);
     this.state = {
       profile: {
-        pictureURI: this.props.photoURL || undefined,
+        pictureURI: this.props.photoURL || samplePlayer,
       },
     };
   }
@@ -85,6 +85,7 @@ class ProfileView extends React.Component {
   }
 
   componentDidUpdate() {
+    this.props.updateUserProfile(this.state.profile.pictureURI);
   }
 
   chooseImage = () => {
@@ -113,7 +114,6 @@ class ProfileView extends React.Component {
               ...this.state.profile, pictureURI: res.uri, pictureData: data,
             },
           });
-          this.props.updateUserProfile(this.state.profile.pictureURI);
         }).catch((err) => {
           console.log(err);
         });
@@ -127,7 +127,7 @@ class ProfileView extends React.Component {
         <View style={styles.profileHeader}>
           <View>
             <Image
-              source={{ uri: this.props.photoURL || samplePlayer }}
+              source={{ uri: this.state.profile.pictureURI }}
               style={{ height: 100, width: 100, borderRadius: 15 }}
             />
             <TouchableOpacity
@@ -162,9 +162,9 @@ class ProfileView extends React.Component {
         </View>
         <View style={{ alignItems: 'center' }}>
           <ProfileStatsBar
-            posts={this.props.user.posts}
-            comments={this.props.user.comments}
-            likes={this.props.user.likes}
+            posts={this.props.postsCount}
+            // comments={this.props.user.comments}
+            // likes={this.props.user.likes}
           />
         </View>
         <View style={{ marginTop: hp(3) }}>
@@ -206,6 +206,7 @@ const mapStateToProps = (state, ownProps) => ({
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
   email: state.user.email,
+  postsCount: state.user.postsCount,
 });
 
 const mapDispatchToProps = dispatch => ({

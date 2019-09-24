@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   FlatList,
+  StyleSheet,
   TouchableOpacity,
   Dimensions,
   PanResponder,
@@ -35,6 +36,7 @@ import FeedSeparator from '../../components/Feed/FeedSeparator';
 import FeedHeader from '../../components/Feed/FeedHeader';
 import FeedSubHeader from '../../components/Feed/FeedSubHeader';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
+import PromoPost from '../../components/PromoPost';
 
 const icons = [
   require('../../../assets/images/SemblyAllIcon.png'),
@@ -43,6 +45,18 @@ const icons = [
   require('../../../assets/images/SemblyPromosIcon.png'),
   require('../../../assets/images/artsIcon.png')
 ];
+
+const styles = StyleSheet.create({
+  promos: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: 15,
+    shadowColor: '#e0e0e0',
+    shadowRadius: 4,
+    shadowOpacity: 1,
+    shadowOffset: { height: 1 },
+  },
+});
 
 class FeedView extends React.Component {
   constructor(props) {
@@ -91,10 +105,11 @@ class FeedView extends React.Component {
       return dist === 0.0 ? 0.1 : dist;
     }
   }
-
+  
   render() {
     const screenHeight = Dimensions.get('window').height;
     const { city, categories, events, posts, navigation, location } = this.props;
+
     console.log("render feed");
     return (
       <ScrollView
@@ -104,117 +119,132 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         )}
-        automaticallyAdjustContentInsets={true}
-        // contentInsetAdjustmentBehavior="always"
-        // contentInset={{ bottom: this.state.height }}
+        style={{ flex: 1 }}
       >
-        <View style={{ marginTop: 22 }}>
-          <View style={{ width: '100%' }}>
-            <FeedHeader city={city} />
-          </View>
-          <View style={{ width: wp(100), marginTop: 10 }}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={categories.sort((a, b) => a.id > b.id)}
-              renderItem={({ item }) => (
-                <FeedCategoryButton
-                  icon={icons[item.icon]}
-                  title={item.title}
-                  titleColor={
-                    item.title === this.state.selectedCategoryTitle && item.title !== 'All' ? '#fff' : '#26315F'
-                  }
-                  backgroundColor={item.color}
-                  border={item.border}
-                  onPress={() => this.setState({ selectedCategoryTitle: item.title, selectedCategoryIcon: icons[item.icon] },
-                    () => this.props.refreshFeed(this.state.selectedCategoryTitle))}
-                />
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{ width: 10 }} />
-              )}
-              ListHeaderComponent={() => (
-                <View style={{ width: 15 }} />
-              )}
-              ListFooterComponent={() => (
-                <View style={{ width: 15 }} />
-              )}
-            />
-          </View>
-          <View style={{ marginTop: 15 }}>
-            <FeedSeparator width={wp(90)} />
-          </View>
-          {events.length > 0 && (
-            <View>
-              <View style={{ justifyContent: 'center', marginTop: 3, marginBottom: 14 }}>
-                <FeedSubHeader
-                  icon={icons[1]}
-                  title="Events near you"
-                />
-              </View>
-              <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
-                <FlatList
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  data={_.sample(events || [], 5).sort((a, b) => this.findDistance(
-                    location.lat, location.lon, a.location.lat, a.location.lon,
-                  ) > this.findDistance(
-                    location.lat, location.lon, b.location.lat, b.location.lon,
-                  ))}
-                  renderItem={({ item }) => (
-                    <FeedScrollPost
-                      picture={item.picture}
-                      title={item.title}
-                      onEventPress={() => navigation.navigate('Location', { location: item })}
-                      distance={this.findDistance(
-                        location.lat, location.lon, item.location.lat, item.location.lon, 'N',
-                      )}
-                    />
-                  )}
-                  ItemSeparatorComponent={() => (
-                    <View style={{ width: 10 }} />
-                  )}
-                  ListHeaderComponent={() => (
-                    <View style={{ width: 15 }} />
-                  )}
-                  ListFooterComponent={() => (
-                    <View style={{ width: 15 }} />
-                  )}
-                />
-              </View>
-            </View>
-          )}
-          <View style={{
-            marginTop: 6,
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-          >
-            <View style={{ marginLeft: 12 }}>
-              <FeedSubHeader
-                icon={this.state.selectedCategoryIcon}
-                title={this.state.selectedCategoryTitle}
-              />
-            </View>
-            <View style={{ marginTop: 2 }}>
-              <FeedFilterBar />
-            </View>
-          </View>
+        <View style={{ width: '100%', marginTop: 22 }}>
+          <FeedHeader city={city} />
         </View>
-        <View style={{ marginLeft: 11 }}>
+        <View style={{ width: wp(100), marginTop: 10 }}>
           <FlatList
-            data={posts}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={categories.sort((a, b) => a.id > b.id)}
             renderItem={({ item }) => (
-              <FeedUserPost
-                postID={item.id}
-                moveOnPress={() => navigation.navigate('Post', { post: item })}
-                comments={item.comments.length}
+              <FeedCategoryButton
+                icon={icons[item.icon]}
+                title={item.title}
+                titleColor={
+                  item.title === this.state.selectedCategoryTitle && item.title !== 'All' ? '#fff' : '#26315F'
+                }
+                backgroundColor={item.color}
+                border={item.border}
+                onPress={() => this.setState({ selectedCategoryTitle: item.title, selectedCategoryIcon: icons[item.icon] },
+                  () => this.props.refreshFeed(this.state.selectedCategoryTitle))}
               />
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{ width: 10 }} />
+            )}
+            ListHeaderComponent={() => (
+              <View style={{ width: 15 }} />
+            )}
+            ListFooterComponent={() => (
+              <View style={{ width: 15 }} />
             )}
           />
         </View>
+        {this.state.selectedCategoryTitle !== 'Promos' && (
+          <View>
+            <View style={{ marginTop: 15 }}>
+              <FeedSeparator width={wp(90)} />
+            </View>
+            {events.length > 0 && (
+              <View>
+                <View style={{ justifyContent: 'center', marginTop: 3, marginBottom: 14 }}>
+                  <FeedSubHeader
+                    icon={icons[1]}
+                    title="Events near you"
+                  />
+                </View>
+                <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
+                  <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={_.sample(events || [], 5).sort((a, b) => this.findDistance(
+                      location.lat, location.lon, a.location.lat, a.location.lon,
+                    ) > this.findDistance(
+                      location.lat, location.lon, b.location.lat, b.location.lon,
+                    ))}
+                    renderItem={({ item }) => (
+                      <FeedScrollPost
+                        picture={item.picture}
+                        title={item.title}
+                        onEventPress={() => navigation.navigate('Location', { location: item })}
+                        distance={this.findDistance(
+                          location.lat, location.lon, item.location.lat, item.location.lon, 'N',
+                        )}
+                      />
+                    )}
+                    ItemSeparatorComponent={() => (
+                      <View style={{ width: 10 }} />
+                    )}
+                    ListHeaderComponent={() => (
+                      <View style={{ width: 15 }} />
+                    )}
+                    ListFooterComponent={() => (
+                      <View style={{ width: 15 }} />
+                    )}
+                  />
+                </View>
+              </View>
+            )}
+            <View style={{
+              marginTop: 6,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+            >
+              <View style={{ marginLeft: 12 }}>
+                <FeedSubHeader
+                  icon={this.state.selectedCategoryIcon}
+                  title={this.state.selectedCategoryTitle}
+                />
+              </View>
+              <View style={{ marginTop: 2 }}>
+                <FeedFilterBar />
+              </View>
+            </View>
+            <View style={{ marginLeft: 11 }}>
+              <FlatList
+                data={posts}
+                renderItem={({ item }) => (
+                  <FeedUserPost
+                    postID={item.id}
+                    moveOnPress={() => navigation.navigate('Post', { post: item })}
+                    comments={item.comments.length}
+                  />
+                )}
+              />
+            </View>
+          </View>
+        )}
+        {this.state.selectedCategoryTitle === 'Promos' && (
+          <View style={styles.promos}>
+            <FlatList
+              data={_.where(posts, { category: 'Promos' })}
+              renderItem={({ item }) => (
+                <PromoPost
+                  item={item}
+                />
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{ height: 10 }} />
+              )}
+            />
+          </View>
+        )}
       </ScrollView>
     );
   }

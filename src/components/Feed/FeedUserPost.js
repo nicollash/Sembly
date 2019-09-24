@@ -31,12 +31,6 @@ class FeedUserPost extends React.Component {
 
   componentDidMount() {}
 
-  openMaps = () => {
-   // const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-   // const url = scheme + `${this.state.lat}, ${this.state.lon}`;
-   // Linking.openURL(url);
-  };
-
   render() {
     const post = _.findWhere(this.props.posts, { id: this.props.postID });
 

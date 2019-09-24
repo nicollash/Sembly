@@ -2,7 +2,6 @@ import Immutable from 'immutable';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-
 const UserRecord = Immutable.Record({
   id: 0,
   name: '',
@@ -21,6 +20,7 @@ class User extends UserRecord<UserProps> {
       id: data.id,
       name: data.name,
       avatar: data.avatar,
+      posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
     });
   }
 }

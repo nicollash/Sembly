@@ -162,13 +162,14 @@ class LocationView extends React.Component {
                           fontFamily: Theme.fonts.bold,
                         }}
                         >
-                          {location.location.name}
+                          {/* {location.location.name} */}
+                          Zimbabwe
                         </Text>
                       </View>
                     </TouchableOpacity>
                     {location.constructor.name === 'Business' && (
                       <TouchableOpacity
-                        onPress={() => { Linking.openURL(`telprompt:${'phonenumber'}`); }}
+                        onPress={() => { Linking.openURL(`telprompt:${5143131323}`); }}
                       >
                         <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
                           <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
@@ -180,21 +181,27 @@ class LocationView extends React.Component {
                               marginLeft: wp(0.5),
                             }}
                           >
-                            {this.formatPhone('phonenumber')}
+                            {this.formatPhone(11232312)}
                           </Text>
                         </View>
                       </TouchableOpacity>
                     )}
                     {location.constructor.name === 'Event' && (
-                      <Text style={{
-                        fontSize: wp(3.3),
-                        color: '#000',
-                        fontFamily: Theme.fonts.bold,
-                        marginLeft: wp(0.5),
-                      }}
-                      >
-                        {location.happeningOn.fromNow()}
-                      </Text>
+                      <View style={{ flexDirection: 'row', marginLeft: wp(1.5), alignItems: 'center' }}>
+                        <Image
+                          source={require('../../../assets/images/clockIcon.png')}
+                          style={{ height: 15, resizeMode: 'contain' }}
+                        />
+                        <Text style={{
+                          fontSize: wp(3.3),
+                          color: '#000',
+                          fontFamily: Theme.fonts.bold,
+                          marginLeft: wp(0.5),
+                        }}
+                        >
+                          {location.happeningOn.fromNow()}
+                        </Text>
+                      </View>
                     )}
                     {/* <View style={{ position: 'absolute', right: 10, bottom: 7 }}> */}
                     {/* <SemblyRedeemButton /> */}

@@ -21,7 +21,6 @@ import theme from '../../styles/theme';
 import ProfileStatsBar from '../../components/ProfileStatsBar';
 import ProfileSubSection from './ProfileSubSection';
 import { SemblyHeaderButton } from '../../components';
-import { TextInput } from 'react-native-gesture-handler';
 
 const styles = {
   container: {

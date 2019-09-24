@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   promos: {
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 22,
     shadowColor: '#e0e0e0',
     shadowRadius: 4,
     shadowOpacity: 1,
@@ -215,7 +215,7 @@ class FeedView extends React.Component {
                 <FeedFilterBar />
               </View>
             </View>
-            <View style={{ marginLeft: 11 }}>
+            <View style={{ marginLeft: 11, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
               <FlatList
                 data={_.reject(posts, { category: 'Promos' })}
                 renderItem={({ item }) => (
@@ -224,6 +224,9 @@ class FeedView extends React.Component {
                     moveOnPress={() => navigation.navigate('Post', { post: item })}
                     comments={item.comments.length}
                   />
+                )}
+                ItemSeparatorComponent={() => (
+                  <View style={{ height: 8 }} />
                 )}
               />
             </View>

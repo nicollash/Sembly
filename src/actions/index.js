@@ -186,9 +186,8 @@ export function updateUserProfile({
   photo = undefined,
   postsCount,
 }) {
-  console.log(photo);
-  return async function updateUserProfileState(dispatch, getState) {
-    await firebase
+  return function updateUserProfileState(dispatch, getState) {
+    firebase
       .auth()
       .currentUser.updateProfile({
         displayName: name,
@@ -196,9 +195,7 @@ export function updateUserProfile({
       })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
-        console.log(currentUser);
         const userTest = getState().user;
-        console.log(userTest);
         const { displayName, photoURL } = currentUser;
         const user = { displayName, photoURL, postsCount };
         dispatch({ type: UPDATE_USER, user });

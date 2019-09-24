@@ -44,13 +44,16 @@ class FeedUserPost extends React.Component {
           alignItems: 'flex-start',
           justifyContent: 'flex-start',
           left: '1%',
-          marginBottom: 8,
+          // marginBottom: 8,
           borderRadius: 10,
-          borderWidth: 2,
-          borderColor: '#F0F0F0',
           minHeight: 30,
           maxHeight: 500,
           maxWidth: wp(95),
+          backgroundColor: '#fff',
+          // shadowColor: '#E0E0E0',
+          // shadowRadius: 2,
+          // shadowOffset: { height: 1 },
+          // shadowOpacity: 1,
         }}
       >
         <View

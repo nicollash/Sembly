@@ -64,7 +64,7 @@ class SemblyMapView extends React.Component {
         pinIcon={post.category !== 'General'
           ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
           : icons[0]}
-        onPress={() => NavigationService.navigate('Location', { location: post })}
+        onPress={() => NavigationService.navigate('Post', { post })}
       />
     ));
     const businessPins = _.where(this.props.businesses, { showOnMap: true }).map(business => (

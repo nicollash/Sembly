@@ -11,6 +11,7 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import RewardsView from './RewardsView';
 import ProfileView from './ProfileView';
+import MyPostsView from './MyPostsView';
 
 const styles = {
   container: {
@@ -20,14 +21,17 @@ const styles = {
   },
 };
 
-const Stack = createStackNavigator({
+const ProfileNavigator = createStackNavigator({
   Profile: ProfileView,
+  MyPosts: MyPostsView,
   Rewards: RewardsView,
 },
 {
   headerMode: 'float',
   headerLayoutPreset: 'center',
 });
+
+const Stack = createAppContainer(ProfileNavigator);
 
 class ProfileStack extends React.Component {
   constructor(props) {
@@ -65,4 +69,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default createAppContainer(Stack);
+export default ProfileStack;

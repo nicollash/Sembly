@@ -17,6 +17,8 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Theme from '../../styles/theme';
 import { toggleLike } from '../../actions';
 
+const samplePlayer = 'https://api.adorable.io/avatars/285/abott@adorable.png';
+
 const styles = StyleSheet.create({
   container: {},
   postText: {
@@ -33,6 +35,8 @@ class FeedUserPost extends React.Component {
 
   render() {
     const post = _.findWhere(this.props.posts, { id: this.props.postID });
+
+    // const post = this.props.navigation.getParam('post', e => console.log(e));
 
     return (
       <View
@@ -75,7 +79,7 @@ class FeedUserPost extends React.Component {
                   borderRadius: 16,
                   resizeMode: 'cover',
                 }}
-                source={{ uri: post.user.avatar }}
+                source={{ uri: post.user.avatar || samplePlayer }}
               />
             </View>
             <Text
@@ -85,7 +89,7 @@ class FeedUserPost extends React.Component {
                 fontFamily: Theme.fonts.bold,
                 alignSelf: 'center',
                 marginTop: 2,
-                marginLeft: 7
+                marginLeft: 7,
               }}
             >
               {post.user.name}
@@ -226,6 +230,7 @@ FeedUserPost.defaultProps = {
 
 const mapStateToProps = (state) => ({
   posts: state.feed.posts,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

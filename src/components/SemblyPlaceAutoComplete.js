@@ -51,7 +51,7 @@ class SemblyPlaceAutoComplete extends React.Component {
   constructor(props) {
     super(props);
     this.state = { businesses: [], query: '' };
-    this.debounceQuery = _.debounce(this.launchQuery, 800)
+    this.debounceQuery = _.debounce(this.launchQuery, 800);
   }
 
   componentWillMount() {
@@ -87,7 +87,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           data={businesses}
           defaultValue={query}
           hideResults={businesses.length <= 0}
-          onChangeText={query => this.setState({query}, this.debounceQuery) }
+          onChangeText={res => this.setState({ query: res }, this.debounceQuery)}
           placeholder="Add location"
           placeholderTextColor="#C7CAD1"
           style={{ fontSize: 17 }}

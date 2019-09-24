@@ -40,6 +40,7 @@ class ProfileSubSection extends React.Component {
       <View accessibilityIgnoresInvertColors style={styles.container}>
         {active && (
           <TouchableOpacity
+            onPress={this.props.actionOnPress}
             style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}
             hitSlop={{ bottom: 10, top: 10 }}
           >

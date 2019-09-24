@@ -22,6 +22,7 @@ import {
   SENDING_POST,
   UPDATE_CITY,
   PREVIOUS_SCREEN,
+  UPDATE_USER_POSTS,
 } from '../actions';
 
 
@@ -122,6 +123,8 @@ const user = (state = userDefault, action) => {
     return Object.assign({}, state, { loginError: action.message });
   case SIGNUP_ERROR:
     return Object.assign({}, state, { signupError: action.message });
+  case UPDATE_USER_POSTS:
+    return Object.assign({}, state, { posts: action.posts });
   default:
     return state;
   }

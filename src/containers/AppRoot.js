@@ -155,6 +155,7 @@ class AppRoot extends React.PureComponent {
           }
         }
       });
+      this.geoLocate();
     });
   }
 
@@ -178,7 +179,7 @@ class AppRoot extends React.PureComponent {
     // console.log('locating...');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
-      //console.log(success);
+      console.log(success);
       this.props.updateLocation(success.coords.latitude, success.coords.longitude)
     }, (error) => {
       Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
@@ -195,8 +196,6 @@ class AppRoot extends React.PureComponent {
   }
 
   render() {
-    console.log('state user', this.state.user);
-    console.log('prop user', this.props.user);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />

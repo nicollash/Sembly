@@ -22,7 +22,7 @@ const locationPin = require('../../assets/images/LocationIcon.png');
 
 const styles = StyleSheet.create({
   container: {
-    height: 150,
+    height: 120,
     width: wp(92),
     borderRadius: 9,
     backgroundColor: '#fff',
@@ -30,14 +30,20 @@ const styles = StyleSheet.create({
   },
   name: {
     color: '#000',
-    fontSize: 20,
+    fontSize: 16,
+    fontFamily: theme.fonts.black,
+    textAlign: 'center',
+  },
+  redeem: {
+    color: '#000',
+    fontSize: 14,
     fontFamily: theme.fonts.black,
     textAlign: 'center',
   },
   promotion: {
-    color: 'purple',
+    color: '#7562CC',
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 22,
     fontFamily: theme.fonts.black,
   },
 });
@@ -59,35 +65,43 @@ class PromoPost extends React.Component {
     const { item } = this.props;
     return (
       <View style={styles.container}>
-        <Text style={styles.name}>
-          @
-          {' '}
-          {item.text}
-        </Text>
-        <Text style={item.promotion}>
-          {item.promotion || 'Sorry, the promotion is not available at the moment'}
-        </Text>
-        {!this.state.redeemed && (
-          <TouchableOpacity onPress={() => this.setState({ redeemed: true })}>
-            <Text style={styles.name}>
-              Tap to redeem
-            </Text>
-          </TouchableOpacity>
-        )}
-        {this.state.redeemed && (
-          <Text>
-            {item.promoCode || 'No Promo Code included, sorry!'}
-          </Text>
-        )}
-        <Text style={{ color: '#ddd', fontSize: 16, fontFamily: theme.fonts.bold }}>
-          Premium exclusive -
-          {' '}
-          {/* {item.createdAt || 'July'} */}
-        </Text>
-        <View style={{ position: 'absolute', bottom: 5, left: 5, flexDirection: 'row' }}>
-          <Image source={locationPin} />
-          <Text style={{ color: '#ddd' }}>
+        <View style={{ marginTop: 5 }}>
+          <Text style={styles.name}>
+            @
+            {' '}
             {item.text}
+          </Text>
+        </View>
+        <View style={{ marginTop: -2 }}>
+          <Text style={styles.promotion}>
+            {item.promotion || 'Sorry, no promotion'}
+          </Text>
+        </View>
+        <View style={{ marginTop: 25 }}>
+          {!this.state.redeemed && (
+            <TouchableOpacity onPress={() => this.setState({ redeemed: true })}>
+              <Text style={styles.redeem}>
+                Tap to Redeem
+              </Text>
+            </TouchableOpacity>
+          )}
+          {this.state.redeemed && (
+            <Text>
+              {item.promoCode || 'No Promo Code included, sorry!'}
+            </Text>
+          )}
+        </View>
+        <View style={{ marginTop: 2 }}>
+          <Text style={{ color: '#ddd', fontSize: 13, fontFamily: theme.fonts.bold }}>
+            Premium exclusive -
+            {' '}
+            {/* {item.createdAt || 'July'} */}
+          </Text>
+        </View>
+        <View style={{ position: 'absolute', bottom: 12.5, left: 8, flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={locationPin} style={{ tintColor: '#B9BDC5' }} />
+          <Text style={{ color: '#B9BDC5', maxWidth: 90, marginLeft: 5, fontSize: 13 }}>
+            {item.text.substring(0, 10)}
           </Text>
         </View>
       </View>

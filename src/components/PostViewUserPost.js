@@ -200,7 +200,9 @@ PostViewUserPost.defaultProps = {
 
 PostViewUserPost.propTypes = {};
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
 const mapDispatchToProps = dispatch => ({
   toggleLike: postID => dispatch(toggleLike({ postID }))

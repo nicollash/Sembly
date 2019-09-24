@@ -8,10 +8,10 @@ import User from "../domain/User";
 import Business from "../domain/Business";
 import Category from "../domain/Category";
 
-//const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-const API_URL = __DEV__
-  ? "http://localhost:5000/sembly-staging/us-central1"
-  : "https://us-central1-sembly-staging.cloudfunctions.net";
+const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+// const API_URL = __DEV__
+//   ? "http://localhost:5000/sembly-staging/us-central1"
+//   : "https://us-central1-sembly-staging.cloudfunctions.net";
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -60,6 +60,7 @@ export function refreshFeed({
       .map(key => `${key}=${encodeURIComponent(paramsObj[key])}`)
       .join("&");
     dispatch({ type: UPDATE_FEED_LOADING, status: true });
+    console.log(`${API_URL}/getFeed?${params}`);
     fetch(`${API_URL}/getFeed?${params}`, {
       method: "GET",
       headers: {
@@ -69,7 +70,7 @@ export function refreshFeed({
       }
     })
       .then(response => response.json())
-      .then(feedJSON => {
+      .then((feedJSON) => {
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
@@ -94,7 +95,7 @@ export function refreshFeed({
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
@@ -124,8 +125,22 @@ export function handleSignup(_email, _password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
-      .then(currentUser => {
-        console.log("handleSignup", currentUser);
+      .then((currentUser) => {
+        // if (firebase.auth().currentUser) {
+        //   userId = firebase.auth().currentUser.uid;
+        //   if (userId) {
+        //     firebase.database().ref('users/' + userId).set({
+        //       password:password,
+        //       town:town,
+        //       addInterest:addInterest,
+        //       photoUrl:false,
+        //       emailVerified:false,
+        //       uid:userId,
+        //       status:true,
+        //       online:true
+        //     })
+        //   }
+        // }
         const { email } = currentUser.user;
         const user = { email };
         dispatch({ type: UPDATE_USER, user });
@@ -177,7 +192,7 @@ export function updateUserProfile({
       .auth()
       .currentUser.updateProfile({
         displayName: name,
-        photoURL: photo
+        photoURL: photo,
       })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
@@ -197,6 +212,7 @@ export function getUserPosts() {
   return async function getUserPostsState(dispatch, getState) {
     const uid = firebase.auth().currentUser.uid;
     const token = await firebase.auth().currentUser.getIdToken();
+    console.log(`${API_URL}/getPosts?userID=${uid}`);
     fetch(`${API_URL}/getPosts?userID=${uid}`, {
       method: "GET",
       headers: {
@@ -206,10 +222,10 @@ export function getUserPosts() {
       }
     })
       .then(response => response.json())
-      .then(postsJSON => {
+      .then((postsJSON) => {
         dispatch({
           type: UPDATE_USER_POSTS,
-          posts: postsJSON.map(p => Post.parse(p))
+          posts: postsJSON.map(p => Post.parse(p)),
         });
       });
   };

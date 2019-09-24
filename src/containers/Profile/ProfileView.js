@@ -77,10 +77,11 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ submit: () => {
-      this.props.handleSignOut();
-      this.props.navigation.navigate('Welcome');
-    },
+    this.props.navigation.setParams({
+      submit: () => {
+        this.props.handleSignOut();
+        this.props.navigation.navigate('Welcome');
+      },
     });
   }
 
@@ -122,6 +123,9 @@ class ProfileView extends React.Component {
   };
 
   render() {
+    if (!this.props.user) {
+      return;
+    }
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <View style={styles.profileHeader}>
@@ -154,7 +158,7 @@ class ProfileView extends React.Component {
               marginTop: hp(3),
             }}
           >
-            {this.props.displayName || this.props.email.split('@')[0]}
+            {this.props.displayName || this.props.email.split('@')[0] || undefined}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>
@@ -180,6 +184,7 @@ class ProfileView extends React.Component {
           <ProfileSubSection
             sectionText="My Posts"
             active
+            actionOnPress={() => this.props.navigation.navigate('MyPosts')}
           />
         </View>
         <View style={{ marginTop: hp(2.5) }}>
@@ -203,6 +208,7 @@ ProfileView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
+  user: state.user,
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
   email: state.user.email,

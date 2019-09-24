@@ -44,6 +44,8 @@ class PostView extends React.Component {
 
     const { navigation } = this.props;
     const post = _.findWhere(this.props.posts, { id: navigation.getParam('post').id });
+
+    console.log(post);
     
     return (
       <ScrollView style={{ width: wp(100) }}>

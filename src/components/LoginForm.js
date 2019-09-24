@@ -23,6 +23,7 @@ class LoginForm extends React.Component {
             placeholder="your@email.com"
             returnKey="next"
             valueChanged={str => this.props.emailChanged(str)}
+            multiline={false}
           />
         </View>
         <View style={{ marginTop: 15 }}>

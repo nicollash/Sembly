@@ -74,7 +74,6 @@ class FeedView extends React.Component {
 
   componentDidMount() {
     this.props.refreshFeed();
-    console.log('user', this.props.user);
   }
 
   _onRefresh = () => {
@@ -218,7 +217,7 @@ class FeedView extends React.Component {
             </View>
             <View style={{ marginLeft: 11 }}>
               <FlatList
-                data={posts}
+                data={_.reject(posts, { category: 'Promos' })}
                 renderItem={({ item }) => (
                   <FeedUserPost
                     postID={item.id}

@@ -63,12 +63,11 @@ class MyPostsView extends React.Component {
 
   render() {
     console.log(this.props.posts);
-    console.log(this.props.user);
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <Text>MyPosts</Text>
-        {/* <FlatList
-          data={posts}
+        <FlatList
+          data={this.props.posts}
           renderItem={({ item }) => (
             <FeedUserPost
               postID={item.id}
@@ -76,7 +75,7 @@ class MyPostsView extends React.Component {
               comments={item.comments.length}
             />
           )}
-        /> */}
+        />
       </View>
     );
   }

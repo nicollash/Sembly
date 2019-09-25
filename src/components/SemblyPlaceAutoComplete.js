@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableOpacity,
   Text,
+  ScrollView,
 } from 'react-native';
 
 import _ from 'underscore';
@@ -18,18 +19,20 @@ const styles = StyleSheet.create({
   container: {
     // zIndex: (Platform.OS === 'ios' ? 10 : 0),
     overflow: 'visible',
+    // position: 'absolute',
     // flex: 0.2,
   },
   inputContainerStyle: {
     borderWidth: 0,
+    // zIndex: 1,
   },
   textInputContainer: {
     marginLeft: 5,
   },
   listView: {
     position: 'absolute',
-    left: 8,
-    top: (Platform.OS === 'ios' ? 40 : 0),
+    left: 2,
+    top: (Platform.OS === 'ios' ? 27 : 0),
     elevation: 1,
     borderRadius: 2,
     shadowColor: '#000',
@@ -41,6 +44,7 @@ const styles = StyleSheet.create({
   location: {
     color: '#26315F',
     fontSize: 17,
+    marginLeft: 4,
   },
   predefinedPlacesDescription: {
     color: '#1faadb',
@@ -79,6 +83,7 @@ class SemblyPlaceAutoComplete extends React.Component {
     return (
       <View style={styles.container}>
         <Autocomplete
+          scrollEnabled
           autoCapitalize="none"
           autoCorrect={false}
           inputContainerStyle={styles.inputContainerStyle}
@@ -90,7 +95,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           onChangeText={res => this.setState({ query: res }, this.debounceQuery)}
           placeholder="Add location"
           placeholderTextColor="#C7CAD1"
-          style={{ fontSize: 17 }}
+          style={{ fontSize: 17, color: '#26315F' }}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.setState({ query: item.name, businesses: [] })}>
               <Text style={styles.location}>

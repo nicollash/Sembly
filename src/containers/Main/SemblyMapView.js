@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   View,
+  PermissionsAndroid,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -12,17 +13,20 @@ import { connect } from 'react-redux';
 
 import SemblyMapPin from '../../components/SemblyMapPin';
 import NavigationService from '../../helpers/SlidingPanelNavigation';
-import { PermissionsAndroid } from 'react-native';
+
+// App Icons
+// import icons from '../../styles/icons';
 
 // Actions
 import { refreshFeed, updateMap } from '../../actions';
+
 
 const icons = [
   require('../../../assets/images/SemblyAllIcon.png'),
   require('../../../assets/images/SemblyEventsIcon.png'),
   require('../../../assets/images/SemblyBurgerIcon.png'),
   require('../../../assets/images/SemblyPromosIcon.png'),
-  require('../../../assets/images/SemblyDrinksIcon.png')
+  require('../../../assets/images/artsIcon.png'),
 ];
 
 const styles = {

@@ -168,7 +168,7 @@ class NewPostView extends React.Component {
 
   submit = () => {
     this.props.createNewPost(this.state.post);
-    this.props.updateUserProfile(this.props.postsCount += 1);
+    this.props.updateUserProfile(this.props.posts.length += 1);
     this.setState({ submitted: true });
     // () => {
 
@@ -335,6 +335,7 @@ const mapStateToProps = (state, ownProps) => ({
   categories: state.feed.categories,
   sendingPost: state.appState.sendingPost,
   postsCount: state.user.postsCount,
+  posts: state.user.posts,
 });
 
 const mapDispatchToProps = dispatch => ({

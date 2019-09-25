@@ -33,6 +33,9 @@ import {
   FeedCategoryButton,
 } from '../../components';
 
+// App Icons
+// import icons from '../../styles/icons';
+
 import FeedFilterBar from '../../components/Feed/FeedFilterBar';
 import FeedSeparator from '../../components/Feed/FeedSeparator';
 import FeedHeader from '../../components/Feed/FeedHeader';
@@ -45,7 +48,7 @@ const icons = [
   require('../../../assets/images/SemblyEventsIcon.png'),
   require('../../../assets/images/SemblyBurgerIcon.png'),
   require('../../../assets/images/SemblyPromosIcon.png'),
-  require('../../../assets/images/artsIcon.png')
+  require('../../../assets/images/artsIcon.png'),
 ];
 
 const styles = StyleSheet.create({
@@ -75,20 +78,20 @@ class FeedView extends React.Component {
   }
 
   componentDidMount() {
+    // this.setState({ refreshing: true }, () => this.props.refreshFeed());
+    // this.setState({ refreshing: false });
     this.props.refreshFeed();
   }
 
   _onRefresh = () => {
-    this.setState({ refreshing: true });
+    // this.setState({ refreshing: true });
     this.props.refreshFeed();
-    this.setState({ refreshing: false });
+    // this.setState({ refreshing: false });
   }
 
   render() {
-    const screenHeight = Dimensions.get('window').height;
     const { city, categories, events, posts, navigation, location } = this.props;
 
-    console.log("render feed");
     return (
       <ScrollView
         refreshControl={(
@@ -97,7 +100,7 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         )}
-        contentContainerStyle={{ height: usableHeight }}
+        contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
       >
         <View style={{ width: '100%', marginTop: 22 }}>
           <FeedHeader city={city} />

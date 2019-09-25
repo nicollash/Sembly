@@ -297,15 +297,16 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
 
     return response.status(200).send(form);
   } else {
-    console.log(request.rawBody.toString());
-    var data = new Uint8Array(request.rawBody.toString());
+    const busboy = new Busboy({ headers: request.headers });
 
-    var workbook = XLSX.read(data, {type:"array"});
-    var first_sheet_name = workbook.SheetNames[0];
-    var worksheet = workbook.Sheets[first_sheet_name];
-    return response.status(200).send(worksheet[1]);
+    busboy.on('file', (fieldname, file, filename) => {
+      //var workbook = XLSX.read(data, {type:"array"});
+      //var first_sheet_name = workbook.SheetNames[0];
+      //var worksheet = workbook.Sheets[first_sheet_name];
+    
+      return response.status(200).send(filename);
+    });
   }
-
 });
 
 exports.getEvents = functions.https.onRequest(async (request, response) => {

@@ -2,9 +2,10 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const firebase = require("firebase");
 const util = require("util");
-var path = require("path");
-var moment = require("moment");
-var XLSX = require("XLSX");
+const path = require("path");
+const moment = require("moment");
+const XLSX = require("XLSX");
+const Busboy = require("busboy");
 
 // Fetch
 const httpRequest = require('request');
@@ -162,10 +163,10 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getPosts = functions.https.onRequest(async (request, response) => {
-  const userPosts = await geofirestore.collection(`Posts`).where('d.user.id', `==`, request.query.userID).get();
+  const userPosts = await geofirestore.collection(`Posts`).where('user.id', `==`, request.query.userID).get();
   
   const posts = await Promise.all(userPosts.docs.map(async doc => {
-    const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
+    const comments = await geofirestore.collection("Posts").doc(doc.id).collection('comments').get();
     return { 
       id: doc.id, ...doc.data(),
       likesCount: (doc.data().likes || []).length,
@@ -287,7 +288,7 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
   if (request.method !== 'POST') {
     const form = `
     <body>
-      <form id="fileForm" method="post"> 
+      <form id="fileForm" method="post" enctype="multipart/form-data"> 
         <label for="file">Choose file to upload</label>
         <input type="file" id="file" name="file">
         <input type="submit" value="Submit" /> 
@@ -299,13 +300,26 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
   } else {
     const busboy = new Busboy({ headers: request.headers });
 
-    busboy.on('file', (fieldname, file, filename) => {
-      //var workbook = XLSX.read(data, {type:"array"});
-      //var first_sheet_name = workbook.SheetNames[0];
-      //var worksheet = workbook.Sheets[first_sheet_name];
-    
-      return response.status(200).send(filename);
+    busboy.on('field', (fieldname, val) => {
+      // TODO(developer): Process submitted field values here
+      console.log(`Processed field ${fieldname}: ${val}.`);
     });
+
+    busboy.on('file', (fieldname, file, filename) => {
+      file.on('data', (data) => {
+        var workbook = XLSX.read(data);
+        var first_sheet_name = workbook.SheetNames[0];
+        //var worksheet = workbook.Sheets[first_sheet_name];
+      
+        return response.status(200).send(first_sheet_name);
+      });
+    });
+
+    busboy.on('finish', () => {
+      return response.status(200).send("done");
+    });
+
+    busboy.end(request.rawBody);
   }
 });
 

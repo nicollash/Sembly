@@ -18,9 +18,6 @@ import SemblyMapView from './SemblyMapView';
 import SlidingPanelNavigator from '../../components/SlidingPanelNavigator';
 import SlidingPanelNavigationService from '../../helpers/SlidingPanelNavigation';
 
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
-
 const styles = {
   container: {
     flex: 1,
@@ -28,7 +25,6 @@ const styles = {
   },
   panel: {
     flex: 1,
-    // height: hp(100),
     backgroundColor: '#fff',
     borderTopLeftRadius: hp(2),
     borderTopRightRadius: hp(2),

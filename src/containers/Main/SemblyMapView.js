@@ -15,7 +15,7 @@ import NavigationService from '../../helpers/SlidingPanelNavigation';
 import { PermissionsAndroid } from 'react-native';
 
 // Actions
-import { refreshFeed } from '../../actions';
+import { refreshFeed, updateMap } from '../../actions';
 
 const icons = [
   require('../../../assets/images/SemblyAllIcon.png'),
@@ -34,12 +34,27 @@ const styles = {
 };
 
 class SemblyMapView extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   componentWillMount() {
     this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
   }
 
   componentDidMount() {
     requestLocationPermission();
+  }
+
+  componentDidUpdate() {
+    this.map.animateToRegion({
+      latitude: this.props.activeLocation.lat,
+      longitude: this.props.activeLocation.lon,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }, true);
   }
 
   updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);
@@ -79,6 +94,7 @@ class SemblyMapView extends React.Component {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
+          ref={(map) => { this.map = map; }}
           style={{ width: '100%', height: '100%' }}
           initialRegion={{
             latitude: this.props.location.lat,
@@ -89,7 +105,7 @@ class SemblyMapView extends React.Component {
           showsUserLocation
           onRegionChange={(e) => {
             // this.props.refreshFeed(e.latitude, e.longitude)
-            this.setState({ latitude: e.latitude, longitude: e.longitude });
+            // this.setState({ latitude: e.latitude, longitude: e.longitude });
             this.debounceUpdateFeed();
           }}
         >
@@ -138,10 +154,12 @@ const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
   location: state.user.location,
   categories: state.feed.categories,
+  activeLocation: state.map.activeLocation,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshFeed: (lat, lon) => dispatch(refreshFeed({ location: { lat, lon } })),
+  updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SemblyMapView);

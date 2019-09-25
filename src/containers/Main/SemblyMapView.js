@@ -58,7 +58,7 @@ class SemblyMapView extends React.Component {
       longitude: this.props.activeLocation.lon,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
-    }, true);
+    }, 2000);
   }
 
   updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);

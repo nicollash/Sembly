@@ -5,8 +5,8 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
-import io.invertase.firebase.ReactNativeFirebaseAppPackage;
-import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
+//import io.invertase.firebase.ReactNativeFirebaseAppPackage;
+//import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
 import com.imagepicker.ImagePickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -17,6 +17,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.airbnb.android.react.maps.MapsPackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
+//import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,11 +37,12 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNFSPackage(),
             new ImageResizerPackage(),
-            new ReactNativeFirebaseAppPackage(),
-            new ReactNativeFirebaseFirestorePackage(),
+            /*new ReactNativeFirebaseAppPackage(),
+            new ReactNativeFirebaseFirestorePackage(),*/
             new ImagePickerPackage(),
             new RNGestureHandlerPackage(),
             new RNFirebasePackage(),
+              new RNFirebaseFirestorePackage(),
             new ReactNativeConfigPackage(),
                    new MapsPackage(),new RNFirebaseAuthPackage()
       );

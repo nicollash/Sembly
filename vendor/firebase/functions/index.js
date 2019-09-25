@@ -4,6 +4,7 @@ const firebase = require("firebase");
 const util = require("util");
 var path = require("path");
 var moment = require("moment");
+var XLSX = require("XLSX");
 
 // Fetch
 const httpRequest = require('request');
@@ -46,7 +47,7 @@ const getUser = async req => {
 //
 exports.newPost = functions.https.onRequest(async (request, response) => {
   // response.send(`Hello from Firebase my ${request.query.a}`);
-  //console.log(util.inspect(request.body, {showHidden: false, depth: null}))
+  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
   const user = await getUser(request);
 
   // Setup image bucket
@@ -82,7 +83,8 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     .add({
       text,
       coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
-      createdAt: moment().toDate(),
+      showOnMap: location.name !== "",
+      createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
       locationName,
       category,
       picture,
@@ -141,8 +143,6 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   const user = await getUser(request);
 
   const postID = request.body.postID;
-
-  console.log(user.uid);
   
   const post = await admin.firestore().collection(`Posts`).where(admin.firestore.FieldPath.documentId(), `==`, postID);
   const liked = await post.where(`d.likes`, "array-contains", user.uid).get()
@@ -162,7 +162,7 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getPosts = functions.https.onRequest(async (request, response) => {
-  const userPosts = await admin.firestore().collection(`Posts`).where('d.user.id', `==`, request.query.userID).get();
+  const userPosts = await geofirestore.collection(`Posts`).where('d.user.id', `==`, request.query.userID).get();
   
   const posts = await Promise.all(userPosts.docs.map(async doc => {
     const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
@@ -178,7 +178,7 @@ exports.getPosts = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getFeed = functions.https.onRequest(async (request, response) => {
-  //console.log(util.inspect(request.query, { showHidden: false, depth: null }));
+  console.log(util.inspect(request.query, { showHidden: false, depth: null }));
 
   const { lat, lon, type, category } = {
     lat: parseFloat(request.query.lat),
@@ -227,7 +227,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
       orderField = "likes_count";
       break;
     case 'New':
-      orderField = "timeStamp";
+      orderField = "createdAt";
       break;
   }
 
@@ -251,22 +251,24 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     })
     .get();
 
+  const parsedPosts = await Promise.all(posts.docs.map(async doc => {
+    const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
+    console.log(doc.data().likes);
+    return { 
+        id: doc.id, ...doc.data(),
+        likesCount: (doc.data().likes || []).length,
+        liked: (doc.data().likes || []).includes(user.uid),
+        comments: comments.docs.map(comment => comment.data()),
+    }
+  }
+  ));
 
   let feed = {
     city: locationName,
     categories: categories.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
-    posts: await Promise.all(_.sortBy(posts.docs, orderField).map(async doc => {
-      const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
-      console.log(doc.data().likes);
-      return { 
-        id: doc.id, ...doc.data(),
-        likesCount: (doc.data().likes || []).length,
-        liked: (doc.data().likes || []).includes(user.uid),
-        comments: comments.docs.map(comment => comment.data()),
-      };
-    })),
+    posts: _.sortBy(parsedPosts, orderField),
     events: events.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
@@ -279,8 +281,32 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
 });
 
 /*
-    CRONS
+    Data sources
 */
+exports.uploadEvents = functions.https.onRequest(async (request, response) => {
+  if (request.method !== 'POST') {
+    const form = `
+    <body>
+      <form id="fileForm" method="post"> 
+        <label for="file">Choose file to upload</label>
+        <input type="file" id="file" name="file">
+        <input type="submit" value="Submit" /> 
+      </form>
+    </body>
+    `;
+
+    return response.status(200).send(form);
+  } else {
+    console.log(request.rawBody.toString());
+    var data = new Uint8Array(request.rawBody.toString());
+
+    var workbook = XLSX.read(data, {type:"array"});
+    var first_sheet_name = workbook.SheetNames[0];
+    var worksheet = workbook.Sheets[first_sheet_name];
+    return response.status(200).send(worksheet[1]);
+  }
+
+});
 
 exports.getEvents = functions.https.onRequest(async (request, response) => {
   const sdk = eventbrite({ token: "CJ5OZRLECWAMECBF6KXS" });

@@ -253,7 +253,6 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
 
   const parsedPosts = await Promise.all(posts.docs.map(async doc => {
     const comments = await admin.firestore().collection("Posts").doc(doc.id).collection('comments').get();
-    console.log(doc.data().likes);
     return { 
         id: doc.id, ...doc.data(),
         likesCount: (doc.data().likes || []).length,
@@ -268,7 +267,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     categories: categories.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
-    posts: _.sortBy(parsedPosts, orderField),
+    posts: _.sortBy(parsedPosts, orderField).reverse(),
     events: events.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),

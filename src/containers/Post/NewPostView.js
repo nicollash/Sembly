@@ -223,7 +223,7 @@ class NewPostView extends React.Component {
               marginLeft={4}
             />
             <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}>
-              <Image source={pin} style={{ height: 15, marginLeft: -15 }} />
+              <Image source={pin} style={{ height: 15, marginLeft: -15, marginTop: 2 }} />
               <View style={{ marginLeft: 2 }}>
                 <SemblyPlaceAutoComplete
                   latitude={this.props.location.lat}

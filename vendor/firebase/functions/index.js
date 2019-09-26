@@ -151,12 +151,10 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   
   if (liked.docs.length) {
     admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayRemove(user.uid) }).then(() => {
-      console.log("Removed like");
       return response.status(200).send("");
     }).catch(err => console.log(err));
   }else{
     admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayUnion(user.uid) }).then(() => {
-      console.log("Added like");
       return response.status(200).send("");
     }).catch(err => console.log(err));
   }
@@ -300,23 +298,50 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
   } else {
     const busboy = new Busboy({ headers: request.headers });
 
-    busboy.on('field', (fieldname, val) => {
-      // TODO(developer): Process submitted field values here
-      console.log(`Processed field ${fieldname}: ${val}.`);
-    });
-
     busboy.on('file', (fieldname, file, filename) => {
-      file.on('data', (data) => {
-        var workbook = XLSX.read(data);
-        var first_sheet_name = workbook.SheetNames[0];
-        //var worksheet = workbook.Sheets[first_sheet_name];
-      
-        return response.status(200).send(first_sheet_name);
+      file.on('data', async (data) => {
+          let batch = geofirestore.batch();
+
+          var workbook = XLSX.read(data);
+          var sheet = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[sheet];
+
+          var range = XLSX.utils.decode_range(worksheet['!ref']);
+          let events = [];
+          for(var R = range.s.r; R <= range.e.r; ++R) {
+            if (R === 0) continue;
+
+            if (worksheet[XLSX.utils.encode_cell({ c:0, r:R })] === undefined) break;
+            
+            console.log(`Importing ${worksheet[XLSX.utils.encode_cell({ c:4, r:R })].w}`);
+
+            const geocode = await googleMaps.geocode({ 'address': worksheet[XLSX.utils.encode_cell({ c:6, r:R })].w}).asPromise().catch(err => console.log(err));
+            
+            const event = {
+              id: `xls-${worksheet[XLSX.utils.encode_cell({ c:0, r:R })].w}`,
+              title: worksheet[XLSX.utils.encode_cell({ c:4, r:R })].w,
+              text: worksheet[XLSX.utils.encode_cell({ c:7, r:R })].w,
+              picture: worksheet[XLSX.utils.encode_cell({ c:3, r:R })].w,
+              coordinates: new admin.firestore.GeoPoint(
+                parseFloat(geocode.json.results[0].geometry.location.lat),
+                parseFloat(geocode.json.results[0].geometry.location.lng)
+              ),
+              happeningOn: moment(`${worksheet[XLSX.utils.encode_cell({ c:2, r:R })].w} ${worksheet[XLSX.utils.encode_cell({ c:1, r:R })].w}`,
+              "M/DD/YY HH:mmA").format('MMMM Do YYYY, h:mm:ss a'),
+            };
+
+            const doc = geofirestore.collection("Events").doc(`${event.id}`);
+            batch.set(doc, event);
+        }
+        batch.commit().then(events => {
+          return response.status(200).send("Done");
+        })
+        .catch(err => console.log(err));
       });
     });
 
     busboy.on('finish', () => {
-      return response.status(200).send("done");
+      //return response.status(200).send("done");
     });
 
     busboy.end(request.rawBody);

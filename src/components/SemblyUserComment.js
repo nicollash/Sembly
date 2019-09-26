@@ -52,6 +52,7 @@ class SemblyUserComment extends React.Component {
 
   render() {
     const { user = {} } = this.props;
+    console.log(user);
     return (
       <View style={styles.commentContainer}>
         <View style={{
@@ -80,7 +81,7 @@ class SemblyUserComment extends React.Component {
             </Text>
           </TouchableOpacity>
           <Text style={{ top: '3%', right: '40%', color: '#B9BDC5', fontSize: 11 }}>
-            {user.createdAt}
+            {user.createdAt.fromNow()}
           </Text>
         </View>
         <View style={styles.commentContent}>

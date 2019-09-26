@@ -4,14 +4,9 @@ import _ from 'underscore';
 
 import {
   View,
-  Text,
-  Image,
   ScrollView,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  PanResponder,
   RefreshControl,
 } from 'react-native';
 
@@ -21,14 +16,12 @@ import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
-import { getDistance, usableHeight } from '../../helpers/appFunctions';
+import { getDistance } from '../../helpers/appFunctions';
 
 // Actions
-import { refreshFeed } from '../../actions';
+import { refreshFeed, setPanelHeight } from '../../actions';
 
 import {
-  FeedCategoryBar,
-  FeedHorizontalScroll,
   FeedScrollPost,
   FeedCategoryButton,
 } from '../../components';
@@ -37,7 +30,6 @@ import {
 // import icons from '../../styles/icons';
 
 import FeedFilterBar from '../../components/Feed/FeedFilterBar';
-import FeedSeparator from '../../components/Feed/FeedSeparator';
 import FeedHeader from '../../components/Feed/FeedHeader';
 import FeedSubHeader from '../../components/Feed/FeedSubHeader';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
@@ -61,6 +53,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowOffset: { height: 1 },
   },
+  separatorBar: {
+    width: wp(92),
+    borderWidth: 0.5,
+    borderColor: '#D8D8D8',
+    alignSelf: 'center',
+  },
 });
 
 class FeedView extends React.Component {
@@ -78,20 +76,19 @@ class FeedView extends React.Component {
   }
 
   componentDidMount() {
-    // this.setState({ refreshing: true }, () => this.props.refreshFeed());
-    // this.setState({ refreshing: false });
+    this.props.setPanelHeight(400);
     this.props.refreshFeed();
   }
 
   _onRefresh = () => {
-    // this.setState({ refreshing: true });
     this.props.refreshFeed();
-    // this.setState({ refreshing: false });
   }
+
+  setPanelPadding = h => 809.452 - 0.984017 * h; // linear
 
   render() {
     const { city, categories, events, posts, navigation, location } = this.props;
-
+                                  
     return (
       <ScrollView
         refreshControl={(
@@ -137,54 +134,57 @@ class FeedView extends React.Component {
         {this.state.selectedCategoryTitle !== 'Promos' && (
           <View>
             <View style={{ marginTop: 15 }}>
-              <FeedSeparator width={wp(90)} />
+              <View style={styles.separatorBar} />
             </View>
-            {events.length > 0 && (
-              <View>
-                <View style={{ justifyContent: 'center', marginTop: 3 }}>
-                  <FeedSubHeader
-                    icon={icons[1]}
-                    title="Events near you"
-                  />
+            <View style={{ height: 170 }}>
+              {events.length > 0 && (
+                <View>
+                  <View style={{ justifyContent: 'center', marginTop: 9 }}>
+                    <FeedSubHeader
+                      icon={icons[1]}
+                      title="Events near you"
+                    />
+                  </View>
+                  <View style={{ marginTop: 12, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
+                    <FlatList
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      data={_.sample(events || [], 5).sort((a, b) => getDistance(
+                        location.lat, location.lon, a.location.lat, a.location.lon,
+                      ) > getDistance(
+                        location.lat, location.lon, b.location.lat, b.location.lon,
+                      ))}
+                      renderItem={({ item }) => (
+                        <FeedScrollPost
+                          picture={item.picture}
+                          title={item.title}
+                          onEventPress={() => navigation.navigate('Location', { location: item })}
+                          distance={getDistance(
+                            location.lat, location.lon, item.location.lat, item.location.lon, 'N',
+                          )}
+                        />
+                      )}
+                      ItemSeparatorComponent={() => (
+                        <View style={{ width: 10 }} />
+                      )}
+                      ListHeaderComponent={() => (
+                        <View style={{ width: 15 }} />
+                      )}
+                      ListFooterComponent={() => (
+                        <View style={{ width: 15 }} />
+                      )}
+                    />
+                  </View>
                 </View>
-                <View style={{ marginTop: 12, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 2, width: 2 } }}>
-                  <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={_.sample(events || [], 5).sort((a, b) => getDistance(
-                      location.lat, location.lon, a.location.lat, a.location.lon,
-                    ) > getDistance(
-                      location.lat, location.lon, b.location.lat, b.location.lon,
-                    ))}
-                    renderItem={({ item }) => (
-                      <FeedScrollPost
-                        picture={item.picture}
-                        title={item.title}
-                        onEventPress={() => navigation.navigate('Location', { location: item })}
-                        distance={getDistance(
-                          location.lat, location.lon, item.location.lat, item.location.lon, 'N',
-                        )}
-                      />
-                    )}
-                    ItemSeparatorComponent={() => (
-                      <View style={{ width: 10 }} />
-                    )}
-                    ListHeaderComponent={() => (
-                      <View style={{ width: 15 }} />
-                    )}
-                    ListFooterComponent={() => (
-                      <View style={{ width: 15 }} />
-                    )}
-                  />
-                </View>
-              </View>
-            )}
+              )}
+            </View>
             <View style={{
-              marginTop: 6,
+              marginTop: 0,
               width: '100%',
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
+              height: 60,
             }}
             >
               <View style={{ marginLeft: 12 }}>
@@ -212,9 +212,6 @@ class FeedView extends React.Component {
                 )}
               />
             </View>
-            {/* {posts.length < 1 && (
-              <View style={{ height: 200 }} />
-            )} */}
           </View>
         )}
         {this.state.selectedCategoryTitle === 'Promos' && (
@@ -232,6 +229,7 @@ class FeedView extends React.Component {
             />
           </View>
         )}
+        <View style={{ height: this.setPanelPadding(this.props.panelHeight)}} />
       </ScrollView>
     );
   }
@@ -253,10 +251,12 @@ const mapStateToProps = (state, ownProps) => ({
   categories: state.feed.categories,
   location: state.user.location,
   user: state.user,
+  panelHeight: state.appState.panelHeight,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshFeed: a => dispatch(refreshFeed({ category: a })),
+  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedView);

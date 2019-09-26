@@ -26,7 +26,7 @@ import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput } from '../../components';
-import { createNewPost, updateUserProfile } from '../../actions';
+import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
@@ -170,10 +170,6 @@ class NewPostView extends React.Component {
     this.props.createNewPost(this.state.post);
     this.props.updateUserProfile(this.props.posts.length += 1);
     this.setState({ submitted: true });
-    // () => {
-
-    //  setTimeout(() => this.props.navigation.goBack(), 3000);
-    // });
   };
 
   render() {
@@ -341,6 +337,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
   updateUserProfile: posts => dispatch(updateUserProfile({ postsCount: posts })),
+  refreshFeed: a => dispatch(refreshFeed({ category: a })),
 });
 
 export default connect(

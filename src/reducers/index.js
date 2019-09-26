@@ -23,8 +23,8 @@ import {
   UPDATE_CITY,
   PREVIOUS_SCREEN,
   UPDATE_USER_POSTS,
-  LOCALISATION,
   UPDATE_MAP,
+  SET_PANEL_HEIGHT,
 } from '../actions';
 
 
@@ -37,6 +37,7 @@ const appStateDefault = {
   panelNavigation: null,
   previousScreen: undefined,
   sendingPost: false,
+  panelHeight: 400,
 };
 
 const appState = (state = appStateDefault, action) => {
@@ -48,6 +49,8 @@ const appState = (state = appStateDefault, action) => {
   // eslint-disable-next-line no-fallthrough
   case PREVIOUS_SCREEN:
     return Object.assign({}, state, { previousScreen: action.screen });
+  case SET_PANEL_HEIGHT:
+    return Object.assign({}, state, { panelHeight: action.height });
   default:
     return state;
   }
@@ -136,8 +139,8 @@ const mapDefault = {
   activeLocation: {
     // lat: userDefault.location.lat,
     // lon: userDefault.location.lon,
-    lat: 5,
-    lon: 5,
+    lat: undefined,
+    lon: undefined,
   },
 };
 
@@ -161,7 +164,7 @@ const semblyApp = combineReducers({
   map,
 });
 
-const blacklisted = ['appState', 'user.errorMessage'];
+const blacklisted = ['appState', 'user.errorMessage', 'map'];
 const persistConfig = {
   timeout: 10000,
   key: 'root',

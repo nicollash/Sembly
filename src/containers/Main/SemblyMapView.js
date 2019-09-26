@@ -53,12 +53,14 @@ class SemblyMapView extends React.Component {
   }
 
   componentDidUpdate() {
-    this.map.animateToRegion({
-      latitude: this.props.activeLocation.lat,
-      longitude: this.props.activeLocation.lon,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    }, true);
+    {this.props.activeLocation.lat !== undefined && (
+      this.map.animateToRegion({
+        latitude: this.props.activeLocation.lat,
+        longitude: this.props.activeLocation.lon,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }, 2500)
+    )}
   }
 
   updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);
@@ -66,6 +68,8 @@ class SemblyMapView extends React.Component {
   // generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
 
   render() {
+    // console.log(this.props.activeLocation);
+    // console.log(this.props.location);
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin
         latitude={event.location.lat}
@@ -109,7 +113,7 @@ class SemblyMapView extends React.Component {
           showsUserLocation
           onRegionChange={(e) => {
             // this.props.refreshFeed(e.latitude, e.longitude)
-            // this.setState({ latitude: e.latitude, longitude: e.longitude });
+            this.setState({ latitude: e.latitude, longitude: e.longitude });
             this.debounceUpdateFeed();
           }}
         >

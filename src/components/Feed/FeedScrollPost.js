@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 1 },
     shadowOpacity: 1,
   },
-  imageContainer: {
+  // imageContainer: {
+  //   height: 94.9,
+  //   width: 140,
+  //   // top: 1,
+  // },
+  image: {
     height: 94.9,
     width: 140,
-    // top: 1,
-  },
-  image: {
-    height: '100%',
-    width: '100%',
     borderRadius: 10,
   },
   title: {
@@ -68,7 +68,7 @@ class FeedScrollPost extends React.Component {
         style={styles.container}
         onPress={this.props.onEventPress}
       >
-        <View style={styles.imageContainer}>
+        <View style={{ marginTop: 2 }}>
           <Image style={styles.image} source={{ uri: this.props.picture }} />
         </View>
         <View style={{

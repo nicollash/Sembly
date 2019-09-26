@@ -165,7 +165,7 @@ class ProfileView extends React.Component {
         </View>
         <View style={{ alignItems: 'center' }}>
           <ProfileStatsBar
-            posts={this.props.postsCount}
+            posts={this.props.posts.length}
             // comments={this.props.user.comments}
             // likes={this.props.user.likes}
           />
@@ -211,7 +211,7 @@ const mapStateToProps = (state, ownProps) => ({
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
   email: state.user.email,
-  postsCount: state.user.postsCount,
+  posts: state.user.posts,
 });
 
 const mapDispatchToProps = dispatch => ({

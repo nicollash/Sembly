@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const firebase = require("firebase");
 const util = require("util");
 const path = require("path");
 const moment = require("moment");
-const XLSX = require("XLSX");
+const XLSX = require("xlsx");
 const Busboy = require("busboy");
 
 // Fetch

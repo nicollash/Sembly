@@ -86,7 +86,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       text,
       coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
       showOnMap: location.name !== "",
-      createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      createdAt: moment().format(),
       locationName,
       category,
       picture,
@@ -117,7 +117,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
   const text = request.body.text;
   const comment = {
     text,
-    createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+    createdAt: moment().format(),
     author: {
       id: user.uid,
       name: user.email.substring(0, user.email.indexOf("@")),
@@ -328,7 +328,7 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
                 parseFloat(geocode.json.results[0].geometry.location.lng)
               ),
               happeningOn: moment(`${worksheet[XLSX.utils.encode_cell({ c:2, r:R })].w} ${worksheet[XLSX.utils.encode_cell({ c:1, r:R })].w}`,
-              "M/DD/YY HH:mmA").format('MMMM Do YYYY, h:mm:ss a'),
+              "M/DD/YY HH:mmA").format(),
             };
 
             const doc = geofirestore.collection("Events").doc(`${event.id}`);

@@ -8,7 +8,7 @@ import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
 
-//const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+// const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
 const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
 
 // Temporary mock data
@@ -240,13 +240,12 @@ export function createNewPost(post) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    }).then(() => dispatch({ type: SENDING_POST, sendingPost: false }).catch(() => {
+    }).then(() => {
       dispatch({ type: SENDING_POST, sendingPost: false });
-    }),
-    );
-
-    // Refresh feed, for now
-    dispatch(refreshFeed());
+      dispatch(refreshFeed());
+    }).catch(() => {
+      dispatch({ type: SENDING_POST, sendingPost: false });
+    });
   };
 }
 
@@ -333,5 +332,12 @@ export const UPDATE_MAP = 'UPDATE_MAP';
 export function updateMap(lat, lon) {
   return function updateMapState(dispatch, getState) {
     dispatch({ type: UPDATE_MAP, lat, lon });
+  };
+}
+
+export const SET_PANEL_HEIGHT = 'SET_PANEL_HEIGHT';
+export function setPanelHeight(height) {
+  return function setPanelHeightState(dispatch, getState) {
+    dispatch({ type: SET_PANEL_HEIGHT, height });
   };
 }

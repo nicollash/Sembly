@@ -38,6 +38,8 @@ class PostView extends React.Component {
   componentDidMount() {
   }
 
+  setPanelPadding = h => 309.452 - 0.984017 * h; // linear
+
   render() {
     const screenHeight = Dimensions.get('window').height;
     const screenWidth = Dimensions.get('window').width;
@@ -83,6 +85,7 @@ class PostView extends React.Component {
             <View style={{ height: isIphoneX() ? 240 : 100 }} />
           </View>
         </View>
+        <View style={{ height: this.setPanelPadding(this.props.panelHeight) }} />
       </ScrollView>
     );
   }
@@ -90,6 +93,7 @@ class PostView extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
+  panelHeight: state.appState.panelHeight,
 });
 
 const mapDispatchToProps = dispatch => ({

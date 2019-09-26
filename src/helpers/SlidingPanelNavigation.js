@@ -18,7 +18,7 @@ function navigate(routeName, params) {
       params,
     }),
   );
-  _panel.show({ toValue: 600, velocity: 20 });
+  _panel.show({ toValue: 400, velocity: 20 });
 }
 
 export default {

@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
 import {
   TouchableOpacity,
@@ -9,10 +8,10 @@ import {
   StyleSheet,
   Picker,
   Image,
-} from 'react-native';
+  Platform
+} from "react-native";
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});
 
 class SemblyDropdown extends React.Component {
   constructor(props) {
@@ -20,43 +19,55 @@ class SemblyDropdown extends React.Component {
 
     this.state = {
       open: false,
-      value: 'General',
+      value: "General"
     };
   }
 
-
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
   componentDidMount() {
+    if (Platform.OS === "android") {
+      this.setState({ ...this.state, open: true });
+    }
   }
 
-  updateValue = (value) => {
+  updateValue = value => {
     this.setState({ value });
     this.props.onChange(value);
-  }
+  };
 
   render() {
-    const items = this.props.values.map(val => <Picker.Item label={val} value={val} />);
+    const items = this.props.values.map(val => (
+      <Picker.Item label={val} value={val} />
+    ));
     return (
-      <TouchableOpacity onPress={() => this.setState({ open: !this.state.open })}>
-        <View style={{
-          justifyContent: 'space-between',
-          marginTop: 6,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-        >
-          <Text style={{
-            color: '#26315F',
-            fontSize: 18,
-            marginLeft: '4%',
-          }}
+      <TouchableOpacity
+        onPress={() => this.setState({ open: !this.state.open })}
+      >
+        {Platform.OS === "ios" && (
+          <View
+            style={{
+              justifyContent: "space-between",
+              marginTop: 6,
+              flexDirection: "row",
+              alignItems: "center"
+            }}
           >
-            {this.state.value}
-          </Text>
-          <Image style={{ alignSelf: 'center', marginRight: '4%' }} source={require('../../assets/images/DropdownArrow.png')} />
-        </View>
+            <Text
+              style={{
+                color: "#26315F",
+                fontSize: 18,
+                marginLeft: "4%"
+              }}
+            >
+              {this.state.value}
+            </Text>
+            <Image
+              style={{ alignSelf: "center", marginRight: "4%" }}
+              source={require("../../assets/images/DropdownArrow.png")}
+            />
+          </View>
+        )}
         {this.state.open && (
           <Picker
             selectedValue={this.state.value}
@@ -72,22 +83,16 @@ class SemblyDropdown extends React.Component {
 }
 
 SemblyDropdown.defaultProps = {
-  label: 'Button',
+  label: "Button",
   onPress: null,
   onChange: null,
-  values: [],
+  values: []
 };
 
-SemblyDropdown.propTypes = {
+SemblyDropdown.propTypes = {};
 
-};
+const mapStateToProps = (state, ownProps) => {};
 
-
-const mapStateToProps = (state, ownProps) => {
-};
-
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default SemblyDropdown;

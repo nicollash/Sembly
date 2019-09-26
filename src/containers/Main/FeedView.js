@@ -197,7 +197,7 @@ class FeedView extends React.Component {
                 <FeedFilterBar />
               </View>
             </View>
-            <View style={{ marginLeft: 11, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
+            <View style={{paddingTop:4, marginLeft: 11, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
               <FlatList
                 data={_.reject(posts, { category: 'Promos' })}
                 renderItem={({ item }) => (

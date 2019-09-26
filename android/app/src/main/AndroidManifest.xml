@@ -17,13 +17,13 @@
       android:theme="@style/AppTheme">
               <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAAL2TQ96QBrpQPmO7c5o2oQ5sncVv3DLs" />
+            android:value="AIzaSyDiAmB4d59cRi6otFrs84NGIrEzvDQZWQ0" />
 
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-        android:windowSoftInputMode="adjustResize">
+        android:windowSoftInputMode="adjustPan">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

@@ -19,15 +19,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+    margin:1,
     backgroundColor: '#fff',
     shadowColor: '#E0E0E0',
     shadowRadius: 2,
     shadowOffset: { height: 1 },
     shadowOpacity: 1,
+    elevation: 2,
+    flexDirection:'column'
   },
   imageContainer: {
     height: 94.9,
-    width: 140,
+    width: 140
     // top: 1,
   },
   image: {
@@ -73,14 +76,13 @@ class FeedScrollPost extends React.Component {
         </View>
         <View style={{
           flexDirection: 'row',
-          top: 1,
           justifyContent: 'space-between',
           alignItems: 'center',
           width: '90%',
           height: 28,
         }}
         >
-          <Text style={styles.title}>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode='tail'>
             {this.seeMore(this.props.title)}
           </Text>
           <Text style={styles.distance}>{this.props.distance} mi</Text>

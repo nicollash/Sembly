@@ -146,7 +146,7 @@ class LoginView extends React.Component {
             }}
           />
         </View>
-        <KeyboardAwareScrollView style={styles.mainContainer}>
+        <KeyboardAwareScrollView style={styles.mainContainer} enableOnAndroid={true}>
           <View>
             <Text style={styles.discoverCity}>
               Discover your city

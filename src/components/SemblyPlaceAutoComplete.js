@@ -10,7 +10,10 @@ import {
 } from 'react-native';
 
 import _ from 'underscore';
-
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import Autocomplete from 'react-native-autocomplete-input';
@@ -31,20 +34,21 @@ const styles = StyleSheet.create({
   },
   listView: {
     position: 'absolute',
-    left: 2,
-    top: (Platform.OS === 'ios' ? 27 : 0),
+    left: -17,
+    top: (Platform.OS === 'ios' ? 26 : 0),
     elevation: 1,
     borderRadius: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    width: 300,
+    borderWidth: 1,
+    borderColor: '#EBECEE',
+    width: wp(90),
   },
   location: {
     color: '#26315F',
     fontSize: 17,
-    marginLeft: 4,
+    // marginLeft: 4,
+    borderWidth: 1,
+    borderColor: '#EBECEE',
+    paddingVertical: hp(1),
   },
   predefinedPlacesDescription: {
     color: '#1faadb',
@@ -99,6 +103,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.setState({ query: item.name, businesses: [] })}>
               <Text style={styles.location}>
+                {'   '}
                 {item.name}
               </Text>
             </TouchableOpacity>

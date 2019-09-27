@@ -60,35 +60,27 @@ class MyPostsView extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getUserPosts();
-  }
-
-  componentDidMount() {
-    this.props.setPreviousScreen('MyPostsView');
-  }
-
-  componentWillUnmount() {
-    this.props.setPreviousScreen(undefined);
   }
 
   render() {
-    console.log(this.props.posts);
     return (
       <ScrollView accessibilityIgnoresInvertColors>
-        {/* <Text>MyPosts</Text> */}
         <View style={styles.container}>
           <FlatList
-            data={this.props.posts}
+            data={this.props.posts || {}}
             renderItem={({ item }) => (
               <FeedUserPost
                 postID={item.id}
                 text={item.text}
-                moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
+                moveOnPress={() => this.props.navigation.navigate('Post', { post: item, canGoBack: false })}
                 comments={item.comments.length}
               />
             )}
             ItemSeparatorComponent={() => (
               <View style={{ height: 8 }} />
+            )}
+            ListFooterComponent={() => (
+              <View style={{ height: 6 }} />
             )}
           />
         </View>
@@ -110,8 +102,6 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserPosts: () => dispatch(getUserPosts()),
-  setPreviousScreen: screen => dispatch(setPreviousScreen(screen)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyPostsView);

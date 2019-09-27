@@ -16,8 +16,6 @@ import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 
 import {
-  FeedCategoryBar,
-  FeedHorizontalScroll,
   SemblyUserComment,
   SemblyHeaderButton,
 } from '../../components';
@@ -58,57 +56,55 @@ class PostView extends React.Component {
   componentDidMount() {
   }
 
-  setPanelPadding = h => 309.452 - 0.984017 * h; // linear
+  setPanelPadding = (h) => {
+    return 810.452 - 0.984017 * h;
+    // return 120; // 684
+  }
 
   render() {
-    const screenHeight = Dimensions.get('window').height;
-    const screenWidth = Dimensions.get('window').width;
-
     const { navigation } = this.props;
     const post = _.findWhere(this.props.posts, { id: navigation.getParam('post').id });
 
-    console.log(post);
-    
+    console.log(this.props.panelHeight);
     return (
       <ScrollView style={{ width: wp(100) }}>
-        <View style={{
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          borderRadius: 12,
-        }}
-        >
-          <View style={{ height: screenHeight, width: screenWidth }}>
-            <View>
-              <PostViewUserPost
-                post={post}
-                backPress={() => this.props.navigation.navigate('Feed')}
+        <View style={{ height: 215 }}>
+          <PostViewUserPost
+            canGoBack={navigation.getParam('canGoBack')}
+            post={post}
+            backPress={() => this.props.navigation.navigate('Feed')}
+          />
+          <PostViewCommentHeader
+            postID={post.id}
+            comments={post.comments.length}
+          />
+        </View>
+        <View>
+          <FlatList
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false}
+            data={post.comments}
+            renderItem={({ item }) => (
+              <SemblyUserComment
+                user={item}
               />
-              <PostViewCommentHeader
-                postID={post.id}
-                comments={post.comments.length}
-              />
-            </View>
-            <View style={{ marginTop: -60 }}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={post.comments}
-                renderItem={({ item }) => (
-                  <SemblyUserComment
-                    user={item}
-                  />
-                )}
-                ItemSeparatorComponent={() => (
-                  <View style={{ height: 8 }} />
-                )}
-              />
-            </View>
-          </View>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{ height: 8 }} />
+            )}
+          />
         </View>
         <View style={{ height: this.setPanelPadding(this.props.panelHeight) }} />
       </ScrollView>
     );
   }
 }
+
+PostView.defaultProps = {
+};
+
+PostView.propTypes = {
+};
 
 const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,

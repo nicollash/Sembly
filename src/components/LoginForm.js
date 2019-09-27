@@ -33,7 +33,7 @@ class LoginForm extends React.Component {
             returnKey="done"
             valueChanged={(str) => this.props.passwordChanged(str)}
             ref={input => this.props.nextInput = input}
-            secured
+            secured={true}
             multiline={false}
           />
         </View>

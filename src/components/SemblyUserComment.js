@@ -40,7 +40,6 @@ class SemblyUserComment extends React.Component {
     super(props);
 
     this.state = {
-      noOfComments: 3,
     };
   }
 
@@ -52,7 +51,6 @@ class SemblyUserComment extends React.Component {
 
   render() {
     const { user = {} } = this.props;
-    console.log(user);
     return (
       <View style={styles.commentContainer}>
         <View style={{

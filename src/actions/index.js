@@ -109,8 +109,8 @@ export function handleLogin(_email, _password) {
       .auth()
       .signInWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        const { email, displayName, photoURL, postsCount } = currentUser.user;
-        const user = { email, displayName, photoURL, postsCount };
+        const { email, photoURL, posts, likesCount, comments } = currentUser.user;
+        const user = { email, photoURL, posts, likesCount, comments };
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
@@ -124,21 +124,6 @@ export function handleSignup(_email, _password) {
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
-        // if (firebase.auth().currentUser) {
-        //   userId = firebase.auth().currentUser.uid;
-        //   if (userId) {
-        //     firebase.database().ref('users/' + userId).set({
-        //       password:password,
-        //       town:town,
-        //       addInterest:addInterest,
-        //       photoUrl:false,
-        //       emailVerified:false,
-        //       uid:userId,
-        //       status:true,
-        //       online:true
-        //     })
-        //   }
-        // }
         const { email } = currentUser.user;
         const user = { email };
         dispatch({ type: UPDATE_USER, user });
@@ -161,6 +146,15 @@ export function handleSignOut() {
           location: { lat: undefined, lon: undefined, name: undefined }
         };
         dispatch({ type: UPDATE_USER, user });
+        setTimeout(() => {
+          const reset = {
+            email: '',
+            displayName: undefined,
+            photoURL: undefined,
+            location: { lat: undefined, lon: undefined, name: undefined }
+          };
+          dispatch({ type: UPDATE_USER, user: reset });
+        }, 0);
       })
       .catch(e => console.log("Can't log out"));
   };
@@ -182,7 +176,8 @@ export function clearSignupErrors() {
 export function updateUserProfile({
   name = undefined,
   photo = undefined,
-  postsCount,
+  post = null,
+  comment = null,
 }) {
   return function updateUserProfileState(dispatch, getState) {
     firebase
@@ -193,9 +188,10 @@ export function updateUserProfile({
       })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
-        const userTest = getState().user;
-        const { displayName, photoURL } = currentUser;
-        const user = { displayName, photoURL, postsCount };
+        const { displayName, photoURL, posts, comments } = currentUser;
+        const user = { displayName, photoURL, posts, comments };
+        if (post) posts.push(post);
+        if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(e => console.log(e));
@@ -268,7 +264,7 @@ export function addComment({ postID = undefined, text = '' }) {
       const c = new Comment({
         text,
         createdAt: moment(),
-        author: new User({ name: getState().user.currentUser.displayName })
+        author: new User({ name: getState().user.displayName })
       });
 
       const post = _.findWhere(getState().feed.posts, { id: postID });
@@ -277,11 +273,10 @@ export function addComment({ postID = undefined, text = '' }) {
         [post.set('comments', _.union([c], post.comments))],
         _.without(getState().feed.posts, post),
       );
-
       dispatch({ type: UPDATE_POSTS, posts });
     });
-
     dispatch({ type: ADD_COMMENT, comment });
+    dispatch(refreshFeed());
   };
 }
 

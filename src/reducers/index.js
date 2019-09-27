@@ -25,6 +25,7 @@ import {
   UPDATE_USER_POSTS,
   UPDATE_MAP,
   SET_PANEL_HEIGHT,
+  ADD_COMMENT,
 } from '../actions';
 
 
@@ -116,6 +117,8 @@ const userDefault = {
   displayName: undefined,
   email: '',
   posts: [],
+  likesCount: 0,
+  comments: [],
 };
 
 const user = (state = userDefault, action) => {
@@ -129,7 +132,7 @@ const user = (state = userDefault, action) => {
   case SIGNUP_ERROR:
     return Object.assign({}, state, { signupError: action.message });
   case UPDATE_USER_POSTS:
-    return Object.assign({}, state, { posts: action.posts });
+    return Object.assign({}, state, { posts: action.posts || {} });
   default:
     return state;
   }

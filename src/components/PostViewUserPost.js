@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
   postText: {
     color: '#B9BDC5',
     fontSize: 11,
-    fontFamily: Theme.fonts.bold
+    fontFamily: Theme.fonts.bold,
   },
   separatorBar: {
     width: wp(92),
     borderWidth: 0.5,
     borderColor: '#D8D8D8',
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 });
 
 class PostViewUserPost extends React.Component {
@@ -52,7 +52,7 @@ class PostViewUserPost extends React.Component {
             marginTop: 5,
           }}
         >
-          {this.props.previousScreen !== 'MyPostsView' && (
+          {this.props.canGoBack && (
             <TouchableOpacity
               style={{ position: 'absolute', left: 0, top: '25%' }}
               onPress={this.props.backPress}
@@ -68,7 +68,7 @@ class PostViewUserPost extends React.Component {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginLeft: this.props.previousScreen !== 'MyPostsView' ? 20 : -10,
+              marginLeft: this.props.canGoBack ? 20 : -10,
             }}
           >
             <View>
@@ -199,13 +199,13 @@ PostViewUserPost.defaultProps = {
   location: 'no Location',
   comments: 0,
   likes: 0,
+  canGoBack: true,
 };
 
 PostViewUserPost.propTypes = {};
 
 const mapStateToProps = state => ({
   user: state.user,
-  previousScreen: state.appState.previousScreen,
 });
 
 const mapDispatchToProps = dispatch => ({

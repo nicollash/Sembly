@@ -84,7 +84,12 @@ class FeedView extends React.Component {
     this.props.refreshFeed();
   }
 
-  setPanelPadding = h => 809.452 - 0.984017 * h; // linear
+  setPanelPadding = (h) => {
+    // if (h >= 650) {
+    //   return 150;
+    // }
+    return 809.452 - 0.984017 * h;
+  }
 
   render() {
     const { city, categories, events, posts, navigation, location } = this.props;
@@ -199,6 +204,7 @@ class FeedView extends React.Component {
             </View>
             <View style={{ marginLeft: 11, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
               <FlatList
+                scrollEnabled={false}
                 data={_.reject(posts, { category: 'Promos' })}
                 renderItem={({ item }) => (
                   <FeedUserPost
@@ -217,6 +223,7 @@ class FeedView extends React.Component {
         {this.state.selectedCategoryTitle === 'Promos' && (
           <View style={styles.promos}>
             <FlatList
+              scrollEnabled={false}
               data={_.where(posts, { category: 'Promos' })}
               renderItem={({ item }) => (
                 <PromoPost

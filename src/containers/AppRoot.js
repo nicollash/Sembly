@@ -46,7 +46,9 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
         <SafeAreaView>
-          <Image style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
+          <Image
+            // onPress={() => this.props.setPreviousScreen(undefined)}
+            style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
         </SafeAreaView>
       ),
       tabBarOptions: {
@@ -65,7 +67,7 @@ const MainTabNavigation = createBottomTabNavigator({
     navigationOptions: ({ navigation }) => ({
       mode: 'modal',
       tabBarButtonComponent: () => (
-        <SafeAreaView style={{ paddingHorizontal: '160%' }}>
+        <SafeAreaView style={{ paddingHorizontal: '160%', marginHorizontal: -20 }}>
           <TouchableOpacity
             onPress={() => navigation.navigate('NewPost')}
             hitSlop={{ left: 50, right: 50 }}
@@ -157,26 +159,22 @@ class AppRoot extends React.PureComponent {
             );
           }
         }
+        if (this.props.user.email === undefined) {
+          this.navigator.dispatch(
+            NavigationActions.navigate({
+              routeName: 'Welcome',
+              params: {},
+            }),
+          );
+        }
       });
       this.geoLocate();
     });
   }
 
-  // componentDidUpdate() {
-  //   if (this.state.user) {} else {
-  //     this.navigator.dispatch(
-  //       NavigationActions.navigate({
-  //         routeName: 'Welcome',
-  //         params: {},
-  //       }),
-  //     );
-  //   }
-  // }
-
   componentWillUnmount() {
     console.log('approot will unmount');
     this.authSubscription();
-    this.props.setPreviousScreen(undefined);
   }
 
   geoLocate = async () => {
@@ -190,13 +188,6 @@ class AppRoot extends React.PureComponent {
       clearInterval(this.gpsInterval);
       //console.warn(error);
     }, { timeout: 10000 });
-  }
-
-  fetchProfilePicture = () => {
-    console.log('fetched profile pic');
-    // const user = firebase.auth().currentUser;
-    // return user.photoURL;
-    return 'https://images-na.ssl-images-amazon.com/images/I/715vwvP5ZEL._SY355_.png';
   }
 
   render() {

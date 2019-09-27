@@ -19,12 +19,32 @@ import {
   FeedCategoryBar,
   FeedHorizontalScroll,
   SemblyUserComment,
+  SemblyHeaderButton,
 } from '../../components';
 
 import PostViewUserPost from '../../components/PostViewUserPost';
 import PostViewCommentHeader from '../../components/PostViewCommentHeader';
+import theme from '../../styles/theme';
 
 class PostView extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Your Posts',
+      headerTitleStyle: {
+        color: '#26315F',
+        fontSize: wp(4.4),
+        fontFamily: theme.fonts.regular,
+      },
+      headerLeft: (
+        <SemblyHeaderButton
+          onPress={() => navigation.goBack()}
+          label="Your Posts"
+          red="true"
+        />
+      ),
+    };
+  };
+
   constructor(props) {
     super(props);
 
@@ -82,7 +102,6 @@ class PostView extends React.Component {
                 )}
               />
             </View>
-            <View style={{ height: isIphoneX() ? 240 : 100 }} />
           </View>
         </View>
         <View style={{ height: this.setPanelPadding(this.props.panelHeight) }} />

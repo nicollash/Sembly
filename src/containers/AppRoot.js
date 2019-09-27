@@ -24,8 +24,10 @@ import {
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import ProfileStack from './Profile/ProfileStack';
-import { clearLoginErrors, clearSignupErrors, updateLocation } from '../actions';
+import { clearLoginErrors, clearSignupErrors, updateLocation, setPreviousScreen } from '../actions';
 import firebase from 'react-native-firebase';
+
+const profileTag = require('../../assets/images/profileTag.png');
 
 
 const WelcomeStack = createStackNavigator({
@@ -78,15 +80,16 @@ const MainTabNavigation = createBottomTabNavigator({
     screen: ProfileStack,
     navigationOptions: () => ({
       tabBarLabel: 'Profile',
-      tabBarIcon: () => (
+      tabBarIcon: ({ tintColor }) => (
         <View>
           <Image
-            source={{ uri: this.fetchProfilePicture }}
+            source={profileTag}
             style={{
               marginTop: !isIphoneX() ? hp(-1) : 0,
-              height: 30,
-              width: 30,
+              width: 100,
+              resizeMode: 'contain',
               borderRadius: 25,
+              tintColor,
             }}
           />
         </View>
@@ -173,6 +176,7 @@ class AppRoot extends React.PureComponent {
   componentWillUnmount() {
     console.log('approot will unmount');
     this.authSubscription();
+    this.props.setPreviousScreen(undefined);
   }
 
   geoLocate = async () => {
@@ -221,6 +225,7 @@ const mapDispatchToProps = dispatch => ({
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
+  setPreviousScreen: a => dispatch(setPreviousScreen(a)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

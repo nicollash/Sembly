@@ -52,21 +52,23 @@ class PostViewUserPost extends React.Component {
             marginTop: 5,
           }}
         >
-          <TouchableOpacity
-            style={{ position: 'absolute', left: 0, top: '25%' }}
-            onPress={this.props.backPress}
-            hitSlop={{ bottom: 15, top: 15, left: 20, right: 15 }}
-          >
-            <Image
-              source={require('../../assets/images/PostViewGoBackButton.png')}
-            />
-          </TouchableOpacity>
+          {this.props.previousScreen !== 'MyPostsView' && (
+            <TouchableOpacity
+              style={{ position: 'absolute', left: 0, top: '25%' }}
+              onPress={this.props.backPress}
+              hitSlop={{ bottom: 15, top: 15, left: 20, right: 15 }}
+            >
+              <Image
+                source={require('../../assets/images/PostViewGoBackButton.png')}
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginLeft: 20,
+              marginLeft: this.props.previousScreen !== 'MyPostsView' ? 20 : -10,
             }}
           >
             <View>
@@ -83,6 +85,7 @@ class PostViewUserPost extends React.Component {
                 alignSelf: 'flex-end',
                 bottom: '4%',
                 marginLeft: 8,
+                top: -5,
               }}
             >
               {post.user.name}
@@ -202,6 +205,7 @@ PostViewUserPost.propTypes = {};
 
 const mapStateToProps = state => ({
   user: state.user,
+  previousScreen: state.appState.previousScreen,
 });
 
 const mapDispatchToProps = dispatch => ({

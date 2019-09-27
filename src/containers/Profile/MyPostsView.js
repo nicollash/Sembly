@@ -6,6 +6,7 @@ import {
   View,
   Text,
   FlatList,
+  ScrollView,
 } from 'react-native';
 
 import {
@@ -19,13 +20,17 @@ import FeedUserPost from '../../components/Feed/FeedUserPost';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import theme from '../../styles/theme';
-import { getUserPosts } from '../../actions';
+import { getUserPosts, setPreviousScreen } from '../../actions';
 
 const styles = {
   container: {
-    flex: 1,
-    width: wp(90),
-    alignSelf: 'center',
+    marginTop: 6,
+    marginLeft: 11,
+    shadowColor: '#e0e0e0',
+    shadowRadius: 3, 
+    shadowOpacity: 1, 
+    shadowOffset: { height: 0, width: 0 },
+    width: wp(100),
   },
 };
 
@@ -55,28 +60,39 @@ class MyPostsView extends React.Component {
   }
 
   componentWillMount() {
+    this.props.getUserPosts();
   }
 
   componentDidMount() {
-    this.props.getUserPosts();
+    this.props.setPreviousScreen('MyPostsView');
+  }
+
+  componentWillUnmount() {
+    this.props.setPreviousScreen(undefined);
   }
 
   render() {
     console.log(this.props.posts);
     return (
-      <View accessibilityIgnoresInvertColors style={styles.container}>
-        <Text>MyPosts</Text>
-        <FlatList
-          data={this.props.posts}
-          renderItem={({ item }) => (
-            <FeedUserPost
-              postID={item.id}
-              moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
-              comments={item.comments.length}
-            />
-          )}
-        />
-      </View>
+      <ScrollView accessibilityIgnoresInvertColors>
+        {/* <Text>MyPosts</Text> */}
+        <View style={styles.container}>
+          <FlatList
+            data={this.props.posts}
+            renderItem={({ item }) => (
+              <FeedUserPost
+                postID={item.id}
+                text={item.text}
+                moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
+                comments={item.comments.length}
+              />
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{ height: 8 }} />
+            )}
+          />
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -95,6 +111,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   getUserPosts: () => dispatch(getUserPosts()),
+  setPreviousScreen: screen => dispatch(setPreviousScreen(screen)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyPostsView);

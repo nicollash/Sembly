@@ -127,7 +127,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     },
   }
 
-  console.log(util.inspect(comment, {showHidden: false, depth: null}))
+  console.log(util.inspect(comment, { showHidden: false, depth: null }))
 
   admin.firestore().collection("Posts").doc(`${postID}`).collection('comments').add(comment).then(() => {
     console.log("added document");
@@ -257,11 +257,11 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     posts: _.sortBy(parsedPosts, (post) => {
       switch(type) {
         case 'Hot':
-          return -moment(a.createdAt).unix();
+          return -moment(post.createdAt).unix();
         case 'Best':
-          return -moment(a.createdAt).unix();
+          return -moment(post.createdAt).unix();
         case 'New':
-          return -moment(a.createdAt).unix();
+          return -moment(post.createdAt).unix();
       }
     }),
     events: events.docs.map(doc => {

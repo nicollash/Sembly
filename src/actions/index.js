@@ -110,7 +110,7 @@ export function handleLogin(_email, _password) {
       .signInWithEmailAndPassword(_email, _password)
       .then((currentUser) => {
         const { email, photoURL, posts, likesCount, comments } = currentUser.user;
-        const user = { email, photoURL, posts, likesCount, comments };
+        const user = { email, photoURL, likesCount };
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(error => dispatch({ type: LOGIN_ERROR, message: error.message }));
@@ -189,7 +189,7 @@ export function updateUserProfile({
       .then(() => {
         const currentUser = firebase.auth().currentUser;
         const { displayName, photoURL, posts, comments } = currentUser;
-        const user = { displayName, photoURL, posts, comments };
+        const user = { displayName, photoURL };
         if (post) posts.push(post);
         if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });

@@ -117,8 +117,8 @@ const userDefault = {
   displayName: undefined,
   email: '',
   posts: [],
-  likesCount: 0,
   comments: [],
+  likesCount: 0,
 };
 
 const user = (state = userDefault, action) => {
@@ -126,13 +126,13 @@ const user = (state = userDefault, action) => {
   case UPDATE_LOCATION:
     return Object.assign({}, state, { location: { lat: action.lat, lon: action.lon } });
   case UPDATE_USER:
-    return Object.assign({}, state, action.user);
+    return Object.assign({}, state, { ...action.user });
   case LOGIN_ERROR:
     return Object.assign({}, state, { loginError: action.message });
   case SIGNUP_ERROR:
     return Object.assign({}, state, { signupError: action.message });
   case UPDATE_USER_POSTS:
-    return Object.assign({}, state, { posts: action.posts || {} });
+    return Object.assign({}, state, { posts: (action.posts || []) });
   default:
     return state;
   }

@@ -163,11 +163,26 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   }
 });
 
-exports.getPosts = functions.https.onRequest(async (request, response) => {
+exports.getUserPosts = functions.https.onRequest(async (request, response) => {
   const postQuery = await geofirestore.collection(`Posts`).where('user.id', `==`, request.query.userID).get();
   
   const posts = await Promise.all(postQuery.docs.map(async doc => {
     const comments = await geofirestore.collection("Posts").doc(doc.id).collection('comments').get();
+    return { 
+      id: doc.id, ...doc.data(),
+      likesCount: (doc.data().likes || []).length,
+      liked: (doc.data().likes || []).includes(request.query.userID),
+      comments: comments.docs.map(comment => comment.data()),
+    };
+  }));
+
+  return response.status(200).send(posts);
+});
+
+exports.getBusinessPosts = functions.https.onRequest(async (request, response) => {
+  const postQuery = await geofirestore.collection("Businesses").doc(`fb-${request.query.businessID}`).collection('posts')
+  const posts = await Promise.all(postQuery.docs.map(async doc => {
+    const comments = await geofirestore.collection("Businesses").doc(doc.id).collection('comments').get();
     return { 
       id: doc.id, ...doc.data(),
       likesCount: (doc.data().likes || []).length,

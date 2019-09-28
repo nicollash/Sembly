@@ -204,12 +204,12 @@ export function getUserPosts() {
     const uid = firebase.auth().currentUser.uid;
     const token = await firebase.auth().currentUser.getIdToken();
     
-    fetch(`${API_URL}/getPosts?type=user&userID=${uid}`, {
+    fetch(`${API_URL}/getUserPosts?userID=${uid}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => response.json())

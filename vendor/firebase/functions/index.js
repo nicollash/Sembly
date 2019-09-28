@@ -68,20 +68,22 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 
   }
 
-  const { text, location, category } = request.body;
+  const { text, location, category, business } = request.body;
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [parseFloat(location.lat), parseFloat(location.lon)]
     })
     .asPromise();
 
+  // Geocode location, if needs be
   locationName =
     location.name === ""
       ? geocode.json.results[0].address_components[1].long_name
       : location.name;
 
-  geofirestore
-    .collection("Posts")
+  const collection = business ? geofirestore.collection("Businesses").doc(`fb-${business.id}`).collection('posts') : geofirestore.collection("Posts");
+  
+  collection
     .add({
       text,
       coordinates: new admin.firestore.GeoPoint(location.lat, location.lon),
@@ -162,9 +164,9 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getPosts = functions.https.onRequest(async (request, response) => {
-  const userPosts = await geofirestore.collection(`Posts`).where('user.id', `==`, request.query.userID).get();
+  const postQuery = await geofirestore.collection(`Posts`).where('user.id', `==`, request.query.userID).get();
   
-  const posts = await Promise.all(userPosts.docs.map(async doc => {
+  const posts = await Promise.all(postQuery.docs.map(async doc => {
     const comments = await geofirestore.collection("Posts").doc(doc.id).collection('comments').get();
     return { 
       id: doc.id, ...doc.data(),

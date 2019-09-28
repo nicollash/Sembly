@@ -203,13 +203,13 @@ export function getUserPosts() {
   return async function getUserPostsState(dispatch, getState) {
     const uid = firebase.auth().currentUser.uid;
     const token = await firebase.auth().currentUser.getIdToken();
-    console.log(`${API_URL}/getPosts?userID=${uid}`);
-    fetch(`${API_URL}/getPosts?userID=${uid}`, {
+    
+    fetch(`${API_URL}/getPosts?type=user&userID=${uid}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => response.json())
@@ -264,7 +264,7 @@ export function addComment({ postID = undefined, text = '' }) {
       const c = new Comment({
         text,
         createdAt: moment(),
-        author: new User({ name: getState().user.displayName })
+        author: new User({ name: getState().user.displayName }),
       });
 
       const post = _.findWhere(getState().feed.posts, { id: postID });

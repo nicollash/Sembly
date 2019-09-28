@@ -224,14 +224,13 @@ class NewPostView extends React.Component {
                 <SemblyPlaceAutoComplete
                   latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
-                  onResult={(location) => {
+                  onResult={(business) => {
                     this.setState({
                       post: {
                         ...this.state.post,
-                        location: {
-                          name: location.name,
-                          lat: location.lat,
-                          lon: location.lon,
+                        business: {
+                          id: business.id,
+                          name: business.name,
                         },
                       },
                     });

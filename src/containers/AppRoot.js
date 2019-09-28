@@ -3,12 +3,15 @@ import React from 'react';
 import { StatusBar, Image, View, Alert } from 'react-native';
 import _ from 'underscore';
 
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
+
 import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator,
   createAppContainer, SafeAreaView, NavigationActions, withNavigationFocus,
 } from 'react-navigation';
 
 import Geolocation from 'react-native-geolocation-service';
+import firebase from 'react-native-firebase';
 
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -25,10 +28,8 @@ import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import ProfileStack from './Profile/ProfileStack';
 import { clearLoginErrors, clearSignupErrors, updateLocation, setPreviousScreen } from '../actions';
-import firebase from 'react-native-firebase';
 
 const profileTag = require('../../assets/images/profileTag.png');
-
 
 const WelcomeStack = createStackNavigator({
   Main: LoginView,

@@ -14,7 +14,7 @@ import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
 
-import { handleSignOut, setProfilePicture, updateUserProfile } from '../../actions';
+import { handleSignOut, setProfilePicture, updateUserProfile, getUserPosts } from '../../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../../styles/theme';
@@ -73,6 +73,7 @@ class ProfileView extends React.Component {
   }
 
   componentWillMount() {
+    this.props.getUserPosts();
   }
 
   componentDidMount() {
@@ -85,7 +86,7 @@ class ProfileView extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.updateUserProfile(this.state.profile.pictureURI);
+    // this.props.updateUserProfile(this.state.profile.pictureURI || undefined);
   }
 
   chooseImage = () => {
@@ -122,6 +123,7 @@ class ProfileView extends React.Component {
   };
 
   render() {
+    console.log(this.props.user);
     if (!this.props.user) {
       return;
     }
@@ -157,7 +159,7 @@ class ProfileView extends React.Component {
               marginTop: hp(3),
             }}
           >
-            {this.props.displayName || this.props.email.split('@')[0] || undefined}
+            {this.props.displayName || undefined}
           </Text>
         </View>
         <View style={{ marginTop: hp(4) }}>
@@ -165,8 +167,8 @@ class ProfileView extends React.Component {
         </View>
         <View style={{ alignItems: 'center' }}>
           <ProfileStatsBar
-            posts={this.props.postsCount}
-            // comments={this.props.user.comments}
+            posts={this.props.posts.length || 0}
+            comments={this.props.comments.length || 0}
             // likes={this.props.user.likes}
           />
         </View>
@@ -211,12 +213,14 @@ const mapStateToProps = (state, ownProps) => ({
   photoURL: state.user.photoURL,
   displayName: state.user.displayName,
   email: state.user.email,
-  postsCount: state.user.postsCount,
+  posts: state.user.posts,
+  comments: state.user.comments,
 });
 
 const mapDispatchToProps = dispatch => ({
   handleSignOut: () => dispatch(handleSignOut()),
   updateUserProfile: photo => dispatch(updateUserProfile({ photo })),
+  getUserPosts: () => dispatch(getUserPosts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

@@ -26,7 +26,7 @@ import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput } from '../../components';
-import { createNewPost, updateUserProfile } from '../../actions';
+import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
@@ -168,12 +168,8 @@ class NewPostView extends React.Component {
 
   submit = () => {
     this.props.createNewPost(this.state.post);
-    this.props.updateUserProfile(this.props.posts.length += 1);
+    this.props.updateUserProfile(this.state.post);
     this.setState({ submitted: true });
-    // () => {
-
-    //  setTimeout(() => this.props.navigation.goBack(), 3000);
-    // });
   };
 
   render() {
@@ -223,19 +219,18 @@ class NewPostView extends React.Component {
               marginLeft={4}
             />
             <View style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}>
-              <Image source={pin} style={{ height: 15, marginLeft: -15, marginTop: 2 }} />
+              <Image source={pin} style={{ height: 15, marginLeft: -15,alignSelf:'center', marginTop: 2 }} />
               <View style={{ marginLeft: 2 }}>
                 <SemblyPlaceAutoComplete
                   latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
-                  onResult={(location) => {
+                  onResult={(business) => {
                     this.setState({
                       post: {
                         ...this.state.post,
-                        location: {
-                          name: location.name,
-                          lat: location.lat,
-                          lon: location.lon,
+                        business: {
+                          id: business.id,
+                          name: business.name,
                         },
                       },
                     });
@@ -341,6 +336,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
   updateUserProfile: posts => dispatch(updateUserProfile({ postsCount: posts })),
+  refreshFeed: a => dispatch(refreshFeed({ category: a })),
 });
 
 export default connect(

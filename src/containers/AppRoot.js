@@ -3,12 +3,15 @@ import React from 'react';
 import { StatusBar, Image, View, Alert } from 'react-native';
 import _ from 'underscore';
 
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
+
 import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator,
   createAppContainer, SafeAreaView, NavigationActions, withNavigationFocus,
 } from 'react-navigation';
 
 import Geolocation from 'react-native-geolocation-service';
+import firebase from 'react-native-firebase';
 
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -24,9 +27,9 @@ import {
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import ProfileStack from './Profile/ProfileStack';
-import { clearLoginErrors, clearSignupErrors, updateLocation } from '../actions';
-import firebase from 'react-native-firebase';
+import { clearLoginErrors, clearSignupErrors, updateLocation, setPreviousScreen } from '../actions';
 
+const profileTag = require('../../assets/images/profileTag.png');
 
 const WelcomeStack = createStackNavigator({
   Main: LoginView,
@@ -44,7 +47,9 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
         <SafeAreaView>
-          <Image style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
+          <Image
+            // onPress={() => this.props.setPreviousScreen(undefined)}
+            style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
         </SafeAreaView>
       ),
       tabBarOptions: {
@@ -63,7 +68,7 @@ const MainTabNavigation = createBottomTabNavigator({
     navigationOptions: ({ navigation }) => ({
       mode: 'modal',
       tabBarButtonComponent: () => (
-        <SafeAreaView style={{ paddingHorizontal: '160%' }}>
+        <SafeAreaView style={{ paddingHorizontal: '160%', marginHorizontal: -20 }}>
           <TouchableOpacity
             onPress={() => navigation.navigate('NewPost')}
             hitSlop={{ left: 50, right: 50 }}
@@ -78,15 +83,16 @@ const MainTabNavigation = createBottomTabNavigator({
     screen: ProfileStack,
     navigationOptions: () => ({
       tabBarLabel: 'Profile',
-      tabBarIcon: () => (
+      tabBarIcon: ({ tintColor }) => (
         <View>
           <Image
-            source={{ uri: this.fetchProfilePicture }}
+            source={profileTag}
             style={{
               marginTop: !isIphoneX() ? hp(-1) : 0,
-              height: 30,
-              width: 30,
+              width: 100,
+              resizeMode: 'contain',
               borderRadius: 25,
+              tintColor,
             }}
           />
         </View>
@@ -154,21 +160,18 @@ class AppRoot extends React.PureComponent {
             );
           }
         }
+        if (this.props.user.email === undefined) {
+          this.navigator.dispatch(
+            NavigationActions.navigate({
+              routeName: 'Welcome',
+              params: {},
+            }),
+          );
+        }
       });
       this.geoLocate();
     });
   }
-
-  // componentDidUpdate() {
-  //   if (this.state.user) {} else {
-  //     this.navigator.dispatch(
-  //       NavigationActions.navigate({
-  //         routeName: 'Welcome',
-  //         params: {},
-  //       }),
-  //     );
-  //   }
-  // }
 
   componentWillUnmount() {
     console.log('approot will unmount');
@@ -186,13 +189,6 @@ class AppRoot extends React.PureComponent {
       clearInterval(this.gpsInterval);
       //console.warn(error);
     }, { timeout: 10000 });
-  }
-
-  fetchProfilePicture = () => {
-    console.log('fetched profile pic');
-    // const user = firebase.auth().currentUser;
-    // return user.photoURL;
-    return 'https://images-na.ssl-images-amazon.com/images/I/715vwvP5ZEL._SY355_.png';
   }
 
   render() {
@@ -221,6 +217,7 @@ const mapDispatchToProps = dispatch => ({
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
+  setPreviousScreen: a => dispatch(setPreviousScreen(a)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

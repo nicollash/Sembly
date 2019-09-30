@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -13,7 +12,6 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* semblyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* semblyTests.m */; };
-		06FC9E4D85D2D943DD615505 /* libPods-semblyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE6DD7FC1888BDBEC882981 /* libPods-semblyTests.a */; };
 		0D856855C7164677AFD2F10A /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D16DF1468854D259E4CEE45 /* Lato-Italic.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -31,45 +29,28 @@
 		22563A9AFAF443B6BA4147FE /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF0A1235F3774563AC013CBC /* Lato-LightItalic.ttf */; };
 		281320C3C9DF42F49526AEBD /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C93E4EB66954655B2BCB53C /* Lato-BoldItalic.ttf */; };
 		2C32D45664DE4571BD3110D4 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F7E7F44FF514F0F9F228E35 /* Lato-Black.ttf */; };
-		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */; };
-		2D02E4C41E0B4AEC006451C7 /* libRCTLinking-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E881DF850E9000B6D8A /* libRCTLinking-tvOS.a */; };
-		2D02E4C51E0B4AEC006451C7 /* libRCTNetwork-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E8C1DF850E9000B6D8A /* libRCTNetwork-tvOS.a */; };
-		2D02E4C61E0B4AEC006451C7 /* libRCTSettings-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E901DF850E9000B6D8A /* libRCTSettings-tvOS.a */; };
-		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
-		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
-		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
-		2DAF4E38FA7381EE7F92B5AD /* libPods-sembly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A2BA0AFA8B8E78DB5A2C9D /* libPods-sembly.a */; };
-		2DCD954D1E0B4F2C00145EB5 /* semblyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* semblyTests.m */; };
-		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		49D4B82908734FBA9FB3BEE5 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EE86AD6D6F844E2AE2E4E93 /* Lato-Bold.ttf */; };
 		4D6E328722B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
 		4D6E328822B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
-		4D6E328922B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
-		4D6E328A22B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */; };
 		4D6E328B22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
 		4D6E328C22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
-		4D6E328D22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
-		4D6E328E22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */; };
 		4D6E328F22B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
 		4D6E329022B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
-		4D6E329122B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
-		4D6E329222B2ABDA00C5CC63 /* splashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6E328622B2ABDA00C5CC63 /* splashScreen.png */; };
+		4DA89A2E233EF54200546E0D /* libFBSDKCoreKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA89A2D233EF54200546E0D /* libFBSDKCoreKit.a */; };
+		4DA89A30233EF54700546E0D /* libFBSDKLoginKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA89A2F233EF54700546E0D /* libFBSDKLoginKit.a */; };
+		4DA89A32233EF54C00546E0D /* libFBSDKShareKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA89A31233EF54C00546E0D /* libFBSDKShareKit.a */; };
 		501FEC6B22AA09970080706C /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501FEC6822AA097F0080706C /* libRNGestureHandler.a */; };
 		5B41360F8C3E480E8E7DD9AB /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE8440A2D9B74664A490F1C3 /* Lato-HairlineItalic.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		91F73F980BCE481EBF3AB3E3 /* libReactNativeConfig-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7B8C311C6441FA8AD82028 /* libReactNativeConfig-tvOS.a */; };
+		89A620F45AF619DD2EBD451C /* libPods-semblyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3603DB3C68C8B78A7C63D2B4 /* libPods-semblyTests.a */; };
 		995051A0B9764259B4500C7D /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1262A7ABA8A4A69A5732205 /* Lato-Hairline.ttf */; };
+		A29367A542B02E13C364E6AB /* libPods-sembly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C11D6B2FFA09611C28634433 /* libPods-sembly.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B350781923145B6B003FF504 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B350781823145B6B003FF504 /* GoogleService-Info.plist */; };
 		B3854CEA230951620046E986 /* libFirebaseDatabase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3854CE9230951620046E986 /* libFirebaseDatabase.a */; };
 		BA2A1949E259489A82FE70C8 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C688AFF92AA04675B1C60FB0 /* Lato-BlackItalic.ttf */; };
 		EA1C7FEFB9C7462E86DD33F7 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BFAC12C666348D4AE596797 /* Lato-Regular.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
-		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,13 +116,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
-		};
-		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "sembly-tvOS";
 		};
 		2D16E6711FA4F8DC00B85C8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -396,7 +370,6 @@
 		00E356F21AD99517003FC87E /* semblyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = semblyTests.m; sourceTree = "<group>"; };
 		04CD7A21CF48237976C9D94E /* Pods-semblyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-semblyTests.debug.xcconfig"; path = "Target Support Files/Pods-semblyTests/Pods-semblyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		087608A2B8F54F189966615F /* Nunito-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-BoldItalic.ttf"; path = "../assets/fonts/Nunito-BoldItalic.ttf"; sourceTree = "<group>"; };
-		0FE6DD7FC1888BDBEC882981 /* libPods-semblyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-semblyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12CC0148A14A4DFDBC6CAB2C /* Lato-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Light.ttf"; path = "../assets/fonts/Lato-Light.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -410,15 +383,17 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1F7E7F44FF514F0F9F228E35 /* Lato-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Black.ttf"; path = "../assets/fonts/Lato-Black.ttf"; sourceTree = "<group>"; };
 		2A51C9BF09B746348854EABC /* Nunito-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraLight.ttf"; path = "../assets/fonts/Nunito-ExtraLight.ttf"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* sembly-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sembly-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* sembly-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "sembly-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D7C8BE5F80A4F74BB813F91 /* Nunito-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Italic.ttf"; path = "../assets/fonts/Nunito-Italic.ttf"; sourceTree = "<group>"; };
+		3603DB3C68C8B78A7C63D2B4 /* libPods-semblyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-semblyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E390BF420D148C086DDB74A /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		3E96F7B453BE3BC1C1743812 /* Pods-sembly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sembly.release.xcconfig"; path = "Target Support Files/Pods-sembly/Pods-sembly.release.xcconfig"; sourceTree = "<group>"; };
 		4D6E328422B2ABD800C5CC63 /* splashScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splashScreen@2x.png"; sourceTree = "<group>"; };
 		4D6E328522B2ABD900C5CC63 /* splashScreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splashScreen@3x.png"; sourceTree = "<group>"; };
 		4D6E328622B2ABDA00C5CC63 /* splashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashScreen.png; sourceTree = "<group>"; };
+		4DA89A2D233EF54200546E0D /* libFBSDKCoreKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBSDKCoreKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DA89A2F233EF54700546E0D /* libFBSDKLoginKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBSDKLoginKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DA89A31233EF54C00546E0D /* libFBSDKShareKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBSDKShareKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		501FEC3B22AA097F0080706C /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		556029755F374C9A87A1F9E0 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		5BFAC12C666348D4AE596797 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
@@ -440,11 +415,11 @@
 		B3FE8E7D657440D98706498C /* Nunito-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraBoldItalic.ttf"; path = "../assets/fonts/Nunito-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		BB7B8C311C6441FA8AD82028 /* libReactNativeConfig-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libReactNativeConfig-tvOS.a"; sourceTree = "<group>"; };
 		BC16B567939EB9F75C52E2FD /* Pods-sembly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sembly.debug.xcconfig"; path = "Target Support Files/Pods-sembly/Pods-sembly.debug.xcconfig"; sourceTree = "<group>"; };
+		C11D6B2FFA09611C28634433 /* libPods-sembly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-sembly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C063A8F9574316AF5594DC /* Nunito-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-LightItalic.ttf"; path = "../assets/fonts/Nunito-LightItalic.ttf"; sourceTree = "<group>"; };
 		C688AFF92AA04675B1C60FB0 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BlackItalic.ttf"; path = "../assets/fonts/Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
 		CCE12A1AB03C4B5CAC7CCCFF /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-SemiBold.ttf"; path = "../assets/fonts/Nunito-SemiBold.ttf"; sourceTree = "<group>"; };
 		CE8440A2D9B74664A490F1C3 /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-HairlineItalic.ttf"; path = "../assets/fonts/Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
-		D1A2BA0AFA8B8E78DB5A2C9D /* libPods-sembly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-sembly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69DC1A11368406E8F1C7F88 /* libReactNativeConfig.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeConfig.a; sourceTree = "<group>"; };
 		DF0A1235F3774563AC013CBC /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-LightItalic.ttf"; path = "../assets/fonts/Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		E1262A7ABA8A4A69A5732205 /* Lato-Hairline.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Hairline.ttf"; path = "../assets/fonts/Lato-Hairline.ttf"; sourceTree = "<group>"; };
@@ -461,7 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				06FC9E4D85D2D943DD615505 /* libPods-semblyTests.a in Frameworks */,
+				89A620F45AF619DD2EBD451C /* libPods-semblyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +444,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DA89A32233EF54C00546E0D /* libFBSDKShareKit.a in Frameworks */,
+				4DA89A30233EF54700546E0D /* libFBSDKLoginKit.a in Frameworks */,
+				4DA89A2E233EF54200546E0D /* libFBSDKCoreKit.a in Frameworks */,
 				B3854CEA230951620046E986 /* libFirebaseDatabase.a in Frameworks */,
 				501FEC6B22AA09970080706C /* libRNGestureHandler.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
@@ -486,32 +464,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				1A8E3C631ADE4EE689DD6426 /* libReactNativeConfig.a in Frameworks */,
 				1893C124A83D47EC9D05B121 /* libRNFirebase.a in Frameworks */,
-				2DAF4E38FA7381EE7F92B5AD /* libPods-sembly.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E4781E0B4A5D006451C7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */,
-				2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */,
-				2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */,
-				2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */,
-				2D02E4C41E0B4AEC006451C7 /* libRCTLinking-tvOS.a in Frameworks */,
-				2D02E4C51E0B4AEC006451C7 /* libRCTNetwork-tvOS.a in Frameworks */,
-				2D02E4C61E0B4AEC006451C7 /* libRCTSettings-tvOS.a in Frameworks */,
-				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
-				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
-				91F73F980BCE481EBF3AB3E3 /* libReactNativeConfig-tvOS.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48D1E0B4A5D006451C7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */,
+				A29367A542B02E13C364E6AB /* libPods-sembly.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,12 +591,15 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DA89A31233EF54C00546E0D /* libFBSDKShareKit.a */,
+				4DA89A2F233EF54700546E0D /* libFBSDKLoginKit.a */,
+				4DA89A2D233EF54200546E0D /* libFBSDKCoreKit.a */,
 				B3854CE9230951620046E986 /* libFirebaseDatabase.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				D1A2BA0AFA8B8E78DB5A2C9D /* libPods-sembly.a */,
-				0FE6DD7FC1888BDBEC882981 /* libPods-semblyTests.a */,
+				C11D6B2FFA09611C28634433 /* libPods-sembly.a */,
+				3603DB3C68C8B78A7C63D2B4 /* libPods-semblyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -766,8 +722,6 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* sembly.app */,
 				00E356EE1AD99517003FC87E /* semblyTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* sembly-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* sembly-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -846,7 +800,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				BB2775C6536CA74F786F4B9D /* [CP] Copy Pods Resources */,
+				A7452B9494788B4E4C936E14 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -856,42 +810,6 @@
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* sembly.app */;
 			productType = "com.apple.product-type.application";
-		};
-		2D02E47A1E0B4A5D006451C7 /* sembly-tvOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "sembly-tvOS" */;
-			buildPhases = (
-				2D02E4771E0B4A5D006451C7 /* Sources */,
-				2D02E4781E0B4A5D006451C7 /* Frameworks */,
-				2D02E4791E0B4A5D006451C7 /* Resources */,
-				2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "sembly-tvOS";
-			productName = "sembly-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* sembly-tvOS.app */;
-			productType = "com.apple.product-type.application";
-		};
-		2D02E48F1E0B4A5D006451C7 /* sembly-tvOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "sembly-tvOSTests" */;
-			buildPhases = (
-				2D02E48C1E0B4A5D006451C7 /* Sources */,
-				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
-				2D02E48E1E0B4A5D006451C7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
-			);
-			name = "sembly-tvOSTests";
-			productName = "sembly-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* sembly-tvOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -913,15 +831,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					2D02E47A1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
-					2D02E48F1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
 				};
 			};
@@ -1002,8 +911,6 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* sembly */,
 				00E356ED1AD99517003FC87E /* semblyTests */,
-				2D02E47A1E0B4A5D006451C7 /* sembly-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* sembly-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1339,27 +1246,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2D02E4791E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4D6E328D22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-				4D6E329122B2ABDA00C5CC63 /* splashScreen.png in Resources */,
-				4D6E328922B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4D6E329222B2ABDA00C5CC63 /* splashScreen.png in Resources */,
-				4D6E328E22B2ABDA00C5CC63 /* splashScreen@3x.png in Resources */,
-				4D6E328A22B2ABDA00C5CC63 /* splashScreen@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1377,31 +1263,19 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=$(which node)\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		BB2775C6536CA74F786F4B9D /* [CP] Copy Pods Resources */ = {
+		A7452B9494788B4E4C936E14 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-sembly/Pods-sembly-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1473,23 +1347,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2D02E4771E0B4A5D006451C7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
-				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48C1E0B4A5D006451C7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2DCD954D1E0B4F2C00145EB5 /* semblyTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1497,11 +1354,6 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* sembly */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
-		};
-		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* sembly-tvOS */;
-			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1535,12 +1387,7 @@
 				INFOPLIST_FILE = semblyTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1565,12 +1412,7 @@
 				INFOPLIST_FILE = semblyTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1631,152 +1473,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sembly.sembly;
 				PRODUCT_NAME = sembly;
 				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		2D02E4971E0B4A5E006451C7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_TESTABILITY = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-				);
-				INFOPLIST_FILE = "sembly-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.sembly-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
-			};
-			name = Debug;
-		};
-		2D02E4981E0B4A5E006451C7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-				);
-				INFOPLIST_FILE = "sembly-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.sembly-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
-			};
-			name = Release;
-		};
-		2D02E4991E0B4A5E006451C7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_TESTABILITY = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-				);
-				INFOPLIST_FILE = "sembly-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.sembly-tvOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sembly-tvOS.app/sembly-tvOS";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
-			};
-			name = Debug;
-		};
-		2D02E49A1E0B4A5E006451C7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-				);
-				INFOPLIST_FILE = "sembly-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.sembly-tvOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sembly-tvOS.app/sembly-tvOS";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
 		};
@@ -1898,24 +1594,6 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "sembly-tvOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2D02E4971E0B4A5E006451C7 /* Debug */,
-				2D02E4981E0B4A5E006451C7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "sembly-tvOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2D02E4991E0B4A5E006451C7 /* Debug */,
-				2D02E49A1E0B4A5E006451C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

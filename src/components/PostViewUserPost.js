@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
   postText: {
     color: '#B9BDC5',
     fontSize: 11,
-    fontFamily: Theme.fonts.bold
+    fontFamily: Theme.fonts.bold,
   },
   separatorBar: {
     width: wp(92),
     borderWidth: 0.5,
     borderColor: '#D8D8D8',
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 });
 
 class PostViewUserPost extends React.Component {
@@ -52,21 +52,23 @@ class PostViewUserPost extends React.Component {
             marginTop: 5,
           }}
         >
-          <TouchableOpacity
-            style={{ position: 'absolute', left: 0, top: '25%' }}
-            onPress={this.props.backPress}
-            hitSlop={{ bottom: 15, top: 15, left: 20, right: 15 }}
-          >
-            <Image
-              source={require('../../assets/images/PostViewGoBackButton.png')}
-            />
-          </TouchableOpacity>
+          {this.props.canGoBack && (
+            <TouchableOpacity
+              style={{ position: 'absolute', left: 0, top: '25%' }}
+              onPress={this.props.backPress}
+              hitSlop={{ bottom: 15, top: 15, left: 20, right: 15 }}
+            >
+              <Image
+                source={require('../../assets/images/PostViewGoBackButton.png')}
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              marginLeft: 20,
+              marginLeft: this.props.canGoBack ? 20 : -10,
             }}
           >
             <View>
@@ -83,6 +85,7 @@ class PostViewUserPost extends React.Component {
                 alignSelf: 'flex-end',
                 bottom: '4%',
                 marginLeft: 8,
+                top: -5,
               }}
             >
               {post.user.name}
@@ -196,6 +199,7 @@ PostViewUserPost.defaultProps = {
   location: 'no Location',
   comments: 0,
   likes: 0,
+  canGoBack: true,
 };
 
 PostViewUserPost.propTypes = {};

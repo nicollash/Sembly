@@ -47,14 +47,30 @@ target 'sembly' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  pod 'react-native-picker', :path => '../node_modules/@react-native-community/picker'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
+
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
   post_install do |installer|
+    fix_fb
     installer.pods_project.targets.each do |target|
       if target.name == "React"
         target.remove_from_project
       end
     end
+  end
+
+  # post_install do |installer|
+  #   fix_fb
+  # end
+
+  def fix_fb
+      node_modules_path = '../node_modules'
+      patched_text = File.read("./RCTFBSDKLoginButtonManager.m.patch")
+
+      File.open("#{node_modules_path}/react-native-fbsdk/ios/RCTFBSDK/login/RCTFBSDKLoginButtonManager.m", "w") {|file| file.puts patched_text}
   end
   
   target 'semblyTests' do

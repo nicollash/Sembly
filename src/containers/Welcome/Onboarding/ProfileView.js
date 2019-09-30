@@ -230,7 +230,7 @@ class ProfileView extends React.Component {
                 <SemblyButton
                   width={isIphoneX() ? wp(76) : wp(69)}
                   onPress={() => {
-                    this.props.updateUserProfile(this.state.profile.displayName, this.state.profile.pictureURI);
+                    this.props.updateUserProfile(this.state.profile.displayName || this.props.user.email.split('@')[0], this.state.profile.pictureURI);
                     this.handleSpinner();
                     setTimeout(() => {
                       this.props.navigation.navigate('Onboarding');

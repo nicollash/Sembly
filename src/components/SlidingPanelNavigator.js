@@ -29,6 +29,12 @@ const navigator = createStackNavigator({
 const StackNavigator = createAppContainer(navigator);
 
 class SlidingPanelNavigator extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   render() {
     return (
       <StackNavigator
@@ -44,7 +50,6 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SlidingPanelNavigator);

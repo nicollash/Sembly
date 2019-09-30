@@ -40,7 +40,6 @@ class SemblyUserComment extends React.Component {
     super(props);
 
     this.state = {
-      noOfComments: 3,
     };
   }
 
@@ -80,7 +79,7 @@ class SemblyUserComment extends React.Component {
             </Text>
           </TouchableOpacity>
           <Text style={{ top: '3%', right: '40%', color: '#B9BDC5', fontSize: 11 }}>
-            {user.createdAt}
+            {user.createdAt.fromNow()}
           </Text>
         </View>
         <View style={styles.commentContent}>

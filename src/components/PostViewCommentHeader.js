@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { addComment } from '../actions';
+import { addComment, refreshFeed, updateUserProfile } from '../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../styles/theme';
@@ -66,7 +66,9 @@ class PostViewCommentHeader extends React.Component {
             onSubmitEditing={() => {
               const comment = this.state.comment;
               this.props.addComment(this.props.postID, comment);
+              this.props.updateUserProfile(comment);
               this.setState({comment: ''});
+              // setTimeout(() => this.props.refreshFeed(), 0);
             }}
             returnKeyType="send"
             returnKeyLabel="done"
@@ -91,6 +93,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   addComment: (postID, text) => dispatch(addComment({ postID, text })),
+  refreshFeed: a => dispatch(refreshFeed({ category: a })),
+  updateUserProfile: comment => dispatch(updateUserProfile({ comment })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostViewCommentHeader);

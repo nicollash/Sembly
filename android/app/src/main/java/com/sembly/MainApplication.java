@@ -3,6 +3,8 @@ package com.sembly;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 //import io.invertase.firebase.ReactNativeFirebaseAppPackage;
@@ -35,6 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FBSDKPackage(),
+            new RNFusedLocationPackage(),
             new RNFSPackage(),
             new ImageResizerPackage(),
             /*new ReactNativeFirebaseAppPackage(),

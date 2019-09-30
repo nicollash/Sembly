@@ -61,6 +61,8 @@ class LocationView extends React.Component {
     const screenHeight = Dimensions.get('window').height;
 
     console.log('location', location);
+
+    console.log(location.happeningOn);
     return (
       <View>
         <View style={{ height: (screenHeight) }}>
@@ -184,7 +186,7 @@ class LocationView extends React.Component {
                           marginLeft: wp(0.5),
                         }}
                         >
-                          {location.happeningOn.fromNow()}
+                          {location.happeningOn.format('MMMM Do YYYY, h:mm:ss a')}
                         </Text>
                       </View>
                     )}

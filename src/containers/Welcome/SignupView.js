@@ -17,9 +17,11 @@ import {
   Alert,
 } from 'react-native';
 import firebase from 'react-native-firebase';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
+
+import facebookLogin from '../../helpers/facebookLogin';
 
 import {
   SemblyButton,
@@ -138,7 +140,7 @@ class SignupView extends React.Component {
   }
 
   render() {
-    console.log(this.props.signupError);
+    // console.log(facebookLogin());
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -223,7 +225,10 @@ class SignupView extends React.Component {
               >
                 - or -
               </Text>
-              <TouchableOpacity style={{ marginTop: hp(1) }}>
+              <TouchableOpacity
+                style={{ marginTop: hp(1) }}
+                onPress={() => facebookLogin()}
+              >
                 <Image source={fbConnect} />
               </TouchableOpacity>
             </View>

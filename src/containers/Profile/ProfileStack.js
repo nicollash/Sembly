@@ -12,11 +12,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import RewardsView from './RewardsView';
 import ProfileView from './ProfileView';
 import MyPostsView from './MyPostsView';
+import PostView from '../Main/PostView';
 
 const styles = {
   container: {
     flex: 1,
-    width: wp(90),
+    width: wp(100),
     alignSelf: 'center',
   },
 };
@@ -25,6 +26,7 @@ const ProfileNavigator = createStackNavigator({
   Profile: ProfileView,
   MyPosts: MyPostsView,
   Rewards: RewardsView,
+  Post: PostView,
 },
 {
   headerMode: 'float',

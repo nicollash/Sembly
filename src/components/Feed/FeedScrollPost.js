@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
     elevation: 2,
     flexDirection:'column'
   },
-  imageContainer: {
-    height: 94.9,
-    width: 140
-    // top: 1,
-  },
+  // imageContainer: {
+  //   height: 94.9,
+  //   width: 140,
+  //   // top: 1,
+  // },
   image: {
-    height: '100%',
-    width: '100%',
+    height: 94.9,
+    width: 140,
     borderRadius: 10,
   },
   title: {
@@ -71,7 +71,7 @@ class FeedScrollPost extends React.Component {
         style={styles.container}
         onPress={this.props.onEventPress}
       >
-        <View style={styles.imageContainer}>
+        <View style={{ marginTop: 2 }}>
           <Image style={styles.image} source={{ uri: this.props.picture }} />
         </View>
         <View style={{
@@ -79,13 +79,13 @@ class FeedScrollPost extends React.Component {
           justifyContent: 'space-between',
           alignItems: 'center',
           width: '90%',
-          height: 28,
+          height: 28
         }}
         >
           <Text style={styles.title} numberOfLines={1} ellipsizeMode='tail'>
             {this.seeMore(this.props.title)}
           </Text>
-          <Text style={styles.distance}>{this.props.distance} mi</Text>
+          <Text ellipsizeMode='tail' style={styles.distance}>{this.props.distance} mi</Text>
         </View>
       </TouchableOpacity>
     );

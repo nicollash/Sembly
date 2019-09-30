@@ -9,7 +9,7 @@ import Business from '../domain/Business';
 import Category from '../domain/Category';
 
 // const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
+export const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -236,7 +236,10 @@ export function createNewPost(post) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    }).then(() => {
+    }).then((data) => {
+      // Data is business data to parse if a location was tagged,
+      // and post data if no location was tagged
+      console.log(data);
       dispatch({ type: SENDING_POST, sendingPost: false });
       dispatch(refreshFeed());
     }).catch(() => {

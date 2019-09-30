@@ -230,11 +230,11 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNFirebase (5.5.3):
+  - RNFirebase (5.5.6):
     - Firebase/Core
     - React
-    - RNFirebase/Crashlytics (= 5.5.3)
-  - RNFirebase/Crashlytics (5.5.3):
+    - RNFirebase/Crashlytics (= 5.5.6)
+  - RNFirebase/Crashlytics (5.5.6):
     - Crashlytics
     - Fabric
     - Firebase/Core
@@ -277,7 +277,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
     - BoringSSL-GRPC
     - Crashlytics
@@ -361,14 +361,14 @@ SPEC CHECKSUMS:
   Protobuf: 67fb42ba613def994e61854de2b3164f13790cc4
   React: a86b92f00edbe1873a63e4a212c29b7a7ad5224f
   react-native-fbsdk: 45e28bbab3e905cbc635c0bdd3444b372e933ae9
-  react-native-geolocation: a7b94614afbd5fd8350e0233a2025c8228fc8041
+  react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
-  react-native-image-resizer: 48eb06a18a6d0a632ffa162a51ca61a68fb5322f
+  react-native-image-resizer: ecae22b577b0425cd7803eb8145243038dd4b6bd
   react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
-  RNFirebase: 59efea4666efb0a268bc50d77f2498387e962915
+  RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNFS: a8fbe7060fa49157d819466404794ad9c58e58cf
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
 PODFILE CHECKSUM: 62ca6120c27a5311a35e4feb55a539ff3dc681c3
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.7.5

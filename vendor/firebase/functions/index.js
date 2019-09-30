@@ -102,7 +102,10 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
-      return response.status(200).send("Your post has been submitted");
+      return business ? geofirestore.collection("Businesses").doc(`${business.id}`).get() : docRef.get();
+    }).then(doc => {
+      console.log({...doc.data() });
+      return response.status(200).send({...doc.data() });
     })
     .catch(error => {
       console.log("Error adding document: ", error);
@@ -290,6 +293,31 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   };
   //console.log(util.inspect(feed, { showHidden: false, depth: null }));
   return response.status(200).send(feed);
+});
+
+exports.searchBusinesses = functions.https.onRequest(async (request, response) => {
+  const { lat, lon, query } = {
+    lat: parseFloat(request.query.lat),
+    lon: parseFloat(request.query.lon),
+    query: request.query.q,
+  };
+  
+  geofirestore
+  .collection("Businesses")
+  .where('name', '>=', query).where('name', '<=', query+ '\uf8ff')
+  .limit(10)
+  .near({
+    center: new firebase.firestore.GeoPoint(lat, lon),
+  })
+  .get().then(snapshot => {
+    return response.status(200).send(snapshot.docs.map((b) => {
+      console.log(b.data().id);
+      return {
+        id: b.data().id,
+        name: b.data().name,
+      };
+    }));
+  }).catch(err => console.log(err));
 });
 
 /*

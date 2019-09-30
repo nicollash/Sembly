@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   StyleSheet,
@@ -6,59 +6,60 @@ import {
   Platform,
   TouchableOpacity,
   Text,
-  ScrollView
-} from "react-native";
+} from 'react-native';
 
-import _ from "underscore";
+import _ from 'underscore';
+
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
-import Autocomplete from "react-native-autocomplete-input";
+import Autocomplete from 'react-native-autocomplete-input';
+
+import { API_URL } from '../actions';
 
 const styles = StyleSheet.create({
   container: {
     // zIndex: (Platform.OS === 'ios' ? 10 : 0),
-    overflow: "visible"
+    overflow: 'visible',
     // position: 'absolute',
     // flex: 0.2,
   },
   inputContainerStyle: {
-    borderWidth: 0
+    borderWidth: 0,
     // zIndex: 1,
   },
   textInputContainer: {
-    marginLeft: 5
+    marginLeft: 5,
   },
   listView: {
-    position: "absolute",
+    position: 'absolute',
     left: -17,
-    top: Platform.OS === "ios" ? 26 : 0,
+    top: Platform.OS === 'ios' ? 26 : 0,
     elevation: 1,
     borderRadius: 2,
     borderWidth: 1,
-    borderColor: "#EBECEE",
+    borderColor: '#EBECEE',
     width: wp(90)
   },
   location: {
-    color: "#26315F",
+    color: '#26315F',
     fontSize: 17,
     // marginLeft: 4,
     borderWidth: 1,
-    borderColor: "#EBECEE",
+    borderColor: '#EBECEE',
     paddingVertical: hp(1)
   },
   predefinedPlacesDescription: {
-    color: "#1faadb"
+    color: '#1faadb'
   }
 });
 
 class SemblyPlaceAutoComplete extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { businesses: [], query: "" };
+    this.state = { businesses: [], query: '' };
     this.debounceQuery = _.debounce(this.launchQuery, 800);
   }
 
@@ -67,17 +68,17 @@ class SemblyPlaceAutoComplete extends React.Component {
   componentDidMount() {}
 
   launchQuery = () => {
-    if (this.state.query === "") return;
+    if (this.state.query === '') return;
 
     //console.log(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`);
     console.log(this.state.query);
     
     fetch(
-      `https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=20000&fields=id,name,location&q=${this.state.query}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`
+      `${API_URL}/searchBusinesses?lat=${this.props.latitude}&lon=${this.props.longitude}&q=${this.state.query}`
     )
       .then(results => results.json())
       .then((json) => {
-        this.setState({ businesses: json.data });
+        this.setState({ businesses: json });
       });
   };
 
@@ -100,7 +101,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           }
           placeholder="Add location"
           placeholderTextColor="#C7CAD1"
-          style={{ fontSize: 17, color: "#26315F" }}
+          style={{ fontSize: 17, color: '#26315F' }}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
@@ -109,7 +110,7 @@ class SemblyPlaceAutoComplete extends React.Component {
               }}
             >
               <Text style={styles.location}>
-                {"   "}
+                {'   '}
                 {item.name}
               </Text>
             </TouchableOpacity>

@@ -176,7 +176,7 @@ class NewPostView extends React.Component {
     const { sendingPost } = this.props;
 
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='always'>
         <View accessibilityIgnoresInvertColors style={styles.container}>
           {this.state.submitted && (
             <Modal visible animationType="fade" transparent>

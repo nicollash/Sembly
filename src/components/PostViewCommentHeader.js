@@ -16,7 +16,6 @@ import theme from '../styles/theme';
 
 const styles = StyleSheet.create({
   roundInput: {
-    height: 32,
     width: '92%',
     borderWidth: 1,
     borderColor: '#B6B8C5',
@@ -44,7 +43,7 @@ class PostViewCommentHeader extends React.Component {
   render() {
     return (
       <View style={{ marginTop: 10 }}>
-        <View style={{ flexDirection: 'row', left: wp(7.5) }}>
+        <View style={{ flexDirection: 'row', left: wp(7.5),marginBottom:15 }}>
           <Image
             source={require('../../assets/images/PostViewCommentIcon.png')} 
             style={{ marginRight: '1.5%' }}
@@ -55,7 +54,7 @@ class PostViewCommentHeader extends React.Component {
             {this.props.comments > 1 ? 'comments' : 'comment'}
           </Text>
         </View>
-        <View style={{ height: '12.5%' }} />
+        
         <View style={styles.roundInput}>
           <TextInput
             style={{ left: '5%' }}

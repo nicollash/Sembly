@@ -109,7 +109,7 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         }
-        contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
+         contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
       >
         <View style={{ width: "100%", marginTop: 22 }}>
           <FeedHeader city={city} />

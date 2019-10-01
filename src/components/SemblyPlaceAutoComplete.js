@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
   listView: {
     position: "absolute",
     left: -17,
-    top: Platform.OS === "ios" ? 26 : 0,
-    elevation: 1,
+    top: Platform.OS === "ios" ? 26 : 60,
+    elevation:Platform.OS === "ios" ? 1 : 0,
     borderRadius: 2,
-    borderWidth: 1,
+    borderWidth: Platform.OS === "ios" ? 1 : 0,
     borderColor: "#EBECEE",
     width: wp(90)
   },

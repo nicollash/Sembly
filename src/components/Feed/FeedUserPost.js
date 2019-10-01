@@ -167,20 +167,20 @@ class FeedUserPost extends React.Component {
             marginLeft: '6%',
             marginTop: 10,
             paddingBottom: 10,
+            justifyContent:'space-between'
           }}
         >
           <TouchableOpacity onPress={this.openMaps}>
             <View
               style={{
-                flexDirection: 'row',
-                width: 150,
+                flexDirection: 'row'
               }}
             >
               <Image
                 source={require('../../../assets/images/PhotoPostLocationIcon.png')}
               />
-              <View style={{ width: 5 }} />
-              <Text style={[styles.postText, { marginTop: 1 }]}>
+              {/* <View style={{ width: 5 }} /> */}
+              <Text style={[styles.postText, { marginTop: 1,marginLeft:5 }]}>
                 {post.location.name}
               </Text>
             </View>
@@ -188,6 +188,7 @@ class FeedUserPost extends React.Component {
           <TouchableOpacity
             style={{
               flexDirection: 'row',
+              marginLeft:15
             }}
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
@@ -195,15 +196,15 @@ class FeedUserPost extends React.Component {
             <Image
               source={require('../../../assets/images/PhotoPostBubble.png')}
             />
-            <View style={{ width: '8%' }} />
-            <Text style={[styles.postText, { marginTop: 2 }]}>
+          
+            <Text style={[styles.postText, { marginTop: 2,marginLeft:5 }]}>
               {post.comments.length}
             </Text>
           </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
-              marginLeft: '18%',
+              marginLeft:15
             }}
           >
             <TouchableOpacity
@@ -214,8 +215,8 @@ class FeedUserPost extends React.Component {
                   style={post.liked ? {} : { tintColor: '#B9BDC5' }}
                   source={require('../../../assets/images/LikedPost.png')}
                 />
-                <View style={{ width: 7 }} />
-                <Text style={styles.postText}>
+                
+                <Text style={[styles.postText, { marginLeft:5 }]}>
                   {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}
                 </Text>
               </View>

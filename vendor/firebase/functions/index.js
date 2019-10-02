@@ -81,7 +81,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       ? geocode.json.results[0].address_components[1].long_name
       : location.name;
 
-  const collection = business ? geofirestore.collection("Businesses").doc(`fb-${business.id}`).collection('posts') : geofirestore.collection("Posts");
+  const collection = business ? geofirestore.collection("Businesses").doc(`${business.id}`).collection('posts') : geofirestore.collection("Posts");
   
   collection
     .add({
@@ -132,9 +132,11 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     },
   }
 
-  console.log(util.inspect(comment, { showHidden: false, depth: null }))
+  const docPath = request.body.businessID ? 
+  `Businesses/${businessID}/posts/${postID}/comments` :
+  `Posts/${postID}/comments`
 
-  admin.firestore().collection("Posts").doc(`${postID}`).collection('comments').add(comment).then(() => {
+  admin.firestore().collection(docPath).add(comment).then(() => {
     console.log("added document");
     return response.status(200).send("Your comment has been submitted");
   }
@@ -150,17 +152,20 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   const user = await getUser(request);
 
   const postID = request.body.postID;
+  const businessID = request.body.businessID;
+
+  const colPath = request.body.businessID ? 
+  `Businesses/${businessID}/posts` :
+  `Posts`
   
-  const post = await admin.firestore().collection(`Posts`).where(admin.firestore.FieldPath.documentId(), `==`, postID);
-  const liked = await post.where(`d.likes`, "array-contains", user.uid).get()
-  
+  const liked = await admin.firestore().collection(colPath).where(admin.firestore.FieldPath.documentId(), `==`, postID).where(`d.likes`, "array-contains", user.uid).get()
   
   if (liked.docs.length) {
-    admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayRemove(user.uid) }).then(() => {
+    admin.firestore().collection(colPath).doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayRemove(user.uid) }).then(() => {
       return response.status(200).send("");
     }).catch(err => console.log(err));
   }else{
-    admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayUnion(user.uid) }).then(() => {
+    admin.firestore().collection(colPath).doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayUnion(user.uid) }).then(() => {
       return response.status(200).send("");
     }).catch(err => console.log(err));
   }
@@ -191,6 +196,7 @@ exports.getBusinessPosts = functions.https.onRequest(async (request, response) =
       likesCount: (doc.data().likes || []).length,
       liked: (doc.data().likes || []).includes(request.query.userID),
       comments: comments.docs.map(comment => comment.data()),
+      businessID: request.query.businessID,
     };
   }));
 

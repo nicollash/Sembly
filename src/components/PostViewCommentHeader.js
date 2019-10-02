@@ -65,7 +65,7 @@ class PostViewCommentHeader extends React.Component {
             onChangeText={comment => this.setState({ comment })}
             onSubmitEditing={() => {
               const comment = this.state.comment;
-              this.props.addComment(this.props.postID, comment);
+              this.props.addComment({ post: this.props.post, text: comment });
               this.props.updateUserProfile(comment);
               this.setState({comment: ''});
               // setTimeout(() => this.props.refreshFeed(), 0);
@@ -92,7 +92,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addComment: (postID, text) => dispatch(addComment({ postID, text })),
+  addComment: ({post, text}) => dispatch(addComment({ post, text })),
   refreshFeed: a => dispatch(refreshFeed({ category: a })),
   updateUserProfile: comment => dispatch(updateUserProfile({ comment })),
 });

@@ -75,7 +75,7 @@ class PostView extends React.Component {
             backPress={() => this.props.navigation.navigate('Feed')}
           />
           <PostViewCommentHeader
-            postID={post.id}
+            post={post}
             comments={post.comments.length}
           />
         </View>

@@ -70,6 +70,7 @@ class MyPostsView extends React.Component {
             data={this.props.posts || {}}
             renderItem={({ item }) => (
               <FeedUserPost
+                post={item}
                 postID={item.id}
                 text={item.text}
                 moveOnPress={() => this.props.navigation.navigate('Post', { post: item, canGoBack: false })}
@@ -98,7 +99,6 @@ MyPostsView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   posts: state.user.posts,
-  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

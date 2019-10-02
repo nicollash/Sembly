@@ -293,8 +293,8 @@ export function createNewPost(post) {
 
 // Add comment
 export const ADD_COMMENT = 'ADD_COMMENT';
-export function addComment({ postID = undefined, text = '' }) {
-  const comment = { postID, text };
+export function addComment({ post = undefined, text = '' }) {
+  const comment = { postID: post.id, businessID: post.businessID, text };
   return async function addCommentState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/addComment/`, {
@@ -313,11 +313,11 @@ export function addComment({ postID = undefined, text = '' }) {
         author: new User({ name: getState().user.displayName }),
       });
 
-      const post = _.findWhere(getState().feed.posts, { id: postID });
+      const storedPost = _.findWhere(getState().feed.posts, { id: post.id });
 
       const posts = _.union(
-        [post.set('comments', _.union([c], post.comments))],
-        _.without(getState().feed.posts, post),
+        [storedPost.set('comments', _.union([c], storedPost.comments))],
+        _.without(getState().feed.posts, storedPost),
       );
       dispatch({ type: UPDATE_POSTS, posts });
     });
@@ -326,11 +326,10 @@ export function addComment({ postID = undefined, text = '' }) {
   };
 }
 
-export function toggleLike({ postID = undefined }) {
+export function toggleLike(post) {
   return async function toggleLikeState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
 
-    const post = _.findWhere(getState().feed.posts, { id: postID });
     const index = _.indexOf(getState().feed.posts, post);
 
     const posts = [...getState().feed.posts];
@@ -347,9 +346,9 @@ export function toggleLike({ postID = undefined }) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ postID })
+      body: JSON.stringify({ postID: post.id, businessID: post.businessID }),
     })
       .then(() => {})
       .catch(err => console.log(err));

@@ -169,7 +169,7 @@ class PostViewUserPost extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.props.toggleLike(post.id)}
+              onPress={() => this.props.toggleLike(post)}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image
@@ -209,7 +209,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleLike: postID => dispatch(toggleLike({ postID }))
+  toggleLike: post => dispatch(toggleLike(post)),
 });
 
 export default connect(

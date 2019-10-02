@@ -209,6 +209,7 @@ class FeedView extends React.Component {
                 data={_.reject(posts, { category: 'Promos' })}
                 renderItem={({ item }) => (
                   <FeedUserPost
+                    post={item}
                     postID={item.id}
                     moveOnPress={() => navigation.navigate('Post', { post: item })}
                     comments={item.comments.length}

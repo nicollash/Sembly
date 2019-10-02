@@ -43,7 +43,9 @@ class FeedUserPost extends React.Component {
   }
 
   render() {
-    const post = _.findWhere(this.props.posts, { id: this.props.postID });
+    //const post = _.findWhere(this.props.posts, { id: this.props.postID });
+    const { post } = this.props;
+
     // const post = this.props.navigation.getParam('post', e => console.log(e));
 
     return (
@@ -214,7 +216,7 @@ class FeedUserPost extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.props.toggleLike(post.id)}
+              onPress={() => this.props.toggleLike(post)}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image

@@ -75,8 +75,8 @@ class LocationView extends React.Component {
     }
     
     if (!location) return null;
-    let phoneNumber;
-    if (location.phone !== '') phoneNumber = parsePhoneNumberFromString(location.phone.toString());
+    const phoneNumber = location.phone !== '' ? parsePhoneNumberFromString(location.phone) : undefined;
+    console.log(location.phone);
     return (
       <View>
         <View style={{ height: (screenHeight) }}>
@@ -157,7 +157,9 @@ class LocationView extends React.Component {
                       onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
                     >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
-                        <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
+                        {location.location.name !== '' && (
+                          <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
+                        )}
                         <Text style={{
                           fontSize: wp(3.3),
                           color: 'black',
@@ -173,17 +175,19 @@ class LocationView extends React.Component {
                       <TouchableOpacity
                         onPress={() => { Linking.openURL(`telprompt:${location.phoneNumber}`); }}
                       >
-                        <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
-                          <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                        <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+                          {location.phone !== '' && (
+                            <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                          )}
                           <Text
                             style={{
                               fontSize: wp(3.3),
                               color: '#000',
                               fontFamily: Theme.fonts.bold,
-                              marginLeft: wp(0.5),
+                              marginLeft: 3,
                             }}
                           >
-                            {phoneNumber ? phoneNumber.formatNational() : 'No Phone'}
+                            {phoneNumber ? phoneNumber.formatNational() : location.phone}
                           </Text>
                         </View>
                       </TouchableOpacity>

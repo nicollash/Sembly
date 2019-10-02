@@ -189,9 +189,9 @@ exports.getUserPosts = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getBusinessPosts = functions.https.onRequest(async (request, response) => {
-  const postQuery = await geofirestore.collection("Businesses").doc(`${request.query.businessID}`).collection('posts')
+  const postQuery = await geofirestore.collection(`Businesses/${request.query.businessID}/posts`).get()
   const posts = await Promise.all(postQuery.docs.map(async doc => {
-    const comments = await geofirestore.collection("Businesses").doc(doc.id).collection('comments').get();
+    const comments = await geofirestore.collection("Businesses").doc(doc.id).collection('comments').get() || [];
     return { 
       id: doc.id, ...doc.data(),
       likesCount: (doc.data().likes || []).length,

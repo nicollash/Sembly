@@ -47,25 +47,33 @@ class LocationView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { locationId: 0 };
   }
 
   componentWillMount() {
   }
 
   componentDidMount() {
-    this.props.getBusinessPosts(this.props.navigation.getParam('location').id);
+    
   }
 
   render() {
     const { navigation } = this.props;
     const screenHeight = Dimensions.get('window').height;
-    // console.log(navigation.getParam('location').className);
+    
+    const locationId = navigation.getParam('location').id
+
     const location = navigation.getParam('location').className === 'Business'
-      ? _.findWhere(this.props.businesses, { id: navigation.getParam('location').id })
-      : _.findWhere(this.props.events, { id: navigation.getParam('location').id });
+      ? _.findWhere(this.props.businesses, { id: locationId })
+      : _.findWhere(this.props.events, { id: locationId });
     console.log(navigation.getParam('location').id);
-    console.log(_.findWhere(this.props.businesses, { id: navigation.getParam('location').id }));
+    console.log(_.findWhere(this.props.businesses, { id: locationId }));
+
+    if (this.state.locationId !== locationId) {
+      this.props.getBusinessPosts(locationId);
+      this.setState({ locationId });
+    }
+    
     if (!location) return null;
     const phoneNumber = location.phone !== '' ? parsePhoneNumberFromString(location.phone) : undefined;
     console.log(location.phone);
@@ -213,6 +221,7 @@ class LocationView extends React.Component {
                   data={location.posts} // add filter to fetch posts that are related to the location/event/business
                   renderItem={({ item }) => (
                     <FeedUserPost
+                      post={item}
                       location={item.title}
                       username={item.user.name}
                       userPostText={item.text}

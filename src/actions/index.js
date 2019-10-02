@@ -297,6 +297,8 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export function addComment({ post = undefined, text = '' }) {
   const comment = { postID: post.id, businessID: post.businessID, text };
   return async function addCommentState(dispatch, getState) {
+    const user = await firebase.auth().currentUser;
+    console.log(user);
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/addComment/`, {
       method: 'POST',
@@ -311,7 +313,7 @@ export function addComment({ post = undefined, text = '' }) {
       const c = new Comment({
         text,
         createdAt: moment(),
-        author: new User({ name: getState().user.displayName }),
+        user: new User({ name: user.displayName, avatar: user.photoURL }),
       });
 
       const storedPost = _.findWhere(getState().feed.posts, { id: post.id });
@@ -332,7 +334,7 @@ export function toggleLike(post) {
     const token = await firebase.auth().currentUser.getIdToken();
 
     const index = _.indexOf(getState().feed.posts, post);
-
+    
     const posts = [...getState().feed.posts];
     const likes = post.get('likes');
     posts[index] = post.set('liked', !post.get('liked'));
@@ -341,7 +343,7 @@ export function toggleLike(post) {
       posts[index].get('liked') ? likes + 1 : likes - 1,
     );
     dispatch({ type: UPDATE_POSTS, posts });
-
+    
     fetch(`${API_URL}/toggleLike`, {
       method: 'POST',
       headers: {

@@ -4,6 +4,7 @@ import firebase from 'react-native-firebase';
 // Calling the following function will open the FB login dialogue:
 export default async function facebookLogin() {
   try {
+    return;
     console.log(LoginManager);
     await LoginManager.logOut();
     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);

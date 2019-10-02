@@ -95,7 +95,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       picture,
       user: {
         id: user.uid,
-        name: user.email.substring(0, user.email.indexOf("@")),
+        name: user.displayName,
         avatar:
           user.photoURL ||
           "https://api.adorable.io/avatars/285/abott@adorable.png"
@@ -126,7 +126,7 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     createdAt: moment().format(),
     author: {
       id: user.uid,
-      name: user.email.substring(0, user.email.indexOf("@")),
+      name: user.displayName,
       avatar:
         user.photoURL ||
         "https://api.adorable.io/avatars/285/abott@adorable.png"

@@ -247,7 +247,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleLike: postID => dispatch(toggleLike({ postID })),
+  toggleLike: post => dispatch(toggleLike(post)),
 });
 
 export default connect(

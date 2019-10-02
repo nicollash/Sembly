@@ -9,8 +9,8 @@ import Business from '../domain/Business';
 import Category from '../domain/Category';
 import NavigationService from '../helpers/SlidingPanelNavigation';
 
-export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-// export const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
+// export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+export const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -213,7 +213,7 @@ export function getUserPosts() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => response.json())
@@ -227,8 +227,7 @@ export function getUserPosts() {
 }
 
 
-// export const UPDATE_CURRENT_BUSINESS = 'UPDATE_CURRENT_BUSINESS';
-export function getBusinessPosts({ businessID = undefined }) {
+export function getBusinessPosts(businessID) {
   return async function getBusinessPostsState(dispatch, getState) {
     fetch(`${API_URL}/getBusinessPosts?businessID=${businessID}`, {
       method: 'GET',
@@ -238,13 +237,15 @@ export function getBusinessPosts({ businessID = undefined }) {
       },
     })
       .then(response => response.json())
-      .then((businessJSON) => {
+      .then((postsJSON) => {
+        console.log(postsJSON);
         const business = _.findWhere(getState().feed.businesses, { id: businessID });
 
         const businesses = _.union(
-          [business.set('posts', _.union([businessJSON], business.posts))],
+          [business.set('posts', postsJSON.map(p => Post.parse(p)))],
           _.without(getState().feed.businesses, business),
         );
+        console.log(business);
         dispatch({ type: UPDATE_BUSINESSES, businesses });
       });
   };

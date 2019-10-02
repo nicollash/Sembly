@@ -47,19 +47,19 @@ class ProfileStatsBar extends React.Component {
         <ProfileStatistic
           statistic={this.props.posts || 0}
           statIcon={postsIcon}
-          type="posts"
+          type={this.props.posts === 1 ? 'post' : 'posts'}
         />
         <View style={styles.separator} />
         <ProfileStatistic
           statistic={this.props.comments || 0}
           statIcon={commentsIcon}
-          type="comments"
+          type={this.props.comments === 1 ? 'comment' : 'comments'}
         />
         <View style={styles.separator} />
         <ProfileStatistic
           statistic={this.props.likes || 0}
           statIcon={likesIcon}
-          type="likes"
+          type={this.props.likes === 1 ? 'like' : 'likes'}
         />
       </View>
     );

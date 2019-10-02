@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import _ from 'underscore';
+
 import {
   View,
   Text,
@@ -20,7 +22,7 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
-import { formatPhone } from '../../helpers/appFunctions';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import navigation from 'react-navigation';
 import Theme from '../../styles/theme';
@@ -30,7 +32,7 @@ import {
   FeedHorizontalScroll,
 } from '../../components';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
-import { UPDATE_MAP, updateMap } from '../../actions';
+import { UPDATE_MAP, updateMap, getBusinessPosts } from '../../actions';
 
 const styles = StyleSheet.create({
   separatorBar: {
@@ -52,17 +54,21 @@ class LocationView extends React.Component {
   }
 
   componentDidMount() {
+    this.props.getBusinessPosts(this.props.navigation.getParam('location').id);
   }
 
   render() {
     const { navigation } = this.props;
-    const location = navigation.getParam('location', e => console.warn(e));
-
     const screenHeight = Dimensions.get('window').height;
-
-    console.log('location', location);
-
-    console.log(location.happeningOn);
+    // console.log(navigation.getParam('location').className);
+    const location = navigation.getParam('location').className === 'Business'
+      ? _.findWhere(this.props.businesses, { id: navigation.getParam('location').id })
+      : _.findWhere(this.props.events, { id: navigation.getParam('location').id });
+    console.log(navigation.getParam('location').id);
+    console.log(_.findWhere(this.props.businesses, { id: navigation.getParam('location').id }));
+    if (!location) return null;
+    let phoneNumber;
+    if (location.phone !== '') phoneNumber = parsePhoneNumberFromString(location.phone.toString());
     return (
       <View>
         <View style={{ height: (screenHeight) }}>
@@ -76,7 +82,7 @@ class LocationView extends React.Component {
               <View style={{ width: '100%' }}>
                 <View style={{ minHeight: 190, width: '100%' }}>
                   <ImageBackground
-                    source={{ uri: location.picture }}
+                    source={{ uri: location.picture } || require('../../../assets/images/SemblyLogo.png')}
                     style={{ flex: 1 }}
                   />
                 </View>
@@ -105,7 +111,8 @@ class LocationView extends React.Component {
                         textAlign: 'center',
                       }}
                     >
-                      {location.title || location.name}
+                      {location.title ? location.title : location.name}
+                      {/* {location.title || location.name || 'Not Specified'} */}
                     </Text>
                     <TouchableOpacity
                       onPress={() => Share.share({
@@ -154,7 +161,7 @@ class LocationView extends React.Component {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    {location.constructor.name === 'Business' && (
+                    {location.className === 'Business' && (
                       <TouchableOpacity
                         onPress={() => { Linking.openURL(`telprompt:${location.phoneNumber}`); }}
                       >
@@ -168,7 +175,7 @@ class LocationView extends React.Component {
                               marginLeft: wp(0.5),
                             }}
                           >
-                            {formatPhone(location.phoneNumber)}
+                            {phoneNumber ? phoneNumber.formatNational() : 'No Phone'}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -233,10 +240,12 @@ LocationView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
+  businesses: state.feed.businesses,
 });
 
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
+  getBusinessPosts: id => dispatch(getBusinessPosts(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

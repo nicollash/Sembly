@@ -1,5 +1,7 @@
 import { Dimensions, StatusBar } from 'react-native';
 
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+
 export function visibleHeight() {
   return Dimensions.get('window').height;
 }
@@ -31,11 +33,4 @@ export function getDistance(lat1, lon1, lat2, lon2, unit) {
     dist = dist.toFixed(1);
     return dist === 0.0 ? 0.1 : dist;
   }
-}
-
-export function formatPhone(number) {
-  const regionCode = number.substring(0, 3);
-  const middlePart = number.substring(3, 6);
-  const fourFinals = number.substring(6, 10);
-  return `(${regionCode}) ${middlePart}-${fourFinals}`;
 }

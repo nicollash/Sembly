@@ -27,8 +27,8 @@ const styles = {
     marginTop: 6,
     marginLeft: 11,
     shadowColor: '#e0e0e0',
-    shadowRadius: 3, 
-    shadowOpacity: 1, 
+    shadowRadius: 3,
+    shadowOpacity: 1,
     shadowOffset: { height: 0, width: 0 },
     width: wp(100),
   },
@@ -63,6 +63,7 @@ class MyPostsView extends React.Component {
   }
 
   render() {
+    console.log(this.props.posts);
     return (
       <ScrollView accessibilityIgnoresInvertColors>
         <View style={styles.container}>
@@ -98,7 +99,6 @@ MyPostsView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   posts: state.user.posts,
-  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

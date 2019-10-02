@@ -73,7 +73,6 @@ class ProfileView extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getUserPosts();
   }
 
   componentDidMount() {
@@ -83,6 +82,8 @@ class ProfileView extends React.Component {
         this.props.navigation.navigate('Welcome');
       },
     });
+    this.props.getUserPosts();
+    this.props.updateUserProfile(this.state.profile.pictureURI, this.props.user.displayName);
   }
 
   componentDidUpdate() {
@@ -115,6 +116,7 @@ class ProfileView extends React.Component {
               ...this.state.profile, pictureURI: res.uri, pictureData: data,
             },
           });
+          this.props.updateUserProfile(this.state.profile.pictureURI);
         }).catch((err) => {
           console.log(err);
         });
@@ -169,7 +171,7 @@ class ProfileView extends React.Component {
           <ProfileStatsBar
             posts={this.props.posts.length || 0}
             comments={this.props.comments.length || 0}
-            // likes={this.props.user.likes}
+            likes={this.props.likes || 0}
           />
         </View>
         <View style={{ marginTop: hp(3) }}>
@@ -215,11 +217,12 @@ const mapStateToProps = (state, ownProps) => ({
   email: state.user.email,
   posts: state.user.posts,
   comments: state.user.comments,
+  likes: state.user.likesCount,
 });
 
 const mapDispatchToProps = dispatch => ({
   handleSignOut: () => dispatch(handleSignOut()),
-  updateUserProfile: photo => dispatch(updateUserProfile({ photo })),
+  updateUserProfile: (photo, displayName) => dispatch(updateUserProfile({ photo, displayName })),
   getUserPosts: () => dispatch(getUserPosts()),
 });
 

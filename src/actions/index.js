@@ -7,9 +7,10 @@ import Event from '../domain/Event';
 import User from '../domain/User';
 import Business from '../domain/Business';
 import Category from '../domain/Category';
+import NavigationService from '../helpers/SlidingPanelNavigation';
 
-// const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-export const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
+export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
+// export const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -53,13 +54,15 @@ export function refreshFeed({
 
     const token = await firebase.auth().currentUser.getIdToken();
 
+    console.log(token);
+
     const paramsObj = { type, category, ..._location };
     const params = Object.keys(paramsObj)
       .map(key => `${key}=${encodeURIComponent(paramsObj[key])}`)
       .join('&');
     dispatch({ type: UPDATE_FEED_LOADING, status: true });
     console.log(`${API_URL}/getFeed?${params}`);
-    fetch(`${API_URL}/getFeed?${params}`, {
+    fetch(`${API_URL}/getFeed?${params}/`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -69,6 +72,7 @@ export function refreshFeed({
     })
       .then(response => response.json())
       .then((feedJSON) => {
+        // console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
@@ -222,13 +226,37 @@ export function getUserPosts() {
   };
 }
 
+
+// export const UPDATE_CURRENT_BUSINESS = 'UPDATE_CURRENT_BUSINESS';
+export function getBusinessPosts({ businessID = undefined }) {
+  return async function getBusinessPostsState(dispatch, getState) {
+    fetch(`${API_URL}/getBusinessPosts?businessID=${businessID}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then((businessJSON) => {
+        const business = _.findWhere(getState().feed.businesses, { id: businessID });
+
+        const businesses = _.union(
+          [business.set('posts', _.union([businessJSON], business.posts))],
+          _.without(getState().feed.businesses, business),
+        );
+        dispatch({ type: UPDATE_BUSINESSES, businesses });
+      });
+  };
+}
+
 // New Post
 export const SENDING_POST = 'SENDING_POST';
 export function createNewPost(post) {
-  return async function createNewPostState(dispatch) {
+  return async function createNewPostState(dispatch, getState) {
     dispatch({ type: SENDING_POST, sendingPost: true });
     const token = await firebase.auth().currentUser.getIdToken();
-    fetch(`${API_URL}/newPost`, {
+    fetch(`${API_URL}/newPost/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -236,15 +264,30 @@ export function createNewPost(post) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
-    }).then((data) => {
-      // Data is business data to parse if a location was tagged,
-      // and post data if no location was tagged
-      console.log(data);
-      dispatch({ type: SENDING_POST, sendingPost: false });
-      dispatch(refreshFeed());
-    }).catch(() => {
-      dispatch({ type: SENDING_POST, sendingPost: false });
-    });
+    })
+      .then(response => response.json())
+      .then((dataJSON) => {
+        console.log(dataJSON);
+        // Data is business data to parse if a location was tagged,
+        if (post.business) {
+          const business = Business.parse(dataJSON);
+          console.log(business);
+          dispatch({ type: UPDATE_BUSINESSES, businesses: [business, ...getState().feed.businesses] });
+          NavigationService.navigate('Location', { location: business });
+        }
+        // and post data if no location was tagged
+        if (!post.business) {
+          const targetPost = Post.parse(dataJSON);
+          console.log(targetPost);
+          dispatch({ type: UPDATE_POSTS, posts: [targetPost, ...getState().feed.posts] });
+          NavigationService.navigate('Post', { post: targetPost });
+        }
+        dispatch({ type: SENDING_POST, sendingPost: false });
+        // dispatch(refreshFeed({}));
+      }).catch((e) => {
+        console.log(e);
+        dispatch({ type: SENDING_POST, sendingPost: false });
+      });
   };
 }
 
@@ -254,7 +297,7 @@ export function addComment({ postID = undefined, text = '' }) {
   const comment = { postID, text };
   return async function addCommentState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
-    fetch(`${API_URL}/addComment`, {
+    fetch(`${API_URL}/addComment/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

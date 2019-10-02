@@ -8,6 +8,7 @@ import {
   FlatList,
   StyleSheet,
   RefreshControl,
+  Platform,
 } from 'react-native';
 
 // Redux
@@ -85,10 +86,10 @@ class FeedView extends React.Component {
   }
 
   setPanelPadding = (h) => {
-    // if (h >= 650) {
-    //   return 150;
-    // }
-    return 809.452 - 0.984017 * h;
+    if (isIphoneX()) {
+      return 809.452 - 0.984017 * h;
+    }
+    return 682 - 0.984017 * h;
   }
 
   render() {
@@ -102,7 +103,7 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         )}
-        contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
+        contentContainerStyle={{ opacity: Platform.OS === 'ios' && this.props.isLoading ? 0.6 : 1 }}
       >
         <View style={{ width: '100%', marginTop: 22 }}>
           <FeedHeader city={city} />
@@ -141,7 +142,7 @@ class FeedView extends React.Component {
             <View style={{ marginTop: 15 }}>
               <View style={styles.separatorBar} />
             </View>
-            <View style={{ height: 170 }}>
+            <View style={{ height: events.length > 0 ? 170 : 0 }}>
               {events.length > 0 && (
                 <View>
                   <View style={{ justifyContent: 'center', marginTop: 9 }}>

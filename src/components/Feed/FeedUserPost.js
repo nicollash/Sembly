@@ -29,13 +29,21 @@ const styles = StyleSheet.create({
 });
 
 class FeedUserPost extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      post: {},
+    };
+  }
+
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   render() {
     const post = _.findWhere(this.props.posts, { id: this.props.postID });
-
     // const post = this.props.navigation.getParam('post', e => console.log(e));
 
     return (
@@ -50,10 +58,10 @@ class FeedUserPost extends React.Component {
           maxHeight: 500,
           maxWidth: wp(95),
           backgroundColor: '#fff',
-          // shadowColor: '#E0E0E0',
-          // shadowRadius: 2,
-          // shadowOffset: { height: 1 },
-          // shadowOpacity: 1,
+          shadowColor: '#E0E0E0',
+          shadowRadius: 2,
+          shadowOffset: { height: 1 },
+          shadowOpacity: 1,
         }}
       >
         <View
@@ -231,13 +239,13 @@ FeedUserPost.defaultProps = {
   postID: 0,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   posts: state.feed.posts,
   user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleLike: (postID) => dispatch(toggleLike({postID})),
+  toggleLike: postID => dispatch(toggleLike({ postID })),
 });
 
 export default connect(

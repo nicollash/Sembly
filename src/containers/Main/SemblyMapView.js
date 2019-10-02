@@ -50,6 +50,7 @@ class SemblyMapView extends React.Component {
 
   componentDidMount() {
     requestLocationPermission();
+    // this.props.getBusinesses();
   }
 
   componentDidUpdate() {
@@ -68,6 +69,7 @@ class SemblyMapView extends React.Component {
   // generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
 
   render() {
+    console.log(this.props.posts);
     // console.log(this.props.activeLocation);
     // console.log(this.props.location);
     const eventPins = this.props.events.map(event => (
@@ -79,7 +81,7 @@ class SemblyMapView extends React.Component {
         onPress={() => NavigationService.navigate('Location', { location: event })}
       />
     ));
-    const postPins = this.props.posts.map(post => (
+    const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
       <SemblyMapPin
         latitude={post.location.lat}
         longitude={post.location.lon}
@@ -90,7 +92,7 @@ class SemblyMapView extends React.Component {
         onPress={() => NavigationService.navigate('Post', { post })}
       />
     ));
-    const businessPins = _.where(this.props.businesses, { showOnMap: true }).map(business => (
+    const businessPins = this.props.businesses.map(business => (
       <SemblyMapPin
         latitude={business.location.lat}
         longitude={business.location.lon}

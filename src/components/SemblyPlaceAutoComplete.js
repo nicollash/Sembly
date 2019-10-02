@@ -21,7 +21,7 @@ import { API_URL } from '../actions';
 
 const styles = StyleSheet.create({
   container: {
-    // zIndex: (Platform.OS === 'ios' ? 10 : 0),
+    zIndex: (Platform.OS === 'ios' ? 10 : 0),
     overflow: 'visible',
     // position: 'absolute',
     // flex: 0.2,
@@ -70,9 +70,9 @@ class SemblyPlaceAutoComplete extends React.Component {
   launchQuery = () => {
     if (this.state.query === '') return;
 
-    //console.log(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`);
-    console.log(this.state.query);
-    
+    // console.log(`https://graph.facebook.com/v3.2/search?type=place&center=${this.props.latitude},${this.props.longitude}&distance=250&fields=id,name&q=${text}&access_token=497315547108819|5cb82680267695d6f98d437ea493be68`);
+    // console.log(this.state.query);
+    console.log(`${API_URL}/searchBusinesses?lat=${this.props.latitude}&lon=${this.props.longitude}&q=${this.state.query}`);
     fetch(
       `${API_URL}/searchBusinesses?lat=${this.props.latitude}&lon=${this.props.longitude}&q=${this.state.query}`
     )
@@ -89,7 +89,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       <View style={styles.container}>
         <Autocomplete
           scrollEnabled
-          autoCapitalize="none"
+          autoCapitalize
           autoCorrect={false}
           inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.textInputContainer}

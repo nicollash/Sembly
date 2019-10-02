@@ -72,6 +72,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [parseFloat(location.lat), parseFloat(location.lon)]
+      // || [parseFloat(business.location.lat), parseFloat(business.location.lon)]
     })
     .asPromise();
 

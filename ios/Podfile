@@ -46,12 +46,12 @@ target 'sembly' do
   pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
 
-  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
   post_install do |installer|
     fix_fb

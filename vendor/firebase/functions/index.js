@@ -133,10 +133,10 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     },
   }
 
-  const docPath = request.body.businessID ? 
-  `Businesses/${businessID}/posts/${postID}/comments` :
+  const docPath = request.body.locationID ? 
+  `Businesses/${request.body.locationID}/posts/${postID}/comments` :
   `Posts/${postID}/comments`
-
+  console.log(docPath);
   admin.firestore().collection(docPath).add(comment).then(() => {
     console.log("added document");
     return response.status(200).send("Your comment has been submitted");
@@ -153,10 +153,10 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   const user = await getUser(request);
 
   const postID = request.body.postID;
-  const businessID = request.body.businessID;
+  const locationID = request.body.locationID;
 
-  const colPath = request.body.businessID ? 
-  `Businesses/${businessID}/posts` :
+  const colPath = request.body.locationID ? 
+  `Businesses/${locationID}/posts` :
   `Posts`
   
   const liked = await admin.firestore().collection(colPath).where(admin.firestore.FieldPath.documentId(), `==`, postID).where(`d.likes`, "array-contains", user.uid).get()
@@ -189,15 +189,17 @@ exports.getUserPosts = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getBusinessPosts = functions.https.onRequest(async (request, response) => {
-  const postQuery = await geofirestore.collection(`Businesses/${request.query.businessID}/posts`).get()
+  const user = await getUser(request);
+
+  const postQuery = await geofirestore.collection(`Businesses/${request.query.locationID}/posts`).get()
   const posts = await Promise.all(postQuery.docs.map(async doc => {
-    const comments = await geofirestore.collection("Businesses").doc(doc.id).collection('comments').get() || [];
+    const comments = await geofirestore.collection(`Businesses/${request.query.locationID}/posts/${doc.id}/comments`).get() || [];
     return { 
       id: doc.id, ...doc.data(),
       likesCount: (doc.data().likes || []).length,
-      liked: (doc.data().likes || []).includes(request.query.userID),
+      liked: (doc.data().likes || []).includes(user.uid),
       comments: comments.docs.map(comment => comment.data()),
-      businessID: request.query.businessID,
+      locationID: request.query.locationID,
     };
   }));
 

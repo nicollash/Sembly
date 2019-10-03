@@ -69,9 +69,6 @@ class SemblyMapView extends React.Component {
   // generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
 
   render() {
-    console.log(this.props.posts);
-    // console.log(this.props.activeLocation);
-    // console.log(this.props.location);
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin
         latitude={event.location.lat}

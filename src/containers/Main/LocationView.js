@@ -66,8 +66,6 @@ class LocationView extends React.Component {
     const location = navigation.getParam('location').className === 'Business'
       ? _.findWhere(this.props.businesses, { id: locationId })
       : _.findWhere(this.props.events, { id: locationId });
-    console.log(navigation.getParam('location').id);
-    console.log(_.findWhere(this.props.businesses, { id: locationId }));
 
     if (this.state.locationId !== locationId) {
       this.props.getBusinessPosts(locationId);
@@ -218,7 +216,7 @@ class LocationView extends React.Component {
               <View style={styles.separatorBar} />
               <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
                 <FlatList
-                  data={location.posts} // add filter to fetch posts that are related to the location/event/business
+                  data={location.posts}
                   renderItem={({ item }) => (
                     <FeedUserPost
                       post={item}

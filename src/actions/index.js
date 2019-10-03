@@ -10,10 +10,72 @@ import Category from '../domain/Category';
 import NavigationService from '../helpers/SlidingPanelNavigation';
 
 // export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-export const API_URL = __DEV__ ? "http://localhost:5000/sembly-staging/us-central1" : "https://us-central1-sembly-staging.cloudfunctions.net";
+export const API_URL = __DEV__
+  ? 'http://localhost:5000/sembly-staging/us-central1'
+  : 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
+
+export const UPDATE_CITY = 'UPDATE_CITY';
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
+export const UPDATE_FEED_LOADING = 'UPDATE_FEED_LOADING';
+export const UPDATE_FILTER = 'UPDATE_FILTER';
+export const UPDATE_POSTS = 'UPDATE_POSTS';
+export const UPDATE_EVENTS = 'UPDATE_EVENTS';
+export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
+
+// Utilities
+export function getPostCollection(post) {
+  return function getPostCollectionState(dispatch, getState) {
+    console.log(post.locationType);
+    if (!post.locationID) return getState().feed.posts;
+
+    if (post.locationID && post.locationType === 'business') {
+      return _.findWhere(getState().feed.businesses, { id: post.locationID })
+        .posts;
+    } else if (post.locationID && post.locationType === 'event') {
+      return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
+    }
+    return [];
+  };
+}
+
+export function getPostReference(post, state) {
+  let posts;
+  if (!post.locationID) posts = state.feed.posts;
+
+  if (post.locationID && post.locationType === 'business') {
+    posts = _.findWhere(state.feed.businesses, { id: post.locationID }).posts;
+  } else if (post.locationID && post.locationType === 'event') {
+    posts = _.findWhere(state.feed.events, { id: post.locationID }).posts;
+  }
+  console.log(post.id);
+  console.log(posts);
+  return _.findWhere(posts, { id: post.id });
+}
+
+export function updatePostCollection(post, posts) {
+  return function updatePostCollectionState(dispatch, getState) {
+    if (!post.locationID) dispatch({ type: UPDATE_POSTS, posts });
+
+    if (post.locationID && post.locationType === 'business') {
+      const business = _.findWhere(getState().feed.businesses, {
+        id: post.locationID
+      });
+      const index = _.indexOf(getState().feed.businesses, business);
+      const updatedBusinesses = getState().feed.businesses.map((b, idx) => {
+        if (idx !== index) return b;
+        return b.set('posts', posts);
+      });
+
+      dispatch({ type: UPDATE_BUSINESSES, businesses: updatedBusinesses });
+    } else if (post.locationID && post.locationType === 'event') {
+      return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
+    }
+    return [];
+  };
+}
 
 // AppState
 export const SET_PANEL_NAVIGATION = 'SET_PANEL_NAVIGATION';
@@ -31,13 +93,6 @@ export function updateLocation(lat = 0, lon = 0) {
   };
 }
 
-export const UPDATE_CITY = 'UPDATE_CITY';
-export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
-export const UPDATE_FEED_LOADING = 'UPDATE_FEED_LOADING';
-export const UPDATE_FILTER = 'UPDATE_FILTER';
-export const UPDATE_POSTS = 'UPDATE_POSTS';
-export const UPDATE_EVENTS = 'UPDATE_EVENTS';
-export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function refreshFeed({
   type = 'hot',
   category = 'all',
@@ -71,7 +126,7 @@ export function refreshFeed({
       }
     })
       .then(response => response.json())
-      .then((feedJSON) => {
+      .then(feedJSON => {
         // console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
@@ -97,7 +152,7 @@ export function refreshFeed({
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
@@ -112,8 +167,14 @@ export function handleLogin(_email, _password) {
     firebase
       .auth()
       .signInWithEmailAndPassword(_email, _password)
-      .then((currentUser) => {
-        const { email, photoURL, posts, likesCount, comments } = currentUser.user;
+      .then(currentUser => {
+        const {
+          email,
+          photoURL,
+          posts,
+          likesCount,
+          comments
+        } = currentUser.user;
         const user = { email, photoURL, likesCount };
         dispatch({ type: UPDATE_USER, user });
       })
@@ -127,7 +188,7 @@ export function handleSignup(_email, _password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
-      .then((currentUser) => {
+      .then(currentUser => {
         const { email } = currentUser.user;
         const user = { email };
         dispatch({ type: UPDATE_USER, user });
@@ -181,21 +242,21 @@ export function updateUserProfile({
   name = undefined,
   photo = undefined,
   post = null,
-  comment = null,
+  comment = null
 }) {
   return function updateUserProfileState(dispatch, getState) {
     firebase
       .auth()
       .currentUser.updateProfile({
         displayName: name,
-        photoURL: photo,
+        photoURL: photo
       })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
         const { displayName, photoURL, posts, comments } = currentUser;
         const user = { displayName, photoURL };
-        if (post) posts.push(post);
-        if (comment) comments.push(comment);
+        //if (post) posts.push(post);
+        //if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(e => console.log(e));
@@ -207,8 +268,29 @@ export function getUserPosts() {
   return async function getUserPostsState(dispatch, getState) {
     const uid = firebase.auth().currentUser.uid;
     const token = await firebase.auth().currentUser.getIdToken();
-    
+
     fetch(`${API_URL}/getUserPosts?userID=${uid}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(postsJSON => {
+        dispatch({
+          type: UPDATE_USER_POSTS,
+          posts: postsJSON.map(p => Post.parse(p))
+        });
+      });
+  };
+}
+
+export function getBusinessPosts(locationID) {
+  return async function getBusinessPostsState(dispatch, getState) {
+    const token = await firebase.auth().currentUser.getIdToken();
+    fetch(`${API_URL}/getBusinessPosts/?locationID=${locationID}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -217,33 +299,20 @@ export function getUserPosts() {
       }
     })
       .then(response => response.json())
-      .then((postsJSON) => {
-        dispatch({
-          type: UPDATE_USER_POSTS,
-          posts: postsJSON.map(p => Post.parse(p)),
-        });
-      });
-  };
-}
-
-
-export function getBusinessPosts(businessID) {
-  return async function getBusinessPostsState(dispatch, getState) {
-    fetch(`${API_URL}/getBusinessPosts?businessID=${businessID}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then((postsJSON) => {
+      .then(postsJSON => {
         console.log(postsJSON);
-        const business = _.findWhere(getState().feed.businesses, { id: businessID });
+        const business = _.findWhere(getState().feed.businesses, {
+          id: locationID
+        });
 
         const businesses = _.union(
-          [business.set('posts', postsJSON.map(p => Post.parse(p)))],
-          _.without(getState().feed.businesses, business),
+          [
+            business.set(
+              'posts',
+              postsJSON.map(p => Post.parse({ ...p, locationType: 'business' }))
+            )
+          ],
+          _.without(getState().feed.businesses, business)
         );
         console.log(business);
         dispatch({ type: UPDATE_BUSINESSES, businesses });
@@ -262,30 +331,37 @@ export function createNewPost(post) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify(post)
     })
       .then(response => response.json())
-      .then((dataJSON) => {
+      .then(dataJSON => {
         console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
         if (post.business) {
           const business = Business.parse(dataJSON);
           console.log(business);
-          dispatch({ type: UPDATE_BUSINESSES, businesses: [business, ...getState().feed.businesses] });
+          dispatch({
+            type: UPDATE_BUSINESSES,
+            businesses: [business, ...getState().feed.businesses]
+          });
           NavigationService.navigate('Location', { location: business });
         }
         // and post data if no location was tagged
         if (!post.business) {
           const targetPost = Post.parse(dataJSON);
-          console.log(targetPost);
-          dispatch({ type: UPDATE_POSTS, posts: [targetPost, ...getState().feed.posts] });
+
+          dispatch({
+            type: UPDATE_POSTS,
+            posts: [targetPost, ...getState().feed.posts]
+          });
           NavigationService.navigate('Post', { post: targetPost });
         }
         dispatch({ type: SENDING_POST, sendingPost: false });
         // dispatch(refreshFeed({}));
-      }).catch((e) => {
+      })
+      .catch(e => {
         console.log(e);
         dispatch({ type: SENDING_POST, sendingPost: false });
       });
@@ -295,34 +371,43 @@ export function createNewPost(post) {
 // Add comment
 export const ADD_COMMENT = 'ADD_COMMENT';
 export function addComment({ post = undefined, text = '' }) {
-  const comment = { postID: post.id, businessID: post.businessID, text };
+  const comment = {
+    postID: post.id,
+    locationID: post.locationID,
+    locationType: post.locationType,
+    text
+  };
   return async function addCommentState(dispatch, getState) {
     const user = await firebase.auth().currentUser;
-    console.log(user);
+
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/addComment/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(comment),
+      body: JSON.stringify(comment)
     }).then(() => {
       // Success, create the mock comment
       const c = new Comment({
         text,
         createdAt: moment(),
-        user: new User({ name: user.displayName, avatar: user.photoURL }),
+        user: new User({ name: user.displayName, avatar: user.photoURL })
       });
 
-      const storedPost = _.findWhere(getState().feed.posts, { id: post.id });
+      const posts = dispatch(getPostCollection(post));
+      const index = _.indexOf(posts, post);
 
-      const posts = _.union(
-        [storedPost.set('comments', _.union([c], storedPost.comments))],
-        _.without(getState().feed.posts, storedPost),
-      );
-      dispatch({ type: UPDATE_POSTS, posts });
+      const updatedPosts = posts.map((p, idx) => {
+        if (idx !== index) return p;
+        return p.set('comments', _.union([c], p.get('comments')));
+      });
+
+      console.log(updatedPosts);
+
+      dispatch(updatePostCollection(post, updatedPosts));
     });
     dispatch({ type: ADD_COMMENT, comment });
     dispatch(refreshFeed());
@@ -330,28 +415,31 @@ export function addComment({ post = undefined, text = '' }) {
 }
 
 export function toggleLike(post) {
-  return async function toggleLikeState(dispatch, getState) {
+  return async function toggleLikeState(dispatch) {
     const token = await firebase.auth().currentUser.getIdToken();
 
-    const index = _.indexOf(getState().feed.posts, post);
-    
-    const posts = [...getState().feed.posts];
+    const posts = dispatch(getPostCollection(post));
+
+    const index = _.indexOf(posts, post);
     const likes = post.get('likes');
-    posts[index] = post.set('liked', !post.get('liked'));
-    posts[index] = posts[index].set(
-      'likes',
-      posts[index].get('liked') ? likes + 1 : likes - 1,
-    );
-    dispatch({ type: UPDATE_POSTS, posts });
-    
+
+    const updatedPosts = posts.map((p, idx) => {
+      if (idx !== index) return p;
+      return post
+        .set('liked', !post.get('liked'))
+        .set('likes', posts[index].get('liked') ? likes - 1 : likes + 1);
+    });
+
+    dispatch(updatePostCollection(post, updatedPosts));
+
     fetch(`${API_URL}/toggleLike`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ postID: post.id, businessID: post.businessID }),
+      body: JSON.stringify({ postID: post.id, locationID: post.locationID })
     })
       .then(() => {})
       .catch(err => console.log(err));

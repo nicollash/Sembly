@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase';
 import _ from 'underscore';
 import moment from 'moment';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import Post from '../domain/Post';
 import Comment from '../domain/Comment';
 import Event from '../domain/Event';
@@ -121,8 +122,39 @@ export function handleLogin(_email, _password) {
   };
 }
 
+// Profile Changes
+export function updateUserProfile({
+  name = undefined,
+  photo = undefined,
+  post = null,
+  comment = null,
+}) {
+  return function updateUserProfileState(dispatch, getState) {
+    firebase
+      .auth()
+      .currentUser.updateProfile({
+        displayName: name,
+        photoURL: photo,
+      })
+      .then(() => {
+        const currentUser = firebase.auth().currentUser;
+        const { displayName, photoURL, posts, comments } = currentUser;
+        const user = { displayName, photoURL };
+        if (post) posts.push(post);
+        if (comment) comments.push(comment);
+        dispatch({ type: UPDATE_USER, user });
+      })
+      .catch(e => console.log(e));
+  };
+}
+
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
-export function handleSignup(_email, _password) {
+export function handleSignup({
+  _email,
+  _password,
+  facebookPhoto = null,
+  fromFacebook = facebookPhoto !== null,
+}) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
@@ -164,6 +196,44 @@ export function handleSignOut() {
   };
 }
 
+export function facebookLogin() {
+  return async function facebookLoginState(dispatch, getState) {
+    try {
+      console.log(LoginManager);
+      LoginManager.logOut();
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      console.log(result);
+
+      if (result.isCancelled) {
+        return;
+      }
+
+      console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
+
+      // get the access token
+      const data = await AccessToken.getCurrentAccessToken();
+      console.log(data);
+
+      if (!data) {
+        // handle this however suites the flow of your app
+        throw new Error('Something went wrong obtaining the users access token');
+      }
+
+      // create a new firebase credential with the token
+      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+      console.log(credential);
+
+      // login with credential
+      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      console.log(firebaseUserCredential);
+
+      console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+}
+
 export function clearLoginErrors() {
   return function clearAuthErrorsState(dispatch, getState) {
     dispatch({ type: LOGIN_ERROR, message: undefined });
@@ -173,32 +243,6 @@ export function clearLoginErrors() {
 export function clearSignupErrors() {
   return function clearAuthErrorsState(dispatch, getState) {
     dispatch({ type: SIGNUP_ERROR, message: undefined });
-  };
-}
-
-// Profile Changes
-export function updateUserProfile({
-  name = undefined,
-  photo = undefined,
-  post = null,
-  comment = null,
-}) {
-  return function updateUserProfileState(dispatch, getState) {
-    firebase
-      .auth()
-      .currentUser.updateProfile({
-        displayName: name,
-        photoURL: photo,
-      })
-      .then(() => {
-        const currentUser = firebase.auth().currentUser;
-        const { displayName, photoURL, posts, comments } = currentUser;
-        const user = { displayName, photoURL };
-        if (post) posts.push(post);
-        if (comment) comments.push(comment);
-        dispatch({ type: UPDATE_USER, user });
-      })
-      .catch(e => console.log(e));
   };
 }
 

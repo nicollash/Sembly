@@ -21,8 +21,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
-import facebookLogin from '../../helpers/facebookLogin';
-
 import {
   SemblyButton,
   LoginForm,
@@ -30,7 +28,7 @@ import {
 
 import Theme from '../../styles/theme';
 import SemblyBackCaret from '../../components/SemblyBackCaret';
-import { handleSignup, clearLoginErrors, clearSignupErrors, setPreviousScreen } from '../../actions';
+import { handleSignup, clearLoginErrors, clearSignupErrors, setPreviousScreen, facebookLogin } from '../../actions';
 
 console.disableYellowBox = true;
 
@@ -140,7 +138,6 @@ class SignupView extends React.Component {
   }
 
   render() {
-    // console.log(facebookLogin());
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -227,7 +224,7 @@ class SignupView extends React.Component {
               </Text>
               <TouchableOpacity
                 style={{ marginTop: hp(1) }}
-                onPress={() => facebookLogin()}
+                onPress={() => this.props.facebookLogin()}
               >
                 <Image source={fbConnect} />
               </TouchableOpacity>
@@ -256,6 +253,7 @@ const mapDispatchToProps = dispatch => ({
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
   setPreviousScreen: screen => dispatch(setPreviousScreen(screen)),
+  facebookLogin: () => dispatch(facebookLogin()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupView);

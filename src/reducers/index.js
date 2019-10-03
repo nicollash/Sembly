@@ -83,9 +83,6 @@ const feedDefault = {
   events: [],
   posts: [],
   businesses: [],
-  currentBusiness: {
-    posts: [],
-  },
 };
 
 const feed = (state = feedDefault, action) => {

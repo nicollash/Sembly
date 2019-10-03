@@ -229,6 +229,9 @@ class LocationView extends React.Component {
                       comments={item.comments.length}
                     />
                   )}
+                  ItemSeparatorComponent={() => (
+                    <View style={{ height: 8 }} />
+                  )}
                   ListFooterComponent={() => (
                     <View style={{ height: 100 }} />
                   )}

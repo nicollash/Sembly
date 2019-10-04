@@ -2,6 +2,7 @@ import firebase from 'react-native-firebase';
 import _ from 'underscore';
 import moment from 'moment';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { mergeDeep } from 'immutable';
 import Post from '../domain/Post';
 import Comment from '../domain/Comment';
 import Event from '../domain/Event';
@@ -134,11 +135,11 @@ export function refreshFeed({
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => response.json())
-      .then(feedJSON => {
+      .then((feedJSON) => {
         // console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
@@ -147,11 +148,17 @@ export function refreshFeed({
         const categories = feedJSON.categories.map(c => Category.parse(c));
         dispatch({
           type: UPDATE_CATEGORY,
-          categories: _.sortBy(categories, 'id')
+          categories: _.sortBy(categories, 'id'),
         });
 
         // Update businesses
-        const businesses = feedJSON.businesses.map(e => Business.parse(e));
+        const businesses = feedJSON.businesses.map((b) => {
+          const business = Business.parse(b);
+          const existing = _.findWhere(getState().feed.businesses, { id: b.id });
+          
+          return existing ? business.merge(existing) : business;
+        });
+        
         dispatch({ type: UPDATE_BUSINESSES, businesses });
 
         // Update events

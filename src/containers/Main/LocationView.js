@@ -56,13 +56,13 @@ class LocationView extends React.Component {
     const { navigation, location } = this.props;
     const screenHeight = Dimensions.get('window').height;
 
+    if (!location) return null;
 
     if (this.state.locationId !== location.id) {
       this.props.getBusinessPosts(location.id);
       this.setState({ locationId: location.id });
     }
     
-    if (!location) return null;
     const phoneNumber = location.phone ? parsePhoneNumberFromString(location.phone) : undefined;
     
     return (

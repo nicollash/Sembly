@@ -33,7 +33,7 @@ const BusinessProps = {
 
 class Business extends BusinessRecord<BusinessProps> {
   get className() {
-    return 'Business';
+    return 'business';
   }
   
   static parse(data) {

@@ -51,9 +51,20 @@ export function getPostReference(post, state) {
   } else if (post.locationID && post.locationType === 'event') {
     posts = _.findWhere(state.feed.events, { id: post.locationID }).posts;
   }
-  console.log(post.id);
-  console.log(posts);
+
   return _.findWhere(posts, { id: post.id });
+}
+
+export function getLocationReference(location, state) {
+  let targetLocation;
+
+  if (location.className === 'business') {
+    targetLocation = _.findWhere(state.feed.businesses, { id: location.id });
+  } else if (location.className === 'event') {
+    targetLocation = _.findWhere(state.feed.events, { id: location.id });
+  }
+
+  return targetLocation;
 }
 
 export function updatePostCollection(post, posts) {
@@ -201,8 +212,8 @@ export function updateUserProfile({
         const currentUser = firebase.auth().currentUser;
         const { displayName, photoURL, posts, comments } = currentUser;
         const user = { displayName, photoURL };
-        if (post) posts.push(post);
-        if (comment) comments.push(comment);
+        //if (post) posts.push(post);
+        //if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(e => console.log(e));
@@ -307,31 +318,6 @@ export function clearSignupErrors() {
   };
 }
 
-// Profile Changes
-export function updateUserProfile({
-  name = undefined,
-  photo = undefined,
-  post = null,
-  comment = null
-}) {
-  return function updateUserProfileState(dispatch, getState) {
-    firebase
-      .auth()
-      .currentUser.updateProfile({
-        displayName: name,
-        photoURL: photo
-      })
-      .then(() => {
-        const currentUser = firebase.auth().currentUser;
-        const { displayName, photoURL, posts, comments } = currentUser;
-        const user = { displayName, photoURL };
-        //if (post) posts.push(post);
-        //if (comment) comments.push(comment);
-        dispatch({ type: UPDATE_USER, user });
-      })
-      .catch(e => console.log(e));
-  };
-}
 
 export const UPDATE_USER_POSTS = 'UPDATE_USER_POSTS';
 export function getUserPosts() {

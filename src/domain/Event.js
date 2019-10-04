@@ -39,7 +39,7 @@ const EventProps = {
 
 class Event extends EventRecord<EventProps> {
   get className() {
-    return 'Event';
+    return 'event';
   }
 
   static parse(data) {

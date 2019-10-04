@@ -10,29 +10,24 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  PanResponder,
   Dimensions,
   FlatList,
   StyleSheet,
   Share,
   Linking,
-  Platform,
 } from 'react-native';
-
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
-import navigation from 'react-navigation';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import { getLocationReference } from '../../actions';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
+
 import Theme from '../../styles/theme';
 
-import {
-  FeedCategoryBar,
-  FeedHorizontalScroll,
-} from '../../components';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
-import { UPDATE_MAP, updateMap, getBusinessPosts } from '../../actions';
+import { updateMap, getBusinessPosts } from '../../actions';
 
 const styles = StyleSheet.create({
   separatorBar: {
@@ -58,23 +53,18 @@ class LocationView extends React.Component {
   }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, location } = this.props;
     const screenHeight = Dimensions.get('window').height;
-    
-    const locationId = navigation.getParam('location').id
 
-    const location = navigation.getParam('location').className === 'Business'
-      ? _.findWhere(this.props.businesses, { id: locationId })
-      : _.findWhere(this.props.events, { id: locationId });
 
-    if (this.state.locationId !== locationId) {
-      this.props.getBusinessPosts(locationId);
-      this.setState({ locationId });
+    if (this.state.locationId !== location.id) {
+      this.props.getBusinessPosts(location.id);
+      this.setState({ locationId: location.id });
     }
     
     if (!location) return null;
-    const phoneNumber = location.phone !== '' ? parsePhoneNumberFromString(location.phone) : undefined;
-    console.log(location.phone);
+    const phoneNumber = location.phone ? parsePhoneNumberFromString(location.phone) : undefined;
+    
     return (
       <View>
         <View style={{ height: (screenHeight) }}>
@@ -253,9 +243,10 @@ LocationView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => ({
-  businesses: state.feed.businesses,
-});
+const mapStateToProps = (state, ownProps) => {
+  const location = getLocationReference(ownProps.navigation.getParam('location'), state);
+  return { businesses: state.feed.businesses, location };
+};
 
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),

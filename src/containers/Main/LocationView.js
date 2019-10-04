@@ -21,13 +21,12 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { getLocationReference } from '../../actions';
+import { getLocationReference, setPanelHeight, updateMap, getBusinessPosts } from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import Theme from '../../styles/theme';
 
 import FeedUserPost from '../../components/Feed/FeedUserPost';
-import { updateMap, getBusinessPosts } from '../../actions';
 
 const styles = StyleSheet.create({
   separatorBar: {
@@ -45,11 +44,14 @@ class LocationView extends React.Component {
     this.state = { locationId: 0 };
   }
 
-  componentWillMount() {
+  componentDidMount() {
   }
 
-  componentDidMount() {
-    
+  setPanelPadding = (h) => {
+    if (isIphoneX()) {
+      return 620 - 0.984017 * h;
+    }
+    return 500 - 0.984017 * h;
   }
 
   render() {
@@ -227,7 +229,7 @@ class LocationView extends React.Component {
                   )}
                 />
               </View>
-              <View style={{ height: isIphoneX() ? hp(6) : hp(5) }} />
+              <View style={{ height: this.setPanelPadding(this.props.panelHeight)}} />
             </View>
           </ScrollView>
         </View>
@@ -245,12 +247,13 @@ LocationView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   const location = getLocationReference(ownProps.navigation.getParam('location'), state);
-  return { businesses: state.feed.businesses, location };
+  return { businesses: state.feed.businesses, location, panelHeight: state.appState.panelHeight };
 };
 
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
   getBusinessPosts: id => dispatch(getBusinessPosts(id)),
+  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

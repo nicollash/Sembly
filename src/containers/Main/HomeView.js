@@ -78,7 +78,7 @@ class HomeView extends React.Component {
             <View style={styles.panel}>
               <View style={styles.dragHandler} {...dragHandler}>
                 <TouchableOpacity
-                  hitSlop={{ top: 10, bottom: 10, left: 80, right: 80 }}
+                  hitSlop={{ top: 30, bottom: 30, left: 80, right: 80 }}
                 >
                   <Image source={require('../../../assets/images/FeedViewBar.png')} />
                 </TouchableOpacity>

@@ -109,7 +109,7 @@ class FeedView extends React.Component {
             onRefresh={this._onRefresh}
           />
         }
-         contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
+        contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
       >
         <View style={{ width: "100%", marginTop: 22 }}>
           <FeedHeader city={city} />
@@ -188,6 +188,7 @@ class FeedView extends React.Component {
                       )}
                       renderItem={({ item }) => (
                         <FeedScrollPost
+                          isLoading={this.props.isLoading}
                           picture={item.picture}
                           title={item.title}
                           onEventPress={() =>
@@ -248,6 +249,7 @@ class FeedView extends React.Component {
                   data={_.reject(posts, { category: "Promos" })}
                   renderItem={({ item }) => (
                     <FeedUserPost
+                      isLoading={this.props.isLoading}
                       postID={item.id}
                       moveOnPress={() =>
                         navigation.navigate("Post", { post: item })

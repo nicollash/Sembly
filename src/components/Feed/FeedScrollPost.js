@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: { height: 1 },
     shadowOpacity: 1,
-    elevation: 2,
+    //elevation: 2,
     flexDirection:'column'
   },
   // imageContainer: {
@@ -68,7 +68,7 @@ class FeedScrollPost extends React.Component {
   render() {
     return (
       <TouchableOpacity
-        style={styles.container}
+        style={[styles.container,{elevation:this.props.isLoading?0:2}]}
         onPress={this.props.onEventPress}
       >
         <View style={{ marginTop: 2 }}>
@@ -97,6 +97,7 @@ FeedScrollPost.defaultProps = {
   picture: null,
   title: 'blank',
   distance: '?',
+  isLoading:false
 };
 
 FeedScrollPost.propTypes = {
@@ -105,6 +106,7 @@ FeedScrollPost.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
+  
 };
 
 const mapDispatchToProps = dispatch => ({

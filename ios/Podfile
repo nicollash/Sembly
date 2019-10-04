@@ -53,6 +53,8 @@ target 'sembly' do
 
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   post_install do |installer|
     fix_fb
     installer.pods_project.targets.each do |target|

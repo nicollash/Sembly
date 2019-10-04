@@ -50,7 +50,7 @@ class FeedUserPost extends React.Component {
           maxHeight: 500,
           maxWidth: wp(95),
           backgroundColor: '#fff',
-          elevation:2
+          elevation:this.props.isLoading?0:2
           // shadowColor: '#E0E0E0',
           // shadowRadius: 2,
           // shadowOffset: { height: 1 },

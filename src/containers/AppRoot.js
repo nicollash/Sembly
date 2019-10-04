@@ -4,7 +4,6 @@ import { StatusBar, Image, View, Alert } from 'react-native';
 import _ from 'underscore';
 
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-
 import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator,
   createAppContainer, SafeAreaView, NavigationActions, withNavigationFocus,

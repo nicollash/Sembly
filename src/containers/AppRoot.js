@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { StatusBar, Image, View, Alert } from 'react-native';
+import { StatusBar, Image, View,Platform, Alert,PermissionsAndroid } from 'react-native';
 import _ from 'underscore';
 
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -168,7 +168,13 @@ class AppRoot extends React.PureComponent {
           );
         }
       });
-      this.geoLocate();
+      if (Platform.OS === "android") {
+        if (this.state.user) {
+          this.requestLocationPermission();
+        }
+      } else {
+        this.geoLocate();
+      }
     });
   }
 
@@ -189,6 +195,30 @@ class AppRoot extends React.PureComponent {
       //console.warn(error);
     }, { timeout: 10000 });
   }
+
+  requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Sembly App Location Permission",
+          message: "Sembly App needs access to your location ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Log from app root");
+        this.geoLocate();
+      } else {
+        Alert.alert('Permission denied', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   render() {
     return (

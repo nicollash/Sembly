@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { StatusBar, Image, View, Alert } from 'react-native';
+import { AppState, StatusBar, Image, View, Alert } from 'react-native';
 import _ from 'underscore';
 
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -147,12 +147,14 @@ class AppRoot extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      appState: AppState.currentState,
     };
 
     this.gpsInterval = undefined;
   }
 
   componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
     this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         user,
@@ -203,7 +205,19 @@ class AppRoot extends React.PureComponent {
   componentWillUnmount() {
     console.log('approot will unmount');
     this.authSubscription();
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (
+      this.state.appState.match(/inactive|background/)
+        && nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!');
+      this.geoLocate();
+    }
+    this.setState({ appState: nextAppState });
+  };
 
   geoLocate = async () => {
     // console.log('locating...');
@@ -219,7 +233,7 @@ class AppRoot extends React.PureComponent {
   }
 
   render() {
-    console.log(this.props.user);
+    console.log(this.state.appState);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />

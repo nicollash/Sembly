@@ -92,14 +92,6 @@ class PostViewUserPost extends React.Component {
               {post.user.name}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{ position: 'absolute', right: 0, top: '35%' }}
-            hitSlop={{ bottom: 20, left: 20, right: 20, top: 20 }}
-          >
-            <Image
-              source={require('../../assets/images/PostViewShareButton.png')}
-            />
-          </TouchableOpacity>
         </View>
         {post.picture !== '' && (
           <View

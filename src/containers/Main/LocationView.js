@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import _ from 'underscore';
+
 import {
   View,
   Text,
@@ -8,29 +10,23 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  PanResponder,
   Dimensions,
   FlatList,
   StyleSheet,
   Share,
   Linking,
-  Platform,
 } from 'react-native';
 
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import { getLocationReference, setPanelHeight, updateMap, getBusinessPosts } from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
-import { formatPhone } from '../../helpers/appFunctions';
-
-import navigation from 'react-navigation';
 import Theme from '../../styles/theme';
 
-import {
-  FeedCategoryBar,
-  FeedHorizontalScroll,
-} from '../../components';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
-import { UPDATE_MAP, updateMap } from '../../actions';
 
 const styles = StyleSheet.create({
   separatorBar: {
@@ -45,24 +41,32 @@ class LocationView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
-  }
-
-  componentWillMount() {
+    this.state = { locationId: 0 };
   }
 
   componentDidMount() {
   }
 
-  render() {
-    const { navigation } = this.props;
-    const location = navigation.getParam('location', e => console.warn(e));
+  setPanelPadding = (h) => {
+    if (isIphoneX()) {
+      return 620 - 0.984017 * h;
+    }
+    return 500 - 0.984017 * h;
+  }
 
+  render() {
+    const { navigation, location } = this.props;
     const screenHeight = Dimensions.get('window').height;
 
-    console.log('location', location);
+    if (!location) return null;
 
-    console.log(location.happeningOn);
+    if (this.state.locationId !== location.id) {
+      this.props.getBusinessPosts(location.id);
+      this.setState({ locationId: location.id });
+    }
+    
+    const phoneNumber = location.phone ? parsePhoneNumberFromString(location.phone) : undefined;
+    
     return (
       <View>
         <View style={{ height: (screenHeight) }}>
@@ -76,7 +80,7 @@ class LocationView extends React.Component {
               <View style={{ width: '100%' }}>
                 <View style={{ minHeight: 190, width: '100%' }}>
                   <ImageBackground
-                    source={{ uri: location.picture }}
+                    source={{ uri: location.picture } || require('../../../assets/images/SemblyLogo.png')}
                     style={{ flex: 1 }}
                   />
                 </View>
@@ -105,20 +109,9 @@ class LocationView extends React.Component {
                         textAlign: 'center',
                       }}
                     >
-                      {location.title || location.name}
+                      {location.title ? location.title : location.name}
+                      {/* {location.title || location.name || 'Not Specified'} */}
                     </Text>
-                    <TouchableOpacity
-                      onPress={() => Share.share({
-                        title: 'title test',
-                        message: 'this is a test',
-                      })}
-                      style={{ position: 'absolute', alignSelf: 'center', right: -8, bottom: 6 }}
-                    >
-                      <Image
-                        style={{ tintColor: '#000' }}
-                        source={require('../../../assets/images/PostViewShareButton.png')} 
-                      />
-                    </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 3 }}>
                     <Text style={{
@@ -142,7 +135,9 @@ class LocationView extends React.Component {
                       onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
                     >
                       <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
-                        <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
+                        {location.location.name !== '' && (
+                          <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
+                        )}
                         <Text style={{
                           fontSize: wp(3.3),
                           color: 'black',
@@ -154,21 +149,23 @@ class LocationView extends React.Component {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    {location.constructor.name === 'Business' && (
+                    {location.className === 'Business' && (
                       <TouchableOpacity
                         onPress={() => { Linking.openURL(`telprompt:${location.phoneNumber}`); }}
                       >
-                        <View style={{ flexDirection: 'row', marginLeft: '8%' }}>
-                          <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                        <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+                          {location.phone !== '' && (
+                            <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                          )}
                           <Text
                             style={{
                               fontSize: wp(3.3),
                               color: '#000',
                               fontFamily: Theme.fonts.bold,
-                              marginLeft: wp(0.5),
+                              marginLeft: 3,
                             }}
                           >
-                            {formatPhone(location.phoneNumber)}
+                            {phoneNumber ? phoneNumber.formatNational() : location.phone}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -199,9 +196,10 @@ class LocationView extends React.Component {
               <View style={styles.separatorBar} />
               <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
                 <FlatList
-                  data={location.posts} // add filter to fetch posts that are related to the location/event/business
+                  data={location.posts}
                   renderItem={({ item }) => (
                     <FeedUserPost
+                      post={item}
                       location={item.title}
                       username={item.user.name}
                       userPostText={item.text}
@@ -211,12 +209,15 @@ class LocationView extends React.Component {
                       comments={item.comments.length}
                     />
                   )}
+                  ItemSeparatorComponent={() => (
+                    <View style={{ height: 8 }} />
+                  )}
                   ListFooterComponent={() => (
                     <View style={{ height: 100 }} />
                   )}
                 />
               </View>
-              <View style={{ height: isIphoneX() ? hp(6) : hp(5) }} />
+              <View style={{ height: this.setPanelPadding(this.props.panelHeight)}} />
             </View>
           </ScrollView>
         </View>
@@ -232,11 +233,15 @@ LocationView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => ({
-});
+const mapStateToProps = (state, ownProps) => {
+  const location = getLocationReference(ownProps.navigation.getParam('location'), state);
+  return { businesses: state.feed.businesses, location, panelHeight: state.appState.panelHeight };
+};
 
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
+  getBusinessPosts: id => dispatch(getBusinessPosts(id)),
+  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

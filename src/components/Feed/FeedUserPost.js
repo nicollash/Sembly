@@ -29,15 +29,21 @@ const styles = StyleSheet.create({
 });
 
 class FeedUserPost extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      post: {},
+    };
+  }
+
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   render() {
-    const post = _.findWhere(this.props.posts, { id: this.props.postID });
-
-    // const post = this.props.navigation.getParam('post', e => console.log(e));
-
+    const { post } = this.props;
     return (
       <View
         style={{
@@ -50,11 +56,11 @@ class FeedUserPost extends React.Component {
           maxHeight: 500,
           maxWidth: wp(95),
           backgroundColor: '#fff',
-          elevation:this.props.isLoading?0:2
-          // shadowColor: '#E0E0E0',
-          // shadowRadius: 2,
-          // shadowOffset: { height: 1 },
-          // shadowOpacity: 1,
+          elevation: this.props.isLoading ? 0 : 2
+          shadowColor: '#E0E0E0',
+          shadowRadius: 2,
+          shadowOffset: { height: 1 },
+          shadowOpacity: 1,
         }}
       >
         <View
@@ -170,21 +176,24 @@ class FeedUserPost extends React.Component {
             justifyContent:'space-between'
           }}
         >
-          <TouchableOpacity onPress={this.openMaps}>
-            <View
-              style={{
-                flexDirection: 'row'
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/PhotoPostLocationIcon.png')}
-              />
-              {/* <View style={{ width: 5 }} /> */}
-              <Text style={[styles.postText, { marginTop: 1,marginLeft:5 }]}>
-                {post.location.name}
-              </Text>
-            </View>
-          </TouchableOpacity>
+          {post.showOnMap && (
+            <TouchableOpacity onPress={this.openMaps}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: Platform.OS === 'ios' ? 150 : 0,
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/PhotoPostLocationIcon.png')}
+                />
+                <View style={{ width: Platform.OS === 'ios' ? 5 : 0 }} />
+                <Text style={[styles.postText, { marginTop: 1, marginLeft: Platform.OS === 'ios' ? 0 : 5 }]}>
+                  {post.location.name}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={{
               flexDirection: 'row',
@@ -208,7 +217,7 @@ class FeedUserPost extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.props.toggleLike(post.id)}
+              onPress={() => this.props.toggleLike(post)}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image
@@ -233,13 +242,13 @@ FeedUserPost.defaultProps = {
   postID: 0,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   posts: state.feed.posts,
   user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleLike: (postID) => dispatch(toggleLike({postID})),
+  toggleLike: post => dispatch(toggleLike(post)),
 });
 
 export default connect(

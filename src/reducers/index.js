@@ -119,6 +119,7 @@ const userDefault = {
   posts: [],
   comments: [],
   likesCount: 0,
+  facebookUser: undefined,
 };
 
 const user = (state = userDefault, action) => {

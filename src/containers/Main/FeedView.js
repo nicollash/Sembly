@@ -8,8 +8,9 @@ import {
   FlatList,
   StyleSheet,
   RefreshControl,
+  Platform,
   Image
-} from "react-native";
+} from 'react-native';
 
 // Redux
 import { connect } from "react-redux";
@@ -37,11 +38,12 @@ import FeedUserPost from "../../components/Feed/FeedUserPost";
 import PromoPost from "../../components/PromoPost";
 
 const icons = [
-  require("../../../assets/images/SemblyAllIcon.png"),
-  require("../../../assets/images/SemblyEventsIcon.png"),
-  require("../../../assets/images/SemblyBurgerIcon.png"),
-  require("../../../assets/images/SemblyPromosIcon.png"),
-  require("../../../assets/images/artsIcon.png")
+  require('../../../assets/images/SemblyAllIcon.png'),
+  require('../../../assets/images/SemblyEventsIcon.png'),
+  require('../../../assets/images/SemblyBurgerIcon.png'),
+  require('../../../assets/images/SemblyPromosIcon.png'),
+  require('../../../assets/images/SemblyDrinksIcon.png'),
+  require('../../../assets/images/artsIcon.png'),
 ];
 
 const styles = StyleSheet.create({
@@ -84,12 +86,12 @@ class FeedView extends React.Component {
     this.props.refreshFeed();
   };
 
-  setPanelPadding = h => {
-    // if (h >= 650) {
-    //   return 150;
-    // }
-    return 809.452 - 0.984017 * h;
-  };
+  setPanelPadding = (h) => {
+    if (isIphoneX()) {
+      return 809.452 - 0.984017 * h;
+    }
+    return 682 - 0.984017 * h;
+  }
 
   render() {
     const {
@@ -108,8 +110,8 @@ class FeedView extends React.Component {
             refreshing={this.props.isLoading}
             onRefresh={this._onRefresh}
           />
-        }
-        contentContainerStyle={{ opacity: this.props.isLoading ? 0.6 : 1 }}
+        )}
+        contentContainerStyle={{ opacity: Platform.OS === 'ios' && this.props.isLoading ? 0.6 : 1 }}
       >
         <View style={{ width: "100%", marginTop: 22 }}>
           <FeedHeader city={city} />
@@ -153,7 +155,7 @@ class FeedView extends React.Component {
             <View style={{ marginTop: 15 }}>
               <View style={styles.separatorBar} />
             </View>
-            <View>
+            <View style={{ height: events.length > 0 ? 170 : 0 }}>
               {events.length > 0 && (
                 <View style={{ height: 170 }}>
                   <View style={{ justifyContent: "center", marginTop: 9 }}>
@@ -233,38 +235,22 @@ class FeedView extends React.Component {
                 <FeedFilterBar />
               </View>
             </View>
-            <View
-              style={{
-                paddingTop: 4,
-                marginLeft: 11,
-                shadowColor: "#e0e0e0",
-                shadowRadius: 3,
-                shadowOpacity: 1,
-                shadowOffset: { height: 0, width: 0 }
-              }}
-            >
-              {posts.length > 0 ? (
-                <FlatList
-                  scrollEnabled={false}
-                  data={_.reject(posts, { category: "Promos" })}
-                  renderItem={({ item }) => (
-                    <FeedUserPost
-                      isLoading={this.props.isLoading}
-                      postID={item.id}
-                      moveOnPress={() =>
-                        navigation.navigate("Post", { post: item })
-                      }
-                      comments={item.comments.length}
-                    />
-                  )}
-                  ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
-                />
-              ) : (
-                <Image
-                  source={require("../../../assets/images/empty_icon.png")}
-                  style={{ width: 256, height: 256, alignSelf: "center" }}
-                />
-              )}
+            <View style={{ marginLeft: 11, shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
+              <FlatList
+                scrollEnabled={false}
+                data={_.reject(posts, { category: 'Promos' })}
+                renderItem={({ item }) => (
+                  <FeedUserPost
+                    post={item}
+                    postID={item.id}
+                    moveOnPress={() => navigation.navigate('Post', { post: item })}
+                    comments={item.comments.length}
+                  />
+                )}
+                ItemSeparatorComponent={() => (
+                  <View style={{ height: 8 }} />
+                )}
+              />
             </View>
           </View>
         )}

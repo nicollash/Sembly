@@ -38,6 +38,10 @@ const EventProps = {
 };
 
 class Event extends EventRecord<EventProps> {
+  get className() {
+    return 'event';
+  }
+
   static parse(data) {
     return new Event({
       id: data.id,

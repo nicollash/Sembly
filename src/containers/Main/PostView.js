@@ -8,12 +8,11 @@ import { connect } from 'react-redux';
 import {
   View,
   ScrollView,
-  Dimensions,
   FlatList,
 } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 
+import { getPostReference } from '../../actions';
 
 import {
   SemblyUserComment,
@@ -62,10 +61,10 @@ class PostView extends React.Component {
   }
 
   render() {
-    const { navigation } = this.props;
-    const post = _.findWhere(this.props.posts, { id: navigation.getParam('post').id });
+    const { navigation, post } = this.props;
 
-    console.log(this.props.panelHeight);
+    if (!post) return null;
+
     return (
       <ScrollView style={{ width: wp(100) }}>
         <View style={{marginBottom:18}}>
@@ -75,11 +74,11 @@ class PostView extends React.Component {
             backPress={() => this.props.navigation.navigate('Feed')}
           />
           <PostViewCommentHeader
-            postID={post.id}
+            post={post}
             comments={post.comments.length}
           />
         </View>
-        <View>
+        <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
           <FlatList
             scrollEnabled={false}
             showsVerticalScrollIndicator={false}
@@ -106,12 +105,13 @@ PostView.defaultProps = {
 PostView.propTypes = {
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  posts: state.feed.posts,
-  panelHeight: state.appState.panelHeight,
-});
+const mapStateToProps = (state, ownProps) => {
+  const post = getPostReference(ownProps.navigation.getParam('post'), state);
+  return { post, panelHeight: state.appState.panelHeight };
+};
 
 const mapDispatchToProps = dispatch => ({
+  getPostReference: (post) => dispatch(getPostReference(post)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostView);

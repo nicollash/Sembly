@@ -72,6 +72,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [parseFloat(location.lat), parseFloat(location.lon)]
+      // || [parseFloat(business.location.lat), parseFloat(business.location.lon)]
     })
     .asPromise();
 
@@ -81,7 +82,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       ? geocode.json.results[0].address_components[1].long_name
       : location.name;
 
-  const collection = business ? geofirestore.collection("Businesses").doc(`fb-${business.id}`).collection('posts') : geofirestore.collection("Posts");
+  const collection = business ? geofirestore.collection("Businesses").doc(`${business.id}`).collection('posts') : geofirestore.collection("Posts");
   
   collection
     .add({
@@ -94,7 +95,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       picture,
       user: {
         id: user.uid,
-        name: user.email.substring(0, user.email.indexOf("@")),
+        name: user.displayName,
         avatar:
           user.photoURL ||
           "https://api.adorable.io/avatars/285/abott@adorable.png"
@@ -102,7 +103,10 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
-      return response.status(200).send("Your post has been submitted");
+      return business ? geofirestore.collection("Businesses").doc(`${business.id}`).get() : docRef.get();
+    }).then(doc => {
+      console.log({...doc.data() });
+      return response.status(200).send({...doc.data() });
     })
     .catch(error => {
       console.log("Error adding document: ", error);
@@ -122,16 +126,18 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     createdAt: moment().format(),
     author: {
       id: user.uid,
-      name: user.email.substring(0, user.email.indexOf("@")),
+      name: user.displayName,
       avatar:
         user.photoURL ||
         "https://api.adorable.io/avatars/285/abott@adorable.png"
     },
   }
 
-  console.log(util.inspect(comment, { showHidden: false, depth: null }))
-
-  admin.firestore().collection("Posts").doc(`${postID}`).collection('comments').add(comment).then(() => {
+  const docPath = request.body.locationID ? 
+  `Businesses/${request.body.locationID}/posts/${postID}/comments` :
+  `Posts/${postID}/comments`
+  console.log(docPath);
+  admin.firestore().collection(docPath).add(comment).then(() => {
     console.log("added document");
     return response.status(200).send("Your comment has been submitted");
   }
@@ -147,17 +153,20 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   const user = await getUser(request);
 
   const postID = request.body.postID;
+  const locationID = request.body.locationID;
+
+  const colPath = request.body.locationID ? 
+  `Businesses/${locationID}/posts` :
+  `Posts`
   
-  const post = await admin.firestore().collection(`Posts`).where(admin.firestore.FieldPath.documentId(), `==`, postID);
-  const liked = await post.where(`d.likes`, "array-contains", user.uid).get()
-  
+  const liked = await admin.firestore().collection(colPath).where(admin.firestore.FieldPath.documentId(), `==`, postID).where(`d.likes`, "array-contains", user.uid).get()
   
   if (liked.docs.length) {
-    admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayRemove(user.uid) }).then(() => {
+    admin.firestore().collection(colPath).doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayRemove(user.uid) }).then(() => {
       return response.status(200).send("");
     }).catch(err => console.log(err));
   }else{
-    admin.firestore().collection("Posts").doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayUnion(user.uid) }).then(() => {
+    admin.firestore().collection(colPath).doc(`${postID}`).update({ "d.likes": admin.firestore.FieldValue.arrayUnion(user.uid) }).then(() => {
       return response.status(200).send("");
     }).catch(err => console.log(err));
   }
@@ -180,14 +189,17 @@ exports.getUserPosts = functions.https.onRequest(async (request, response) => {
 });
 
 exports.getBusinessPosts = functions.https.onRequest(async (request, response) => {
-  const postQuery = await geofirestore.collection("Businesses").doc(`fb-${request.query.businessID}`).collection('posts')
+  const user = await getUser(request);
+
+  const postQuery = await geofirestore.collection(`Businesses/${request.query.locationID}/posts`).get()
   const posts = await Promise.all(postQuery.docs.map(async doc => {
-    const comments = await geofirestore.collection("Businesses").doc(doc.id).collection('comments').get();
+    const comments = await geofirestore.collection(`Businesses/${request.query.locationID}/posts/${doc.id}/comments`).get() || [];
     return { 
       id: doc.id, ...doc.data(),
       likesCount: (doc.data().likes || []).length,
-      liked: (doc.data().likes || []).includes(request.query.userID),
+      liked: (doc.data().likes || []).includes(user.uid),
       comments: comments.docs.map(comment => comment.data()),
+      locationID: request.query.locationID,
     };
   }));
 
@@ -290,6 +302,31 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   };
   //console.log(util.inspect(feed, { showHidden: false, depth: null }));
   return response.status(200).send(feed);
+});
+
+exports.searchBusinesses = functions.https.onRequest(async (request, response) => {
+  const { lat, lon, query } = {
+    lat: parseFloat(request.query.lat),
+    lon: parseFloat(request.query.lon),
+    query: request.query.q,
+  };
+  
+  geofirestore
+  .collection("Businesses")
+  .where('name', '>=', query).where('name', '<=', query+ '\uf8ff')
+  .limit(10)
+  .near({
+    center: new firebase.firestore.GeoPoint(lat, lon),
+  })
+  .get().then(snapshot => {
+    return response.status(200).send(snapshot.docs.map((b) => {
+      console.log(b.data().id);
+      return {
+        id: b.data().id,
+        name: b.data().name,
+      };
+    }));
+  }).catch(err => console.log(err));
 });
 
 /*

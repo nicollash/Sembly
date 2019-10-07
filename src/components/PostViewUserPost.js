@@ -31,6 +31,7 @@ class PostViewUserPost extends React.Component {
 
   render() {
     const { post = {} } = this.props;
+    console.log(post);
     return (
       <View
         style={{
@@ -91,14 +92,6 @@ class PostViewUserPost extends React.Component {
               {post.user.name}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{ position: 'absolute', right: 0, top: '35%' }}
-            hitSlop={{ bottom: 20, left: 20, right: 20, top: 20 }}
-          >
-            <Image
-              source={require('../../assets/images/PostViewShareButton.png')}
-            />
-          </TouchableOpacity>
         </View>
         {post.picture !== '' && (
           <View
@@ -147,21 +140,23 @@ class PostViewUserPost extends React.Component {
             marginTop: '3%',
           }}
         >
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              width: '44%',
-              height: '130%',
-            }}
-          >
-            <Image
-              source={require('../../assets/images/PhotoPostLocationIcon.png')}
-            />
-            <View style={{ width: '5%' }} />
-            <Text style={[styles.postText, { marginTop: '1%' }]}>
-              {post.location.name}
-            </Text>
-          </TouchableOpacity>
+          {this.props.post.showOnMap && (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                width: '44%',
+                height: '130%',
+              }}
+            >
+              <Image
+                source={require('../../assets/images/PhotoPostLocationIcon.png')}
+              />
+              <View style={{ width: '5%' }} />
+              <Text style={[styles.postText, { marginTop: '1%' }]}>
+                {post.location.name}
+              </Text>
+            </TouchableOpacity>
+          )}
           <View
             style={{
               flexDirection: 'row',
@@ -169,7 +164,7 @@ class PostViewUserPost extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.props.toggleLike(post.id)}
+              onPress={() => this.props.toggleLike(post)}
             >
               <View style={{ flexDirection: 'row' }}>
                 <Image
@@ -209,7 +204,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleLike: postID => dispatch(toggleLike({ postID }))
+  toggleLike: post => dispatch(toggleLike(post)),
 });
 
 export default connect(

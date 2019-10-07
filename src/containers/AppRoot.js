@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { StatusBar, Image, View,Platform, Alert,PermissionsAndroid } from 'react-native';
+import { AppState, StatusBar, Image, Platform, View, Alert, PermissionsAndroid } from 'react-native';
 import _ from 'underscore';
 
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -11,6 +11,7 @@ import {
 
 import Geolocation from 'react-native-geolocation-service';
 import firebase from 'react-native-firebase';
+
 
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -26,7 +27,8 @@ import {
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import ProfileStack from './Profile/ProfileStack';
-import { clearLoginErrors, clearSignupErrors, updateLocation, setPreviousScreen } from '../actions';
+import { updateLocation, setPreviousScreen, facebookLogin } from '../actions';
+import NavigationService from '../helpers/SlidingPanelNavigation';
 
 const profileTag = require('../../assets/images/profileTag.png');
 
@@ -42,12 +44,18 @@ const WelcomeStack = createStackNavigator({
 const MainTabNavigation = createBottomTabNavigator({
   Home: {
     screen: HomeView,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
+      tabBarOnPress: ({ navigation, defaultHandler }) => {
+        const { state } = navigation;
+        if (navigation.isFocused()) {
+          NavigationService.navigate('Feed');
+        }
+        defaultHandler();
+      },
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
         <SafeAreaView>
           <Image
-            // onPress={() => this.props.setPreviousScreen(undefined)}
             style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
         </SafeAreaView>
       ),
@@ -109,7 +117,6 @@ const MainTabNavigation = createBottomTabNavigator({
   },
 });
 
-
 const RootStack = createStackNavigator({
   RootTab: {
     screen: MainTabNavigation,
@@ -139,12 +146,14 @@ class AppRoot extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      appState: AppState.currentState,
     };
 
     this.gpsInterval = undefined;
   }
 
   componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
     this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         user,
@@ -178,10 +187,42 @@ class AppRoot extends React.PureComponent {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.user.facebookUser === 'Old') {
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'MainApp',
+          params: {},
+        }),
+      );
+      NavigationService.stackReset('MainApp');
+    }
+    if (this.props.user.facebookUser === 'New') {
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Onboarding',
+          params: {},
+        }),
+      );
+    }
+  }
+
   componentWillUnmount() {
     console.log('approot will unmount');
     this.authSubscription();
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (
+      this.state.appState.match(/inactive|background/)
+        && nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!');
+      this.geoLocate();
+    }
+    this.setState({ appState: nextAppState });
+  };
 
   geoLocate = async () => {
     // console.log('locating...');
@@ -221,6 +262,7 @@ class AppRoot extends React.PureComponent {
   };
 
   render() {
+    console.log(this.state.appState);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />
@@ -243,10 +285,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  clearLoginErrors: () => dispatch(clearLoginErrors()),
-  clearSignupErrors: () => dispatch(clearSignupErrors()),
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
   setPreviousScreen: a => dispatch(setPreviousScreen(a)),
+  facebookLogin: () => dispatch(facebookLogin()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

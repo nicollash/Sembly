@@ -16,12 +16,14 @@ import Theme from '../styles/theme';
 
 const styles = StyleSheet.create({
   commentContainer: {
-    flex: 1,
     width: '95%',
     left: 15,
-    borderWidth: 2,
-    borderColor: '#F5F6F5',
-    borderRadius: 15,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    shadowColor: '#E0E0E0',
+    shadowRadius: 2,
+    shadowOffset: { height: 1 },
+    shadowOpacity: 1,
   },
   commentContent: {
     width: '88%',

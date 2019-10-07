@@ -13,6 +13,7 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import firebase from 'react-native-firebase';
 
+
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -27,7 +28,8 @@ import {
 import { HomeView } from './Main';
 import { NewPostView } from './Post';
 import ProfileStack from './Profile/ProfileStack';
-import { clearLoginErrors, clearSignupErrors, updateLocation, setPreviousScreen } from '../actions';
+import { updateLocation, setPreviousScreen, facebookLogin } from '../actions';
+import NavigationService from '../helpers/SlidingPanelNavigation';
 
 const profileTag = require('../../assets/images/profileTag.png');
 
@@ -43,12 +45,18 @@ const WelcomeStack = createStackNavigator({
 const MainTabNavigation = createBottomTabNavigator({
   Home: {
     screen: HomeView,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
+      tabBarOnPress: ({ navigation, defaultHandler }) => {
+        const { state } = navigation;
+        if (navigation.isFocused()) {
+          NavigationService.navigate('Feed');
+        }
+        defaultHandler();
+      },
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
         <SafeAreaView>
           <Image
-            // onPress={() => this.props.setPreviousScreen(undefined)}
             style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
         </SafeAreaView>
       ),
@@ -109,7 +117,6 @@ const MainTabNavigation = createBottomTabNavigator({
     }),
   },
 });
-
 
 const RootStack = createStackNavigator({
   RootTab: {
@@ -173,6 +180,26 @@ class AppRoot extends React.PureComponent {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.user.facebookUser === 'Old') {
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'MainApp',
+          params: {},
+        }),
+      );
+      NavigationService.stackReset('MainApp');
+    }
+    if (this.props.user.facebookUser === 'New') {
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Onboarding',
+          params: {},
+        }),
+      );
+    }
+  }
+
   componentWillUnmount() {
     console.log('approot will unmount');
     this.authSubscription();
@@ -192,6 +219,7 @@ class AppRoot extends React.PureComponent {
   }
 
   render() {
+    console.log(this.props.user);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />
@@ -214,10 +242,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  clearLoginErrors: () => dispatch(clearLoginErrors()),
-  clearSignupErrors: () => dispatch(clearSignupErrors()),
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
   setPreviousScreen: a => dispatch(setPreviousScreen(a)),
+  facebookLogin: () => dispatch(facebookLogin()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoot);

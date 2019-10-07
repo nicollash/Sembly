@@ -99,7 +99,6 @@ const feed = (state = feedDefault, action) => {
   case UPDATE_EVENTS:
     return Object.assign({}, state, { events: action.events });
   case UPDATE_BUSINESSES:
-    console.log(action.businesses);
     return Object.assign({}, state, { businesses: action.businesses });
   default:
     return state;
@@ -120,6 +119,7 @@ const userDefault = {
   posts: [],
   comments: [],
   likesCount: 0,
+  facebookUser: undefined,
 };
 
 const user = (state = userDefault, action) => {

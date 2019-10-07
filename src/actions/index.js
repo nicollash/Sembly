@@ -186,7 +186,7 @@ export function handleLogin(_email, _password) {
     firebase
       .auth()
       .signInWithEmailAndPassword(_email, _password)
-      .then(currentUser => {
+      .then((currentUser) => {
         const {
           email,
           photoURL,
@@ -207,8 +207,10 @@ export function updateUserProfile({
   photo = undefined,
   post = null,
   comment = null,
+  facebookUser,
 }) {
   return function updateUserProfileState(dispatch, getState) {
+    console.log(facebookUser);
     firebase
       .auth()
       .currentUser.updateProfile({
@@ -217,8 +219,9 @@ export function updateUserProfile({
       })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
-        const { displayName, photoURL, posts, comments } = currentUser;
-        const user = { displayName, photoURL };
+        console.log(currentUser);
+        const { displayName, photoURL, email, posts, comments } = currentUser;
+        const user = { displayName, photoURL, facebookUser, email };
         //if (post) posts.push(post);
         //if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });
@@ -231,47 +234,18 @@ export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export function handleSignup({
   _email,
   _password,
-  facebookPhoto = null,
-  fromFacebook = facebookPhoto !== null,
 }) {
   return function handleSignupState(dispatch, getState) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(_email, _password)
-      .then(currentUser => {
+      .then((currentUser) => {
         const { email } = currentUser.user;
         const user = { email };
         dispatch({ type: UPDATE_USER, user });
         dispatch({ type: SIGNUP_ERROR, message: undefined });
       })
       .catch(error => dispatch({ type: SIGNUP_ERROR, message: error.message }));
-  };
-}
-
-export function handleSignOut() {
-  return async function handleSignOutState(dispatch, getState) {
-    await firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        const user = {
-          email: undefined,
-          displayName: undefined,
-          photoURL: undefined,
-          location: { lat: undefined, lon: undefined, name: undefined }
-        };
-        dispatch({ type: UPDATE_USER, user });
-        setTimeout(() => {
-          const reset = {
-            email: '',
-            displayName: undefined,
-            photoURL: undefined,
-            location: { lat: undefined, lon: undefined, name: undefined }
-          };
-          dispatch({ type: UPDATE_USER, user: reset });
-        }, 0);
-      })
-      .catch(e => console.log("Can't log out"));
   };
 }
 
@@ -307,9 +281,50 @@ export function facebookLogin() {
       console.log(firebaseUserCredential);
 
       console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
+
+      const { email, displayName } = firebaseUserCredential.user;
+      const { photoURL } = firebaseUserCredential.user._user.providerData[0];
+      console.log(photoURL);
+      try {
+        if (firebaseUserCredential.additionalUserInfo.isNewUser) {
+          dispatch(updateUserProfile({ name: displayName, email, photo: photoURL, facebookUser: 'New' }));
+          console.log('dispatched facebook User new');
+        }
+        if (!firebaseUserCredential.additionalUserInfo.isNewUser) {
+          dispatch(updateUserProfile({ name: displayName, email, photo: photoURL, facebookUser: 'Old' }));
+          console.log('dispatched facebook User old');
+        }
+      } catch (e) { console.log(e); }
     } catch (e) {
       console.error(e);
     }
+  };
+}
+
+export function handleSignOut() {
+  return async function handleSignOutState(dispatch, getState) {
+    await firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        const user = {
+          email: undefined,
+          displayName: undefined,
+          photoURL: undefined,
+          location: { lat: undefined, lon: undefined, name: undefined }
+        };
+        dispatch({ type: UPDATE_USER, user });
+        setTimeout(() => {
+          const reset = {
+            email: '',
+            displayName: undefined,
+            photoURL: undefined,
+            location: { lat: undefined, lon: undefined, name: undefined }
+          };
+          dispatch({ type: UPDATE_USER, user: reset });
+        }, 0);
+      })
+      .catch(e => console.log(e));
   };
 }
 
@@ -341,7 +356,7 @@ export function getUserPosts() {
       }
     })
       .then(response => response.json())
-      .then(postsJSON => {
+      .then((postsJSON) => {
         dispatch({
           type: UPDATE_USER_POSTS,
           posts: postsJSON.map(p => Post.parse(p))
@@ -362,7 +377,7 @@ export function getBusinessPosts(locationID) {
       }
     })
       .then(response => response.json())
-      .then(postsJSON => {
+      .then((postsJSON) => {
         console.log(postsJSON);
         const business = _.findWhere(getState().feed.businesses, {
           id: locationID
@@ -399,7 +414,7 @@ export function createNewPost(post) {
       body: JSON.stringify(post)
     })
       .then(response => response.json())
-      .then(dataJSON => {
+      .then((dataJSON) => {
         console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
         if (post.business) {
@@ -424,7 +439,7 @@ export function createNewPost(post) {
         dispatch({ type: SENDING_POST, sendingPost: false });
         // dispatch(refreshFeed({}));
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         dispatch({ type: SENDING_POST, sendingPost: false });
       });

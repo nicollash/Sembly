@@ -147,6 +147,7 @@ class AppRoot extends React.PureComponent {
     super(props);
     this.state = {
       appState: AppState.currentState,
+      'refusedLocation':false
     };
 
     this.gpsInterval = undefined;
@@ -219,13 +220,15 @@ class AppRoot extends React.PureComponent {
         && nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
-      this.geoLocate();
+      if(!this.state.refusedLocation){
+        this.geoLocate();
+      }
     }
     this.setState({ appState: nextAppState });
   };
 
   geoLocate = async () => {
-    // console.log('locating...');
+    console.log('locating App rot...');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
       console.log(success);
@@ -233,7 +236,12 @@ class AppRoot extends React.PureComponent {
     }, (error) => {
       Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
       clearInterval(this.gpsInterval);
-      //console.warn(error);
+      if(error.code==5){
+        this.setState({
+          ...this.state,'refusedLocation':true
+        })
+      }
+      console.warn(error);
     }, { timeout: 10000 });
   }
 

@@ -48,8 +48,7 @@ class SemblyMapView extends React.Component {
   }
 
   componentDidMount() {
-    requestLocationPermission();
-    // this.props.getBusinesses();
+    
   }
 
   componentDidUpdate() {

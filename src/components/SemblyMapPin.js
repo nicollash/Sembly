@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import Theme from '../styles/theme';
-
 import MapView, { Marker } from 'react-native-maps';
 
 const styles = StyleSheet.create({
@@ -26,6 +25,22 @@ const styles = StyleSheet.create({
     right: -4,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  pinLabels: {
+    color: '#26315F',
+    fontSize: 12,
+    fontWeight: '600',
+    position: 'absolute',
+    minWidth: 300,
+    alignSelf: 'center',
+    textAlign: 'center',
+    bottom: -14,
+    // textShadowRadius: 15,
+    // textShadowColor: '#fff',
+    // textShadowOffset: { height: 10, width: 10 },
+    // textDecorationColor: '#fff',
+  },
+  glow: {
   },
 });
 
@@ -46,8 +61,14 @@ class SemblyMapPin extends React.Component {
   render() {
     const { notifications } = this.props;
     return (
-      <Marker coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}>
-        <TouchableOpacity onPress={this.props.onPress}>
+      <Marker
+        coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}
+        style={{ maxWidth: 1000 }}
+      >
+        <TouchableOpacity
+          onPress={this.props.onPress}
+          style={{ alignItems: 'center' }}
+        >
           <View>
             <Image
               source={require('../../assets/images/MapPinTemplate.png')}
@@ -74,6 +95,12 @@ class SemblyMapPin extends React.Component {
               </Text>
             </View>
           )}
+          <Text
+            style={styles.pinLabels}
+            numberOfLines={1}
+          >
+            {this.props.pinLabel}
+          </Text>
         </TouchableOpacity>
       </Marker>
     );

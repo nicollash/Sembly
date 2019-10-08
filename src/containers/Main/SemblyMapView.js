@@ -79,6 +79,7 @@ class SemblyMapView extends React.Component {
         onPress={() => NavigationService.navigate('Location', { location: event })}
         // notifications={event.notifications}
         notifications={_.random(0, 25)}
+        pinLabel="Label"
       />
     ));
     const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
@@ -92,6 +93,7 @@ class SemblyMapView extends React.Component {
         onPress={() => NavigationService.navigate('Post', { post })}
         // notifications={post.notifications}
         notifications={_.random(0, 25)}
+        pinLabel="Label"
       />
     ));
     const businessPins = this.props.businesses.map(business => (
@@ -103,6 +105,7 @@ class SemblyMapView extends React.Component {
         onPress={() => NavigationService.navigate('Location', { location: business })}
         // notifications={business.notifications}
         notifications={_.random(0, 25)}
+        pinLabel="Label"
       />
     ));
     return (

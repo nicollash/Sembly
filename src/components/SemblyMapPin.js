@@ -30,15 +30,7 @@ const styles = StyleSheet.create({
     color: '#26315F',
     fontSize: 12,
     fontWeight: '600',
-    position: 'absolute',
-    minWidth: 300,
-    alignSelf: 'center',
-    textAlign: 'center',
-    bottom: -14,
-    // textShadowRadius: 15,
-    // textShadowColor: '#fff',
-    // textShadowOffset: { height: 10, width: 10 },
-    // textDecorationColor: '#fff',
+    opacity: 1,
   },
   glow: {
   },
@@ -88,20 +80,22 @@ class SemblyMapPin extends React.Component {
               />
             )}
           </View>
-          {notifications > 0 && (
-            <View style={styles.notificationPopup}>
-              <Text style={{ fontSize: notifications > 9 ? 10 : 13, fontWeight: '700', color: '#fff', textAlign: 'center' }}>
-                {notifications}
-              </Text>
-            </View>
-          )}
+        </TouchableOpacity>
+        {notifications > 0 && (
+          <View style={styles.notificationPopup}>
+            <Text style={{ fontSize: notifications > 9 ? 10 : 13, fontWeight: '700', color: '#fff', textAlign: 'center' }}>
+              {notifications}
+            </Text>
+          </View>
+        )}
+        <View style={{ marginTop: 2, borderRadius: 10, backgroundColor: '#fff', paddingHorizontal: 5, opacity: 0.8 }}>
           <Text
             style={styles.pinLabels}
             numberOfLines={1}
           >
             {this.props.pinLabel}
           </Text>
-        </TouchableOpacity>
+        </View>
       </Marker>
     );
   }
@@ -112,6 +106,7 @@ SemblyMapPin.defaultProps = {
   pinIcon: null,
   onPress: null,
   notifications: 0,
+  pinLabel: '',
 };
 
 SemblyMapPin.propTypes = {

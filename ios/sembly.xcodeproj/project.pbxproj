@@ -1429,7 +1429,7 @@
 			baseConfigurationReference = BC16B567939EB9F75C52E2FD /* Pods-sembly.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = YG83D9QV7G;
 				HEADER_SEARCH_PATHS = (
@@ -1456,7 +1456,7 @@
 			baseConfigurationReference = 3E96F7B453BE3BC1C1743812 /* Pods-sembly.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = YG83D9QV7G;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

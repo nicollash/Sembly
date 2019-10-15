@@ -11,10 +11,7 @@ import Business from '../domain/Business';
 import Category from '../domain/Category';
 import NavigationService from '../helpers/SlidingPanelNavigation';
 
-export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
-// export const API_URL = __DEV__
-//   ? 'http://localhost:5000/sembly-staging/us-central1'
-//   : 'https://us-central1-sembly-staging.cloudfunctions.net';
+export const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -122,14 +119,12 @@ export function refreshFeed({
 
     const token = await firebase.auth().currentUser.getIdToken();
 
-    console.log(token);
-
     const paramsObj = { type, category, ..._location };
     const params = Object.keys(paramsObj)
       .map(key => `${key}=${encodeURIComponent(paramsObj[key])}`)
       .join('&');
     dispatch({ type: UPDATE_FEED_LOADING, status: true });
-    console.log(`${API_URL}/getFeed?${params}`);
+    
     fetch(`${API_URL}/getFeed?${params}/`, {
       method: 'GET',
       headers: {

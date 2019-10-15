@@ -249,7 +249,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSignup: (email, password) => dispatch(handleSignup(email, password)),
+  handleSignup: (_email, _password) => dispatch(handleSignup({ _email, _password })),
   clearLoginErrors: () => dispatch(clearLoginErrors()),
   clearSignupErrors: () => dispatch(clearSignupErrors()),
   setPreviousScreen: screen => dispatch(setPreviousScreen(screen)),

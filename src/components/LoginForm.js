@@ -4,8 +4,6 @@ import SemblyInput from './SemblyInput';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../styles/iphoneModelCheck';
 
-
-
 const styles = {
   container: {
     width: '100%',
@@ -22,7 +20,7 @@ class LoginForm extends React.Component {
             label="EMAIL"
             placeholder="your@email.com"
             returnKey="next"
-            valueChanged={str => this.props.emailChanged(str)}
+            valueChanged={str => this.props.emailChanged(str.replace(/ /g, ''))}
             multiline={false}
           />
         </View>
@@ -31,7 +29,7 @@ class LoginForm extends React.Component {
             label="PASSWORD"
             placeholder="***************"
             returnKey="done"
-            valueChanged={(str) => this.props.passwordChanged(str)}
+            valueChanged={str => this.props.passwordChanged(str)}
             ref={input => this.props.nextInput = input}
             secured={true}
             multiline={false}

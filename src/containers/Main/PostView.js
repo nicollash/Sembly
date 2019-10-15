@@ -78,7 +78,7 @@ class PostView extends React.Component {
             comments={post.comments.length}
           />
         </View>
-        <View>
+        <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
           <FlatList
             scrollEnabled={false}
             showsVerticalScrollIndicator={false}

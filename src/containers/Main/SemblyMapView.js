@@ -1,12 +1,13 @@
 import React from 'react';
 
+import _ from 'underscore';
+
 import {
   View,
   PermissionsAndroid,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-import _ from 'underscore';
 
 // Redux
 import { connect } from 'react-redux';
@@ -76,6 +77,9 @@ class SemblyMapView extends React.Component {
         pinColor="#927FE8"
         pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
         onPress={() => NavigationService.navigate('Location', { location: event })}
+        // notifications={event.notifications}
+        notifications={_.random(0, 25)}
+        pinLabel="Label"
       />
     ));
     const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
@@ -87,6 +91,9 @@ class SemblyMapView extends React.Component {
           ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
           : icons[0]}
         onPress={() => NavigationService.navigate('Post', { post })}
+        // notifications={post.notifications}
+        notifications={_.random(0, 25)}
+        pinLabel="Label"
       />
     ));
     const businessPins = this.props.businesses.map(business => (
@@ -96,6 +103,9 @@ class SemblyMapView extends React.Component {
         pinColor="#333434"
         pinIcon={business.picture}
         onPress={() => NavigationService.navigate('Location', { location: business })}
+        // notifications={business.notifications}
+        notifications={_.random(0, 25)}
+        pinLabel="Label"
       />
     ));
     return (
@@ -111,14 +121,13 @@ class SemblyMapView extends React.Component {
           }}
           showsUserLocation
           onRegionChange={(e) => {
-            // this.props.refreshFeed(e.latitude, e.longitude)
             this.setState({ latitude: e.latitude, longitude: e.longitude });
             this.debounceUpdateFeed();
           }}
         >
           {eventPins}
           {postPins}
-          {businessPins}
+          {/* {businessPins} */}
         </MapView>
       </View>
     );

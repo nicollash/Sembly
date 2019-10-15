@@ -112,18 +112,6 @@ class LocationView extends React.Component {
                       {location.title ? location.title : location.name}
                       {/* {location.title || location.name || 'Not Specified'} */}
                     </Text>
-                    <TouchableOpacity
-                      onPress={() => Share.share({
-                        title: 'title test',
-                        message: 'this is a test',
-                      })}
-                      style={{ position: 'absolute', alignSelf: 'center', right: -8, bottom: 6 }}
-                    >
-                      <Image
-                        style={{ tintColor: '#000' }}
-                        source={require('../../../assets/images/PostViewShareButton.png')} 
-                      />
-                    </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 3 }}>
                     <Text style={{

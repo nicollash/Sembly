@@ -44,7 +44,6 @@ class FeedUserPost extends React.Component {
 
   render() {
     const { post } = this.props;
-
     return (
       <View
         style={{
@@ -175,22 +174,24 @@ class FeedUserPost extends React.Component {
             paddingBottom: 10,
           }}
         >
-          <TouchableOpacity onPress={this.openMaps}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: 150,
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/PhotoPostLocationIcon.png')}
-              />
-              <View style={{ width: 5 }} />
-              <Text style={[styles.postText, { marginTop: 1 }]}>
-                {post.location.name}
-              </Text>
-            </View>
-          </TouchableOpacity>
+          {post.showOnMap && (
+            <TouchableOpacity onPress={this.openMaps}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: 150,
+                }}
+              >
+                <Image
+                  source={require('../../../assets/images/PhotoPostLocationIcon.png')}
+                />
+                <View style={{ width: 5 }} />
+                <Text style={[styles.postText, { marginTop: 1 }]}>
+                  {post.location.name}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={{
               flexDirection: 'row',

@@ -254,7 +254,7 @@ DEPENDENCIES:
   - Firebase/Messaging (~> 6.3.0)
   - Firebase/Storage (~> 6.3.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
-  - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
+  - react-native-fbsdk (from `../vendor/react-native-fbsdk`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
@@ -313,7 +313,7 @@ EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
   react-native-fbsdk:
-    :path: "../node_modules/react-native-fbsdk"
+    :path: "../vendor/react-native-fbsdk"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
@@ -369,6 +369,6 @@ SPEC CHECKSUMS:
   RNFS: a8fbe7060fa49157d819466404794ad9c58e58cf
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
-PODFILE CHECKSUM: 09b28cd07d16665297cac4bb7d1483ad6d73bf75
+PODFILE CHECKSUM: be0883790957d76f31b42471cd04674ffd95ccc5
 
 COCOAPODS: 1.8.3

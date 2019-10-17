@@ -101,7 +101,7 @@ class SemblyMapView extends React.Component {
         latitude={business.location.lat}
         longitude={business.location.lon}
         pinColor="#333434"
-        pinIcon={business.picture}
+        pinIcon={null}
         onPress={() => NavigationService.navigate('Location', { location: business })}
         // notifications={business.notifications}
         notifications={_.random(0, 25)}
@@ -125,9 +125,9 @@ class SemblyMapView extends React.Component {
             this.debounceUpdateFeed();
           }}
         >
-          {eventPins}
-          {postPins}
-          {/* {businessPins} */}
+          {/* eventPins */}
+          {/* postPins */}
+          {businessPins}
         </MapView>
       </View>
     );

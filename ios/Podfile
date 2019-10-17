@@ -42,11 +42,10 @@ target 'sembly' do
 
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
 
-
   pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
-  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+  pod 'react-native-fbsdk', :path => '../vendor/react-native-fbsdk'
 
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'

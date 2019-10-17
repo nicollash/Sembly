@@ -7,8 +7,7 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log",
-    "credentials": "export GOOGLE_APPLICATION_CREDENTIALS=\"/Users/mikaelderagon/git/sembly-rn/vendor/firebase/sembly-staging-firebase-adminsdk-u7rmq-4a1cf8404f.json\""
+    "logs": "firebase functions:log"
   },
   "engines": {
     "node": "8"

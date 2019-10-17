@@ -398,6 +398,80 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
   }
 });
 
+exports.uploadBusinesses = functions.https.onRequest(async (request, response) => {
+  if (request.method !== 'POST') {
+    const form = `
+    <body>
+      <form id="fileForm" method="post" enctype="multipart/form-data"> 
+        <label for="file">Choose file to upload</label>
+        <input type="file" id="file" name="file">
+        <input type="submit" value="Submit" /> 
+      </form>
+    </body>
+    `;
+
+    return response.status(200).send(form);
+  } else {
+    const busboy = new Busboy({ headers: request.headers });
+
+    busboy.on('file', (fieldname, file, filename) => {
+      file.on('data', async (data) => {
+          let batch = geofirestore.batch();
+
+          var workbook = XLSX.read(data);
+          console.log(workbook.SheetNames);
+          for (var index in workbook.SheetNames) {
+            
+            var worksheet = workbook.Sheets[workbook.SheetNames[index]];
+
+            var range = XLSX.utils.decode_range(worksheet['!ref']);
+
+            for(var R = range.s.r; R <= range.e.r; ++R) {
+              if (R === 0) continue;
+
+              if (worksheet[XLSX.utils.encode_cell({ c:0, r:R })] === undefined) break;
+              
+              try {
+                console.log(`Importing ${worksheet[XLSX.utils.encode_cell({ c:2, r:R })].w}`);
+                const geocode = await googleMaps.geocode({ 'address': worksheet[XLSX.utils.encode_cell({ c:3, r:R })].w}).asPromise().catch(err => console.log(err));
+                //`xls-${worksheet[XLSX.utils.encode_cell({ c:0, r:R })].w}`,
+                const business = {
+                  id: `xls-${worksheet[XLSX.utils.encode_cell({ c:0, r:R })].w}`,
+                  name: worksheet[XLSX.utils.encode_cell({ c:2, r:R })].w,
+                  about: worksheet[XLSX.utils.encode_cell({ c:6, r:R })].w,
+                  description: '',
+                  picture: worksheet[XLSX.utils.encode_cell({ c:1, r:R })].w,
+                  coordinates: new admin.firestore.GeoPoint(
+                    parseFloat(geocode.json.results[0].geometry.location.lat),
+                    parseFloat(geocode.json.results[0].geometry.location.lng)
+                  ),
+                  phone: worksheet[XLSX.utils.encode_cell({ c:5, r:R })].w,
+                  website: worksheet[XLSX.utils.encode_cell({ c:4, r:R })].w,
+                  type: worksheet[XLSX.utils.encode_cell({ c:7, r:R })].w
+                };
+
+                const doc = geofirestore.collection("Businesses").doc(`${business.id}`);
+                batch.set(doc, business);
+              }catch{
+                console.log(`Failed to import row ${R}`)
+              }
+            }
+          }
+        batch.commit().then(events => {
+          return response.status(200).send("Done");
+        })
+        .catch(err => console.log(err));
+      });
+    });
+
+    busboy.on('finish', () => {
+      //return response.status(200).send("done");
+    });
+
+    busboy.end(request.rawBody);
+  }
+});
+
 exports.getEvents = functions.https.onRequest(async (request, response) => {
   const sdk = eventbrite({ token: "CJ5OZRLECWAMECBF6KXS" });
 
@@ -473,7 +547,6 @@ exports.getBusinesses = functions.https.onRequest(async (req, res) => {
               parseFloat(b.location.longitude)
             ),
             phone: b.phone ? b.phone : '',
-  
           };
           
           const doc = geofirestore.collection("Businesses").doc(`${business.id}`);

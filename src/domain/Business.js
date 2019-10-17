@@ -16,6 +16,7 @@ const BusinessRecord = Immutable.Record({
   posts: [],
   phone: '',
   logo: '',
+  type: 'General',
 });
 
 const BusinessProps = {
@@ -28,6 +29,7 @@ const BusinessProps = {
   posts: PropTypes.arrayOf(Post),
   phone: PropTypes.text,
   logo: PropTypes.text,
+  type: PropTypes.text,
   //
 };
 
@@ -47,6 +49,7 @@ class Business extends BusinessRecord<BusinessProps> {
       posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
       phone: data.phone,
       logo: data.picture,
+      type: data.type,
       //
     });
   }

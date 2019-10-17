@@ -17,6 +17,7 @@ const BusinessRecord = Immutable.Record({
   phone: '',
   logo: '',
   type: 'General',
+  recentPosts: 0,
 });
 
 const BusinessProps = {
@@ -30,6 +31,7 @@ const BusinessProps = {
   phone: PropTypes.text,
   logo: PropTypes.text,
   type: PropTypes.text,
+  recentPosts: PropTypes.number,
   //
 };
 
@@ -50,6 +52,7 @@ class Business extends BusinessRecord<BusinessProps> {
       phone: data.phone,
       logo: data.picture,
       type: data.type,
+      recentPosts: data.recentPosts || 0,
       //
     });
   }

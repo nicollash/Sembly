@@ -452,7 +452,7 @@ exports.uploadBusinesses = functions.https.onRequest(async (request, response) =
 
                 const doc = geofirestore.collection("Businesses").doc(`${business.id}`);
                 batch.set(doc, business);
-              }catch{
+              }catch(err){
                 console.log(`Failed to import row ${R}`)
               }
             }

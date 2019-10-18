@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { AppState, StatusBar, Image, View, Alert } from 'react-native';
+import { AppState, StatusBar, Image, Platform, View, Alert, PermissionsAndroid } from 'react-native';
 import _ from 'underscore';
 
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-
 import {
   createStackNavigator, createSwitchNavigator, createBottomTabNavigator,
   createAppContainer, SafeAreaView, NavigationActions, withNavigationFocus,
@@ -148,6 +147,7 @@ class AppRoot extends React.PureComponent {
     super(props);
     this.state = {
       appState: AppState.currentState,
+      'refusedLocation':false
     };
 
     this.gpsInterval = undefined;
@@ -178,7 +178,13 @@ class AppRoot extends React.PureComponent {
           );
         }
       });
-      this.geoLocate();
+      if (Platform.OS === "android") {
+        if (this.state.user) {
+          this.requestLocationPermission();
+        }
+      } else {
+        this.geoLocate();
+      }
     });
   }
 
@@ -214,13 +220,15 @@ class AppRoot extends React.PureComponent {
         && nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
-      this.geoLocate();
+      if(!this.state.refusedLocation){
+        this.geoLocate();
+      }
     }
     this.setState({ appState: nextAppState });
   };
 
   geoLocate = async () => {
-    // console.log('locating...');
+    console.log('locating App rot...');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
       console.log(success);
@@ -228,9 +236,38 @@ class AppRoot extends React.PureComponent {
     }, (error) => {
       Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
       clearInterval(this.gpsInterval);
-      //console.warn(error);
+      if(error.code==5){
+        this.setState({
+          ...this.state,'refusedLocation':true
+        })
+      }
+      console.warn(error);
     }, { timeout: 10000 });
   }
+
+  requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Sembly App Location Permission",
+          message: "Sembly App needs access to your location ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Log from app root");
+        this.geoLocate();
+      } else {
+        Alert.alert('Permission denied', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   render() {
     console.log(this.state.appState);

@@ -218,9 +218,6 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
 
   const user = await getUser(request);
 
-  //httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getEvents?lat=${lat}&lon=${lon}`);
-  //httpRequest(`https://us-central1-sembly-staging.cloudfunctions.net/getBusinesses?lat=${lat}&lon=${lon}`);
-
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [lat, lon]
@@ -278,6 +275,15 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   }
   ));
 
+  const parsedBusinesses = await Promise.all(businesses.docs.map(async doc => {
+    const posts = await admin.firestore().collection("Businesses").doc(doc.id).collection('posts').get();
+    return { 
+        id: doc.id, ...doc.data(),
+        recentPosts: (posts.docs || []).length,
+    }
+  }
+  ));
+
   let feed = {
     city: locationName,
     categories: categories.docs.map(doc => {
@@ -296,9 +302,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     events: events.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     }),
-    businesses: businesses.docs.map(doc => {
-      return { id: doc.id, ...doc.data() };
-    })
+    businesses: parsedBusinesses,
   };
   //console.log(util.inspect(feed, { showHidden: false, depth: null }));
   return response.status(200).send(feed);

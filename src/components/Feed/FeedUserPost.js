@@ -56,6 +56,7 @@ class FeedUserPost extends React.Component {
           maxHeight: 500,
           maxWidth: wp(95),
           backgroundColor: '#fff',
+          elevation: this.props.isLoading ? 0 : 2,
           shadowColor: '#E0E0E0',
           shadowRadius: 2,
           shadowOffset: { height: 1 },
@@ -172,6 +173,7 @@ class FeedUserPost extends React.Component {
             marginLeft: '6%',
             marginTop: 10,
             paddingBottom: 10,
+            justifyContent:'space-between'
           }}
         >
           {post.showOnMap && (
@@ -179,14 +181,14 @@ class FeedUserPost extends React.Component {
               <View
                 style={{
                   flexDirection: 'row',
-                  width: 150,
+                  width: Platform.OS === 'ios' ? 150 : 0,
                 }}
               >
                 <Image
                   source={require('../../../assets/images/PhotoPostLocationIcon.png')}
                 />
-                <View style={{ width: 5 }} />
-                <Text style={[styles.postText, { marginTop: 1 }]}>
+                <View style={{ width: Platform.OS === 'ios' ? 5 : 0 }} />
+                <Text style={[styles.postText, { marginTop: 1, marginLeft: Platform.OS === 'ios' ? 0 : 5 }]}>
                   {post.location.name}
                 </Text>
               </View>
@@ -195,6 +197,7 @@ class FeedUserPost extends React.Component {
           <TouchableOpacity
             style={{
               flexDirection: 'row',
+              marginLeft:15
             }}
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
@@ -202,15 +205,15 @@ class FeedUserPost extends React.Component {
             <Image
               source={require('../../../assets/images/PhotoPostBubble.png')}
             />
-            <View style={{ width: '8%' }} />
-            <Text style={[styles.postText, { marginTop: 2 }]}>
+          
+            <Text style={[styles.postText, { marginTop: 2,marginLeft:5 }]}>
               {post.comments.length}
             </Text>
           </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
-              marginLeft: '18%',
+              marginLeft:15
             }}
           >
             <TouchableOpacity
@@ -221,8 +224,8 @@ class FeedUserPost extends React.Component {
                   style={post.liked ? {} : { tintColor: '#B9BDC5' }}
                   source={require('../../../assets/images/LikedPost.png')}
                 />
-                <View style={{ width: 7 }} />
-                <Text style={styles.postText}>
+                
+                <Text style={[styles.postText, { marginLeft:5 }]}>
                   {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}
                 </Text>
               </View>

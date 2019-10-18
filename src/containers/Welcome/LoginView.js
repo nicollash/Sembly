@@ -80,6 +80,7 @@ const styles = {
     paddingVertical: hp(1.55),
     borderRadius: hp(4),
     alignSelf: 'center',
+    height:wp(13),
     width: isIphoneX() ? wp(75) : wp(69),
     backgroundColor: '#F7567C',
   },
@@ -120,7 +121,7 @@ class LoginView extends React.Component {
     this.setState({ spinnerActive: true });
     setTimeout(() => {
       this.setState({ spinnerActive: false });
-    }, 4000);
+    }, 2000);
   }
 
   render() {
@@ -146,7 +147,7 @@ class LoginView extends React.Component {
             }}
           />
         </View>
-        <KeyboardAwareScrollView style={styles.mainContainer}>
+        <KeyboardAwareScrollView style={styles.mainContainer} enableOnAndroid={true}>
           <View>
             <Text style={styles.discoverCity}>
               Discover your city
@@ -166,10 +167,10 @@ class LoginView extends React.Component {
               passwordChanged={value => this.setState({ password: value })}
             />
           </View>
-          <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
+          <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2)}}>
             {this.state.spinnerActive && (
               <View style={styles.spinnerContainer}>
-                <ActivityIndicator />
+                <ActivityIndicator size='large'/>
               </View>
             )}
             {!this.state.spinnerActive && (
@@ -180,6 +181,7 @@ class LoginView extends React.Component {
                   this.handleSpinner();
                 }}
                 width={isIphoneX() ? wp(75) : wp(69)}
+                height={wp(13)}
               />
             )}
           </View>

@@ -162,6 +162,7 @@ export function refreshFeed({
 
         // Update posts
         const posts = feedJSON.posts.map(p => Post.parse(p));
+        console.log('posts',posts);
         dispatch({ type: UPDATE_POSTS, posts });
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });

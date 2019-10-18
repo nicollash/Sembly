@@ -35,6 +35,7 @@ class SemblyButton extends React.Component {
       <TouchableOpacity
         accessibilityIgnoresInvertColors
         style={[styles.button, { width: this.props.width }, 
+           { height: this.props.height },
           { backgroundColor: this.props.backgroundColor }]}
         onPress={this.props.onPress}
       >
@@ -50,6 +51,7 @@ SemblyButton.defaultProps = {
   label: 'Button',
   width: null,
   onPress: null,
+  height:null,
   backgroundColor: '#F7567C',
 };
 

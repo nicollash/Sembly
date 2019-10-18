@@ -67,7 +67,7 @@ class PostView extends React.Component {
 
     return (
       <ScrollView style={{ width: wp(100) }}>
-        <View style={{ height: 215 }}>
+        <View style={{marginBottom:18}}>
           <PostViewUserPost
             canGoBack={navigation.getParam('canGoBack')}
             post={post}

@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from "react";
 import _ from 'underscore';
 
 import {
@@ -10,32 +9,31 @@ import {
 import MapView from 'react-native-maps';
 
 // Redux
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import SemblyMapPin from '../../components/SemblyMapPin';
-import NavigationService from '../../helpers/SlidingPanelNavigation';
+import SemblyMapPin from "../../components/SemblyMapPin";
+import NavigationService from "../../helpers/SlidingPanelNavigation";
 
 // App Icons
 // import icons from '../../styles/icons';
 
 // Actions
-import { refreshFeed, updateMap } from '../../actions';
-
+import { refreshFeed, updateMap } from "../../actions";
 
 const icons = [
-  require('../../../assets/images/SemblyAllIcon.png'),
-  require('../../../assets/images/SemblyEventsIcon.png'),
-  require('../../../assets/images/SemblyBurgerIcon.png'),
-  require('../../../assets/images/SemblyPromosIcon.png'),
-  require('../../../assets/images/artsIcon.png'),
+  require("../../../assets/images/SemblyAllIcon.png"),
+  require("../../../assets/images/SemblyEventsIcon.png"),
+  require("../../../assets/images/SemblyBurgerIcon.png"),
+  require("../../../assets/images/SemblyPromosIcon.png"),
+  require("../../../assets/images/artsIcon.png")
 ];
 
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    width: '100%',
-  },
+    backgroundColor: "#fff",
+    width: "100%"
+  }
 };
 
 class SemblyMapView extends React.Component {
@@ -50,8 +48,7 @@ class SemblyMapView extends React.Component {
   }
 
   componentDidMount() {
-    requestLocationPermission();
-    // this.props.getBusinesses();
+    
   }
 
   componentDidUpdate() {
@@ -65,7 +62,8 @@ class SemblyMapView extends React.Component {
     )}
   }
 
-  updateFeed = () => this.props.refreshFeed(this.state.latitude, this.state.longitude);
+  updateFeed = () =>
+    this.props.refreshFeed(this.state.latitude, this.state.longitude);
 
   // generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
 
@@ -111,13 +109,15 @@ class SemblyMapView extends React.Component {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
-          ref={(map) => { this.map = map; }}
-          style={{ width: '100%', height: '100%' }}
+          ref={map => {
+            this.map = map;
+          }}
+          style={{ width: "100%", height: "100%" }}
           initialRegion={{
             latitude: this.props.location.lat,
             longitude: this.props.location.lon,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            longitudeDelta: 0.0421
           }}
           showsUserLocation
           onRegionChange={(e) => {
@@ -134,35 +134,9 @@ class SemblyMapView extends React.Component {
   }
 }
 
-async function requestLocationPermission() {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Sembly App Location Permission',
-        message:
-          'Sembly App needs access to your location ',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the location');
-    } else {
-      console.log('Location permission denied');
-    }
-  } catch (err) {
-    console.warn(err);
-  }
-}
+SemblyMapView.defaultProps = {};
 
-SemblyMapView.defaultProps = {
-};
-
-SemblyMapView.propTypes = {
-};
-
+SemblyMapView.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
   businesses: state.feed.businesses,
@@ -170,12 +144,15 @@ const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
   location: state.user.location,
   categories: state.feed.categories,
-  activeLocation: state.map.activeLocation,
+  activeLocation: state.map.activeLocation
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshFeed: (lat, lon) => dispatch(refreshFeed({ location: { lat, lon } })),
-  updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
+  updateMap: (lat, lon) => dispatch(updateMap(lat, lon))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SemblyMapView);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SemblyMapView);

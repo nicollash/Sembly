@@ -19,11 +19,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+    margin:1,
     backgroundColor: '#fff',
     shadowColor: '#E0E0E0',
     shadowRadius: 2,
     shadowOffset: { height: 1 },
     shadowOpacity: 1,
+    //elevation: 2,
+    flexDirection:'column'
   },
   // imageContainer: {
   //   height: 94.9,
@@ -65,7 +68,7 @@ class FeedScrollPost extends React.Component {
   render() {
     return (
       <TouchableOpacity
-        style={styles.container}
+        style={[styles.container,{elevation:this.props.isLoading?0:2}]}
         onPress={this.props.onEventPress}
       >
         <View style={{ marginTop: 2 }}>
@@ -73,17 +76,16 @@ class FeedScrollPost extends React.Component {
         </View>
         <View style={{
           flexDirection: 'row',
-          top: 1,
           justifyContent: 'space-between',
           alignItems: 'center',
           width: '90%',
-          height: 28,
+          height: 28
         }}
         >
-          <Text style={styles.title}>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode='tail'>
             {this.seeMore(this.props.title)}
           </Text>
-          <Text style={styles.distance}>{this.props.distance} mi</Text>
+          <Text ellipsizeMode='tail' style={styles.distance}>{this.props.distance} mi</Text>
         </View>
       </TouchableOpacity>
     );
@@ -95,6 +97,7 @@ FeedScrollPost.defaultProps = {
   picture: null,
   title: 'blank',
   distance: '?',
+  isLoading:false
 };
 
 FeedScrollPost.propTypes = {
@@ -103,6 +106,7 @@ FeedScrollPost.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
+  
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -10,6 +10,7 @@ import {
   Image,
   View,
   Text,
+  Platform,
 } from 'react-native';
 
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';

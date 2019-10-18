@@ -147,7 +147,7 @@ class AppRoot extends React.PureComponent {
     super(props);
     this.state = {
       appState: AppState.currentState,
-      'refusedLocation':false
+      refusedLocation: false,
     };
 
     this.gpsInterval = undefined;
@@ -179,11 +179,14 @@ class AppRoot extends React.PureComponent {
         }
       });
       if (Platform.OS === "android") {
-        if (this.state.user) {
-          this.requestLocationPermission();
+        const isLoggedIn = firebase.auth();
+        if (isLoggedIn._user !== null) {
+          if (this.state.user) {
+            this.requestLocationPermission();
+          } else {
+            this.geoLocate();
+          }
         }
-      } else {
-        this.geoLocate();
       }
     });
   }
@@ -220,7 +223,7 @@ class AppRoot extends React.PureComponent {
         && nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
-      if(!this.state.refusedLocation){
+      if (!this.state.refusedLocation) {
         this.geoLocate();
       }
     }
@@ -228,18 +231,18 @@ class AppRoot extends React.PureComponent {
   };
 
   geoLocate = async () => {
-    console.log('locating App rot...');
+    console.log('locating App root...');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
       console.log(success);
-      this.props.updateLocation(success.coords.latitude, success.coords.longitude)
+      this.props.updateLocation(success.coords.latitude, success.coords.longitude);
     }, (error) => {
       Alert.alert('Could not locate you', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
       clearInterval(this.gpsInterval);
-      if(error.code==5){
+      if (error.code === 5) {
         this.setState({
-          ...this.state,'refusedLocation':true
-        })
+          ...this.state, refusedLocation: true,
+        });
       }
       console.warn(error);
     }, { timeout: 10000 });
@@ -255,11 +258,11 @@ class AppRoot extends React.PureComponent {
           buttonNeutral: "Ask Me Later",
           buttonNegative: "Cancel",
           buttonPositive: "OK"
-        }
+        },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("Log from app root");
-        this.geoLocate();
+        // this.geoLocate();
       } else {
         Alert.alert('Permission denied', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
         console.log("Location permission denied");
@@ -270,7 +273,8 @@ class AppRoot extends React.PureComponent {
   };
 
   render() {
-    console.log(this.state.appState);
+    const isLoggedIn = firebase.auth();
+    console.log(isLoggedIn);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />

@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     opacity: 1,
   },
-  glow: {
-  },
 });
 
 class SemblyMapPin extends React.Component {
@@ -56,11 +54,11 @@ class SemblyMapPin extends React.Component {
       <Marker
         coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}
         style={{ maxWidth: 1000 }}
+        onPress={() => {
+          this.props.onPress();
+        }}
       >
-        <TouchableOpacity
-          onPress={this.props.onPress}
-          style={{ alignItems: 'center' }}
-        >
+        <View style={{ alignItems: 'center' }}>
           <View>
             <Image
               source={require('../../assets/images/MapPinTemplate.png')}
@@ -80,7 +78,7 @@ class SemblyMapPin extends React.Component {
               />
             )}
           </View>
-        </TouchableOpacity>
+        </View>
         {notifications > 0 && (
           <View style={styles.notificationPopup}>
             <Text style={{ fontSize: notifications > 9 ? 10 : 13, fontWeight: '700', color: '#fff', textAlign: 'center' }}>
@@ -92,6 +90,7 @@ class SemblyMapPin extends React.Component {
           <Text
             style={styles.pinLabels}
             numberOfLines={1}
+            maxWidth={40}
           >
             {this.props.pinLabel}
           </Text>
@@ -110,7 +109,6 @@ SemblyMapPin.defaultProps = {
 };
 
 SemblyMapPin.propTypes = {
-
 };
 
 
@@ -118,7 +116,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-
 });
 
 export default SemblyMapPin;

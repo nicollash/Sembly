@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import _ from 'underscore';
 
 import {
@@ -9,75 +9,82 @@ import {
 import MapView from 'react-native-maps';
 
 // Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import SemblyMapPin from "../../components/SemblyMapPin";
-import NavigationService from "../../helpers/SlidingPanelNavigation";
+import SemblyMapPin from '../../components/SemblyMapPin';
+import NavigationService from '../../helpers/SlidingPanelNavigation';
 
 // App Icons
 // import icons from '../../styles/icons';
 
 // Actions
-import { refreshFeed, updateMap } from "../../actions";
+import { refreshFeed, updateMap } from '../../actions';
 
 const icons = [
-  require("../../../assets/images/SemblyAllIcon.png"),
-  require("../../../assets/images/SemblyEventsIcon.png"),
-  require("../../../assets/images/SemblyBurgerIcon.png"),
-  require("../../../assets/images/SemblyPromosIcon.png"),
-  require("../../../assets/images/artsIcon.png")
+  require('../../../assets/images/SemblyAllIcon.png'),
+  require('../../../assets/images/SemblyEventsIcon.png'),
+  require('../../../assets/images/SemblyBurgerIcon.png'),
+  require('../../../assets/images/SemblyPromosIcon.png'),
+  require('../../../assets/images/SemblyDrinksIcon.png'),
+  require('../../../assets/images/artsIcon.png')
 ];
 
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    width: "100%"
-  }
+    backgroundColor: '#fff',
+    width: '100%',
+  },
 };
 
 class SemblyMapView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
-  }
-
-  componentWillMount() {
-    this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
+    this.state = {
+    };
   }
 
   componentDidMount() {
-    
+    this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
+    this.map.animateCamera({
+      center: {
+        latitude: this.props.location.lat,
+        longitude: this.props.location.lon,
+      },
+      altitude: 1000,
+      zoom: 1000,
+    });
   }
 
-  componentDidUpdate() {
-    {this.props.activeLocation.lat !== undefined && (
-      this.map.animateToRegion({
-        latitude: this.props.activeLocation.lat,
-        longitude: this.props.activeLocation.lon,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      }, 2500)
-    )}
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeLocation !== this.props.activeLocation) {
+      if (this.props.activeLocation.lat !== undefined) {
+        this.map.animateToRegion({
+          latitude: this.props.activeLocation.lat,
+          longitude: this.props.activeLocation.lon,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }, 2500);
+      }
+      this.debounceUpdateFeed();
+    }
   }
 
-  updateFeed = () =>
-    this.props.refreshFeed(this.state.latitude, this.state.longitude);
-
-  // generatePinTag = name => name.replace(/(\S+)(\s*)/gi, (match, p1, p2) => p1[0].toUpperCase()).substr(0,2);
+  updateFeed = () => this.props.refreshFeed(this.props.activeLocation.lat, this.props.activeLocation.lon);
 
   render() {
+    // console.log(this.state);
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin
         latitude={event.location.lat}
         longitude={event.location.lon}
-        pinColor="#927FE8"
+        pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
         pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
         onPress={() => NavigationService.navigate('Location', { location: event })}
         // notifications={event.notifications}
-        notifications={_.random(0, 25)}
-        pinLabel="Label"
+        // notifications={_.random(0, 25)}
+        pinLabel="Event"
       />
     ));
     const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
@@ -98,34 +105,40 @@ class SemblyMapView extends React.Component {
       <SemblyMapPin
         latitude={business.location.lat}
         longitude={business.location.lon}
-        pinColor="#333434"
-        pinIcon={null}
+        pinColor={_.where(this.props.categories, { title: business.type })[0].color}
+        pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
         onPress={() => NavigationService.navigate('Location', { location: business })}
-        // notifications={business.notifications}
-        notifications={_.random(0, 25)}
-        pinLabel="Label"
+        notifications={business.recentPosts}
+        // notifications={_.random(0, 25)}
+        pinLabel={business.name}
       />
     ));
+    console.log(this.props.activeLocation)
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
-          ref={map => {
+          ref={(map) => {
             this.map = map;
           }}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: '100%', height: '100%' }}
           initialRegion={{
             latitude: this.props.location.lat,
             longitude: this.props.location.lon,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
+            longitudeDelta: 0.0421,
           }}
+          // scrollEnabled={false}
           showsUserLocation
           onRegionChange={(e) => {
-            this.setState({ latitude: e.latitude, longitude: e.longitude });
-            this.debounceUpdateFeed();
+            // this.props.updateMap(e.latitude, e.longitude);
+            this.debounceUpdateFeed(e.latitude, e.longitude);
           }}
+          // onPanDrag={(e) => {
+          //   _.debounce(this.setState({ lat: e.nativeEvent.coordinate.latitude, lon: e.nativeEvent.coordinate.longitude }), 2000);
+          //   this.debounceUpdateFeed();
+          // }}
         >
-          {/* eventPins */}
+          {eventPins}
           {/* postPins */}
           {businessPins}
         </MapView>
@@ -144,15 +157,15 @@ const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
   location: state.user.location,
   categories: state.feed.categories,
-  activeLocation: state.map.activeLocation
+  activeLocation: state.map.activeLocation,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshFeed: (lat, lon) => dispatch(refreshFeed({ location: { lat, lon } })),
-  updateMap: (lat, lon) => dispatch(updateMap(lat, lon))
+  updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SemblyMapView);

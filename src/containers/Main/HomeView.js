@@ -1,15 +1,19 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions,
-  ScrollView,
+  AppState,
+  Alert,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
+import Geolocation from 'react-native-geolocation-service';
+import firebase from 'react-native-firebase';
 
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Theme from '../../styles/theme';
@@ -17,6 +21,7 @@ import Theme from '../../styles/theme';
 import SemblyMapView from './SemblyMapView';
 import SlidingPanelNavigator from '../../components/SlidingPanelNavigator';
 import SlidingPanelNavigationService from '../../helpers/SlidingPanelNavigation';
+import { updateLocation } from '../../actions';
 
 const styles = {
   container: {
@@ -57,6 +62,9 @@ class HomeView extends React.Component {
   }
 
   componentDidUpdate() {
+  }
+
+  componentWillUnmount() {
   }
 
   render() {
@@ -100,10 +108,12 @@ HomeView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => ({
+  updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
 
 });
 
-export default HomeView;
+export default connect(mapStateToProps, mapDispatchToProps)(HomeView);

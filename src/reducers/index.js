@@ -143,8 +143,8 @@ const mapDefault = {
   activeLocation: {
     // lat: userDefault.location.lat,
     // lon: userDefault.location.lon,
-    lat: undefined,
-    lon: undefined,
+    lat: 41.25861,
+    lon: -95.93779,
   },
 };
 

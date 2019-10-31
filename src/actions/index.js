@@ -11,7 +11,8 @@ import Business from '../domain/Business';
 import Category from '../domain/Category';
 import NavigationService from '../helpers/SlidingPanelNavigation';
 
-export const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
+// export const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
+export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
 // const feedJSON = require('../domain/_mockFeed.json');
@@ -162,7 +163,6 @@ export function refreshFeed({
 
         // Update posts
         const posts = feedJSON.posts.map(p => Post.parse(p));
-        console.log('posts',posts);
         dispatch({ type: UPDATE_POSTS, posts });
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });

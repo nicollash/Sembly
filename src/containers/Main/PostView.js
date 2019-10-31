@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import {
   View,
   ScrollView,
+  StyleSheet,
   FlatList,
 } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -22,6 +23,16 @@ import {
 import PostViewUserPost from '../../components/PostViewUserPost';
 import PostViewCommentHeader from '../../components/PostViewCommentHeader';
 import theme from '../../styles/theme';
+
+const styles = StyleSheet.create({
+  commentsContainer: {
+    shadowColor: '#e0e0e0',
+    shadowRadius: 3,
+    shadowOpacity: 1,
+    shadowOffset: { height: 0, width: 0 },
+    marginLeft: -10,
+  },
+});
 
 class PostView extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -78,7 +89,7 @@ class PostView extends React.Component {
             comments={post.comments.length}
           />
         </View>
-        <View style={{ shadowColor: '#e0e0e0', shadowRadius: 3, shadowOpacity: 1, shadowOffset: { height: 0, width: 0 } }}>
+        <View style={styles.commentsContainer}>
           <FlatList
             scrollEnabled={false}
             showsVerticalScrollIndicator={false}

@@ -74,7 +74,7 @@ class SemblyMapView extends React.Component {
   updateFeed = () => this.props.refreshFeed(this.props.activeLocation.lat, this.props.activeLocation.lon);
 
   render() {
-    // console.log(this.state);
+    console.log(this.props.location, this.props.activeLocation);
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin
         latitude={event.location.lat}
@@ -113,7 +113,6 @@ class SemblyMapView extends React.Component {
         pinLabel={business.name}
       />
     ));
-    console.log(this.props.activeLocation)
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
@@ -121,22 +120,36 @@ class SemblyMapView extends React.Component {
             this.map = map;
           }}
           style={{ width: '100%', height: '100%' }}
+          showsPointsOfInterest={false}
+          customMapStyle={[
+            {
+              "featureType": 'poi',
+              "stylers": [
+                {
+                  "visibility": 'off',
+                },
+              ],
+            },
+            {
+              "featureType": 'transit',
+              "stylers": [
+                {
+                  "visibility": 'off',
+                },
+              ],
+            },
+          ]}
           initialRegion={{
             latitude: this.props.location.lat,
             longitude: this.props.location.lon,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-          // scrollEnabled={false}
           showsUserLocation
           onRegionChange={(e) => {
             // this.props.updateMap(e.latitude, e.longitude);
             this.debounceUpdateFeed(e.latitude, e.longitude);
           }}
-          // onPanDrag={(e) => {
-          //   _.debounce(this.setState({ lat: e.nativeEvent.coordinate.latitude, lon: e.nativeEvent.coordinate.longitude }), 2000);
-          //   this.debounceUpdateFeed();
-          // }}
         >
           {eventPins}
           {/* postPins */}

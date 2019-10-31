@@ -189,6 +189,7 @@ class AppRoot extends React.PureComponent {
         }
       }
     });
+    this.geoLocate();
   }
 
   componentDidUpdate() {
@@ -231,7 +232,7 @@ class AppRoot extends React.PureComponent {
   };
 
   geoLocate = async () => {
-    console.log('locating App root...');
+    console.log('geolocating');
     await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition((success) => {
       console.log(success);
@@ -262,7 +263,7 @@ class AppRoot extends React.PureComponent {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("Log from app root");
-        // this.geoLocate();
+        this.geoLocate();
       } else {
         Alert.alert('Permission denied', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
         console.log("Location permission denied");
@@ -273,8 +274,6 @@ class AppRoot extends React.PureComponent {
   };
 
   render() {
-    const isLoggedIn = firebase.auth();
-    console.log(isLoggedIn);
     return (
       <ThemeContainer theme="default">
         <StatusBar barStyle="default" />

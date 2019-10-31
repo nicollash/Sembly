@@ -57,7 +57,7 @@ class PostViewCommentHeader extends React.Component {
         
         <View style={styles.roundInput}>
           <TextInput
-            style={{ left: '5%' }}
+            style={{ left: '5%', paddingVertical: 6 }}
             placeholder="Comment on this post"
             placeholderTextColor="#B6B8C5"
             value={this.state.comment} 

@@ -36,11 +36,13 @@ const styles = StyleSheet.create({
   listView: {
     position: 'absolute',
     left: -17,
-    top: Platform.OS === 'ios' ? 26 : 60,
-    elevation: Platform.OS === 'ios' ?  0 : 1,
-    borderRadius: 2,
-    borderWidth: Platform.OS === 'ios' ? 1 : 0,
+    top: Platform.OS === 'ios' ? 25 : 60,
+    elevation: Platform.OS === 'ios' ? 0 : 1,
+    // borderRadius: 10,
+    borderTopWidth: 0,
+    borderWidth: Platform.OS === 'ios' ? 2 : 0,
     borderColor: '#EBECEE',
+    borderTopColor: '#fff',
     width: Platform.OS === 'ios' ? wp(90) : 0,
   },
   location: {
@@ -49,11 +51,11 @@ const styles = StyleSheet.create({
     // marginLeft: 4,
     borderWidth: 1,
     borderColor: '#EBECEE',
-    paddingVertical: hp(1)
+    paddingVertical: hp(1),
   },
   predefinedPlacesDescription: {
-    color: '#1faadb'
-  }
+    color: '#1faadb',
+  },
 });
 
 class SemblyPlaceAutoComplete extends React.Component {
@@ -94,6 +96,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.textInputContainer}
           listContainerStyle={styles.listView}
+          listStyle={{ borderRadius: 10 }}
           data={businesses}
           defaultValue={query}
           hideResults={businesses.length <= 0}

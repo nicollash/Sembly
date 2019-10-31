@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
     height: 18.5,
     width: 18.5,
     borderRadius: 25,
-    backgroundColor: 'red',
+    backgroundColor: '#ff0000',
     borderColor: '#fff',
     borderWidth: 1,
     position: 'absolute',
-    top: -11,
-    right: -4,
+    top: -12,
+    right: -8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -54,6 +54,7 @@ class SemblyMapPin extends React.Component {
       <Marker
         coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}
         style={{ maxWidth: 1000 }}
+        opacity={1}
         onPress={() => {
           this.props.onPress();
         }}
@@ -77,15 +78,15 @@ class SemblyMapPin extends React.Component {
                 }}
               />
             )}
+            {notifications > 0 && (
+              <View style={styles.notificationPopup}>
+                <Text style={{ fontSize: notifications > 9 ? 10 : 13, fontWeight: '700', color: '#fff', textAlign: 'center' }}>
+                  {notifications}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
-        {notifications > 0 && (
-          <View style={styles.notificationPopup}>
-            <Text style={{ fontSize: notifications > 9 ? 10 : 13, fontWeight: '700', color: '#fff', textAlign: 'center' }}>
-              {notifications}
-            </Text>
-          </View>
-        )}
         <View style={{ marginTop: 2, borderRadius: 10, backgroundColor: '#fff', paddingHorizontal: 5, opacity: 0.8 }}>
           <Text
             style={styles.pinLabels}

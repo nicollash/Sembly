@@ -47,13 +47,6 @@ class LocationView extends React.Component {
   componentDidMount() {
   }
 
-  setPanelPadding = (h) => {
-    if (isIphoneX()) {
-      return 620 - 0.984017 * h;
-    }
-    return 500 - 0.984017 * h;
-  }
-
   render() {
     const { navigation, location } = this.props;
     const screenHeight = Dimensions.get('window').height;
@@ -217,7 +210,7 @@ class LocationView extends React.Component {
                   )}
                 />
               </View>
-              <View style={{ height: this.setPanelPadding(this.props.panelHeight)}} />
+              <View style={{ height: hp(100) + 15 - this.props.panelHeight }} />
             </View>
           </ScrollView>
         </View>

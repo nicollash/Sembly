@@ -21,7 +21,7 @@ import Theme from '../../styles/theme';
 import SemblyMapView from './SemblyMapView';
 import SlidingPanelNavigator from '../../components/SlidingPanelNavigator';
 import SlidingPanelNavigationService from '../../helpers/SlidingPanelNavigation';
-import { updateLocation } from '../../actions';
+import { updateLocation, setPanelHeight } from '../../actions';
 
 const styles = {
   container: {
@@ -79,8 +79,9 @@ class HomeView extends React.Component {
             this._panel = c;
             SlidingPanelNavigationService.setPanel(c);
           }}
-          // onDragStart={() => this.setState({ }) }
-          // onDragEnd={() => }
+          // onDragStart={startHeight => this.setState({ startHeight })}
+          onDragEnd={panelHeight => this.props.setPanelHeight(panelHeight)}
+          onMomentumDragEnd={panelHeight => this.props.setPanelHeight(panelHeight)}
         >
           {dragHandler => (
             <View style={styles.panel}>
@@ -113,7 +114,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),
-
+  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView);

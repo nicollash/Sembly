@@ -78,19 +78,11 @@ class FeedView extends React.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    this.props.setPanelHeight(400);
     this.props.refreshFeed();
   }
 
   _onRefresh = () => {
     this.props.refreshFeed();
-  };
-
-  setPanelPadding = (h) => {
-    if (isIphoneX()) {
-      return 809.452 - 0.984017 * h;
-    }
-    return 682 - 0.984017 * h;
   };
 
   render() {
@@ -102,6 +94,8 @@ class FeedView extends React.Component {
       navigation,
       location,
     } = this.props;
+
+    console.log(this.props.panelHeight);
 
     return (
       <ScrollView
@@ -270,7 +264,7 @@ class FeedView extends React.Component {
           </View>
         )}
         <View
-          style={{ height: this.setPanelPadding(this.props.panelHeight) }}
+          style={{ height: hp(100) + 15 - this.props.panelHeight }}
         />
       </ScrollView>
     );

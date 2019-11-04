@@ -19,6 +19,7 @@ import NavigationService from '../../helpers/SlidingPanelNavigation';
 
 // Actions
 import { refreshFeed, updateMap } from '../../actions';
+import isColliding from '../../helpers/isColliding';
 
 const icons = [
   require('../../../assets/images/SemblyAllIcon.png'),
@@ -74,7 +75,6 @@ class SemblyMapView extends React.Component {
   updateFeed = () => this.props.refreshFeed(this.props.activeLocation.lat, this.props.activeLocation.lon);
 
   render() {
-    console.log(this.props.location, this.props.activeLocation);
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin
         latitude={event.location.lat}

@@ -11,9 +11,12 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
-import { getPostReference } from '../../actions';
+import { getPostReference, setPanelHeight } from '../../actions';
 
 import {
   SemblyUserComment,
@@ -67,7 +70,8 @@ class PostView extends React.Component {
   }
 
   setPanelPadding = (h) => {
-    return 810.452 - 0.984017 * h;
+    return 810 - h;
+    // return 810.452 - 0.984017 * h;
     // return 120; // 684
   }
 
@@ -104,7 +108,7 @@ class PostView extends React.Component {
             )}
           />
         </View>
-        <View style={{ height: this.setPanelPadding(this.props.panelHeight) }} />
+        <View style={{ height: hp(100) + 15 - this.props.panelHeight }} />
       </ScrollView>
     );
   }
@@ -123,6 +127,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   getPostReference: (post) => dispatch(getPostReference(post)),
+  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostView);

@@ -54,7 +54,6 @@ class SemblyMapPin extends React.Component {
       <Marker
         coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}
         style={{ maxWidth: 1000 }}
-        opacity={1}
         onPress={() => {
           this.props.onPress();
         }}

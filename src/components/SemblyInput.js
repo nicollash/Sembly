@@ -50,13 +50,14 @@ class SemblyInput extends React.Component {
           />
           <View style={{ height: this.props.spacing}} />
           <TextInput
+            maxLength={this.props.maxLength}
             multiline={this.props.multiline}
             textContentType={this.props.type}
             style={styles.input}
             placeholder={this.props.placeholder}
             placeholderTextColor="#C7CAD1"
             autoCapitalize="none"
-            autoCorrect={false}
+            autoCorrect={this.props.autoCorrect}
             secureTextEntry={this.props.secured}
             onChangeText={str => this.props.valueChanged(str)}
             returnKeyType={this.props.returnKey}
@@ -71,6 +72,8 @@ class SemblyInput extends React.Component {
 
 SemblyInput.defaultProps = {
   label: null,
+  type: undefined,
+  autoCorrect: false,
   onFontSize: 14,
   onSecondFontSize: 10,
   multiline: true,

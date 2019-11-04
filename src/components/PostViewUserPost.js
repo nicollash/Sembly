@@ -31,7 +31,6 @@ class PostViewUserPost extends React.Component {
 
   render() {
     const { post = {} } = this.props;
-    console.log(post);
     return (
       <View
         style={{

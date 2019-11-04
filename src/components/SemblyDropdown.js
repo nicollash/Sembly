@@ -19,7 +19,7 @@ class SemblyDropdown extends React.Component {
 
     this.state = {
       open: false,
-      value: "General"
+      value: 'General',
     };
   }
 
@@ -31,7 +31,7 @@ class SemblyDropdown extends React.Component {
     }
   }
 
-  updateValue = value => {
+  updateValue = (value) => {
     this.setState({ value });
     this.props.onChange(value);
   };
@@ -86,7 +86,7 @@ SemblyDropdown.defaultProps = {
   label: "Button",
   onPress: null,
   onChange: null,
-  values: []
+  values: [],
 };
 
 SemblyDropdown.propTypes = {};

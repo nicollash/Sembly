@@ -128,7 +128,7 @@ class NewPostView extends React.Component {
           quality: 0.02
         }
       },
-      response => {
+      (response) => {
         if (response.didCancel) {
           // User has cancelled imagespo
         } else if (response.error) {
@@ -145,18 +145,18 @@ class NewPostView extends React.Component {
             0.9,
             0
           )
-            .then(async res => {
+            .then(async (res) => {
               const data = await RNFS.readFile(res.path, "base64");
               console.log(res.uri + data);
               this.setState({
                 post: {
                   ...this.state.post,
                   pictureURI: res.uri,
-                  pictureData: data
+                  pictureData: data,
                 }
               });
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
             });
         }
@@ -202,10 +202,10 @@ class NewPostView extends React.Component {
               label="TEXT"
               fontSize={14}
               secondFontSize={10}
-              valueChanged={text =>
-                this.setState({ post: { ...this.state.post, text } })
-              }
+              valueChanged={text => this.setState({ post: { ...this.state.post, text } })}
               spacing={5}
+              autoCorrect
+              maxLength={300}
             />
           </View>
           <View style={{ marginTop: 20, zIndex: 1 }}>
@@ -232,15 +232,15 @@ class NewPostView extends React.Component {
                 <SemblyPlaceAutoComplete
                   latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
-                  onResult={business => {
+                  onResult={(business) => {
                     this.setState({
                       post: {
                         ...this.state.post,
                         business: {
                           id: business.id,
-                          name: business.name
-                        }
-                      }
+                          name: business.name,
+                        },
+                      },
                     });
                   }}
                 />
@@ -248,9 +248,9 @@ class NewPostView extends React.Component {
             </View>
             <View
               style={{
-                borderBottomColor: "#D8D8D8",
+                borderBottomColor: '#D8D8D8',
                 borderBottomWidth: 0.5,
-                marginTop: 5
+                marginTop: 5,
               }}
             />
           </View>
@@ -264,7 +264,7 @@ class NewPostView extends React.Component {
             <View style={{ width: wp(92), marginLeft: -12 }}>
               <SemblyDropdown
                 values={_.pluck(this.props.categories, "title")}
-                onChange={category => {
+                onChange={(category) => {
                   this.setState({ post: { ...this.state.post, category } });
                 }}
               />

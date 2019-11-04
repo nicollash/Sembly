@@ -95,8 +95,6 @@ class FeedView extends React.Component {
       location,
     } = this.props;
 
-    console.log(this.props.panelHeight);
-
     return (
       <ScrollView
         refreshControl={(
@@ -149,8 +147,8 @@ class FeedView extends React.Component {
             <View style={{ marginTop: 15 }}>
               <View style={styles.separatorBar} />
             </View>
-            <View style={{ height: events.length > 0 ? 170 : 0 }}>
-              {events.length > 0 && (
+            <View style={{ height: events.length > 0 && this.state.selectedCategoryTitle === 'All' ? 170 : 0 }}>
+              {events.length > 0 && this.state.selectedCategoryTitle === 'All' && (
                 <View style={{ height: 170 }}>
                   <View style={{ justifyContent: 'center', marginTop: 9 }}>
                     <FeedSubHeader icon={icons[1]} title="Events near you" />

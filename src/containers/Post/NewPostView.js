@@ -100,6 +100,7 @@ class NewPostView extends React.Component {
         pictureURI: ""
       }
     };
+    this.debounceImagePick = _.debounce(this.chooseImage, 1000);
   }
 
   componentWillMount() {}
@@ -295,7 +296,7 @@ class NewPostView extends React.Component {
                 marginTop: 10
               }}
             >
-              <TouchableOpacity onPress={this.chooseImage}>
+              <TouchableOpacity onPress={this.debounceImagePick}>
                 <Image
                   source={require("../../../assets/images/ButtonCameraPost.png")}
                 />

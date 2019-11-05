@@ -3,13 +3,16 @@ import { connect } from "react-redux";
 
 import {
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Text,
   View,
+  Modal,
   StyleSheet,
   Picker,
   Image,
   Platform
 } from "react-native";
+import SemblyButton from "./SemblyButton";
 
 const styles = StyleSheet.create({});
 
@@ -40,7 +43,24 @@ class SemblyDropdown extends React.Component {
     const items = this.props.values.map(val => (
       <Picker.Item label={val} value={val} />
     ));
-    return (
+    return this.state.open ? (
+      <View>
+        <Picker
+          selectedValue={this.state.value}
+          mode="dialog"
+          onValueChange={this.updateValue}
+        >
+          {items}
+        </Picker>
+        <View style={{ top: -10 }}>
+          <SemblyButton
+            onPress={() => this.setState({ open: false })}
+            label="Confirm"
+            width={160}
+          />
+        </View>
+      </View>
+    ) : (
       <TouchableOpacity
         onPress={() => this.setState({ open: !this.state.open })}
       >

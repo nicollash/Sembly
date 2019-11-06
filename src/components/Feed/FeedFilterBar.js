@@ -56,7 +56,7 @@ class FeedFilterBar extends React.Component {
         title={button}
         tint={idx === this.state.activeIndex ? this.state.tintColor[1] : this.state.tintColor[0]}
         actionOnPress={() => {
-          this.setState({ activeIndex: idx }, () => this.props.refreshFeed(this.state.buttons[this.state.activeIndex]));
+          this.setState({ activeIndex: idx }, () => this.props.refreshFeed(this.state.buttons[this.state.activeIndex], this.props.selectedCategory));
         }}
       />
     ));
@@ -85,7 +85,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshFeed: a => dispatch(refreshFeed({ type: a })),
+  refreshFeed: (type, category) => dispatch(refreshFeed({ type, category })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedFilterBar);

@@ -110,7 +110,7 @@ export function refreshFeed({
   location = undefined
 }) {
   return async function refreshFeedState(dispatch, getState) {
-    const _location =
+    const _location = 
       location === undefined
         ? {
             lat: getState().user.location.lat,

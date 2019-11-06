@@ -292,9 +292,9 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     posts: _.sortBy(parsedPosts, (post) => {
       switch(type) {
         case 'Hot':
-          return -moment(post.createdAt).unix();
+          return (-post.comments.length);
         case 'Best':
-          return -moment(post.createdAt).unix();
+          return (-post.likesCount);
         case 'New':
           return -moment(post.createdAt).unix();
       }

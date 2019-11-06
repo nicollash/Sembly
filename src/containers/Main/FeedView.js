@@ -82,7 +82,7 @@ class FeedView extends React.Component {
   }
 
   _onRefresh = () => {
-    this.props.refreshFeed();
+    this.props.refreshFeed(this.state.selectedCategoryTitle);
   };
 
   render() {
@@ -222,7 +222,9 @@ class FeedView extends React.Component {
                 />
               </View>
               <View style={{ marginTop: 2 }}>
-                <FeedFilterBar />
+                <FeedFilterBar
+                  selectedCategory={this.state.selectedCategoryTitle}
+                />
               </View>
             </View>
             <View

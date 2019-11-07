@@ -234,15 +234,24 @@ class NewPostView extends React.Component {
                   latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
                   onResult={(business) => {
-                    this.setState({
-                      post: {
-                        ...this.state.post,
-                        business: {
-                          id: business.id,
-                          name: business.name,
+                    if (business.id === '') {
+                      this.setState({
+                        post: {
+                          ...this.state.post,
+                          business: false,
                         },
-                      },
-                    });
+                      });
+                    } else {
+                      this.setState({
+                        post: {
+                          ...this.state.post,
+                          business: {
+                            id: business.id,
+                            name: business.name,
+                          },
+                        },
+                      });
+                    }
                   }}
                 />
               </View>

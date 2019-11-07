@@ -206,7 +206,6 @@ export function updateUserProfile({
   facebookUser,
 }) {
   return function updateUserProfileState(dispatch, getState) {
-    console.log(facebookUser);
     firebase
       .auth()
       .currentUser.updateProfile({
@@ -215,7 +214,6 @@ export function updateUserProfile({
       })
       .then(() => {
         const currentUser = firebase.auth().currentUser;
-        console.log(currentUser);
         const { displayName, photoURL, email, posts, comments } = currentUser;
         const user = { displayName, photoURL, facebookUser, email };
         //if (post) posts.push(post);
@@ -248,10 +246,8 @@ export function handleSignup({
 export function facebookLogin() {
   return async function facebookLoginState(dispatch, getState) {
     try {
-      console.log(LoginManager);
       LoginManager.logOut();
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-      console.log(result);
 
       if (result.isCancelled) {
         return;
@@ -261,7 +257,6 @@ export function facebookLogin() {
 
       // get the access token
       const data = await AccessToken.getCurrentAccessToken();
-      console.log(data);
 
       if (!data) {
         // handle this however suites the flow of your app
@@ -376,17 +371,17 @@ export function getBusinessPosts(locationID) {
       .then((postsJSON) => {
         console.log(postsJSON);
         const business = _.findWhere(getState().feed.businesses, {
-          id: locationID
+          id: locationID,
         });
 
         const businesses = _.union(
           [
             business.set(
               'posts',
-              postsJSON.map(p => Post.parse({ ...p, locationType: 'business' }))
-            )
+              postsJSON.map(p => Post.parse({ ...p, locationType: 'business' })),
+            ),
           ],
-          _.without(getState().feed.businesses, business)
+          _.without(getState().feed.businesses, business),
         );
         console.log(business);
         dispatch({ type: UPDATE_BUSINESSES, businesses });
@@ -405,20 +400,18 @@ export function createNewPost(post) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(post)
+      body: JSON.stringify(post),
     })
       .then(response => response.json())
       .then((dataJSON) => {
-        console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
         if (post.business) {
           const business = Business.parse(dataJSON);
-          console.log(business);
           dispatch({
             type: UPDATE_BUSINESSES,
-            businesses: [business, ...getState().feed.businesses]
+            businesses: [business, ...getState().feed.businesses],
           });
           NavigationService.navigate('Location', { location: business });
         }
@@ -428,7 +421,7 @@ export function createNewPost(post) {
 
           dispatch({
             type: UPDATE_POSTS,
-            posts: [targetPost, ...getState().feed.posts]
+            posts: [targetPost, ...getState().feed.posts],
           });
           NavigationService.navigate('Post', { post: targetPost });
         }
@@ -449,7 +442,7 @@ export function addComment({ post = undefined, text = '' }) {
     postID: post.id,
     locationID: post.locationID,
     locationType: post.locationType,
-    text
+    text,
   };
   return async function addCommentState(dispatch, getState) {
     const user = await firebase.auth().currentUser;
@@ -460,9 +453,9 @@ export function addComment({ post = undefined, text = '' }) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(comment)
+      body: JSON.stringify(comment),
     }).then(() => {
       // Success, create the mock comment
       const c = new Comment({

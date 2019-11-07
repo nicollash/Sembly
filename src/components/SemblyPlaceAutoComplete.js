@@ -100,8 +100,12 @@ class SemblyPlaceAutoComplete extends React.Component {
           data={businesses}
           defaultValue={query}
           hideResults={businesses.length <= 0}
-          onChangeText={res => this.setState({ query: res }, this.debounceQuery)
-          }
+          onChangeText={res => this.setState({ query: res }, this.debounceQuery)}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Backspace') {
+              this.props.onResult({ id: '', name: '' });
+            }
+          }}
           placeholder="Add location"
           placeholderTextColor="#C7CAD1"
           style={{ fontSize: 17, color: '#26315F' }}
@@ -125,7 +129,7 @@ class SemblyPlaceAutoComplete extends React.Component {
 }
 
 SemblyPlaceAutoComplete.defaultProps = {
-  onResult: null
+  onResult: null,
 };
 
 SemblyPlaceAutoComplete.propTypes = {};

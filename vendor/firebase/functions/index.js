@@ -445,7 +445,7 @@ exports.uploadBusinesses = functions.https.onRequest(async (request, response) =
         <label for="file">Choose file to upload</label>
         <input type="file" id="file" name="file">
         <input type="submit" value="Submit" /> 
-      </form>Addd
+      </form>
     </body>
     `;
 

@@ -83,7 +83,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       ? geocode.json.results[0].address_components[1].long_name
       : location.name;
 
-  const collection = business ? geofirestore.collection("Businesses").doc(`${business.id}`).collection('posts') : geofirestore.collection("Posts");
+  const collection = geofirestore.collection("Posts");
   
   collection
     .add({
@@ -92,6 +92,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       showOnMap: location.name !== "",
       createdAt: moment().format(),
       locationName,
+      locationID: business ? business.id : null,
+      locationType: business ? 'business' : null,
+      businessName: business ? business.name : null,
       category,
       picture,
       user: {
@@ -104,7 +107,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
-      return business ? geofirestore.collection("Businesses").doc(`${business.id}`).get() : docRef.get();
+      return docRef.get();
     }).then(doc => {
       console.log({...doc.data() });
       return response.status(200).send({...doc.data() });
@@ -134,9 +137,8 @@ exports.addComment = functions.https.onRequest(async (request, response) => {
     },
   }
 
-  const docPath = request.body.locationID ? 
-  `Businesses/${request.body.locationID}/posts/${postID}/comments` :
-  `Posts/${postID}/comments`
+  const docPath = `Posts/${postID}/comments`;
+  console.log('add comment path: ', docPath);
   console.log(docPath);
   admin.firestore().collection(docPath).add(comment).then(() => {
     console.log("added document");
@@ -156,9 +158,7 @@ exports.toggleLike = functions.https.onRequest(async (request, response) => {
   const postID = request.body.postID;
   const locationID = request.body.locationID;
 
-  const colPath = request.body.locationID ? 
-  `Businesses/${locationID}/posts` :
-  `Posts`
+  const colPath = 'Posts';
   
   const liked = await admin.firestore().collection(colPath).where(admin.firestore.FieldPath.documentId(), `==`, postID).where(`d.likes`, "array-contains", user.uid).get()
   
@@ -192,9 +192,9 @@ exports.getUserPosts = functions.https.onRequest(async (request, response) => {
 exports.getBusinessPosts = functions.https.onRequest(async (request, response) => {
   const user = await getUser(request);
 
-  const postQuery = await geofirestore.collection(`Businesses/${request.query.locationID}/posts`).get()
+  const postQuery = await geofirestore.collection('Posts').where('locationID', '==', request.query.locationID).get();
   const posts = await Promise.all(postQuery.docs.map(async doc => {
-    const comments = await geofirestore.collection(`Businesses/${request.query.locationID}/posts/${doc.id}/comments`).get() || [];
+    const comments = await geofirestore.collection(`Posts/${doc.id}/comments`).get() || [];
     return { 
       id: doc.id, ...doc.data(),
       likesCount: (doc.data().likes || []).length,
@@ -218,6 +218,40 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   };
 
   const user = await getUser(request);
+
+  // const businessPostsQuery = await geofirestore.collection('Businesses').get();
+  // console.log('businessPostsQuery: ', businessPostsQuery);
+  // await Promise.all(businessPostsQuery.docs.map(async doc => {
+  //   const posts = await geofirestore.collection(`Businesses/${doc.id}/posts`).get();
+  //   const businessName = await geofirestore.collection('Businesses').doc(doc.id).get().then(docQuery => {
+  //     if (docQuery.data()) {
+  //       return docQuery.data().name;
+  //     }
+  //     return null;
+  //   });
+
+  //   posts.forEach(post => {
+  //     geofirestore.collection('Posts').add({
+  //       ...post.data(),
+  //       locationID: doc.id,
+  //       locationType: 'business',
+  //       businessName: businessName,
+  //     });
+  //   });
+  // }));
+
+  // businessPosts.forEach(postsQuery => {
+  //   postsQuery.forEach(post => {
+  //     console.log('post.data: ', post.data());
+  //     geofirestore.collection('Posts').add(post.data());
+  //   })
+  // })
+
+  // console.log('businessPosts: ', businessPosts.length);
+  // businessPosts.forEach(post => {
+  //   console.log('post length: ', post.length);
+  //   // geofirestore.collection("Posts").add(post);
+  // })
 
   geocode = await googleMaps
     .reverseGeocode({
@@ -277,10 +311,10 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   ));
 
   const parsedBusinesses = await Promise.all(businesses.docs.map(async doc => {
-    const posts = await admin.firestore().collection("Businesses").doc(doc.id).collection('posts').get();
+    const posts = await admin.firestore().collection('Posts').doc(doc.id).get();
     return { 
-        id: doc.id, ...doc.data(),
-        recentPosts: (posts.docs || []).length,
+      id: doc.id, ...doc.data(),
+      recentPosts: (posts.docs || []).length,
     }
   }
   ));
@@ -315,7 +349,7 @@ exports.searchBusinesses = functions.https.onRequest(async (request, response) =
     lon: parseFloat(request.query.lon),
     query: request.query.q,
   };
-  
+
   geofirestore
   .collection("Businesses")
   .where('name', '>=', query).where('name', '<=', query+ '\uf8ff')
@@ -411,7 +445,7 @@ exports.uploadBusinesses = functions.https.onRequest(async (request, response) =
         <label for="file">Choose file to upload</label>
         <input type="file" id="file" name="file">
         <input type="submit" value="Submit" /> 
-      </form>
+      </form>Addd
     </body>
     `;
 

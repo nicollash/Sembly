@@ -1,6 +1,6 @@
-import React from "react";
-import { connect } from "react-redux";
-import _ from "underscore";
+import React from 'react';
+import { connect } from 'react-redux';
+import _ from 'underscore';
 
 import {
   View,
@@ -10,63 +10,63 @@ import {
   ImageBackground,
   Modal,
   Alert,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+} from 'react-native';
 
-import ImageResizer from "react-native-image-resizer";
-import RNFS from "react-native-fs";
-import ImagePicker from "react-native-image-picker";
-import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
+import ImagePicker from 'react-native-image-picker';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-import SemblyHeaderButton from "../../components/SemblyHeaderButton";
-import SemblyLabel from "../../components/SemblyLabel";
-import SemblyPlaceAutoComplete from "../../components/SemblyPlaceAutoComplete";
-import SemblyDropdown from "../../components/SemblyDropdown";
-import { SemblyInput } from "../../components";
-import { createNewPost, updateUserProfile, refreshFeed } from "../../actions";
+import SemblyHeaderButton from '../../components/SemblyHeaderButton';
+import SemblyLabel from '../../components/SemblyLabel';
+import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
+import SemblyDropdown from '../../components/SemblyDropdown';
+import { SemblyInput } from '../../components';
+import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 
-const pin = require("../../../assets/images/PhotoPostLocationIcon.png");
+const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "82%",
-    alignSelf: "center"
+    width: '82%',
+    alignSelf: 'center',
   },
   postContainer: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     opacity: 0.7,
     flex: 1,
-    width: "100%",
-    height: "100%"
+    width: '100%',
+    height: '100%',
   },
   backgroundUpload: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   successAlert: {
-    position: "absolute",
+    position: 'absolute',
     opacity: 1,
-    top: "22.5%",
-    alignSelf: "center"
-  }
+    top: '22.5%',
+    alignSelf: 'center',
+  },
 });
 
 class NewPostView extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      title: "New Post",
+      title: 'New Post',
       headerTitleStyle: {
-        color: "#26315F",
-        textAlign: "center",
+        color: '#26315F',
+        textAlign: 'center',
         flexGrow: 1,
-        alignSelf: "center",
-        fontSize: 18
+        alignSelf: 'center',
+        fontSize: 18,
       },
-      headerMode: "card",
+      headerMode: 'card',
       headerLeft: (
         <SemblyHeaderButton
           onPress={() => navigation.goBack()}
@@ -79,7 +79,7 @@ class NewPostView extends React.Component {
           label="Post"
           red="true"
         />
-      )
+      ),
     };
   };
 
@@ -91,14 +91,14 @@ class NewPostView extends React.Component {
       submitted: false,
       post: {
         location: {
-          name: "",
+          name: '',
           lat: this.props.location.lat,
-          lon: this.props.location.lon
+          lon: this.props.location.lon,
         },
-        category: "General",
-        text: "",
-        pictureURI: ""
-      }
+        category: 'General',
+        text: '',
+        pictureURI: '',
+      },
     };
     this.debounceImagePick = _.debounce(this.chooseImage, 1000);
   }
@@ -120,48 +120,48 @@ class NewPostView extends React.Component {
   chooseImage = () => {
     ImagePicker.showImagePicker(
       {
-        title: "Select Image",
+        title: 'Select Image',
         storageOptions: {
           skipBackup: true,
-          path: "images",
+          path: 'images',
           maxWidth: 900,
           maxHeight: 900,
-          quality: 0.02
-        }
+          quality: 0.02,
+        },
       },
       (response) => {
         if (response.didCancel) {
           // User has cancelled imagespo
         } else if (response.error) {
           Alert.alert(
-            "Content error",
-            "An error occured while picking your post picture. Please try again."
+            'Content error',
+            'An error occured while picking your post picture. Please try again.',
           );
         } else {
           ImageResizer.createResizedImage(
             response.uri,
             900,
             900,
-            "JPEG",
+            'JPEG',
             0.9,
-            0
+            0,
           )
             .then(async (res) => {
-              const data = await RNFS.readFile(res.path, "base64");
+              const data = await RNFS.readFile(res.path, 'base64');
               console.log(res.uri + data);
               this.setState({
                 post: {
                   ...this.state.post,
                   pictureURI: res.uri,
                   pictureData: data,
-                }
+                },
               });
             })
             .catch((err) => {
               console.log(err);
             });
         }
-      }
+      },
     );
   };
 
@@ -187,7 +187,7 @@ class NewPostView extends React.Component {
               <View style={styles.successAlert}>
                 {!sendingPost && (
                   <Image
-                    source={require("../../../assets/images/PostSubmitted.png")}
+                    source={require('../../../assets/images/PostSubmitted.png')}
                   />
                 )}
                 {sendingPost && (
@@ -218,15 +218,15 @@ class NewPostView extends React.Component {
               marginLeft={4}
             />
             <View
-              style={{ flexDirection: "row", width: "100%", marginTop: 10 }}
+              style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}
             >
               <Image
                 source={pin}
                 style={{
                   height: 15,
                   marginLeft: -15,
-                  alignSelf: "center",
-                  marginTop: 2
+                  alignSelf: 'center',
+                  marginTop: 2,
                 }}
               />
               <View style={{ marginLeft: 2 }}>
@@ -273,15 +273,15 @@ class NewPostView extends React.Component {
             />
             <View style={{ width: wp(92), marginLeft: -12 }}>
               <SemblyDropdown
-                values={_.pluck(this.props.categories, "title")}
+                values={_.pluck(this.props.categories, 'title')}
                 onChange={(category) => {
                   this.setState({ post: { ...this.state.post, category } });
                 }}
               />
             </View>
             <Image
-              style={{ alignSelf: "center", marginTop: 8, width: wp(90) }}
-              source={require("../../../assets/images/BorderLine.png")}
+              style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
+              source={require('../../../assets/images/BorderLine.png')}
             />
           </View>
           <View style={{ marginTop: 20 }}>
@@ -292,33 +292,33 @@ class NewPostView extends React.Component {
               secondFontSize={10}
             />
           </View>
-          {this.state.post.pictureURI === "" && (
+          {this.state.post.pictureURI === '' && (
             <View
               style={{
-                backgroundColor: "#EBECEE",
+                backgroundColor: '#EBECEE',
                 borderRadius: 15,
                 width: wp(90),
                 height: 170,
-                alignItems: "center",
-                alignSelf: "center",
-                justifyContent: "center",
-                marginTop: 10
+                alignItems: 'center',
+                alignSelf: 'center',
+                justifyContent: 'center',
+                marginTop: 10,
               }}
             >
               <TouchableOpacity onPress={this.debounceImagePick}>
                 <Image
-                  source={require("../../../assets/images/ButtonCameraPost.png")}
+                  source={require('../../../assets/images/ButtonCameraPost.png')}
                 />
               </TouchableOpacity>
             </View>
           )}
-          {this.state.post.pictureURI !== "" && (
+          {this.state.post.pictureURI !== '' && (
             <View
               style={{
                 width: wp(90),
                 height: 170,
                 marginTop: 10,
-                alignSelf: "center"
+                alignSelf: 'center',
               }}
             >
               <ImageBackground
@@ -328,7 +328,7 @@ class NewPostView extends React.Component {
               >
                 <TouchableOpacity onPress={this.chooseImage}>
                   <Image
-                    source={require("../../../assets/images/ButtonCameraPost.png")}
+                    source={require('../../../assets/images/ButtonCameraPost.png')}
                   />
                 </TouchableOpacity>
               </ImageBackground>
@@ -336,9 +336,9 @@ class NewPostView extends React.Component {
           )}
           <Text
             style={{
-              color: "#C7CAD1",
-              alignSelf: "center",
-              marginTop: "6%"
+              color: '#C7CAD1',
+              alignSelf: 'center',
+              marginTop: '6%',
             }}
           >
             Your post can contain text, photo or both.
@@ -358,17 +358,16 @@ const mapStateToProps = (state, ownProps) => ({
   categories: state.feed.categories,
   sendingPost: state.appState.sendingPost,
   postsCount: state.user.postsCount,
-  posts: state.user.posts
+  posts: state.user.posts,
 });
 
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
-  updateUserProfile: posts =>
-    dispatch(updateUserProfile({ postsCount: posts })),
-  refreshFeed: a => dispatch(refreshFeed({ category: a }))
+  updateUserProfile: posts => dispatch(updateUserProfile({ postsCount: posts })),
+  refreshFeed: a => dispatch(refreshFeed({ category: a })),
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(NewPostView);

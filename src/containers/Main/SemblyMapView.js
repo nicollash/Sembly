@@ -27,7 +27,7 @@ const icons = [
   require('../../../assets/images/SemblyBurgerIcon.png'),
   require('../../../assets/images/SemblyPromosIcon.png'),
   require('../../../assets/images/SemblyDrinksIcon.png'),
-  require('../../../assets/images/artsIcon.png')
+  require('../../../assets/images/artsIcon.png'),
 ];
 
 const styles = {
@@ -87,32 +87,38 @@ class SemblyMapView extends React.Component {
         pinLabel="Event"
       />
     ));
-    const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
-      <SemblyMapPin
-        latitude={post.location.lat}
-        longitude={post.location.lon}
-        pinColor="#BADAFF"
-        pinIcon={post.category !== 'General'
-          ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
-          : icons[0]}
-        onPress={() => NavigationService.navigate('Post', { post })}
-        // notifications={post.notifications}
-        notifications={_.random(0, 25)}
-        pinLabel="Label"
-      />
-    ));
-    const businessPins = this.props.businesses.map(business => (
-      <SemblyMapPin
-        latitude={business.location.lat}
-        longitude={business.location.lon}
-        pinColor={_.where(this.props.categories, { title: business.type })[0].color}
-        pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
-        onPress={() => NavigationService.navigate('Location', { location: business })}
-        notifications={business.recentPosts}
-        // notifications={_.random(0, 25)}
-        pinLabel={business.name}
-      />
-    ));
+    // const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
+    //   <SemblyMapPin
+    //     latitude={post.location.lat}
+    //     longitude={post.location.lon}
+    //     pinColor="#BADAFF"
+    //     pinIcon={post.category !== 'General'
+    //       ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
+    //       : icons[0]}
+    //     onPress={() => NavigationService.navigate('Post', { post })}
+    //     // notifications={post.notifications}
+    //     notifications={_.random(0, 25)}
+    //     pinLabel="Label"
+    //   />
+    // ));
+    const businessPins = this.props.businesses.map((business) => {
+      const pin = _.where(this.props.categories, { title: business.type });
+      if (!pin || pin.length === 0) {
+        return null;
+      }
+      return (
+        <SemblyMapPin
+          latitude={business.location.lat}
+          longitude={business.location.lon}
+          pinColor={_.where(this.props.categories, { title: business.type })[0].color}
+          pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
+          onPress={() => NavigationService.navigate('Location', { location: business })}
+          notifications={business.recentPosts}
+          // notifications={_.random(0, 25)}
+          pinLabel={business.name}
+        />
+      );
+    });
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
@@ -123,18 +129,18 @@ class SemblyMapView extends React.Component {
           showsPointsOfInterest={false}
           customMapStyle={[
             {
-              "featureType": 'poi',
-              "stylers": [
+              featureType: 'poi',
+              stylers: [
                 {
-                  "visibility": 'off',
+                  visibility: 'off',
                 },
               ],
             },
             {
-              "featureType": 'transit',
-              "stylers": [
+              featureType: 'transit',
+              stylers: [
                 {
-                  "visibility": 'off',
+                  visibility: 'off',
                 },
               ],
             },

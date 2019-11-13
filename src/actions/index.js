@@ -34,7 +34,7 @@ export function getPostCollection(post) {
     if (post.locationID && post.locationType === 'business') {
       return _.findWhere(getState().feed.businesses, { id: post.locationID })
         .posts;
-    } else if (post.locationID && post.locationType === 'event') {
+    } if (post.locationID && post.locationType === 'event') {
       return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
     }
     return [];
@@ -43,6 +43,7 @@ export function getPostCollection(post) {
 
 export function getPostReference(post, state) {
   let posts;
+  console.log('post & state: ', post, state);
   if (!post.locationID) posts = state.feed.posts;
 
   if (post.locationID && post.locationType === 'business') {
@@ -72,7 +73,7 @@ export function updatePostCollection(post, posts) {
 
     if (post.locationID && post.locationType === 'business') {
       const business = _.findWhere(getState().feed.businesses, {
-        id: post.locationID
+        id: post.locationID,
       });
       const index = _.indexOf(getState().feed.businesses, business);
       const updatedBusinesses = getState().feed.businesses.map((b, idx) => {
@@ -107,16 +108,15 @@ export function updateLocation(lat = 0, lon = 0) {
 export function refreshFeed({
   type = 'hot',
   category = 'all',
-  location = undefined
+  location = undefined,
 }) {
   return async function refreshFeedState(dispatch, getState) {
-    const _location = 
-      location === undefined
-        ? {
-            lat: getState().user.location.lat,
-            lon: getState().user.location.lon
-          }
-        : location;
+    const _location = location === undefined
+      ? {
+        lat: getState().user.location.lat,
+        lon: getState().user.location.lon,
+      }
+      : location;
 
     const token = await firebase.auth().currentUser.getIdToken();
 
@@ -125,14 +125,14 @@ export function refreshFeed({
       .map(key => `${key}=${encodeURIComponent(paramsObj[key])}`)
       .join('&');
     dispatch({ type: UPDATE_FEED_LOADING, status: true });
-    
-    fetch(`${API_URL}/getFeed?${params}/`, {
+
+    fetch(`${API_URL}/getFeed?${params}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then(response => response.json())
       .then((feedJSON) => {
@@ -151,10 +151,10 @@ export function refreshFeed({
         const businesses = feedJSON.businesses.map((b) => {
           const business = Business.parse(b);
           const existing = _.findWhere(getState().feed.businesses, { id: b.id });
-          
+
           return existing ? business.merge(existing) : business;
         });
-        
+
         dispatch({ type: UPDATE_BUSINESSES, businesses });
 
         // Update events
@@ -162,12 +162,12 @@ export function refreshFeed({
         dispatch({ type: UPDATE_EVENTS, events });
 
         // Update posts
-        const posts = feedJSON.posts.map(p => Post.parse(p));
+        const posts = feedJSON.posts.filter(post => post.locationType === 'none').map(p => Post.parse(p));
         dispatch({ type: UPDATE_POSTS, posts });
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
@@ -188,7 +188,7 @@ export function handleLogin(_email, _password) {
           photoURL,
           posts,
           likesCount,
-          comments
+          comments,
         } = currentUser.user;
         const user = { email, photoURL, likesCount };
         dispatch({ type: UPDATE_USER, user });
@@ -213,11 +213,15 @@ export function updateUserProfile({
         photoURL: photo,
       })
       .then(() => {
-        const currentUser = firebase.auth().currentUser;
-        const { displayName, photoURL, email, posts, comments } = currentUser;
-        const user = { displayName, photoURL, facebookUser, email };
-        //if (post) posts.push(post);
-        //if (comment) comments.push(comment);
+        const { currentUser } = firebase.auth();
+        const {
+          displayName, photoURL, email, posts, comments,
+        } = currentUser;
+        const user = {
+          displayName, photoURL, facebookUser, email,
+        };
+        // if (post) posts.push(post);
+        // if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });
       })
       .catch(e => console.log(e));
@@ -278,11 +282,15 @@ export function facebookLogin() {
       console.log(photoURL);
       try {
         if (firebaseUserCredential.additionalUserInfo.isNewUser) {
-          dispatch(updateUserProfile({ name: displayName, email, photo: photoURL, facebookUser: 'New' }));
+          dispatch(updateUserProfile({
+            name: displayName, email, photo: photoURL, facebookUser: 'New',
+          }));
           console.log('dispatched facebook User new');
         }
         if (!firebaseUserCredential.additionalUserInfo.isNewUser) {
-          dispatch(updateUserProfile({ name: displayName, email, photo: photoURL, facebookUser: 'Old' }));
+          dispatch(updateUserProfile({
+            name: displayName, email, photo: photoURL, facebookUser: 'Old',
+          }));
           console.log('dispatched facebook User old');
         }
       } catch (e) { console.log(e); }
@@ -302,7 +310,7 @@ export function handleSignOut() {
           email: undefined,
           displayName: undefined,
           photoURL: undefined,
-          location: { lat: undefined, lon: undefined, name: undefined }
+          location: { lat: undefined, lon: undefined, name: undefined },
         };
         dispatch({ type: UPDATE_USER, user });
         setTimeout(() => {
@@ -310,7 +318,7 @@ export function handleSignOut() {
             email: '',
             displayName: undefined,
             photoURL: undefined,
-            location: { lat: undefined, lon: undefined, name: undefined }
+            location: { lat: undefined, lon: undefined, name: undefined },
           };
           dispatch({ type: UPDATE_USER, user: reset });
         }, 0);
@@ -335,7 +343,7 @@ export function clearSignupErrors() {
 export const UPDATE_USER_POSTS = 'UPDATE_USER_POSTS';
 export function getUserPosts() {
   return async function getUserPostsState(dispatch, getState) {
-    const uid = firebase.auth().currentUser.uid;
+    const { uid } = firebase.auth().currentUser;
     const token = await firebase.auth().currentUser.getIdToken();
 
     fetch(`${API_URL}/getUserPosts?userID=${uid}`, {
@@ -343,14 +351,14 @@ export function getUserPosts() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then(response => response.json())
       .then((postsJSON) => {
         dispatch({
           type: UPDATE_USER_POSTS,
-          posts: postsJSON.map(p => Post.parse(p))
+          posts: postsJSON.map(p => Post.parse(p)),
         });
       });
   };
@@ -365,7 +373,7 @@ export function getBusinessPosts(locationID) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then(response => response.json())
       .then((postsJSON) => {
@@ -394,6 +402,7 @@ export const SENDING_POST = 'SENDING_POST';
 export function createNewPost(post) {
   return async function createNewPostState(dispatch, getState) {
     dispatch({ type: SENDING_POST, sendingPost: true });
+    console.log('createNewPost: ', post);
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/newPost/`, {
       method: 'POST',
@@ -416,6 +425,7 @@ export function createNewPost(post) {
           NavigationService.navigate('Location', { location: business });
         }
         // and post data if no location was tagged
+        console.log('post & dataJSON: ', post, dataJSON);
         if (!post.business) {
           const targetPost = Post.parse(dataJSON);
 
@@ -461,7 +471,7 @@ export function addComment({ post = undefined, text = '' }) {
       const c = new Comment({
         text,
         createdAt: moment(),
-        user: new User({ name: user.displayName, avatar: user.photoURL })
+        user: new User({ name: user.displayName, avatar: user.photoURL }),
       });
 
       const posts = dispatch(getPostCollection(post));
@@ -504,9 +514,9 @@ export function toggleLike(post) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ postID: post.id, locationID: post.locationID })
+      body: JSON.stringify({ postID: post.id, locationID: post.locationID }),
     })
       .then(() => {})
       .catch(err => console.log(err));

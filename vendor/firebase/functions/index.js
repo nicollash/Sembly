@@ -92,9 +92,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       showOnMap: location.name !== "",
       createdAt: moment().format(),
       locationName,
-      locationID: business ? business.id : null,
-      locationType: business ? 'business' : null,
-      businessName: business ? business.name : null,
+      locationID: business ? business.id : 'none',
+      locationType: business ? 'business' : 'none',
+      businessName: business ? business.name : 'noname',
       category,
       picture,
       user: {
@@ -240,19 +240,6 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   //   });
   // }));
 
-  // businessPosts.forEach(postsQuery => {
-  //   postsQuery.forEach(post => {
-  //     console.log('post.data: ', post.data());
-  //     geofirestore.collection('Posts').add(post.data());
-  //   })
-  // })
-
-  // console.log('businessPosts: ', businessPosts.length);
-  // businessPosts.forEach(post => {
-  //   console.log('post length: ', post.length);
-  //   // geofirestore.collection("Posts").add(post);
-  // })
-
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [lat, lon]
@@ -274,7 +261,8 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
       center: new firebase.firestore.GeoPoint(lat, lon),
       radius: 100
     });
-
+  
+  // posts = posts.where('locationType', "==", 'none');
   // Filter by type unless type is all
   if (category.toLowerCase() !== 'all') posts = posts.where('category', "==", category);
 

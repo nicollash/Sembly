@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isIphoneX } from '../../styles/iphoneModelCheck';
 import Geolocation from 'react-native-geolocation-service';
 import firebase from 'react-native-firebase';
 
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 import Theme from '../../styles/theme';
 
 import SemblyMapView from './SemblyMapView';
@@ -87,7 +87,9 @@ class HomeView extends React.Component {
             <View style={styles.panel}>
               <View style={styles.dragHandler} {...dragHandler}>
                 <TouchableOpacity
-                  hitSlop={{ top: 30, bottom: 30, left: 80, right: 80 }}
+                  hitSlop={{
+                    top: 30, bottom: 30, left: 80, right: 80,
+                  }}
                 >
                   <Image source={require('../../../assets/images/FeedViewBar.png')} />
                 </TouchableOpacity>
@@ -108,9 +110,7 @@ HomeView.propTypes = {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
-  return {};
-};
+const mapStateToProps = (state, ownProps) => ({});
 
 const mapDispatchToProps = dispatch => ({
   updateLocation: (lat, lon) => dispatch(updateLocation(lat, lon)),

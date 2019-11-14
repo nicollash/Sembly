@@ -87,20 +87,20 @@ class SemblyMapView extends React.Component {
         pinLabel="Event"
       />
     ));
-    // const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
-    //   <SemblyMapPin
-    //     latitude={post.location.lat}
-    //     longitude={post.location.lon}
-    //     pinColor="#BADAFF"
-    //     pinIcon={post.category !== 'General'
-    //       ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
-    //       : icons[0]}
-    //     onPress={() => NavigationService.navigate('Post', { post })}
-    //     // notifications={post.notifications}
-    //     notifications={_.random(0, 25)}
-    //     pinLabel="Label"
-    //   />
-    // ));
+    const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
+      <SemblyMapPin
+        latitude={post.location.lat}
+        longitude={post.location.lon}
+        pinColor="#BADAFF"
+        pinIcon={post.category !== 'General'
+          ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
+          : icons[0]}
+        onPress={() => NavigationService.navigate('Post', { post })}
+        // notifications={post.notifications}
+        notifications={_.random(0, 25)}
+        pinLabel="Label"
+      />
+    ));
     const businessPins = this.props.businesses.map((business) => {
       const pin = _.where(this.props.categories, { title: business.type });
       if (!pin || pin.length === 0) {
@@ -158,7 +158,7 @@ class SemblyMapView extends React.Component {
           }}
         >
           {eventPins}
-          {/* postPins */}
+          {/* {postPins} */}
           {businessPins}
         </MapView>
       </View>

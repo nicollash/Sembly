@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { AppState, StatusBar, Image, Platform, View, Alert, PermissionsAndroid } from 'react-native';
+import {
+  AppState, StatusBar, Image, Platform, View, Alert, PermissionsAndroid,
+} from 'react-native';
 import _ from 'underscore';
 
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -56,7 +58,9 @@ const MainTabNavigation = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <SafeAreaView>
           <Image
-            style={{ tintColor }} source={require('../../assets/images/HomeIconTab.png')} />
+            style={{ tintColor }}
+            source={require('../../assets/images/HomeIconTab.png')}
+          />
         </SafeAreaView>
       ),
       tabBarOptions: {
@@ -168,6 +172,7 @@ class AppRoot extends React.PureComponent {
               }),
             );
           }
+          this.geoLocate();
         }
         if (this.props.user.email === undefined) {
           this.navigator.dispatch(
@@ -178,7 +183,7 @@ class AppRoot extends React.PureComponent {
           );
         }
       });
-      if (Platform.OS === "android") {
+      if (Platform.OS === 'android') {
         const isLoggedIn = firebase.auth();
         if (isLoggedIn._user !== null) {
           if (this.state.user) {
@@ -189,7 +194,6 @@ class AppRoot extends React.PureComponent {
         }
       }
     });
-    this.geoLocate();
   }
 
   componentDidUpdate() {
@@ -254,19 +258,19 @@ class AppRoot extends React.PureComponent {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Sembly App Location Permission",
-          message: "Sembly App needs access to your location ",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
+          title: 'Sembly App Location Permission',
+          message: 'Sembly App needs access to your location ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("Log from app root");
+        console.log('Log from app root');
         this.geoLocate();
       } else {
         Alert.alert('Permission denied', 'Sembly failed to find your current position. Please make sure you allowed proper permissions.');
-        console.log("Location permission denied");
+        console.log('Location permission denied');
       }
     } catch (err) {
       console.warn(err);

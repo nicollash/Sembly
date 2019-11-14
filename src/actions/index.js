@@ -29,28 +29,29 @@ export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export function getPostCollection(post) {
   return function getPostCollectionState(dispatch, getState) {
     console.log(post.locationType);
-    if (!post.locationID) return getState().feed.posts;
+    return getState().feed.posts;
+    // if (post.locationID === 'none') return getState().feed.posts;
 
-    if (post.locationID && post.locationType === 'business') {
-      return _.findWhere(getState().feed.businesses, { id: post.locationID })
-        .posts;
-    } if (post.locationID && post.locationType === 'event') {
-      return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
-    }
-    return [];
+    // if (post.locationID !== 'none' && post.locationType === 'business') {
+    //   return _.findWhere(getState().feed.businesses, { id: post.locationID })
+    //     .posts;
+    // } if (post.locationID !== 'none' && post.locationType === 'event') {
+    //   return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
+    // }
+    // return [];
   };
 }
 
 export function getPostReference(post, state) {
-  let posts;
+  const { posts } = state.feed;
   console.log('post & state: ', post, state);
-  if (!post.locationID) posts = state.feed.posts;
+  // if (post.locationID === 'none') posts = state.feed.posts;
 
-  if (post.locationID && post.locationType === 'business') {
-    posts = _.findWhere(state.feed.businesses, { id: post.locationID }).posts;
-  } else if (post.locationID && post.locationType === 'event') {
-    posts = _.findWhere(state.feed.events, { id: post.locationID }).posts;
-  }
+  // if (post.locationID !== 'none' && post.locationType === 'business') {
+  //   posts = _.findWhere(state.feed.businesses, { id: post.locationID }).posts;
+  // } else if (post.locationID !== 'none' && post.locationType === 'event') {
+  //   posts = _.findWhere(state.feed.events, { id: post.locationID }).posts;
+  // }
 
   return _.findWhere(posts, { id: post.id });
 }
@@ -69,22 +70,23 @@ export function getLocationReference(location, state) {
 
 export function updatePostCollection(post, posts) {
   return function updatePostCollectionState(dispatch, getState) {
-    if (!post.locationID) dispatch({ type: UPDATE_POSTS, posts });
+    dispatch({ type: UPDATE_POSTS, posts });
+    // if (post.locationID === 'none') dispatch({ type: UPDATE_POSTS, posts });
 
-    if (post.locationID && post.locationType === 'business') {
-      const business = _.findWhere(getState().feed.businesses, {
-        id: post.locationID,
-      });
-      const index = _.indexOf(getState().feed.businesses, business);
-      const updatedBusinesses = getState().feed.businesses.map((b, idx) => {
-        if (idx !== index) return b;
-        return b.set('posts', posts);
-      });
+    // if (post.locationID !== 'none' && post.locationType === 'business') {
+    //   const business = _.findWhere(getState().feed.businesses, {
+    //     id: post.locationID,
+    //   });
+    //   const index = _.indexOf(getState().feed.businesses, business);
+    //   const updatedBusinesses = getState().feed.businesses.map((b, idx) => {
+    //     if (idx !== index) return b;
+    //     return b.set('posts', posts);
+    //   });
 
-      dispatch({ type: UPDATE_BUSINESSES, businesses: updatedBusinesses });
-    } else if (post.locationID && post.locationType === 'event') {
-      return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
-    }
+    //   dispatch({ type: UPDATE_BUSINESSES, businesses: updatedBusinesses });
+    // } else if (post.locationID !== 'none' && post.locationType === 'event') {
+    //   return _.findWhere(getState().feed.events, { id: post.locationID }).posts;
+    // }
     return [];
   };
 }
@@ -162,7 +164,7 @@ export function refreshFeed({
         dispatch({ type: UPDATE_EVENTS, events });
 
         // Update posts
-        const posts = feedJSON.posts.filter(post => post.locationType === 'none').map(p => Post.parse(p));
+        const posts = feedJSON.posts.map(p => Post.parse(p));
         dispatch({ type: UPDATE_POSTS, posts });
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });

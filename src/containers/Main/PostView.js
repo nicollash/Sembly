@@ -77,7 +77,7 @@ class PostView extends React.Component {
 
   render() {
     const { navigation, post } = this.props;
-
+    console.log(post);
     if (!post) return null;
 
     return (
@@ -121,7 +121,11 @@ PostView.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const post = getPostReference(ownProps.navigation.getParam('post'), state);
+  const sourcePost = ownProps.navigation.getParam('post');
+
+  const post = ownProps.navigation.getParam('sourceLocation') ?
+    _.findWhere(ownProps.navigation.getParam('sourceLocation').posts, { id: sourcePost.id }) :
+    getPostReference(ownProps.navigation.getParam('post'), state);
   return { post, panelHeight: state.appState.panelHeight };
 };
 

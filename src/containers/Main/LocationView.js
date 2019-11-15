@@ -199,12 +199,13 @@ class LocationView extends React.Component {
                   renderItem={({ item }) => (
                     <FeedUserPost
                       post={item}
+                      postID={item.id}
                       location={item.title}
                       username={item.user.name}
                       userPostText={item.text}
                       userPostPicture={item.picture}
                       userProfilePicture={item.user.avatar}
-                      moveOnPress={() => this.props.navigation.navigate('Post', { post: item })}
+                      moveOnPress={() => this.props.navigation.navigate('Post', { post: item, sourceLocation: location })}
                       comments={item.comments.length}
                     />
                   )}

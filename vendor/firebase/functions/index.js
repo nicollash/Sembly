@@ -79,9 +79,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 
   // Geocode location, if needs be
   locationName =
-    location.name === ""
+    !business
       ? geocode.json.results[0].address_components[1].long_name
-      : location.name;
+      : business.name;
 
   const collection = geofirestore.collection("Posts");
   
@@ -204,7 +204,7 @@ exports.getBusinessPosts = functions.https.onRequest(async (request, response) =
     };
   }));
 
-  return response.status(200).send(posts);
+  return response.status(200).send(_.sortBy(posts, (post) => -moment(post.createdAt).unix()));
 });
 
 exports.getFeed = functions.https.onRequest(async (request, response) => {

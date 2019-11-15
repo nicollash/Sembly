@@ -197,7 +197,8 @@ class FeedUserPost extends React.Component {
           <TouchableOpacity
             style={{
               flexDirection: 'row',
-              marginLeft: 15,
+              position: 'absolute',
+              left: wp(42),
             }}
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
@@ -228,7 +229,7 @@ class FeedUserPost extends React.Component {
                 <Text style={[styles.postText, { marginLeft: 5 }]}>
                   {post.likes}
                   {' '}
-                  {post.likes > 1 ? 'Likes' : 'Like'}
+                  {post.likes === 1 ? 'Like' : 'Likes'}
                 </Text>
               </View>
             </TouchableOpacity>

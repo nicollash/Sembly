@@ -107,7 +107,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
-      return docRef.get();
+      return business ? geofirestore.collection("Businesses").doc(`${business.id}`).get() : docRef.get();
     }).then(doc => {
       console.log({...doc.data() });
       return response.status(200).send({...doc.data() });

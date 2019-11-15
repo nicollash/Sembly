@@ -460,7 +460,6 @@ export function createNewPost(post) {
         // console.log('post & dataJSON: ', post, dataJSON);
         if (!post.business) {
           const targetPost = Post.parse(dataJSON);
-
           dispatch({
             type: UPDATE_POSTS,
             posts: [targetPost, ...getState().feed.posts],

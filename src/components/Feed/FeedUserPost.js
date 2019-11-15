@@ -168,13 +168,12 @@ class FeedUserPost extends React.Component {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'flex-start',
             alignItems: 'flex-start',
             width: '90%',
             marginLeft: '6%',
             marginTop: 10,
             paddingBottom: 10,
-            justifyContent:'space-between'
+            justifyContent: 'space-between',
           }}
         >
           {post.showOnMap && (
@@ -198,7 +197,7 @@ class FeedUserPost extends React.Component {
           <TouchableOpacity
             style={{
               flexDirection: 'row',
-              marginLeft:15
+              marginLeft: 15,
             }}
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
@@ -206,15 +205,15 @@ class FeedUserPost extends React.Component {
             <Image
               source={require('../../../assets/images/PhotoPostBubble.png')}
             />
-          
-            <Text style={[styles.postText, { marginTop: 2,marginLeft:5 }]}>
+
+            <Text style={[styles.postText, { marginTop: 2, marginLeft: 5 }]}>
               {post.comments.length}
             </Text>
           </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
-              marginLeft:15
+              marginLeft: 15,
             }}
           >
             <TouchableOpacity
@@ -225,9 +224,11 @@ class FeedUserPost extends React.Component {
                   style={post.liked ? {} : { tintColor: '#B9BDC5' }}
                   source={require('../../../assets/images/LikedPost.png')}
                 />
-                
-                <Text style={[styles.postText, { marginLeft:5 }]}>
-                  {post.likes} {post.likes > 1 ? 'Likes' : 'Like'}
+
+                <Text style={[styles.postText, { marginLeft: 5 }]}>
+                  {post.likes}
+                  {' '}
+                  {post.likes > 1 ? 'Likes' : 'Like'}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -256,4 +257,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(FeedUserPost);
-

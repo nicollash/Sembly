@@ -160,7 +160,20 @@ export function refreshFeed({
         dispatch({ type: UPDATE_BUSINESSES, businesses });
 
         // Update events
-        const events = feedJSON.events.map(e => Event.parse(e));
+        const events = feedJSON.events.map((e) => {
+          const event = Event.parse(e);
+          const existing = _.findWhere(getState().feed.events, { id: e.id });
+          console.log('existing: ', existing);
+
+          if (existing) {
+            event.set(
+              'posts',
+              existing.posts,
+            );
+          }
+          return event;
+        });
+
         dispatch({ type: UPDATE_EVENTS, events });
 
         // Update posts
@@ -366,7 +379,7 @@ export function getUserPosts() {
   };
 }
 
-export function getBusinessPosts(locationID) {
+export function getBusinessPosts(locationID, className) {
   return async function getBusinessPostsState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/getBusinessPosts/?locationID=${locationID}`, {
@@ -380,21 +393,39 @@ export function getBusinessPosts(locationID) {
       .then(response => response.json())
       .then((postsJSON) => {
         console.log(postsJSON);
-        const business = _.findWhere(getState().feed.businesses, {
-          id: locationID,
-        });
+        if (className === 'business') {
+          const business = _.findWhere(getState().feed.businesses, {
+            id: locationID,
+          });
 
-        const businesses = _.union(
-          [
-            business.set(
-              'posts',
-              postsJSON.map(p => Post.parse({ ...p, locationType: 'business' })),
-            ),
-          ],
-          _.without(getState().feed.businesses, business),
-        );
-        console.log(business);
-        dispatch({ type: UPDATE_BUSINESSES, businesses });
+          const businesses = _.union(
+            [
+              business.set(
+                'posts',
+                postsJSON.map(p => Post.parse({ ...p, locationType: 'business' })),
+              ),
+            ],
+            _.without(getState().feed.businesses, business),
+          );
+          console.log('business: ', business);
+          dispatch({ type: UPDATE_BUSINESSES, businesses });
+        } else {
+          const event = _.findWhere(getState().feed.events, {
+            id: locationID,
+          });
+
+          const events = _.union(
+            [
+              event.set(
+                'posts',
+                postsJSON.map(p => Post.parse({ ...p, locationType: 'event' })),
+              ),
+            ],
+            _.without(getState().feed.events, event),
+          );
+          console.log('redux events: ', event, events);
+          dispatch({ type: UPDATE_EVENTS, events });
+        }
       });
   };
 }
@@ -499,7 +530,14 @@ export function toggleLike(post) {
 
     const posts = dispatch(getPostCollection(post));
 
-    const index = _.indexOf(posts, post);
+    // const index = _.indexOf(posts, post);
+    let index = -1;
+    posts.forEach((p, idx) => {
+      if (p.id === post.id) {
+        index = idx;
+      }
+    });
+    console.log('redux posts: ', post, posts, index);
     const likes = post.get('likes');
 
     const updatedPosts = posts.map((p, idx) => {

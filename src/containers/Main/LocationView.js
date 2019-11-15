@@ -56,7 +56,6 @@ class LocationView extends React.Component {
 
     if (!location) return null;
 
-    console.log('location: ', location);
     if (this.state.locationId !== location.id) {
       this.props.getBusinessPosts(location.id, location.className);
       this.setState({ locationId: location.id });
@@ -239,7 +238,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
-  getBusinessPosts: id => dispatch(getBusinessPosts(id)),
+  getBusinessPosts: (id, className) => dispatch(getBusinessPosts(id, className)),
   setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 

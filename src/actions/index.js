@@ -392,7 +392,6 @@ export function getBusinessPosts(locationID, className) {
     })
       .then(response => response.json())
       .then((postsJSON) => {
-        console.log(postsJSON);
         if (className === 'business') {
           const business = _.findWhere(getState().feed.businesses, {
             id: locationID,

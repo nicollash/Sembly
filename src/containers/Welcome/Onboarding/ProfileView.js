@@ -142,7 +142,6 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    console.log(this.props.user.displayName);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />

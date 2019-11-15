@@ -28,7 +28,7 @@ export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 // Utilities
 export function getPostCollection(post) {
   return function getPostCollectionState(dispatch, getState) {
-    console.log(post.locationType);
+    // console.log(post.locationType);
     return getState().feed.posts;
     // if (post.locationID === 'none') return getState().feed.posts;
 
@@ -44,7 +44,7 @@ export function getPostCollection(post) {
 
 export function getPostReference(post, state) {
   const { posts } = state.feed;
-  console.log('post & state: ', post, state);
+  // console.log('post & state: ', post, state);
   // if (post.locationID === 'none') posts = state.feed.posts;
 
   // if (post.locationID !== 'none' && post.locationType === 'business') {
@@ -163,7 +163,7 @@ export function refreshFeed({
         const events = feedJSON.events.map((e) => {
           const event = Event.parse(e);
           const existing = _.findWhere(getState().feed.events, { id: e.id });
-          console.log('existing: ', existing);
+          // console.log('existing: ', existing);
 
           if (existing) {
             event.set(
@@ -422,7 +422,7 @@ export function getBusinessPosts(locationID, className) {
             ],
             _.without(getState().feed.events, event),
           );
-          console.log('redux events: ', event, events);
+          // console.log('redux events: ', event, events);
           dispatch({ type: UPDATE_EVENTS, events });
         }
       });
@@ -434,7 +434,7 @@ export const SENDING_POST = 'SENDING_POST';
 export function createNewPost(post) {
   return async function createNewPostState(dispatch, getState) {
     dispatch({ type: SENDING_POST, sendingPost: true });
-    console.log('createNewPost: ', post);
+    // console.log('createNewPost: ', post);
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/newPost/`, {
       method: 'POST',
@@ -457,7 +457,7 @@ export function createNewPost(post) {
           NavigationService.navigate('Location', { location: business });
         }
         // and post data if no location was tagged
-        console.log('post & dataJSON: ', post, dataJSON);
+        // console.log('post & dataJSON: ', post, dataJSON);
         if (!post.business) {
           const targetPost = Post.parse(dataJSON);
 
@@ -514,7 +514,7 @@ export function addComment({ post = undefined, text = '' }) {
         return p.set('comments', _.union([c], p.get('comments')));
       });
 
-      console.log(updatedPosts);
+      // console.log(updatedPosts);
 
       dispatch(updatePostCollection(post, updatedPosts));
     });
@@ -536,7 +536,7 @@ export function toggleLike(post) {
         index = idx;
       }
     });
-    console.log('redux posts: ', post, posts, index);
+    // console.log('redux posts: ', post, posts, index);
     const likes = post.get('likes');
 
     const updatedPosts = posts.map((p, idx) => {

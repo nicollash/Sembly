@@ -153,7 +153,6 @@ class AppRoot extends React.PureComponent {
       appState: AppState.currentState,
       refusedLocation: false,
     };
-
     this.gpsInterval = undefined;
   }
 
@@ -164,15 +163,19 @@ class AppRoot extends React.PureComponent {
         user,
       }, () => {
         if (this.state.user) {
-          if (this.props.previousScreen !== 'SignupView') {
+          const displayName = this.props.user.displayName || this.state.user.displayName;
+          if (displayName) {
             this.navigator.dispatch(
               NavigationActions.navigate({
                 routeName: 'MainApp',
                 params: {},
               }),
             );
+            const stackIndex = this.navigator.state.nav.index;
+            if (stackIndex !== 0) {
+              this.geoLocate();
+            }
           }
-          this.geoLocate();
         }
         if (this.props.user.email === undefined) {
           this.navigator.dispatch(
@@ -228,7 +231,9 @@ class AppRoot extends React.PureComponent {
         && nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
-      if (!this.state.refusedLocation) {
+      const stackIndex = this.navigator.state.nav.index;
+      if (!this.state.refusedLocation
+          && stackIndex !== 0) {
         this.geoLocate();
       }
     }

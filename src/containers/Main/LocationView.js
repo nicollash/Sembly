@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import propTypes from 'prop-types';
 
 import _ from 'underscore';
 
@@ -21,7 +22,9 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { getLocationReference, setPanelHeight, updateMap, getBusinessPosts } from '../../actions';
+import {
+  getLocationReference, setPanelHeight, updateMap, getBusinessPosts,
+} from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 import Theme from '../../styles/theme';
@@ -53,21 +56,23 @@ class LocationView extends React.Component {
 
     if (!location) return null;
 
+    console.log('location: ', location);
     if (this.state.locationId !== location.id) {
-      this.props.getBusinessPosts(location.id);
+      this.props.getBusinessPosts(location.id, location.className);
       this.setState({ locationId: location.id });
     }
-    
+
     const phoneNumber = location.phone ? parsePhoneNumberFromString(location.phone) : undefined;
-    
+
     return (
       <View>
-        <View style={{ height: (screenHeight) }}>
-          <ScrollView>
+        <View style={{ height: (this.props.panelHeight > 50 ? this.props.panelHeight : 400) }}>
+          <ScrollView style={{ flex: 1 }}>
             <View style={{
               justifyContent: 'flex-start',
               alignItems: 'center',
               borderRadius: 12,
+              flex: 1,
             }}
             >
               <View style={{ width: '100%' }}>
@@ -88,7 +93,9 @@ class LocationView extends React.Component {
                     <TouchableOpacity
                       onPress={() => this.props.navigation.navigate('Feed')}
                       style={{ marginLeft: wp(4) }}
-                      hitSlop={{ bottom: 10, top: 5, right: 5, left: 5 }}
+                      hitSlop={{
+                        bottom: 10, top: 5, right: 5, left: 5,
+                      }}
                     >
                       <Image source={require('../../../assets/images/PostViewGoBackButton.png')} />
                     </TouchableOpacity>
@@ -210,7 +217,6 @@ class LocationView extends React.Component {
                   )}
                 />
               </View>
-              <View style={{ height: hp(100) + 15 - this.props.panelHeight }} />
             </View>
           </ScrollView>
         </View>

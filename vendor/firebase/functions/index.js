@@ -93,7 +93,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       createdAt: moment().format(),
       locationName,
       locationID: business ? business.id : 'none',
-      locationType: business ? 'business' : 'none',
+      locationType: business ? (category === 'Events' ? 'event' : 'business') : 'none',
       businessName: business ? business.name : 'noname',
       category,
       picture,
@@ -338,21 +338,40 @@ exports.searchBusinesses = functions.https.onRequest(async (request, response) =
     query: request.query.q,
   };
 
-  geofirestore
-  .collection("Businesses")
-  .where('name', '>=', query).where('name', '<=', query+ '\uf8ff')
-  .limit(10)
-  .near({
-    center: new firebase.firestore.GeoPoint(lat, lon),
-  })
-  .get().then(snapshot => {
-    return response.status(200).send(snapshot.docs.map((b) => {
-      console.log(b.data().id);
+  Promise.all([
+    geofirestore
+      .collection('Businesses')
+      .where('name', '>=', query)
+      .where('name', '<=', query+ '\uf8ff')
+      .limit(10)
+      .near({
+        center: new firebase.firestore.GeoPoint(lat, lon),
+      })
+      .get(),
+    geofirestore
+      .collection('Events')
+      .where('title', '>=', query)
+      .where('title', '<=', query+ '\uf8ff')
+      .limit(10)
+      .near({
+        center: new firebase.firestore.GeoPoint(lat, lon),
+      })
+      .get(),
+  ]).then(res => {
+    console.log(res[0], res[1]);
+    businessRes = res[0].docs.map((b) => {
       return {
         id: b.data().id,
         name: b.data().name,
       };
-    }));
+    });
+    eventRes = res[1].docs.map(event => {
+      return {
+        id: event.data().id,
+        name: event.data().title,
+      }
+    })
+    return response.status(200).send(businessRes.concat(eventRes));
   }).catch(err => console.log(err));
 });
 

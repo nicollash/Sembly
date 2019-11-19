@@ -379,7 +379,7 @@ export function getUserPosts() {
   };
 }
 
-export function getBusinessPosts(locationID, className) {
+export function fetchLocationPosts(locationID, className) {
   return async function getBusinessPostsState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/getBusinessPosts/?locationID=${locationID}`, {
@@ -406,7 +406,7 @@ export function getBusinessPosts(locationID, className) {
             ],
             _.without(getState().feed.businesses, business),
           );
-          console.log('business: ', business);
+          
           dispatch({ type: UPDATE_BUSINESSES, businesses });
         } else {
           const event = _.findWhere(getState().feed.events, {
@@ -422,7 +422,7 @@ export function getBusinessPosts(locationID, className) {
             ],
             _.without(getState().feed.events, event),
           );
-          // console.log('redux events: ', event, events);
+
           dispatch({ type: UPDATE_EVENTS, events });
         }
       });

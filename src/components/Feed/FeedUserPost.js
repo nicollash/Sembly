@@ -18,6 +18,8 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Theme from '../../styles/theme';
 import { toggleLike } from '../../actions';
 
+import NavigationService from '../../helpers/SlidingPanelNavigation';
+
 const samplePlayer = 'https://api.adorable.io/avatars/285/abott@adorable.png';
 
 const styles = StyleSheet.create({
@@ -30,17 +32,17 @@ const styles = StyleSheet.create({
 });
 
 class FeedUserPost extends React.Component {
-  constructor(props) {
-    super(props);
+  
+  componentWillMount() {
 
-    this.state = {
-      post: {},
-    };
   }
 
-  componentWillMount() {}
-
   componentDidMount() {
+
+  }
+
+  gotoLocation = (location) => {
+    NavigationService.navigate('Location', { location });
   }
 
   render() {
@@ -177,7 +179,7 @@ class FeedUserPost extends React.Component {
           }}
         >
           {post.showOnMap && (
-            <TouchableOpacity onPress={this.openMaps}>
+            <TouchableOpacity onPress={() => this.gotoLocation(post.location)}>
               <View
                 style={{
                   flexDirection: 'row',

@@ -23,7 +23,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import {
-  getLocationReference, setPanelHeight, updateMap, getBusinessPosts,
+  getLocationReference, setPanelHeight, updateMap, fetchLocationPosts,
 } from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -57,7 +57,7 @@ class LocationView extends React.Component {
     if (!location) return null;
 
     if (this.state.locationId !== location.id) {
-      this.props.getBusinessPosts(location.id, location.className);
+      this.props.fetchLocationPosts(location.id, location.className);
       this.setState({ locationId: location.id });
     }
 
@@ -233,13 +233,18 @@ LocationView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
+  console.log(ownProps.navigation.getParam('location'));
   const location = getLocationReference(ownProps.navigation.getParam('location'), state);
-  return { businesses: state.feed.businesses, location, panelHeight: state.appState.panelHeight };
+  return {
+    businesses: state.feed.businesses,
+    location,
+    panelHeight: state.appState.panelHeight,
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
-  getBusinessPosts: (id, className) => dispatch(getBusinessPosts(id, className)),
+  fetchLocationPosts: (id, className) => dispatch(fetchLocationPosts(id, className)),
   setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 

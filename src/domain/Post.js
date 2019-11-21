@@ -49,6 +49,7 @@ class Post extends PostRecord<PostProps> {
   }
 
   static parse(data) {
+    
     return new Post({
       id: data.id,
       title: data.title ? data.title : '',
@@ -56,7 +57,7 @@ class Post extends PostRecord<PostProps> {
       category: data.category,
       likes: data.likesCount || 0,
       picture: data.picture,
-      location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude, name: data.locationName }),
+      location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude, name: data.locationName, id: data.locationID, className: data.locationType }),
       createdAt: moment(data.createdAt),
       // location: new Location({ name: data.locationName, lat: data.latlng[0], lng: data.latlng[1] }),
       // comments: data.comments.map(comment => Comment.parse(comment)) || [],

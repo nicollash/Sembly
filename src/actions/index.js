@@ -467,7 +467,7 @@ export function createNewPost(post) {
           NavigationService.navigate('Post', { post: targetPost });
         }
         dispatch({ type: SENDING_POST, sendingPost: false });
-        // dispatch(refreshFeed({}));
+        dispatch(refreshFeed({}));
       })
       .catch((e) => {
         console.log(e);

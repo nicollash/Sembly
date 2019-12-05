@@ -97,6 +97,7 @@ class FeedView extends React.Component {
 
     return (
       <ScrollView
+        pointerEvents={this.props.isLoading ? 'none' : 'auto'}
         refreshControl={(
           <RefreshControl
             refreshing={this.props.isLoading}

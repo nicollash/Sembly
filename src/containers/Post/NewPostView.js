@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  Keyboard,
   ImageBackground,
   Modal,
   Alert,
@@ -305,7 +306,11 @@ class NewPostView extends React.Component {
                 marginTop: 10,
               }}
             >
-              <TouchableOpacity onPress={this.debounceImagePick}>
+              <TouchableOpacity onPress={() => {
+                this.debounceImagePick();
+                Keyboard.dismiss();
+              }}
+              >
                 <Image
                   source={require('../../../assets/images/ButtonCameraPost.png')}
                 />
@@ -326,7 +331,11 @@ class NewPostView extends React.Component {
                 style={styles.backgroundUpload}
                 imageStyle={{ borderRadius: 15 }}
               >
-                <TouchableOpacity onPress={this.chooseImage}>
+                <TouchableOpacity onPress={() => {
+                  this.chooseImage();
+                  Keyboard.dismiss();
+                }}
+                >
                   <Image
                     source={require('../../../assets/images/ButtonCameraPost.png')}
                   />

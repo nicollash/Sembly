@@ -14,8 +14,10 @@ import {
 
 import Theme from '../styles/theme';
 
+const defaultAvatar = 'https://api.adorable.io/avatars/285/abott@adorable.png';
+
 const styles = StyleSheet.create({
-  commentContainer: {
+  container: {
     width: '95%',
     left: 15,
     borderRadius: 10,
@@ -27,8 +29,9 @@ const styles = StyleSheet.create({
   },
   commentContent: {
     width: '88%',
-    left: '4.5%',
-    paddingBottom: 20,
+    left: 15,
+    paddingBottom: 12,
+    marginTop: 20,
   },
   commentText: {
     color: '#26315F',
@@ -42,6 +45,7 @@ class SemblyUserComment extends React.Component {
     super(props);
 
     this.state = {
+      profilePictureURI: this.props.user.user.avatar || defaultAvatar,
     };
   }
 
@@ -53,8 +57,10 @@ class SemblyUserComment extends React.Component {
 
   render() {
     const { user = {} } = this.props;
+    const { profilePictureURI } = this.state;
+    console.log(profilePictureURI);
     return (
-      <View style={styles.commentContainer}>
+      <View style={styles.container}>
         <View style={{
           flexDirection: 'row',
           height: 40,
@@ -63,18 +69,20 @@ class SemblyUserComment extends React.Component {
           alignSelf: 'center',
         }}
         >
-          <TouchableOpacity style={{ flexDirection: 'row' }}>
+          <View style={{ position: 'absolute', left: 0, top: 10 }}>
             <Image
-              style={{ height: 32, width: 32, borderRadius: 16, marginTop: 4, marginRight: 5 }}
-              source={{ uri: user.user.avatar }}
+              style={{ height: 40, width: 40, borderRadius: 20 }}
+              source={{ uri: profilePictureURI }}
               resizeMode="cover"
             />
+          </View>
+          <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 45 }}>
             <Text style={{
               fontFamily: Theme.fonts.bold,
               color: '#26315F',
               fontSize: 15,
-              left: '10%',
-              top: 11,
+              left: 2,
+              top: 17,
             }}
             >
               {user.user.name}

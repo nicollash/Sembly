@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Text,
+  Keyboard,
   View,
   Modal,
   StyleSheet,
@@ -44,7 +45,8 @@ class SemblyDropdown extends React.Component {
       <Picker.Item label={val} value={val} />
     ));
     return this.state.open ? (
-      <View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+        <View>
         <Picker
           selectedValue={this.state.value}
           mode="dialog"
@@ -59,7 +61,8 @@ class SemblyDropdown extends React.Component {
             width={160}
           />
         </View>
-      </View>
+        </View>
+      </TouchableWithoutFeedback>
     ) : (
       <TouchableOpacity
         onPress={() => this.setState({ open: !this.state.open })}

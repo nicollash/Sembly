@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableOpacity,
   Text,
+  Keyboard,
 } from 'react-native';
 
 import _ from 'underscore';
@@ -112,6 +113,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
+                Keyboard.dismiss();
                 this.setState({ query: item.name, businesses: [] });
                 this.props.onResult({ ...item });
               }}

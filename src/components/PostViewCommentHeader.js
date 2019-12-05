@@ -57,7 +57,7 @@ class PostViewCommentHeader extends React.Component {
         
         <View style={styles.roundInput}>
           <TextInput
-            style={{ left: '5%', paddingVertical: hp(1) }}
+            style={{ left: '5%', width: '95%', paddingVertical: hp(1) }}
             placeholder="Comment on this post"
             placeholderTextColor="#B6B8C5"
             value={this.state.comment} 
@@ -69,6 +69,7 @@ class PostViewCommentHeader extends React.Component {
               this.setState({comment: ''});
               // setTimeout(() => this.props.refreshFeed(), 0);
             }}
+            multiline
             returnKeyType="send"
             returnKeyLabel="done"
           />

@@ -123,9 +123,7 @@ PostView.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   const sourcePost = ownProps.navigation.getParam('post');
 
-  const post = ownProps.navigation.getParam('sourceLocation') ?
-    _.findWhere(ownProps.navigation.getParam('sourceLocation').posts, { id: sourcePost.id }) :
-    getPostReference(ownProps.navigation.getParam('post'), state);
+  const post = getPostReference(ownProps.navigation.getParam('post'), state);
   return { post, panelHeight: state.appState.panelHeight };
 };
 

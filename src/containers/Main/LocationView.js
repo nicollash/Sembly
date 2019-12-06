@@ -23,7 +23,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import {
-  getLocationReference, setPanelHeight, updateMap, fetchLocationPosts,
+  getLocationReference, setPanelHeight, updateMap, fetchLocationPosts, getPostsForLocation,
 } from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -195,7 +195,7 @@ class LocationView extends React.Component {
               <View style={styles.separatorBar} />
               <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
                 <FlatList
-                  data={location.posts}
+                  data={this.props.posts}
                   renderItem={({ item }) => (
                     <FeedUserPost
                       post={item}
@@ -233,10 +233,10 @@ LocationView.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps.navigation.getParam('location'));
   const location = getLocationReference(ownProps.navigation.getParam('location'), state);
   return {
     businesses: state.feed.businesses,
+    posts: getPostsForLocation(location, state),
     location,
     panelHeight: state.appState.panelHeight,
   };

@@ -47,20 +47,21 @@ class SemblyDropdown extends React.Component {
     return this.state.open ? (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
         <View>
-        <Picker
-          selectedValue={this.state.value}
-          mode="dialog"
-          onValueChange={this.updateValue}
-        >
-          {items}
-        </Picker>
-        <View style={{ top: -10 }}>
-          <SemblyButton
-            onPress={() => this.setState({ open: false })}
-            label="Confirm"
-            width={160}
-          />
-        </View>
+          <Picker
+            ref={this.props.ref}
+            selectedValue={this.state.value}
+            mode="dialog"
+            onValueChange={this.updateValue}
+          >
+            {items}
+          </Picker>
+          <View style={{ top: -10 }}>
+            <SemblyButton
+              onPress={() => this.setState({ open: false })}
+              label="Confirm"
+              width={160}
+            />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     ) : (

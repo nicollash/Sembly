@@ -99,6 +99,7 @@ class NewPostView extends React.Component {
         category: 'General',
         text: '',
         pictureURI: '',
+        selectedInput: 0,
       },
     };
     this.debounceImagePick = _.debounce(this.chooseImage, 1000);
@@ -199,7 +200,7 @@ class NewPostView extends React.Component {
           )}
           <View style={{ marginTop: 25 }}>
             <SemblyInput
-              ref={(ref) => { this._inputA = ref; }}
+              ref={(ref) => { this.input = ref; }}
               marginLeft={5}
               placeholder="Content of your post, up to 300 chars."
               label="TEXT"
@@ -209,7 +210,8 @@ class NewPostView extends React.Component {
               spacing={5}
               autoCorrect
               maxLength={300}
-              onSubmit={() => focusTextInput(this._inputB)}
+              returnKey="next"
+              onSubmit={() => focusTextInput(this.autoComplete)}
             />
           </View>
           <View style={{ marginTop: 20, zIndex: 1 }}>
@@ -234,7 +236,7 @@ class NewPostView extends React.Component {
               />
               <View style={{ marginLeft: 2 }}>
                 <SemblyPlaceAutoComplete
-                  ref={(ref) => { this._inputB = ref; }}
+                  ref={(ref) => { this.autoComplete = ref; }}
                   latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
                   onResult={(business) => {

@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
   Keyboard,
+  Alert,
   TouchableWithoutFeedback,
 } from 'react-native';
 
@@ -64,6 +65,8 @@ class SemblyInput extends React.Component {
             returnKeyType={this.props.returnKey}
             secured={this.props.secured}
             onSubmitEditing={this.props.onSubmit}
+            onEndEditing={this.props.onSubmit}
+            onFocus={this.props.onFocus}
           />
         </View>
       </DismissKeyboard>

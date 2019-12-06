@@ -36,6 +36,7 @@ export function getDistance(lat1, lon1, lat2, lon2, unit) {
 }
 
 export function focusTextInput(node) {
+  console.log(node);
   try {
     TextInputState.focusTextInput(findNodeHandle(node));
   } catch (e) {

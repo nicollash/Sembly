@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   Keyboard,
+  Alert,
 } from 'react-native';
 
 import _ from 'underscore';
@@ -91,10 +92,10 @@ class SemblyPlaceAutoComplete extends React.Component {
     return (
       <View style={styles.container}>
         <Autocomplete
-          ref={this.props.ref}
           scrollEnabled
           autoCapitalize
           autoCorrect={false}
+          ref={this.props.ref}
           inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.textInputContainer}
           listContainerStyle={styles.listView}

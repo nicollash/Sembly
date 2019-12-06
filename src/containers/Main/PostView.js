@@ -121,7 +121,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   getPostReference: post => dispatch(getPostReference(post)),
-  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostView);

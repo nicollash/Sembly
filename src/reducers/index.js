@@ -26,6 +26,7 @@ import {
   UPDATE_MAP,
   SET_PANEL_HEIGHT,
   ADD_COMMENT,
+  SCROLL_TO_TOP,
 } from '../actions';
 
 
@@ -83,6 +84,7 @@ const feedDefault = {
   events: [],
   posts: [],
   businesses: [],
+  scrolls: false,
 };
 
 const feed = (state = feedDefault, action) => {
@@ -100,6 +102,8 @@ const feed = (state = feedDefault, action) => {
     return Object.assign({}, state, { events: action.events });
   case UPDATE_BUSINESSES:
     return Object.assign({}, state, { businesses: action.businesses });
+  case SCROLL_TO_TOP:
+    return Object.assign({}, state, { scrolls: action.scrolls });
   default:
     return state;
   }
@@ -158,7 +162,7 @@ const map = (state = mapDefault, action) => {
 };
 
 // Uncomment the line below and refresh once to simulate a fresh install
-// storage.clear();
+storage.clear();
 
 const semblyApp = combineReducers({
   appState,

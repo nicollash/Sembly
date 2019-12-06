@@ -50,6 +50,7 @@ class SemblyInput extends React.Component {
           />
           <View style={{ height: this.props.spacing}} />
           <TextInput
+            ref={this.props.ref}
             maxLength={this.props.maxLength}
             multiline={this.props.multiline}
             textContentType={this.props.type}
@@ -61,8 +62,8 @@ class SemblyInput extends React.Component {
             secureTextEntry={this.props.secured}
             onChangeText={str => this.props.valueChanged(str)}
             returnKeyType={this.props.returnKey}
-            ref={input => this.props.nextInput = input}
             secured={this.props.secured}
+            onSubmitEditing={this.props.onSubmit}
           />
         </View>
       </DismissKeyboard>

@@ -109,7 +109,6 @@ class LocationView extends React.Component {
                       }}
                     >
                       {location.title ? location.title : location.name}
-                      {/* {location.title || location.name || 'Not Specified'} */}
                     </Text>
                   </View>
                   <View style={{ marginTop: 3 }}>
@@ -186,9 +185,6 @@ class LocationView extends React.Component {
                         </Text>
                       </View>
                     )}
-                    {/* <View style={{ position: 'absolute', right: 10, bottom: 7 }}> */}
-                    {/* <SemblyRedeemButton /> */}
-                    {/* </View> */}
                   </View>
                 </View>
               </View>
@@ -245,7 +241,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
   fetchLocationPosts: (id, className) => dispatch(fetchLocationPosts(id, className)),
-  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

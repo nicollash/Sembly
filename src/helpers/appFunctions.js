@@ -1,5 +1,5 @@
-import { Dimensions, StatusBar } from 'react-native';
-
+import { Dimensions, StatusBar, findNodeHandle } from 'react-native';
+import TextInputState from 'react-native/lib/TextInputState';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 export function visibleHeight() {
@@ -32,5 +32,13 @@ export function getDistance(lat1, lon1, lat2, lon2, unit) {
     if (unit === 'N') { dist *= 0.8684; }
     dist = dist.toFixed(1);
     return dist === 0.0 ? 0.1 : dist;
+  }
+}
+
+export function focusTextInput(node) {
+  try {
+    TextInputState.focusTextInput(findNodeHandle(node));
+  } catch (e) {
+    console.log("Couldn't focus text input: ", e.message);
   }
 }

@@ -13,7 +13,6 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-picker';
@@ -26,6 +25,7 @@ import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput } from '../../components';
 import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
+import { focusTextInput } from '../../helpers/appFunctions';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
@@ -199,6 +199,7 @@ class NewPostView extends React.Component {
           )}
           <View style={{ marginTop: 25 }}>
             <SemblyInput
+              ref={(ref) => { this._inputA = ref; }}
               marginLeft={5}
               placeholder="Content of your post, up to 300 chars."
               label="TEXT"
@@ -208,6 +209,7 @@ class NewPostView extends React.Component {
               spacing={5}
               autoCorrect
               maxLength={300}
+              onSubmit={() => focusTextInput(this._inputB)}
             />
           </View>
           <View style={{ marginTop: 20, zIndex: 1 }}>
@@ -232,6 +234,7 @@ class NewPostView extends React.Component {
               />
               <View style={{ marginLeft: 2 }}>
                 <SemblyPlaceAutoComplete
+                  ref={(ref) => { this._inputB = ref; }}
                   latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
                   onResult={(business) => {

@@ -406,7 +406,7 @@ export function fetchLocationPosts(locationID, className) {
             ],
             _.without(getState().feed.businesses, business),
           );
-          
+
           dispatch({ type: UPDATE_BUSINESSES, businesses });
         } else {
           const event = _.findWhere(getState().feed.events, {
@@ -427,6 +427,12 @@ export function fetchLocationPosts(locationID, className) {
         }
       });
   };
+}
+
+export function getPostsForLocation(location, state) {
+  const { posts } = state.feed;
+  console.log(_.where(posts, { locationID: location.id }) || []);
+  return _.where(posts, { locationID: location.id }) || [];
 }
 
 // New Post
@@ -581,5 +587,17 @@ export const SET_PANEL_HEIGHT = 'SET_PANEL_HEIGHT';
 export function setPanelHeight(height) {
   return function setPanelHeightState(dispatch, getState) {
     dispatch({ type: SET_PANEL_HEIGHT, height });
+  };
+}
+
+export const SCROLL_TO_TOP = 'SCROLL_TO_TOP';
+export function scrollToTop() {
+  return function scrollToTopState(dispatch, getState) {
+    return Promise.all([
+      dispatch({ type: SCROLL_TO_TOP, scrolls: true }),
+      setTimeout(() => {
+        dispatch({ type: SCROLL_TO_TOP, scrolls: false });
+      }, 2000),
+    ]);
   };
 }

@@ -81,6 +81,14 @@ class FeedView extends React.Component {
     this.props.refreshFeed();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.scrolls && !prevProps.scrolls) {
+      this.scroll.scrollTo({ y: 0 });
+      this.categoryBar.scrollToOffset({ offset: 0 });
+      this.setState({ selectedCategoryTitle: 'All', selectedCategoryIcon: icons[0] });
+    }
+  }
+
   _onRefresh = () => {
     this.props.refreshFeed(this.state.selectedCategoryTitle);
   };
@@ -97,6 +105,7 @@ class FeedView extends React.Component {
 
     return (
       <ScrollView
+        ref={(ref) => { this.scroll = ref; }}
         pointerEvents={this.props.isLoading ? 'none' : 'auto'}
         refreshControl={(
           <RefreshControl
@@ -113,6 +122,7 @@ class FeedView extends React.Component {
         </View>
         <View style={{ width: wp(100), marginTop: 10 }}>
           <FlatList
+            ref={(ref) => { this.categoryBar = ref; }}
             horizontal
             showsHorizontalScrollIndicator={false}
             data={categories.sort((a, b) => a.id > b.id)}
@@ -287,11 +297,11 @@ const mapStateToProps = (state, ownProps) => ({
   location: state.user.location,
   user: state.user,
   panelHeight: state.appState.panelHeight,
+  scrolls: state.feed.scrolls,
 });
 
 const mapDispatchToProps = dispatch => ({
   refreshFeed: a => dispatch(refreshFeed({ category: a })),
-  setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 
 export default connect(

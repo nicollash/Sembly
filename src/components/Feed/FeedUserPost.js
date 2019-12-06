@@ -19,6 +19,7 @@ import Theme from '../../styles/theme';
 import { toggleLike } from '../../actions';
 
 import NavigationService from '../../helpers/SlidingPanelNavigation';
+import firebase from 'react-native-firebase';
 
 const samplePlayer = 'https://api.adorable.io/avatars/285/abott@adorable.png';
 
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
 class FeedUserPost extends React.Component {
   
   componentWillMount() {
-
   }
 
   componentDidMount() {

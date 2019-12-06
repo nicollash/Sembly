@@ -1,5 +1,6 @@
 import firebase from 'react-native-firebase';
 import _ from 'underscore';
+import { Alert } from 'react-native';
 import moment from 'moment';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { mergeDeep } from 'immutable';
@@ -235,9 +236,8 @@ export function updateUserProfile({
         const user = {
           displayName, photoURL, facebookUser, email,
         };
-        // if (post) posts.push(post);
-        // if (comment) comments.push(comment);
         dispatch({ type: UPDATE_USER, user });
+        dispatch(refreshFeed());
       })
       .catch(e => console.log(e));
   };
@@ -434,7 +434,6 @@ export const SENDING_POST = 'SENDING_POST';
 export function createNewPost(post) {
   return async function createNewPostState(dispatch, getState) {
     dispatch({ type: SENDING_POST, sendingPost: true });
-    // console.log('createNewPost: ', post);
     const token = await firebase.auth().currentUser.getIdToken();
     fetch(`${API_URL}/newPost/`, {
       method: 'POST',
@@ -467,7 +466,7 @@ export function createNewPost(post) {
           NavigationService.navigate('Post', { post: targetPost });
         }
         dispatch({ type: SENDING_POST, sendingPost: false });
-        dispatch(refreshFeed({}));
+        dispatch(refreshFeed());
       })
       .catch((e) => {
         console.log(e);
@@ -487,8 +486,7 @@ export function addComment({ post = undefined, text = '' }) {
   };
   return async function addCommentState(dispatch, getState) {
     const user = await firebase.auth().currentUser;
-
-    const token = await firebase.auth().currentUser.getIdToken();
+    const token = await user.getIdToken();
     fetch(`${API_URL}/addComment/`, {
       method: 'POST',
       headers: {
@@ -498,13 +496,11 @@ export function addComment({ post = undefined, text = '' }) {
       },
       body: JSON.stringify(comment),
     }).then(() => {
-      // Success, create the mock comment
-      const c = new Comment({
+      const c = Comment.parse({
         text,
         createdAt: moment(),
-        user: new User({ name: user.displayName, avatar: user.photoURL }),
+        author: { name: user.displayName, avatar: user.photoURL },
       });
-
       const posts = dispatch(getPostCollection(post));
       const index = _.indexOf(posts, post);
 
@@ -512,13 +508,13 @@ export function addComment({ post = undefined, text = '' }) {
         if (idx !== index) return p;
         return p.set('comments', _.union([c], p.get('comments')));
       });
-
-      // console.log(updatedPosts);
-
-      dispatch(updatePostCollection(post, updatedPosts));
+      return Promise.all([
+        dispatch({ type: ADD_COMMENT, comment }),
+        dispatch(updatePostCollection(post, updatedPosts)),
+        dispatch(refreshFeed()),
+      ]);
     });
-    dispatch({ type: ADD_COMMENT, comment });
-    dispatch(refreshFeed());
+    // dispatch({ type: ADD_COMMENT, comment });
   };
 }
 

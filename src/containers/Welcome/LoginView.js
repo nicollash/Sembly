@@ -1,23 +1,23 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
-import { handleLogin, updateLocation, clearLoginErrors, clearSignupErrors } from '../../actions';
 import {
   View,
-  Image, 
-  StatusBar, 
-  Text, 
+  Image,
+  StatusBar,
+  Text,
   TouchableOpacity,
   ActivityIndicator,
   KeyboardAvoidingView,
-} from "react-native";
+} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { handleLogin, updateLocation, clearLoginErrors, clearSignupErrors } from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
-import { SemblyButton, LoginForm } from "../../components";
-import Theme from "../../styles/theme";
-import { ScrollView } from "react-native-gesture-handler";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SemblyButton, LoginForm } from '../../components';
+import Theme from '../../styles/theme';
+import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 const styles = {
@@ -80,7 +80,7 @@ const styles = {
     paddingVertical: hp(1.55),
     borderRadius: hp(4),
     alignSelf: 'center',
-    height:wp(13),
+    height: wp(13),
     width: isIphoneX() ? wp(75) : wp(69),
     backgroundColor: '#F7567C',
   },
@@ -147,7 +147,7 @@ class LoginView extends React.Component {
             }}
           />
         </View>
-        <KeyboardAwareScrollView style={styles.mainContainer} enableOnAndroid={true}>
+        <KeyboardAwareScrollView style={styles.mainContainer} enableOnAndroid>
           <View>
             <Text style={styles.discoverCity}>
               Discover your city
@@ -157,7 +157,10 @@ class LoginView extends React.Component {
             </Text>
           </View>
           {this.props.loginError !== undefined && (
-            <Text style={{ color: '#ff0000', alignSelf: 'center', marginTop: 10, textAlign: 'center' }}>
+            <Text style={{
+              color: '#ff0000', alignSelf: 'center', marginTop: 10, textAlign: 'center',
+            }}
+            >
               {this.props.loginError}
             </Text>
           )}
@@ -167,23 +170,17 @@ class LoginView extends React.Component {
               passwordChanged={value => this.setState({ password: value })}
             />
           </View>
-          <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2)}}>
-            {this.state.spinnerActive && (
-              <View style={styles.spinnerContainer}>
-                <ActivityIndicator size='large'/>
-              </View>
-            )}
-            {!this.state.spinnerActive && (
-              <SemblyButton
-                label="Login"
-                onPress={() => {
-                  this.props.handleLogin(this.state.email, this.state.password);
-                  this.handleSpinner();
-                }}
-                width={isIphoneX() ? wp(75) : wp(69)}
-                height={wp(13)}
-              />
-            )}
+          <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
+            <SemblyButton
+              label="Login"
+              onPress={() => {
+                this.props.handleLogin(this.state.email, this.state.password);
+                this.handleSpinner();
+              }}
+              width={isIphoneX() ? wp(75) : wp(69)}
+              height={wp(13)}
+              loading={this.state.spinnerActive}
+            />
           </View>
           <View>
             <TouchableOpacity
@@ -245,4 +242,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
- 

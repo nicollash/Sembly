@@ -69,7 +69,6 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
   }
 
   const { text, location, category, business } = request.body;
-  console.log('line 72', JSON.stringify(request.body));
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [parseFloat(location.lat), parseFloat(location.lon)]
@@ -119,8 +118,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 });
 
 exports.addComment = functions.https.onRequest(async (request, response) => {
-  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
+  console.log(util.inspect(request.body, {showHidden: false, depth: null}));
   
+  console.log('========================');
   const user = await getUser(request);
 
   const postID = request.body.postID;
@@ -246,7 +246,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     })
     .asPromise();
 
-  locationName = geocode.json.results[0].address_components[3].short_name;
+  locationName = geocode.json.results[0].address_components[2].short_name;
 
   // Make database requests
   const categories = await admin

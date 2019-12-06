@@ -192,26 +192,20 @@ class SignupView extends React.Component {
               />
             </View>
             <View style={{ marginTop: isIphoneX() ? hp(2) : hp(2) }}>
-              {this.state.spinnerActive && (
-                <View style={styles.spinnerContainer}>
-                  <ActivityIndicator />
-                </View>
-              )}
-              {!this.state.spinnerActive && (
-                <SemblyButton
-                  width={isIphoneX() ? wp(76) : wp(69)}
-                  onPress={() => {
-                    this.props.handleSignup(this.state.email, this.state.password);
-                    this.handleSpinner();
-                    setTimeout(() => {
-                      this.props.signupError
-                        ? this.setState({ spinnerActive: false }) && this.props.clearSignupErrors
-                        : this.props.navigation.navigate('Profile');
-                    }, 1000);
-                  }}
-                  label="Signup"
-                />
-              )}
+              <SemblyButton
+                width={isIphoneX() ? wp(76) : wp(69)}
+                onPress={() => {
+                  this.props.handleSignup(this.state.email, this.state.password);
+                  this.handleSpinner();
+                  setTimeout(() => {
+                    this.props.signupError
+                      ? this.setState({ spinnerActive: false }) && this.props.clearSignupErrors
+                      : this.props.navigation.navigate('Profile');
+                  }, 1000);
+                }}
+                label="Signup"
+                loading={this.state.spinnerActive}
+              />
             </View>
             <View style={styles.footer}>
               <Text style={{

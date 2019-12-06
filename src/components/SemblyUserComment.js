@@ -45,7 +45,7 @@ class SemblyUserComment extends React.Component {
     super(props);
 
     this.state = {
-      profilePictureURI: this.props.user.user.avatar || defaultAvatar,
+      profilePictureURI: this.props.comment.user.avatar || defaultAvatar,
     };
   }
 
@@ -56,9 +56,8 @@ class SemblyUserComment extends React.Component {
   }
 
   render() {
-    const { user = {} } = this.props;
+    const { comment = {} } = this.props;
     const { profilePictureURI } = this.state;
-    console.log(profilePictureURI);
     return (
       <View style={styles.container}>
         <View style={{
@@ -85,16 +84,16 @@ class SemblyUserComment extends React.Component {
               top: 17,
             }}
             >
-              {user.user.name}
+              {comment.user.name}
             </Text>
           </TouchableOpacity>
           <Text style={{ top: '3%', right: '40%', color: '#B9BDC5', fontSize: 11 }}>
-            {user.createdAt.fromNow()}
+            {comment.createdAt.fromNow()}
           </Text>
         </View>
         <View style={styles.commentContent}>
           <Text style={styles.commentText}>
-            {user.text}
+            {comment.text}
           </Text>
         </View>
       </View>

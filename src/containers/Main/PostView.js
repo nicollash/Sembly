@@ -16,6 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getPostReference, setPanelHeight } from '../../actions';
 
 import {
@@ -38,23 +39,21 @@ const styles = StyleSheet.create({
 });
 
 class PostView extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'Your Posts',
-      headerTitleStyle: {
-        color: '#26315F',
-        fontSize: wp(4.4),
-        fontFamily: theme.fonts.regular,
-      },
-      headerLeft: (
-        <SemblyHeaderButton
-          onPress={() => navigation.goBack()}
-          label="Your Posts"
-          red="true"
-        />
-      ),
-    };
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Your Posts',
+    headerTitleStyle: {
+      color: '#26315F',
+      fontSize: wp(4.4),
+      fontFamily: theme.fonts.regular,
+    },
+    headerLeft: (
+      <SemblyHeaderButton
+        onPress={() => navigation.goBack()}
+        label="Your Posts"
+        red="true"
+      />
+    ),
+  });
 
   constructor(props) {
     super(props);
@@ -69,20 +68,15 @@ class PostView extends React.Component {
   componentDidMount() {
   }
 
-  setPanelPadding = (h) => {
-    return 810 - h;
-    // return 810.452 - 0.984017 * h;
-    // return 120; // 684
-  }
+  setPanelPadding = h => 810 - h;
 
   render() {
     const { navigation, post } = this.props;
-    console.log(post);
     if (!post) return null;
 
     return (
-      <ScrollView style={{ width: wp(100) }}>
-        <View style={{marginBottom:18}}>
+      <KeyboardAwareScrollView style={{ width: wp(100) }}>
+        <View style={{ marginBottom: 18 }}>
           <PostViewUserPost
             canGoBack={navigation.getParam('canGoBack')}
             post={post}
@@ -97,10 +91,10 @@ class PostView extends React.Component {
           <FlatList
             scrollEnabled={false}
             showsVerticalScrollIndicator={false}
-            data={post.comments}
+            data={post.comments.sort((a, b) => b.createdAt.unix() - a.createdAt.unix())}
             renderItem={({ item }) => (
               <SemblyUserComment
-                user={item}
+                comment={item}
               />
             )}
             ItemSeparatorComponent={() => (
@@ -109,7 +103,7 @@ class PostView extends React.Component {
           />
         </View>
         <View style={{ height: hp(100) + 15 - this.props.panelHeight }} />
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -123,14 +117,14 @@ PostView.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   const sourcePost = ownProps.navigation.getParam('post');
 
-  const post = ownProps.navigation.getParam('sourceLocation') ?
-    _.findWhere(ownProps.navigation.getParam('sourceLocation').posts, { id: sourcePost.id }) :
-    getPostReference(ownProps.navigation.getParam('post'), state);
+  const post = ownProps.navigation.getParam('sourceLocation')
+    ? _.findWhere(ownProps.navigation.getParam('sourceLocation').posts, { id: sourcePost.id })
+    : getPostReference(ownProps.navigation.getParam('post'), state);
   return { post, panelHeight: state.appState.panelHeight };
 };
 
 const mapDispatchToProps = dispatch => ({
-  getPostReference: (post) => dispatch(getPostReference(post)),
+  getPostReference: post => dispatch(getPostReference(post)),
   setPanelHeight: h => dispatch(setPanelHeight(h)),
 });
 

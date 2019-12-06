@@ -79,6 +79,7 @@ SemblyInput.defaultProps = {
   multiline: true,
   secured: false,
   spacing: 0,
+  maxLength: 300,
 };
 
 SemblyInput.propTypes = {

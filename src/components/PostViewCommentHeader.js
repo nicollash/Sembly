@@ -6,6 +6,8 @@ import {
   Text,
   TextInput,
   Image,
+  Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -31,6 +33,7 @@ class PostViewCommentHeader extends React.Component {
 
     this.state = {
       comment: '',
+      spinning: false,
     };
   }
 
@@ -43,7 +46,7 @@ class PostViewCommentHeader extends React.Component {
   render() {
     return (
       <View style={{ marginTop: 10 }}>
-        <View style={{ flexDirection: 'row', left: wp(7.5),marginBottom:15 }}>
+        <View style={{ flexDirection: 'row', left: wp(7.5), marginBottom: 15 }}>
           <Image
             source={require('../../assets/images/PostViewCommentIcon.png')} 
             style={{ marginRight: '1.5%' }}
@@ -60,19 +63,33 @@ class PostViewCommentHeader extends React.Component {
             style={{ left: '5%', width: '95%', paddingVertical: hp(1) }}
             placeholder="Comment on this post"
             placeholderTextColor="#B6B8C5"
-            value={this.state.comment} 
+            defaultValue={this.state.comment}
             onChangeText={comment => this.setState({ comment })}
-            onSubmitEditing={() => {
+            onSubmitEditing={({ nativeEvent }) => {
               const comment = this.state.comment;
-              this.props.addComment({ post: this.props.post, text: comment });
-              this.props.updateUserProfile(comment);
-              this.setState({comment: ''});
-              // setTimeout(() => this.props.refreshFeed(), 0);
+              return Promise.all([
+                setTimeout(() => {
+                  this.setState({ comment: '' });
+                }, 50),
+                this.setState({ spinning: true }),
+                this.props.addComment({ post: this.props.post, text: comment })
+                  .then(() => {
+                    setTimeout(() => {
+                      this.setState({ spinning: false });
+                    }, 2000);
+                  }),
+                this.props.updateUserProfile(comment),
+                Keyboard.dismiss(),
+              ]);
             }}
             multiline
             returnKeyType="send"
-            returnKeyLabel="done"
           />
+          {this.state.spinning && (
+            <View style={{ position: 'absolute', right: 5 }}>
+              <ActivityIndicator color="#28335E" />
+            </View>
+          )}
         </View>
       </View>
 

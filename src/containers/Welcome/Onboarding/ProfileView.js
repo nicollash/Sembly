@@ -220,24 +220,18 @@ class ProfileView extends React.Component {
               </View>
             </View>
             <View style={{ marginTop: isIphoneX() ? hp(6) : hp(5) }}>
-              {this.state.spinnerActive && (
-                <View style={styles.spinnerContainer}>
-                  <ActivityIndicator />
-                </View>
-              )}
-              {!this.state.spinnerActive && (
-                <SemblyButton
-                  width={isIphoneX() ? wp(76) : wp(69)}
-                  onPress={() => {
-                    this.props.updateUserProfile(this.state.profile.displayName || this.props.user.email.split('@')[0], this.state.profile.pictureURI);
-                    this.handleSpinner();
-                    setTimeout(() => {
-                      this.props.navigation.navigate('Onboarding');
-                    }, 1500);
-                  }}
-                  label="I'm ready"
-                />
-              )}
+              <SemblyButton
+                width={isIphoneX() ? wp(76) : wp(69)}
+                onPress={() => {
+                  this.props.updateUserProfile(this.state.profile.displayName || this.props.user.email.split('@')[0], this.state.profile.pictureURI);
+                  this.handleSpinner();
+                  setTimeout(() => {
+                    this.props.navigation.navigate('Onboarding');
+                  }, 1500);
+                }}
+                label="I'm ready"
+                loading={this.state.spinnerActive}
+              />
             </View>
           </View>
         </KeyboardAwareScrollView>

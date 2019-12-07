@@ -16,6 +16,7 @@ const uuid = require('uuidv4').default;
 
 // Underscore
 const _ = require('underscore');
+_.mixin(require('underscore.deep'));
 
 // GeoStore initialization
 const {
@@ -246,7 +247,14 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     })
     .asPromise();
 
-  locationName = geocode.json.results[0].address_components[2].short_name;
+
+  const arr = geocode.json.results[0].address_components.slice(0, 10);
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].types[0] === 'locality' && arr[i].types[1] === 'political') {
+      locationName = arr[i].long_name;
+    }
+  }
 
   // Make database requests
   const categories = await admin

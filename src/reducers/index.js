@@ -113,7 +113,7 @@ const userDefault = {
   loginError: undefined,
   signupError: undefined,
   location: {
-    name: 'Omaha',
+    // name: 'Omaha',
     lat: 41.25861,
     lon: -95.93779,
   },

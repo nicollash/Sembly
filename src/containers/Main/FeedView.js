@@ -36,6 +36,7 @@ import FeedHeader from '../../components/Feed/FeedHeader';
 import FeedSubHeader from '../../components/Feed/FeedSubHeader';
 import FeedUserPost from '../../components/Feed/FeedUserPost';
 import PromoPost from '../../components/PromoPost';
+import FeedEvent from '../../components/Feed/FeedEvent';
 
 const icons = [
   require('../../../assets/images/SemblyAllIcon.png'),
@@ -249,7 +250,7 @@ class FeedView extends React.Component {
             >
               <FlatList
                 scrollEnabled={false}
-                data={_.reject(posts, { category: 'Promos' })}
+                data={_.reject(posts, { category: 'Promos' } && { category: 'Events' })}
                 renderItem={({ item }) => (
                   <FeedUserPost
                     post={item}
@@ -262,6 +263,33 @@ class FeedView extends React.Component {
                 ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
               />
             </View>
+          </View>
+        )}
+        {this.state.selectedCategoryTitle === 'Events' && (
+          <View style={{ marginLeft: 12 }}>
+            <FlatList
+              scrollEnabled={false}
+              data={_.where(posts, { category: 'Events' })}
+              renderItem={({ item }) => (
+                <FeedUserPost
+                  post={item}
+                  postID={item.id}
+                  moveOnPress={() => navigation.navigate('Post', { post: item })
+                  }
+                  comments={item.comments ? item.comments.length : null}
+                />
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+            />
+            <View style={{ height: 8 }} />
+            <FlatList
+              scrollEnabled={false}
+              data={events}
+              renderItem={({ item }) => (
+                <FeedEvent event={item} />
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+            />
           </View>
         )}
         {this.state.selectedCategoryTitle === 'Promos' && (

@@ -24,7 +24,21 @@ import firebase from 'react-native-firebase';
 const samplePlayer = 'https://api.adorable.io/avatars/285/abott@adorable.png';
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    left: '1%',
+    // marginBottom: 8,
+    borderRadius: 10,
+    minHeight: 30,
+    maxHeight: 500,
+    maxWidth: wp(95),
+    backgroundColor: '#fff',
+    shadowColor: '#E0E0E0',
+    shadowRadius: 2,
+    shadowOffset: { height: 1 },
+    shadowOpacity: 1,
+  },
   postText: {
     color: '#B9BDC5',
     fontSize: 11,
@@ -49,22 +63,7 @@ class FeedUserPost extends React.Component {
     const { post } = this.props;
     return (
       <View
-        style={{
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-          left: '1%',
-          // marginBottom: 8,
-          borderRadius: 10,
-          minHeight: 30,
-          maxHeight: 500,
-          maxWidth: wp(95),
-          backgroundColor: '#fff',
-          elevation: this.props.isLoading ? 0 : 2,
-          shadowColor: '#E0E0E0',
-          shadowRadius: 2,
-          shadowOffset: { height: 1 },
-          shadowOpacity: 1,
-        }}
+        style={[styles.container, { elevation: this.props.isLoading ? 0 : 2 }]}
       >
         <View
           style={{

@@ -64,9 +64,8 @@ class SemblyInput extends React.Component {
             onChangeText={str => this.props.valueChanged(str)}
             returnKeyType={this.props.returnKey}
             secured={this.props.secured}
-            onSubmitEditing={this.props.onSubmit}
-            onEndEditing={this.props.onSubmit}
             onFocus={this.props.onFocus}
+            autoFocus={this.props.autoFocus}
           />
         </View>
       </DismissKeyboard>

@@ -211,7 +211,6 @@ class NewPostView extends React.Component {
               autoCorrect
               maxLength={300}
               returnKey="next"
-              onSubmit={() => focusTextInput(this.autoComplete)}
             />
           </View>
           <View style={{ marginTop: 20, zIndex: 1 }}>

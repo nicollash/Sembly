@@ -82,7 +82,7 @@ class FeedView extends React.Component {
     this.props.refreshFeed();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevState, prevProps) {
     if (this.props.scrolls && !prevProps.scrolls) {
       if (this.state.selectedCategoryTitle === 'All') {
         this.scroll.scrollTo({ x: 0, y: 0, animated: true });
@@ -141,13 +141,10 @@ class FeedView extends React.Component {
                 }
                 backgroundColor={item.color}
                 border={item.border}
-                onPress={() => this.setState(
-                  {
-                    selectedCategoryTitle: item.title,
-                    selectedCategoryIcon: icons[item.icon],
-                  },
-                  () => this.props.refreshFeed(this.state.selectedCategoryTitle),
-                )
+                onPress={() => this.setState({
+                  selectedCategoryTitle: item.title,
+                  selectedCategoryIcon: icons[item.icon],
+                })
                 }
               />
             )}
@@ -331,7 +328,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refreshFeed: a => dispatch(refreshFeed({ category: a })),
+  refreshFeed: category => dispatch(refreshFeed({ category })),
 });
 
 export default connect(

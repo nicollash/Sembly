@@ -101,19 +101,13 @@ export function setPanelNavigation(navigation) {
 }
 
 // User
-export const UPDATE_LOCATION = 'UPDATE_LOCATION';
-export function updateLocation(lat = 0, lon = 0) {
-  return function updateLocationState(dispatch) {
-    dispatch({ type: UPDATE_LOCATION, lat, lon });
-  };
-}
-
 export function refreshFeed({
   type = 'hot',
   category = 'all',
   location = undefined,
 }) {
   return async function refreshFeedState(dispatch, getState) {
+    // eslint-disable-next-line no-underscore-dangle
     const _location = location === undefined
       ? {
         lat: getState().user.location.lat,
@@ -187,6 +181,14 @@ export function refreshFeed({
         console.log(e);
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
+  };
+}
+
+export const UPDATE_LOCATION = 'UPDATE_LOCATION';
+export function updateLocation(lat = 0, lon = 0) {
+  return function updateLocationState(dispatch) {
+    dispatch({ type: UPDATE_LOCATION, lat, lon });
+    dispatch(refreshFeed({ location: { lat, lon } }));
   };
 }
 

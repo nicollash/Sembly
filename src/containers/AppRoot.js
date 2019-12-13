@@ -161,6 +161,7 @@ class AppRoot extends React.PureComponent {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
+    this.geoLocate();
     this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         user,
@@ -223,7 +224,6 @@ class AppRoot extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    console.log('approot will unmount');
     this.authSubscription();
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
@@ -233,7 +233,6 @@ class AppRoot extends React.PureComponent {
       this.state.appState.match(/inactive|background/)
         && nextAppState === 'active'
     ) {
-      console.log('App has come to the foreground!');
       const stackIndex = this.navigator.state.nav.index;
       if (!this.state.refusedLocation
           && stackIndex !== 0) {

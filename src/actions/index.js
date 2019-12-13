@@ -599,7 +599,7 @@ export function scrollToTop() {
       dispatch({ type: SCROLL_TO_TOP, scrolls: true }),
       setTimeout(() => {
         dispatch({ type: SCROLL_TO_TOP, scrolls: false });
-      }, 2000),
+      }, 200),
     ]);
   };
 }

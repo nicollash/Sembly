@@ -84,7 +84,9 @@ class FeedView extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.scrolls && !prevProps.scrolls) {
-      this.scroll.scrollTo({ y: 0 });
+      if (this.state.selectedCategoryTitle === 'All') {
+        this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+      }
       this.categoryBar.scrollToOffset({ offset: 0 });
       this.setState({ selectedCategoryTitle: 'All', selectedCategoryIcon: icons[0] });
     }
@@ -110,7 +112,7 @@ class FeedView extends React.Component {
         pointerEvents={this.props.isLoading ? 'none' : 'auto'}
         refreshControl={(
           <RefreshControl
-            refreshing={this.props.isLoading}
+            refreshing={this.props.isLoading && !this.props.scrolls}
             onRefresh={this._onRefresh}
           />
         )}

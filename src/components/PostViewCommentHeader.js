@@ -110,7 +110,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   addComment: ({post, text}) => dispatch(addComment({ post, text })),
-  refreshFeed: a => dispatch(refreshFeed({ category: a })),
+  refreshFeed: category => dispatch(refreshFeed({ category })),
   updateUserProfile: comment => dispatch(updateUserProfile({ comment })),
 });
 

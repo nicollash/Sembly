@@ -48,7 +48,6 @@ class SemblyMapView extends React.Component {
 
   componentDidMount() {
     this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
-    this.debounceLoadNewLocation = _.debounce(this.loadNewLocation, 2000);
     this.map.animateCamera({
       center: {
         latitude: this.props.location.lat,
@@ -60,17 +59,6 @@ class SemblyMapView extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activeLocation !== this.props.activeLocation) {
-      if (this.props.activeLocation.lat !== undefined) {
-        this.map.animateToRegion({
-          latitude: this.props.activeLocation.lat,
-          longitude: this.props.activeLocation.lon,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }, 2500);
-        this.debounceUpdateFeed();
-      }
-    }
     if (this.props.location !== prevProps.location) {
       this.map.animateToRegion({
         latitude: this.props.location.lat,
@@ -78,14 +66,14 @@ class SemblyMapView extends React.Component {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       }, 2500);
-      this.debounceLoadNewLocation();
+      this.debounceUpdateFeed();
     }
   }
 
-  updateFeed = () => this.props.refreshFeed(this.props.activeLocation.lat, this.props.activeLocation.lon);
+  updateFeed = (lat = undefined, lon = undefined) => {
+    this.props.refreshFeed(lat || this.props.location.lat, lon || this.props.location.lon);
+  }
   
-  loadNewLocation = () => this.props.refreshFeed(this.props.location.lat, this.props.location.lon);
-
   render() {
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin
@@ -165,7 +153,6 @@ class SemblyMapView extends React.Component {
           }}
           showsUserLocation
           onRegionChange={(e) => {
-            // this.props.updateMap(e.latitude, e.longitude);
             this.debounceUpdateFeed(e.latitude, e.longitude);
           }}
         >
@@ -188,7 +175,7 @@ const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
   location: state.user.location,
   categories: state.feed.categories,
-  activeLocation: state.map.activeLocation,
+  // activeLocation: state.map.activeLocation,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -25,8 +25,8 @@ import Theme from '../../styles/theme';
 const imageHeight = 44;
 const styles = {
   container: {
-    height: hp(110),
-    width: wp(100),
+    // height: hp(100),
+    // width: wp(100),
     backgroundColor: '#fff',
   },
   backgroundContainer: {
@@ -110,7 +110,11 @@ class LoginView extends React.Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.container} enableOnAndroid>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ alignItems: 'center', paddingBottom: this.props.loginError ? 40 : 0 }}
+        style={styles.container}
+        enableOnAndroid
+      >
         <StatusBar barStyle="dark-content" />
         <View style={styles.backgroundContainer}>
           <Image

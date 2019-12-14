@@ -253,7 +253,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].types[0] === 'locality' && arr[i].types[1] === 'political') {
       locationName = arr[i].long_name;
-    }
+    } else locationName = 'Unknown Region'
   }
 
   // Make database requests
@@ -335,7 +335,6 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     }),
     businesses: parsedBusinesses,
   };
-  //console.log(util.inspect(feed, { showHidden: false, depth: null }));
   return response.status(200).send(feed);
 });
 

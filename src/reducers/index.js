@@ -23,7 +23,6 @@ import {
   UPDATE_CITY,
   PREVIOUS_SCREEN,
   UPDATE_USER_POSTS,
-  UPDATE_MAP,
   SET_PANEL_HEIGHT,
   ADD_COMMENT,
   SCROLL_TO_TOP,
@@ -84,7 +83,7 @@ const feedDefault = {
   events: [],
   posts: [],
   businesses: [],
-  scrolls: false,
+  resets: false,
 };
 
 const feed = (state = feedDefault, action) => {
@@ -103,7 +102,7 @@ const feed = (state = feedDefault, action) => {
   case UPDATE_BUSINESSES:
     return Object.assign({}, state, { businesses: action.businesses });
   case SCROLL_TO_TOP:
-    return Object.assign({}, state, { scrolls: action.scrolls });
+    return Object.assign({}, state, { resets: action.resets });
   default:
     return state;
   }
@@ -143,36 +142,17 @@ const user = (state = userDefault, action) => {
   }
 };
 
-const mapDefault = {
-  activeLocation: {
-    // lat: userDefault.location.lat,
-    // lon: userDefault.location.lon,
-    lat: 41.25861,
-    lon: -95.93779,
-  },
-};
-
-const map = (state = mapDefault, action) => {
-  switch (action.type) {
-  case UPDATE_MAP:
-    return Object.assign({}, state, { activeLocation: { lat: action.lat, lon: action.lon } });
-  default:
-    return state;
-  }
-};
-
 // Uncomment the line below and refresh once to simulate a fresh install
-storage.clear();
+// storage.clear();
 
 const semblyApp = combineReducers({
   appState,
   preferences,
   feed,
   user,
-  map,
 });
 
-const blacklisted = ['appState', 'user.errorMessage', 'map'];
+const blacklisted = ['appState', 'user.errorMessage'];
 const persistConfig = {
   timeout: 10000,
   key: 'root',

@@ -12,7 +12,7 @@ import Business from '../domain/Business';
 import Category from '../domain/Category';
 import NavigationService from '../helpers/SlidingPanelNavigation';
 
-export const API_URL = __DEV__ ? 'http://localhost:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
+export const API_URL = !__DEV__ ? 'http://192.168.1.173:5000/sembly-staging/us-central1' : 'https://us-central1-sembly-staging.cloudfunctions.net';
 // export const API_URL = 'https://us-central1-sembly-staging.cloudfunctions.net';
 
 // Temporary mock data
@@ -133,7 +133,6 @@ export function refreshFeed({
     })
       .then(response => response.json())
       .then((feedJSON) => {
-        // console.log(feedJSON);
         // Update City
         dispatch({ type: UPDATE_CITY, city: feedJSON.city });
 
@@ -454,6 +453,7 @@ export function createNewPost(post) {
     })
       .then(response => response.json())
       .then((dataJSON) => {
+        console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
         if (post.business) {
           const business = Business.parse(dataJSON);
@@ -465,8 +465,10 @@ export function createNewPost(post) {
         }
         // and post data if no location was tagged
         // console.log('post & dataJSON: ', post, dataJSON);
-        if (!post.business) {
-          const targetPost = Post.parse(dataJSON);
+        else {
+          let targetPost = Post.parse(dataJSON);
+          targetPost.set('locationName', null);
+          console.log(targetPost);
           dispatch({
             type: UPDATE_POSTS,
             posts: [targetPost, ...getState().feed.posts],
@@ -596,10 +598,10 @@ export const SCROLL_TO_TOP = 'SCROLL_TO_TOP';
 export function scrollToTop() {
   return function scrollToTopState(dispatch, getState) {
     return Promise.all([
-      dispatch({ type: SCROLL_TO_TOP, scrolls: true }),
+      dispatch({ type: SCROLL_TO_TOP, resets: true }),
       setTimeout(() => {
-        dispatch({ type: SCROLL_TO_TOP, scrolls: false });
-      }, 200),
+        dispatch({ type: SCROLL_TO_TOP, resets: false });
+      }, 2000),
     ]);
   };
 }

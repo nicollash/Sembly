@@ -139,7 +139,11 @@ class SignupView extends React.Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.container} enableOnAndroid>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ alignItems: 'center', paddingBottom: this.props.signupError ? 40 : 0 }}
+        style={styles.container}
+        enableOnAndroid
+      >
         <StatusBar barStyle="dark-content" />
         <View style={styles.backgroundContainer}>
           <Image

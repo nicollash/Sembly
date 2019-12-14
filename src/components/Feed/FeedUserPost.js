@@ -177,7 +177,7 @@ class FeedUserPost extends React.Component {
             justifyContent: 'space-between',
           }}
         >
-          {post.showOnMap && (
+          {post.showOnMap && post.locationName && (
             <TouchableOpacity onPress={() => this.gotoLocation(post.location)}>
               <View
                 style={{
@@ -190,7 +190,7 @@ class FeedUserPost extends React.Component {
                 />
                 <View style={{ width: Platform.OS === 'ios' ? 5 : 0 }} />
                 <Text style={[styles.postText, { marginTop: 1, marginLeft: Platform.OS === 'ios' ? 0 : 5 }]}>
-                  {post.location.name}
+                  {post.locationName}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -200,6 +200,7 @@ class FeedUserPost extends React.Component {
               flexDirection: 'row',
               position: 'absolute',
               left: wp(42),
+              bottom: 7.5,
             }}
             onPress={this.props.moveOnPress}
             activeOpacity={0.4}
@@ -207,15 +208,16 @@ class FeedUserPost extends React.Component {
             <Image
               source={require('../../../assets/images/PhotoPostBubble.png')}
             />
-
             <Text style={[styles.postText, { marginTop: 2, marginLeft: 5 }]}>
               {post.comments.length}
             </Text>
           </TouchableOpacity>
           <View
             style={{
+              position: 'absolute',
               flexDirection: 'row',
-              marginLeft: 15,
+              right: 15,
+              bottom: 10,
             }}
           >
             <TouchableOpacity

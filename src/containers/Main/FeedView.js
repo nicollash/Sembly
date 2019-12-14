@@ -83,11 +83,15 @@ class FeedView extends React.Component {
   }
 
   componentDidUpdate(prevState, prevProps) {
-    if (this.props.scrolls && !prevProps.scrolls) {
-      if (this.state.selectedCategoryTitle === 'All') {
-        this.scroll.scrollTo({ x: 0, y: 0, animated: true });
-      }
-      this.categoryBar.scrollToOffset({ offset: 0 });
+    if (this.props.resets && !prevProps.resets) {
+      this._handleScroll();
+    }
+  }
+
+  _handleScroll = () => {
+    this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+    this.categoryBar.scrollToOffset({ offset: 0 });
+    if (this.state.selectedCategoryTitle !== 'All') {
       this.setState({ selectedCategoryTitle: 'All', selectedCategoryIcon: icons[0] });
     }
   }
@@ -112,7 +116,7 @@ class FeedView extends React.Component {
         pointerEvents={this.props.isLoading ? 'none' : 'auto'}
         refreshControl={(
           <RefreshControl
-            refreshing={this.props.isLoading && !this.props.scrolls}
+            refreshing={this.props.isLoading && !this.props.resets}
             onRefresh={this._onRefresh}
           />
         )}
@@ -324,7 +328,7 @@ const mapStateToProps = (state, ownProps) => ({
   location: state.user.location,
   user: state.user,
   panelHeight: state.appState.panelHeight,
-  scrolls: state.feed.scrolls,
+  resets: state.feed.resets,
 });
 
 const mapDispatchToProps = dispatch => ({

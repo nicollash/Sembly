@@ -139,27 +139,30 @@ class PostViewUserPost extends React.Component {
             marginTop: '3%',
           }}
         >
-          {this.props.post.showOnMap && (
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                width: '44%',
-                height: '130%',
-              }}
-            >
-              <Image
-                source={require('../../assets/images/PhotoPostLocationIcon.png')}
-              />
-              <View style={{ width: '5%' }} />
-              <Text style={[styles.postText, { marginTop: '1%' }]}>
-                {post.location.name}
-              </Text>
-            </TouchableOpacity>
+          {post.showOnMap && post.locationName && (
+            <View>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  width: '44%',
+                  height: '130%',
+                }}
+              >
+                <Image
+                  source={require('../../assets/images/PhotoPostLocationIcon.png')}
+                />
+                <View style={{ width: '5%' }} />
+                <Text style={[styles.postText, { marginTop: '1%' }]}>
+                  {post.locationName}
+                </Text>
+              </TouchableOpacity>
+            </View>
           )}
           <View
             style={{
+              position: 'absolute',
               flexDirection: 'row',
-              marginLeft: '35%',
+              right: 15,
             }}
           >
             <TouchableOpacity

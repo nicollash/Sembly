@@ -32,22 +32,22 @@ import { handleSignup, clearLoginErrors, clearSignupErrors, setPreviousScreen, f
 
 console.disableYellowBox = true;
 
+const imageHeight = 44;
 const styles = {
   container: {
     height: hp(100),
     width: wp(100),
-    backgroundColor: '#D8C34A',
-    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   backgroundContainer: {
     backgroundColor: '#FFF9BB',
-    height: isIphoneX() ? hp(44) : hp(46),
+    height: isIphoneX() ? hp(imageHeight) : hp(imageHeight + 2),
     alignItems: 'center',
     marginTop: !isIphoneX() ? hp(-3) : 0,
     width: wp(100),
   },
   mainContainer: {
-    height: isIphoneX() ? hp(56) : hp(54),
+    height: isIphoneX() ? hp(100 - imageHeight) : hp(100 - (imageHeight - 2)),
     alignSelf: 'stretch',
     backgroundColor: '#fff',
     borderTopRightRadius: hp(2),
@@ -139,7 +139,7 @@ class SignupView extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.container} enableOnAndroid>
         <StatusBar barStyle="dark-content" />
         <View style={styles.backgroundContainer}>
           <Image
@@ -160,7 +160,7 @@ class SignupView extends React.Component {
             }}
           />
         </View>
-        <KeyboardAwareScrollView style={styles.mainContainer}>
+        <View style={styles.mainContainer}>
           <View>
             <View>
               <View style={styles.title}>
@@ -224,8 +224,8 @@ class SignupView extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-        </KeyboardAwareScrollView>
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

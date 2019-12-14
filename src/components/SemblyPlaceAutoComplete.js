@@ -95,7 +95,6 @@ class SemblyPlaceAutoComplete extends React.Component {
           scrollEnabled
           autoCapitalize
           autoCorrect={false}
-          ref={this.props.ref}
           inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.textInputContainer}
           listContainerStyle={styles.listView}

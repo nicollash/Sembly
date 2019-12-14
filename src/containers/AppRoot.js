@@ -161,7 +161,6 @@ class AppRoot extends React.PureComponent {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    this.geoLocate();
     this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         user,

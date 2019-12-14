@@ -51,7 +51,6 @@ class SemblyInput extends React.Component {
           />
           <View style={{ height: this.props.spacing}} />
           <TextInput
-            ref={this.props.ref}
             maxLength={this.props.maxLength}
             multiline={this.props.multiline}
             textContentType={this.props.type}
@@ -64,7 +63,6 @@ class SemblyInput extends React.Component {
             onChangeText={str => this.props.valueChanged(str)}
             returnKeyType={this.props.returnKey}
             secured={this.props.secured}
-            onFocus={this.props.onFocus}
             autoFocus={this.props.autoFocus}
           />
         </View>

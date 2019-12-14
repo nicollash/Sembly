@@ -89,6 +89,7 @@ class NewPostView extends React.Component {
     // const user = firebase.auth().currentUser;
 
     this.state = {
+      focused: 1,
       submitted: false,
       post: {
         location: {
@@ -150,14 +151,13 @@ class NewPostView extends React.Component {
           )
             .then(async (res) => {
               const data = await RNFS.readFile(res.path, 'base64');
-              console.log(res.uri + data);
               this.setState({
                 post: {
                   ...this.state.post,
                   pictureURI: res.uri,
                   pictureData: data,
                 },
-              });
+              }, () => console.log(this.state.post));
             })
             .catch((err) => {
               console.log(err);
@@ -200,7 +200,6 @@ class NewPostView extends React.Component {
           )}
           <View style={{ marginTop: 25 }}>
             <SemblyInput
-              ref={(ref) => { this.input = ref; }}
               marginLeft={5}
               placeholder="Content of your post, up to 300 chars."
               label="TEXT"
@@ -211,6 +210,7 @@ class NewPostView extends React.Component {
               autoCorrect
               maxLength={300}
               returnKey="next"
+              autoFocus
             />
           </View>
           <View style={{ marginTop: 20, zIndex: 1 }}>
@@ -235,8 +235,6 @@ class NewPostView extends React.Component {
               />
               <View style={{ marginLeft: 2 }}>
                 <SemblyPlaceAutoComplete
-                  ref={(ref) => { this.autoComplete = ref; }}
-                  latitude={this.props.location.lat}
                   longitude={this.props.location.lon}
                   onResult={(business) => {
                     if (business.id === '') {

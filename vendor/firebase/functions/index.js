@@ -253,7 +253,7 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].types[0] === 'locality' && arr[i].types[1] === 'political') {
       locationName = arr[i].long_name;
-    } else locationName = 'Unknown Region'
+    } else locationName = geocode.json.results[0].address_components[2].long_name;
   }
 
   // Make database requests

@@ -236,6 +236,7 @@ class NewPostView extends React.Component {
               <View style={{ marginLeft: 2 }}>
                 <SemblyPlaceAutoComplete
                   longitude={this.props.location.lon}
+                  latitude={this.props.location.lat}
                   onResult={(business) => {
                     if (business.id === '') {
                       this.setState({

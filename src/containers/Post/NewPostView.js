@@ -31,6 +31,7 @@ import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput } from '../../components';
 import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
+import theme from '../../styles/theme';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 const camera = require('../../../assets/images/NewPostCamera.png');
@@ -67,29 +68,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 100,
-    width: '90%',
-    zIndex: 1,
+    width: '93%',
   },
   greyText: {
     color: '#C7CAD1',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
   },
+  postText: {
+    maxHeight: 240,
+    width: 310,
+    color: '#000',
+    fontFamily: theme.fonts.bold,
+  },
 });
-
-const mockCategories = ['Food', 'Drinks', 'Arts'];
-const categories = mockCategories.map(categ => (
-  <View style={{
-    height: 30,
-    marginLeft: 10,
-    width: 30,
-    backgroundColor: 'blue',
-    borderRadius: 12,
-  }}
-  >
-    <Image source="" />
-  </View>
-));
 
 class NewPostView extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -122,11 +114,10 @@ class NewPostView extends React.Component {
 
   constructor(props) {
     super(props);
-    // const user = firebase.auth().currentUser;
-
     this.state = {
       modal: false,
       focused: 1,
+      spinner: false,
       submitted: false,
       post: {
         location: {
@@ -134,7 +125,7 @@ class NewPostView extends React.Component {
           lat: this.props.location.lat,
           lon: this.props.location.lon,
         },
-        category: 'General',
+        category: 'All',
         text: '',
         pictureURI: '',
         selectedInput: 0,
@@ -163,6 +154,7 @@ class NewPostView extends React.Component {
   }
 
   chooseImage = () => {
+    this.toggleSpinner();
     ImagePicker.showImagePicker(
       {
         title: 'Select Image',
@@ -201,6 +193,7 @@ class NewPostView extends React.Component {
                 },
               }, () => {
                 this.mainInput.focus();
+                this.toggleSpinner();
               });
             })
             .catch((err) => {
@@ -216,6 +209,10 @@ class NewPostView extends React.Component {
     this.props.updateUserProfile(this.state.post);
     this.setState({ submitted: true });
   };
+
+  toggleSpinner = () => {
+    this.setState({ spinner: !this.state.spinner });
+  }
 
   toggleModal = () => {
     this.setState({ modal: !this.state.modal });
@@ -246,6 +243,12 @@ class NewPostView extends React.Component {
                 )}
               </View>
             </DefaultModal>
+          )}
+
+          {this.state.spinner && (
+            <View style={{ position: 'absolute', bottom: 200 }}>
+              <ActivityIndicator size="large" color="#F93963" />
+            </View>
           )}
 
           {/* <View style={{ marginTop: 25 }}>
@@ -363,14 +366,14 @@ class NewPostView extends React.Component {
                 fontSize={16}
                 style={styles.postText}
                 maxLength={300}
-                placeholder="What would you like to share with <city>?"
+                placeholder="What would you like to share with your city?"
               />
 
               <TouchableOpacity
                 style={{ flexDirection: 'row', marginTop: 10 }}
                 onPress={this.toggleModal}
               >
-                <Image source={pin} />
+                <Image source={pin} style={{ tintColor: '#B9BDC5' }} />
                 <Text style={[styles.greyText, { marginLeft: 5 }]}>
                   Add Location
                 </Text>
@@ -386,7 +389,7 @@ class NewPostView extends React.Component {
                   borderRadius: 5,
                   borderWidth: 1,
                   borderColor: '#F93963',
-                  width: 105,
+                  width: 95,
                   height: 32,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -405,11 +408,16 @@ class NewPostView extends React.Component {
             </TouchableOpacity>
 
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.greyText}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
+              <Text style={[styles.greyText, { marginRight: 5 }]}>
                 CATEGORY
               </Text>
-              {categories}
+              <SemblyDropdown
+                values={_.pluck(this.props.categories, 'title')}
+                onChange={(category) => {
+                  this.setState({ post: { ...this.state.post, category } });
+                }}
+              />
             </View>
 
           </View>

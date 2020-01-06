@@ -11,13 +11,16 @@ import {
   ImageBackground,
   Modal,
   Alert,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-picker';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
@@ -31,9 +34,9 @@ const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: '82%',
+    width: '95%',
     alignSelf: 'center',
+    height: hp(100),
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -53,7 +56,28 @@ const styles = StyleSheet.create({
     top: '22.5%',
     alignSelf: 'center',
   },
+  attributesContainer: {
+    position: 'absolute',
+    bottom: 240,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 100,
+    width: '99%',
+    zIndex: 1,
+  },
+  greyText: {
+    color: '#C7CAD1',
+    fontSize: 14,
+  },
 });
+
+const mockCategories = ['Food', 'Drinks', 'Arts'];
+const categories = mockCategories.map(categ => (
+  <View style={{ height: 30, width: 30, backgroundColor: 'blue', borderRadius: 12 }}>
+    <Image source="" />
+  </View>
+));
 
 class NewPostView extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -110,6 +134,7 @@ class NewPostView extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ submit: this.submit });
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
   }
 
   componentDidUpdate(prevProps) {
@@ -118,6 +143,10 @@ class NewPostView extends React.Component {
         this.props.navigation.goBack();
       }, 2000);
     }
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({ keyboardOpened: true });
   }
 
   chooseImage = () => {
@@ -173,11 +202,12 @@ class NewPostView extends React.Component {
     this.setState({ submitted: true });
   };
 
+
   render() {
     const { sendingPost } = this.props;
 
     return (
-      <ScrollView keyboardShouldPersistTaps="always">
+      <View keyboardShouldPersistTaps="always">
         <View accessibilityIgnoresInvertColors style={styles.container}>
           {this.state.submitted && (
             <Modal visible animationType="fade" transparent>
@@ -198,7 +228,8 @@ class NewPostView extends React.Component {
               </View>
             </Modal>
           )}
-          <View style={{ marginTop: 25 }}>
+
+          {/* <View style={{ marginTop: 25 }}>
             <SemblyInput
               marginLeft={5}
               placeholder="Content of your post, up to 300 chars."
@@ -212,8 +243,9 @@ class NewPostView extends React.Component {
               returnKey="next"
               autoFocus
             />
-          </View>
-          <View style={{ marginTop: 20, zIndex: 1 }}>
+          </View> */}
+
+          {/* <View style={{ marginTop: 20, zIndex: 1 }}>
             <SemblyLabel
               label="LOCATION"
               secondLabel="OPTIONAL"
@@ -267,8 +299,9 @@ class NewPostView extends React.Component {
                 marginTop: 5,
               }}
             />
-          </View>
-          <View style={{ marginTop: 20 }}>
+          </View> */}
+
+          {/* <View style={{ marginTop: 20 }}>
             <SemblyLabel
               label="CATEGORY"
               marginLeft={5}
@@ -287,40 +320,76 @@ class NewPostView extends React.Component {
               style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
               source={require('../../../assets/images/BorderLine.png')}
             />
-          </View>
-          <View style={{ marginTop: 20 }}>
+          </View> */}
+
+          {/* <View style={{ marginTop: 20 }}>
             <SemblyLabel
               label="PHOTO"
               marginLeft={5}
               fontSize={14}
               secondFontSize={10}
             />
+          </View> */}
+
+          <View style={{ width: '100%', backgroundColor: '', flexDirection: 'row' }}>
+            <View style={{ height: '100%', width: 40, backgroundColor: '' }}>
+              <View style={{ height: 40, width: 40, borderRadius: 25, backgroundColor: 'black' }} />
+              {/* <Image source="" /> */}
+            </View>
+
+            <View style={{ backgroundColor: '', top: 20 }}>
+              <TextInput
+                autoFocus
+                multiline
+                maxLength={300}
+                placeholder="What would you like to share with <city>?"
+              />
+
+              <View>
+                <Image source="pinLocation" />
+                <Text style={styles.greyText}>
+                  Add Location
+                </Text>
+              </View>
+            </View>
           </View>
-          {this.state.post.pictureURI === '' && (
+
+          <View style={styles.attributesContainer}>
+
             <View
               style={{
-                backgroundColor: '#EBECEE',
-                borderRadius: 15,
-                width: wp(90),
-                height: 170,
+                borderRadius: 11,
+                borderWidth: 1,
+                borderColor: '#D5889E',
+                width: 90,
+                height: 45,
                 alignItems: 'center',
-                alignSelf: 'center',
+                // alignSelf: 'center',
                 justifyContent: 'center',
-                marginTop: 10,
+                // marginTop: 10,
               }}
             >
-              <TouchableOpacity onPress={() => {
-                this.debounceImagePick();
-                Keyboard.dismiss();
-              }}
-              >
-                <Image
-                  source={require('../../../assets/images/ButtonCameraPost.png')}
-                />
-              </TouchableOpacity>
+              {this.state.post.pictureURI === '' && (
+                <TouchableOpacity onPress={() => {
+                  this.debounceImagePick();
+                  Keyboard.dismiss();
+                }}
+                >
+                  <Image source="" />
+                </TouchableOpacity>
+              )}
             </View>
-          )}
-          {this.state.post.pictureURI !== '' && (
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.greyText}>
+                Choose category
+              </Text>
+              {categories}
+            </View>
+
+          </View>
+          
+          {/* {this.state.post.pictureURI !== '' && (
             <View
               style={{
                 width: wp(90),
@@ -345,8 +414,9 @@ class NewPostView extends React.Component {
                 </TouchableOpacity>
               </ImageBackground>
             </View>
-          )}
-          <Text
+          )} */}
+
+          {/* <Text
             style={{
               color: '#C7CAD1',
               alignSelf: 'center',
@@ -354,9 +424,10 @@ class NewPostView extends React.Component {
             }}
           >
             Your post can contain text, photo or both.
-          </Text>
+          </Text> */}
+
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

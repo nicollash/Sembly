@@ -35,9 +35,9 @@ const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 
 const styles = StyleSheet.create({
   container: {
-    width: '95%',
-    alignSelf: 'center',
+    width: wp(100),
     height: hp(100),
+    alignSelf: 'center',
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -428,8 +428,16 @@ class NewPostView extends React.Component {
             Your post can contain text, photo or both.
           </Text> */}
 
-          <Modal isVisible={this.state.modal}>
-            <Text>hello</Text>
+          <Modal
+            style={{ top: 130, alignSelf: 'center', width: '100%' }}
+            isVisible={this.state.modal}
+            onBackdropPress={() => this.setState({ modal: false })}
+            onSwipeComplete={() => this.setState({ modal: false })}
+            swipeDirection="down"
+          >
+            <View style={{ borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' }}>
+              <SemblyPlaceAutoComplete />
+            </View>
           </Modal>
 
         </View>

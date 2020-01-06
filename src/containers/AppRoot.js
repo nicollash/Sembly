@@ -49,7 +49,7 @@ class AppRoot extends React.PureComponent {
   }
 
   WelcomeStack = createStackNavigator({
-    Main: LoginView,
+    Main: NewPostView,
     ForgotPassword: ForgotPasswordView,
     Signup: SignupView,
     Profile: ProfileView,

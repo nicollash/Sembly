@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'underscore';
+import firebase from 'react-native-firebase';
 
 import {
   View,
@@ -32,12 +33,14 @@ import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
+const camera = require('../../../assets/images/NewPostCamera.png');
 
 const styles = StyleSheet.create({
   container: {
     width: wp(100),
     height: hp(100),
     alignSelf: 'center',
+    alignItems: 'center',
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -64,18 +67,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 100,
-    width: '99%',
+    width: '90%',
     zIndex: 1,
   },
   greyText: {
     color: '#C7CAD1',
     fontSize: 14,
+    fontWeight: '500',
   },
 });
 
 const mockCategories = ['Food', 'Drinks', 'Arts'];
 const categories = mockCategories.map(categ => (
-  <View style={{ height: 30, width: 30, backgroundColor: 'blue', borderRadius: 12 }}>
+  <View style={{
+    height: 30,
+    marginLeft: 10,
+    width: 30,
+    backgroundColor: 'blue',
+    borderRadius: 12,
+  }}
+  >
     <Image source="" />
   </View>
 ));
@@ -204,9 +215,13 @@ class NewPostView extends React.Component {
     this.setState({ submitted: true });
   };
 
+  toggleModal = () => {
+    this.setState({ modal: !this.state.modal });
+  }
 
   render() {
     const { sendingPost } = this.props;
+    const profilePicture = firebase.auth().currentUser.photoURL;
 
     return (
       <View keyboardShouldPersistTaps="always">
@@ -333,58 +348,67 @@ class NewPostView extends React.Component {
             />
           </View> */}
 
-          <View style={{ width: '100%', backgroundColor: '', flexDirection: 'row' }}>
-            <View style={{ height: '100%', width: 40, backgroundColor: '' }}>
-              <View style={{ height: 40, width: 40, borderRadius: 25, backgroundColor: 'black' }} />
-              {/* <Image source="" /> */}
+          <View style={{ width: '97%', flexDirection: 'row', marginTop: 16 }}>
+            <View style={{ marginLeft: 8 }}>
+              <Image style={{ height: 40, width: 40, borderRadius: 20 }} source={{ uri: profilePicture }} />
             </View>
 
-            <View style={{ backgroundColor: '', top: 20 }}>
+            <View style={{ marginLeft: 7, marginTop: 5 }}>
               <TextInput
                 autoFocus
                 multiline
+                fontSize={16}
+                style={styles.postText}
                 maxLength={300}
                 placeholder="What would you like to share with <city>?"
               />
 
-              <View>
-                <Image source="pinLocation" />
-                <Text onPress={() => this.setState({ modal: true })} style={styles.greyText}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', marginTop: 10 }}
+                onPress={this.toggleModal}
+              >
+                <Image source={pin} />
+                <Text style={[styles.greyText, { marginLeft: 5 }]}>
                   Add Location
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.attributesContainer}>
 
-            <View
-              style={{
-                borderRadius: 11,
-                borderWidth: 1,
-                borderColor: '#D5889E',
-                width: 90,
-                height: 45,
-                alignItems: 'center',
-                // alignSelf: 'center',
-                justifyContent: 'center',
-                // marginTop: 10,
-              }}
+            <TouchableOpacity onPress={() => {
+              this.debounceImagePick();
+              Keyboard.dismiss();
+            }}
             >
-              {this.state.post.pictureURI === '' && (
-                <TouchableOpacity onPress={() => {
-                  this.debounceImagePick();
-                  Keyboard.dismiss();
+              <View
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: '#F93963',
+                  width: 105,
+                  height: 32,
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-                >
-                  <Image source="" />
-                </TouchableOpacity>
-              )}
-            </View>
+              >
+                {this.state.post.pictureURI === '' && (
+                  <Image source={camera} />
+                )}
+                {this.state.post.pictureURI !== '' && (
+                  <Image
+                    style={{ height: '100%', width: '100%' }}
+                    source={{ uri: this.state.post.pictureURI }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.greyText}>
-                Choose category
+                CATEGORY
               </Text>
               {categories}
             </View>
@@ -431,8 +455,8 @@ class NewPostView extends React.Component {
           <Modal
             style={{ top: 130, alignSelf: 'center', width: '100%' }}
             isVisible={this.state.modal}
-            onBackdropPress={() => this.setState({ modal: false })}
-            onSwipeComplete={() => this.setState({ modal: false })}
+            onBackdropPress={this.toggleModal}
+            onSwipeComplete={this.toggleModal}
             swipeDirection="down"
           >
             <View style={{ borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' }}>

@@ -25,22 +25,18 @@ const styles = StyleSheet.create({
   container: {
     zIndex: (Platform.OS === 'ios' ? 10 : 0),
     overflow: 'visible',
-    // position: 'absolute',
-    // flex: 0.2,
   },
   inputContainerStyle: {
     borderWidth: 0,
-    // zIndex: 1,
   },
   textInputContainer: {
     marginLeft: 5,
   },
   listView: {
     position: 'absolute',
-    left: -17,
+    left: -16,
     top: Platform.OS === 'ios' ? 25 : 60,
     elevation: Platform.OS === 'ios' ? 0 : 1,
-    // borderRadius: 10,
     borderTopWidth: 0,
     borderWidth: Platform.OS === 'ios' ? 2 : 0,
     borderColor: '#EBECEE',
@@ -50,7 +46,6 @@ const styles = StyleSheet.create({
   location: {
     color: '#26315F',
     fontSize: 17,
-    // marginLeft: 4,
     borderWidth: 1,
     borderColor: '#EBECEE',
     paddingVertical: hp(1),
@@ -93,6 +88,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       <View style={styles.container}>
         <Autocomplete
           scrollEnabled
+          autoFocus
           autoCapitalize
           autoCorrect={false}
           inputContainerStyle={styles.inputContainerStyle}

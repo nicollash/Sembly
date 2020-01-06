@@ -32,6 +32,7 @@ import { SemblyInput } from '../../components';
 import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
 import theme from '../../styles/theme';
+import SemblyMapView from '../Main/SemblyMapView';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 const camera = require('../../../assets/images/NewPostCamera.png');
@@ -358,7 +359,7 @@ class NewPostView extends React.Component {
               <Image style={{ height: 40, width: 40, borderRadius: 20 }} source={{ uri: profilePicture }} />
             </View>
 
-            <View style={{ marginLeft: 7, marginTop: 5 }}>
+            <View style={{ marginLeft: 7, marginTop: 4 }}>
               <TextInput
                 ref={(ref) => { this.mainInput = ref; }}
                 autoFocus
@@ -467,7 +468,38 @@ class NewPostView extends React.Component {
             swipeDirection="down"
           >
             <View style={{ borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' }}>
-              <SemblyPlaceAutoComplete />
+              <View style={{ marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1 }}>
+                <SemblyPlaceAutoComplete
+                  longitude={this.props.location.lon}
+                  latitude={this.props.location.lat}
+                  onResult={(business) => {
+                    console.log(business);
+                    if (business.id === '') {
+                      this.setState({
+                        post: {
+                          ...this.state.post,
+                          business: false,
+                        },
+                      });
+                    } else {
+                      this.setState({
+                        post: {
+                          ...this.state.post,
+                          business: {
+                            id: business.id,
+                            name: business.name,
+                          },
+                        },
+                      });
+                    }
+                  }}
+                />
+              </View>
+              <View style={{ height: 380 }}>
+                <SemblyMapView
+                  // searchLatitude={}
+                />
+              </View>
             </View>
           </Modal>
 

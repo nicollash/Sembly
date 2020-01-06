@@ -151,6 +151,10 @@ class SemblyMapView extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
+          // region={{
+          //   latitude: this.props.searchLatitude,
+          //   longitude: this.props.searchLongitude,
+          // }}
           showsUserLocation
           onRegionChange={(e) => {
             this.debounceUpdateFeed(e.latitude, e.longitude);

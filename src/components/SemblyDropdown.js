@@ -87,7 +87,7 @@ class SemblyDropdown extends React.Component {
           >
             {items}
           </Picker>
-          <View style={{ top: -10 }}>
+          <View style={{ top: -15 }}>
             <SemblyButton
               onPress={this.toggleModal}
               label="Select"

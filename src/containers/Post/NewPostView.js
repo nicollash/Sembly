@@ -199,7 +199,9 @@ class NewPostView extends React.Component {
                   pictureURI: res.uri,
                   pictureData: data,
                 },
-              }, () => console.log(this.state.post));
+              }, () => {
+                this.mainInput.focus();
+              });
             })
             .catch((err) => {
               console.log(err);
@@ -355,6 +357,7 @@ class NewPostView extends React.Component {
 
             <View style={{ marginLeft: 7, marginTop: 5 }}>
               <TextInput
+                ref={(ref) => { this.mainInput = ref; }}
                 autoFocus
                 multiline
                 fontSize={16}
@@ -377,11 +380,7 @@ class NewPostView extends React.Component {
 
           <View style={styles.attributesContainer}>
 
-            <TouchableOpacity onPress={() => {
-              this.debounceImagePick();
-              Keyboard.dismiss();
-            }}
-            >
+            <TouchableOpacity onPress={() => this.debounceImagePick()}>
               <View
                 style={{
                   borderRadius: 5,

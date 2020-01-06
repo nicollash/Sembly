@@ -9,13 +9,14 @@ import {
   Image,
   Keyboard,
   ImageBackground,
-  Modal,
+  Modal as DefaultModal,
   Alert,
   TextInput,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   },
   attributesContainer: {
     position: 'absolute',
-    bottom: 240,
+    bottom: 310,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -113,6 +114,7 @@ class NewPostView extends React.Component {
     // const user = firebase.auth().currentUser;
 
     this.state = {
+      modal: false,
       focused: 1,
       submitted: false,
       post: {
@@ -210,7 +212,7 @@ class NewPostView extends React.Component {
       <View keyboardShouldPersistTaps="always">
         <View accessibilityIgnoresInvertColors style={styles.container}>
           {this.state.submitted && (
-            <Modal visible animationType="fade" transparent>
+            <DefaultModal visible animationType="fade" transparent>
               <View
                 accessibilityIgnoresInvertColors
                 style={styles.postContainer}
@@ -226,7 +228,7 @@ class NewPostView extends React.Component {
                   <ActivityIndicator size="large" style={{ top: 180 }} />
                 )}
               </View>
-            </Modal>
+            </DefaultModal>
           )}
 
           {/* <View style={{ marginTop: 25 }}>
@@ -347,7 +349,7 @@ class NewPostView extends React.Component {
 
               <View>
                 <Image source="pinLocation" />
-                <Text style={styles.greyText}>
+                <Text onPress={() => this.setState({ modal: true })} style={styles.greyText}>
                   Add Location
                 </Text>
               </View>
@@ -425,6 +427,10 @@ class NewPostView extends React.Component {
           >
             Your post can contain text, photo or both.
           </Text> */}
+
+          <Modal isVisible={this.state.modal}>
+            <Text>hello</Text>
+          </Modal>
 
         </View>
       </View>

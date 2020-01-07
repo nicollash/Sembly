@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {
- View, Text, Image, TouchableOpacity, Alert 
+ View, Text, Image, TouchableOpacity, Alert, ActivityIndicator,
 } from 'react-native';
 import firebase from 'react-native-firebase';
 
@@ -70,6 +70,7 @@ class ProfileView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingImage: false,
       profile: {
         pictureURI: this.props.photoURL || samplePlayer,
       },
@@ -95,6 +96,7 @@ class ProfileView extends React.Component {
   }
 
   chooseImage = () => {
+    this.setState({ loadingImage: true });
     ImagePicker.showImagePicker(
       {
         title: 'Select Image',
@@ -126,6 +128,7 @@ class ProfileView extends React.Component {
             .then(async (res) => {
               const data = await RNFS.readFile(res.path, 'base64');
               this.setState({
+                loadingImage: false,
                 profile: {
                   ...this.state.profile,
                   pictureURI: res.uri,
@@ -151,6 +154,9 @@ class ProfileView extends React.Component {
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <View style={styles.profileHeader}>
           <TouchableOpacity onPress={() => this.chooseImage()}>
+            {/* <View style={{ position: 'absolute', top: 5 }}>
+              <ActivityIndicator active={true} />
+            </View> */}
             <Image
               source={{ uri: this.state.profile.pictureURI }}
               style={{ height: 100, width: 100, borderRadius: 15 }}

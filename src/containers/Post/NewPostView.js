@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'underscore';
+import firebase from 'react-native-firebase';
 
 import {
   View,
@@ -9,31 +10,39 @@ import {
   Image,
   Keyboard,
   ImageBackground,
-  Modal,
+  Modal as DefaultModal,
   Alert,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-picker';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
-import { SemblyInput } from '../../components';
+import { SemblyInput, SemblyButton } from '../../components';
 import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
+import theme from '../../styles/theme';
+import SemblyMapView from '../Main/SemblyMapView';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
+const camera = require('../../../assets/images/NewPostCamera.png');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: '82%',
+    width: wp(100),
+    height: hp(100),
     alignSelf: 'center',
+    alignItems: 'center',
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
@@ -52,6 +61,31 @@ const styles = StyleSheet.create({
     opacity: 1,
     top: '22.5%',
     alignSelf: 'center',
+  },
+  attributesContainer: {
+    position: 'absolute',
+    bottom: 310,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 100,
+    width: '93%',
+  },
+  greyText: {
+    color: '#C7CAD1',
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  redText: {
+    color: '#F93963',
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  postText: {
+    maxHeight: 240,
+    width: 310,
+    color: '#000',
+    fontFamily: theme.fonts.bold,
   },
 });
 
@@ -86,22 +120,30 @@ class NewPostView extends React.Component {
 
   constructor(props) {
     super(props);
-    // const user = firebase.auth().currentUser;
-
     this.state = {
+      modal: false,
       focused: 1,
+      spinner: false,
       submitted: false,
+      locationChosen: false,
+      locationInput: '',
       post: {
         location: {
           name: '',
           lat: this.props.location.lat,
           lon: this.props.location.lon,
         },
-        category: 'General',
+        category: 'All',
         text: '',
         pictureURI: '',
         selectedInput: 0,
+        business: {
+          id: '',
+          name: '',
+        },
       },
+      searchLatitude: undefined,
+      searchLongitude: undefined,
     };
     this.debounceImagePick = _.debounce(this.chooseImage, 1000);
   }
@@ -110,6 +152,7 @@ class NewPostView extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ submit: this.submit });
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
   }
 
   componentDidUpdate(prevProps) {
@@ -120,7 +163,12 @@ class NewPostView extends React.Component {
     }
   }
 
+  _keyboardDidShow = () => {
+    this.setState({ keyboardOpened: true });
+  }
+
   chooseImage = () => {
+    this.toggleSpinner();
     ImagePicker.showImagePicker(
       {
         title: 'Select Image',
@@ -157,7 +205,10 @@ class NewPostView extends React.Component {
                   pictureURI: res.uri,
                   pictureData: data,
                 },
-              }, () => console.log(this.state.post));
+              }, () => {
+                this.mainInput.focus();
+                this.toggleSpinner();
+              });
             })
             .catch((err) => {
               console.log(err);
@@ -173,14 +224,23 @@ class NewPostView extends React.Component {
     this.setState({ submitted: true });
   };
 
+  toggleSpinner = () => {
+    this.setState({ spinner: !this.state.spinner });
+  }
+
+  toggleModal = () => {
+    this.setState({ modal: !this.state.modal, locationChosen: false });
+  }
+
   render() {
     const { sendingPost } = this.props;
+    const profilePicture = firebase.auth().currentUser.photoURL;
 
     return (
-      <ScrollView keyboardShouldPersistTaps="always">
+      <View keyboardShouldPersistTaps="always">
         <View accessibilityIgnoresInvertColors style={styles.container}>
           {this.state.submitted && (
-            <Modal visible animationType="fade" transparent>
+            <DefaultModal visible animationType="fade" transparent>
               <View
                 accessibilityIgnoresInvertColors
                 style={styles.postContainer}
@@ -196,9 +256,16 @@ class NewPostView extends React.Component {
                   <ActivityIndicator size="large" style={{ top: 180 }} />
                 )}
               </View>
-            </Modal>
+            </DefaultModal>
           )}
-          <View style={{ marginTop: 25 }}>
+
+          {this.state.spinner && (
+            <View style={{ position: 'absolute', bottom: 200 }}>
+              <ActivityIndicator size="large" color="#F93963" />
+            </View>
+          )}
+
+          {/* <View style={{ marginTop: 25 }}>
             <SemblyInput
               marginLeft={5}
               placeholder="Content of your post, up to 300 chars."
@@ -212,8 +279,9 @@ class NewPostView extends React.Component {
               returnKey="next"
               autoFocus
             />
-          </View>
-          <View style={{ marginTop: 20, zIndex: 1 }}>
+          </View> */}
+
+          {/* <View style={{ marginTop: 20, zIndex: 1 }}>
             <SemblyLabel
               label="LOCATION"
               secondLabel="OPTIONAL"
@@ -267,8 +335,9 @@ class NewPostView extends React.Component {
                 marginTop: 5,
               }}
             />
-          </View>
-          <View style={{ marginTop: 20 }}>
+          </View> */}
+
+          {/* <View style={{ marginTop: 20 }}>
             <SemblyLabel
               label="CATEGORY"
               marginLeft={5}
@@ -287,40 +356,99 @@ class NewPostView extends React.Component {
               style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
               source={require('../../../assets/images/BorderLine.png')}
             />
-          </View>
-          <View style={{ marginTop: 20 }}>
+          </View> */}
+
+          {/* <View style={{ marginTop: 20 }}>
             <SemblyLabel
               label="PHOTO"
               marginLeft={5}
               fontSize={14}
               secondFontSize={10}
             />
-          </View>
-          {this.state.post.pictureURI === '' && (
-            <View
-              style={{
-                backgroundColor: '#EBECEE',
-                borderRadius: 15,
-                width: wp(90),
-                height: 170,
-                alignItems: 'center',
-                alignSelf: 'center',
-                justifyContent: 'center',
-                marginTop: 10,
-              }}
-            >
-              <TouchableOpacity onPress={() => {
-                this.debounceImagePick();
-                Keyboard.dismiss();
-              }}
+          </View> */}
+
+          <View style={{ width: '97%', flexDirection: 'row', marginTop: 16 }}>
+            <View style={{ marginLeft: 8 }}>
+              <Image style={{ height: 40, width: 40, borderRadius: 20 }} source={{ uri: profilePicture }} />
+            </View>
+
+            <View style={{ marginLeft: 7, marginTop: 4 }}>
+              <TextInput
+                ref={(ref) => { this.mainInput = ref; }}
+                autoFocus
+                multiline
+                fontSize={16}
+                style={styles.postText}
+                maxLength={300}
+                placeholder="What would you like to share with your city?"
+              />
+
+              <TouchableOpacity
+                style={{ flexDirection: 'row', marginTop: 10 }}
+                onPress={this.toggleModal}
               >
-                <Image
-                  source={require('../../../assets/images/ButtonCameraPost.png')}
-                />
+                {!this.state.locationChosen && (
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image source={pin} style={{ tintColor: '#B9BDC5' }} />
+                    <Text style={[styles.greyText, { marginLeft: 5 }]}>
+                      Add Location
+                    </Text>
+                  </View>
+                )}
+                {(this.state.post.business.name !== '' && this.state.locationChosen) && (
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image source={pin} style={{ tintColor: '#F93963' }} />
+                    <Text style={[styles.redText, { marginLeft: 5 }]}>
+                      {this.state.post.business.name}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
-          )}
-          {this.state.post.pictureURI !== '' && (
+          </View>
+
+          <View style={styles.attributesContainer}>
+
+            <TouchableOpacity onPress={() => this.debounceImagePick()}>
+              <View
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: '#F93963',
+                  width: 95,
+                  height: 32,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {this.state.post.pictureURI === '' && (
+                  <Image source={camera} />
+                )}
+                {this.state.post.pictureURI !== '' && (
+                  <Image
+                    style={{ height: '100%', width: '100%' }}
+                    source={{ uri: this.state.post.pictureURI }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
+              <Text style={[styles.greyText, { marginRight: 5 }]}>
+                CATEGORY
+              </Text>
+              <SemblyDropdown
+                values={_.pluck(this.props.categories, 'title')}
+                onChange={(category) => {
+                  this.setState({ post: { ...this.state.post, category } });
+                }}
+              />
+            </View>
+
+          </View>
+          
+          {/* {this.state.post.pictureURI !== '' && (
             <View
               style={{
                 width: wp(90),
@@ -345,8 +473,9 @@ class NewPostView extends React.Component {
                 </TouchableOpacity>
               </ImageBackground>
             </View>
-          )}
-          <Text
+          )} */}
+
+          {/* <Text
             style={{
               color: '#C7CAD1',
               alignSelf: 'center',
@@ -354,9 +483,79 @@ class NewPostView extends React.Component {
             }}
           >
             Your post can contain text, photo or both.
-          </Text>
+          </Text> */}
+
+          <Modal
+            style={{ top: 130, alignSelf: 'center', width: '100%' }}
+            isVisible={this.state.modal}
+            onBackdropPress={this.toggleModal}
+            onSwipeComplete={this.toggleModal}
+            swipeDirection="down"
+          >
+            <View style={{
+              borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' 
+            }}
+            >
+              <View style={{
+                marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1 
+              }}
+              >
+                <SemblyPlaceAutoComplete
+                  longitude={this.props.location.lon}
+                  latitude={this.props.location.lat}
+                  query={this.state.post.business.name}
+                  onResult={(business) => {
+                    if (business.id === '') {
+                      this.setState({
+                        post: {
+                          ...this.state.post,
+                          business: false,
+                        },
+                      });
+                    } else {
+                      this.setState({
+                        searchLatitude: business.coordinates._latitude,
+                        searchLongitude: business.coordinates._longitude,
+                        post: {
+                          ...this.state.post,
+                          business: {
+                            id: business.id,
+                            name: business.name,
+                          },
+                        },
+                        locationInput: business.name,
+                      });
+                    }
+                  }}
+                  textChanged={locationInput => this.setState({ locationInput })}
+                />
+              </View>
+              <View style={{
+                opacity: (this.state.post.business.name === '' || this.state.post.business.name !== this.state.locationInput) ? 0.4 : 1, zIndex: this.state.post.business.name === '' ? 0 : 1, position: 'absolute', top: 4, right: 5,
+              }}
+              >
+                <SemblyButton
+                  onPress={() => {
+                    this.toggleModal();
+                    this.setState({ locationChosen: true });
+                    this.mainInput.focus();
+                  }}
+                  label="Select"
+                  width={65}
+                  height={25}
+                />
+              </View>
+              <View style={{ height: 380 }}>
+                <SemblyMapView
+                  searchLatitude={this.state.searchLatitude}
+                  searchLongitude={this.state.searchLongitude}
+                />
+              </View>
+            </View>
+          </Modal>
+
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

@@ -59,7 +59,7 @@ class AppRoot extends React.PureComponent {
   // Tab navigator
   MainTabNavigation = createBottomTabNavigator({
     Home: {
-      screen: HomeView,
+      screen: HomeView, // was HomeView
       navigationOptions: ({ navigation }) => ({
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           const { state } = navigation;

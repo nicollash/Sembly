@@ -25,22 +25,18 @@ const styles = StyleSheet.create({
   container: {
     zIndex: (Platform.OS === 'ios' ? 10 : 0),
     overflow: 'visible',
-    // position: 'absolute',
-    // flex: 0.2,
   },
   inputContainerStyle: {
     borderWidth: 0,
-    // zIndex: 1,
   },
   textInputContainer: {
     marginLeft: 5,
   },
   listView: {
     position: 'absolute',
-    left: -17,
+    left: -16,
     top: Platform.OS === 'ios' ? 25 : 60,
     elevation: Platform.OS === 'ios' ? 0 : 1,
-    // borderRadius: 10,
     borderTopWidth: 0,
     borderWidth: Platform.OS === 'ios' ? 2 : 0,
     borderColor: '#EBECEE',
@@ -50,7 +46,6 @@ const styles = StyleSheet.create({
   location: {
     color: '#26315F',
     fontSize: 17,
-    // marginLeft: 4,
     borderWidth: 1,
     borderColor: '#EBECEE',
     paddingVertical: hp(1),
@@ -63,7 +58,7 @@ const styles = StyleSheet.create({
 class SemblyPlaceAutoComplete extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { businesses: [], query: '' };
+    this.state = { businesses: [], query: this.props.query || '' };
     this.debounceQuery = _.debounce(this.launchQuery, 800);
   }
 
@@ -93,6 +88,7 @@ class SemblyPlaceAutoComplete extends React.Component {
       <View style={styles.container}>
         <Autocomplete
           scrollEnabled
+          autoFocus
           autoCapitalize
           autoCorrect={false}
           inputContainerStyle={styles.inputContainerStyle}
@@ -102,13 +98,16 @@ class SemblyPlaceAutoComplete extends React.Component {
           data={businesses}
           defaultValue={query}
           hideResults={businesses.length <= 0}
-          onChangeText={res => this.setState({ query: res }, this.debounceQuery)}
+          onChangeText={(res) => {
+            this.setState({ query: res }, this.debounceQuery);
+            this.props.textChanged(res);
+          }}
           onKeyPress={({ nativeEvent }) => {
             if (nativeEvent.key === 'Backspace') {
               this.props.onResult({ id: '', name: '' });
             }
           }}
-          placeholder="Add location"
+          placeholder="Add Location"
           placeholderTextColor="#C7CAD1"
           style={{ fontSize: 17, color: '#26315F' }}
           renderItem={({ item }) => (

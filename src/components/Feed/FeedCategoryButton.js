@@ -11,12 +11,13 @@ import {
 } from 'react-native';
 import Theme from '../../styles/theme';
 
+const downCaret = require('../../../assets/images/DropdownArrow.png');
+
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 38,
     borderRadius: 8,
     borderWidth: 1,
     paddingHorizontal: 10,
@@ -36,22 +37,43 @@ class FeedCategoryButton extends React.Component {
   }
 
   render() {
+    const fromNewPost = this.props.parent === 'NewPost';
+
     return (
       <TouchableOpacity
         style={[styles.buttonContainer,
           { backgroundColor: this.props.backgroundColor },
-          { borderColor: this.props.border }]}
+          { borderColor: this.props.border },
+          { height: fromNewPost ? 32 : 38 }]}
         onPress={this.props.onPress}
       >
         <View>
-          <Image source={this.props.icon} />
+          <Image
+            source={this.props.icon}
+            style={{ maxHeight: fromNewPost ? 25 : undefined, resizeMode: 'contain' }}
+          />
         </View>
         <View>
-          <Text style={[styles.title, { color: this.props.titleColor }]}>
+          <Text style={[styles.title, {
+            color: fromNewPost && this.props.title !== 'All' ? '#fff' : this.props.titleColor,
+          }]}
+          >
             {'  '}
             {this.props.title}
           </Text>
         </View>
+        {fromNewPost && (
+          <Image
+            style={{
+              alignSelf: 'center',
+              marginLeft: 10,
+              tintColor: this.props.title === 'All' ? this.props.border : '#fff',
+              width: 8,
+              resizeMode: 'contain',
+            }}
+            source={downCaret}
+          />
+        )}
       </TouchableOpacity>
     );
   }

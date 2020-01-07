@@ -33,6 +33,7 @@ import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
 import theme from '../../styles/theme';
 import SemblyMapView from '../Main/SemblyMapView';
+import { isIphoneX } from '../../styles/iphoneModelCheck';
 
 const pin = require('../../../assets/images/PhotoPostLocationIcon.png');
 const camera = require('../../../assets/images/NewPostCamera.png');
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   },
   attributesContainer: {
     position: 'absolute',
-    bottom: 310,
+    bottom: isIphoneX() ? hp(49) : hp(44.5),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   },
   greyText: {
     color: '#C7CAD1',
-    fontSize: 13,
+    fontSize: wp(4),
     fontWeight: '500',
   },
   redText: {
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   postText: {
-    maxHeight: 240,
+    maxHeight: isIphoneX() ? hp(37) : 254.5,
     width: 310,
     color: '#000',
     fontFamily: theme.fonts.bold,
@@ -265,108 +266,6 @@ class NewPostView extends React.Component {
             </View>
           )}
 
-          {/* <View style={{ marginTop: 25 }}>
-            <SemblyInput
-              marginLeft={5}
-              placeholder="Content of your post, up to 300 chars."
-              label="TEXT"
-              fontSize={14}
-              secondFontSize={10}
-              valueChanged={text => this.setState({ post: { ...this.state.post, text } })}
-              spacing={5}
-              autoCorrect
-              maxLength={300}
-              returnKey="next"
-              autoFocus
-            />
-          </View> */}
-
-          {/* <View style={{ marginTop: 20, zIndex: 1 }}>
-            <SemblyLabel
-              label="LOCATION"
-              secondLabel="OPTIONAL"
-              fontSize={14}
-              secondFontSize={10}
-              marginLeft={4}
-            />
-            <View
-              style={{ flexDirection: 'row', width: '100%', marginTop: 10 }}
-            >
-              <Image
-                source={pin}
-                style={{
-                  height: 15,
-                  marginLeft: -15,
-                  alignSelf: 'center',
-                  marginTop: 2,
-                }}
-              />
-              <View style={{ marginLeft: 2 }}>
-                <SemblyPlaceAutoComplete
-                  longitude={this.props.location.lon}
-                  latitude={this.props.location.lat}
-                  onResult={(business) => {
-                    if (business.id === '') {
-                      this.setState({
-                        post: {
-                          ...this.state.post,
-                          business: false,
-                        },
-                      });
-                    } else {
-                      this.setState({
-                        post: {
-                          ...this.state.post,
-                          business: {
-                            id: business.id,
-                            name: business.name,
-                          },
-                        },
-                      });
-                    }
-                  }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                borderBottomColor: '#D8D8D8',
-                borderBottomWidth: 0.5,
-                marginTop: 5,
-              }}
-            />
-          </View> */}
-
-          {/* <View style={{ marginTop: 20 }}>
-            <SemblyLabel
-              label="CATEGORY"
-              marginLeft={5}
-              fontSize={14}
-              secondFontSize={10}
-            />
-            <View style={{ width: wp(92), marginLeft: -12 }}>
-              <SemblyDropdown
-                values={_.pluck(this.props.categories, 'title')}
-                onChange={(category) => {
-                  this.setState({ post: { ...this.state.post, category } });
-                }}
-              />
-            </View>
-            <Image
-              style={{ alignSelf: 'center', marginTop: 8, width: wp(90) }}
-              source={require('../../../assets/images/BorderLine.png')}
-            />
-          </View> */}
-
-          {/* <View style={{ marginTop: 20 }}>
-            <SemblyLabel
-              label="PHOTO"
-              marginLeft={5}
-              fontSize={14}
-              secondFontSize={10}
-            />
-          </View> */}
-
           <View style={{ width: '97%', flexDirection: 'row', marginTop: 16 }}>
             <View style={{ marginLeft: 8 }}>
               <Image style={{ height: 40, width: 40, borderRadius: 20 }} source={{ uri: profilePicture }} />
@@ -380,6 +279,7 @@ class NewPostView extends React.Component {
                 fontSize={16}
                 style={styles.postText}
                 maxLength={300}
+                onChangeText={text => this.setState({ post: { ...this.state.post, text } })}
                 placeholder="What would you like to share with your city?"
               />
 
@@ -447,43 +347,6 @@ class NewPostView extends React.Component {
             </View>
 
           </View>
-          
-          {/* {this.state.post.pictureURI !== '' && (
-            <View
-              style={{
-                width: wp(90),
-                height: 170,
-                marginTop: 10,
-                alignSelf: 'center',
-              }}
-            >
-              <ImageBackground
-                source={{ uri: this.state.post.pictureURI }}
-                style={styles.backgroundUpload}
-                imageStyle={{ borderRadius: 15 }}
-              >
-                <TouchableOpacity onPress={() => {
-                  this.chooseImage();
-                  Keyboard.dismiss();
-                }}
-                >
-                  <Image
-                    source={require('../../../assets/images/ButtonCameraPost.png')}
-                  />
-                </TouchableOpacity>
-              </ImageBackground>
-            </View>
-          )} */}
-
-          {/* <Text
-            style={{
-              color: '#C7CAD1',
-              alignSelf: 'center',
-              marginTop: '6%',
-            }}
-          >
-            Your post can contain text, photo or both.
-          </Text> */}
 
           <Modal
             style={{ top: 130, alignSelf: 'center', width: '100%' }}
@@ -514,8 +377,8 @@ class NewPostView extends React.Component {
                       });
                     } else {
                       this.setState({
-                        searchLatitude: business.coordinates._latitude,
-                        searchLongitude: business.coordinates._longitude,
+                        searchLatitude: business.coordinates ? business.coordinates._latitude : undefined,
+                        searchLongitude: business.coordinates ? business.coordinates._longitude : undefined,
                         post: {
                           ...this.state.post,
                           business: {

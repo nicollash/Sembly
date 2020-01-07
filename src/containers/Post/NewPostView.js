@@ -28,7 +28,7 @@ import SemblyHeaderButton from '../../components/SemblyHeaderButton';
 import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
-import { SemblyInput } from '../../components';
+import { SemblyInput, SemblyButton } from '../../components';
 import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
 import theme from '../../styles/theme';
@@ -76,6 +76,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
+  redText: {
+    color: '#F93963',
+    fontSize: 13,
+    fontWeight: '500',
+  },
   postText: {
     maxHeight: 240,
     width: 310,
@@ -120,6 +125,7 @@ class NewPostView extends React.Component {
       focused: 1,
       spinner: false,
       submitted: false,
+      locationChosen: false,
       post: {
         location: {
           name: '',
@@ -130,7 +136,13 @@ class NewPostView extends React.Component {
         text: '',
         pictureURI: '',
         selectedInput: 0,
+        business: {
+          id: '',
+          name: '',
+        },
       },
+      searchLatitude: undefined,
+      searchLongitude: undefined,
     };
     this.debounceImagePick = _.debounce(this.chooseImage, 1000);
   }
@@ -216,6 +228,7 @@ class NewPostView extends React.Component {
   }
 
   toggleModal = () => {
+    Keyboard.dismiss();
     this.setState({ modal: !this.state.modal });
   }
 
@@ -374,10 +387,22 @@ class NewPostView extends React.Component {
                 style={{ flexDirection: 'row', marginTop: 10 }}
                 onPress={this.toggleModal}
               >
-                <Image source={pin} style={{ tintColor: '#B9BDC5' }} />
-                <Text style={[styles.greyText, { marginLeft: 5 }]}>
-                  Add Location
-                </Text>
+                {!this.state.locationChosen && (
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image source={pin} style={{ tintColor: '#B9BDC5' }} />
+                    <Text style={[styles.greyText, { marginLeft: 5 }]}>
+                      Add Location
+                    </Text>
+                  </View>
+                )}
+                {(this.state.post.business.name !== '' && this.state.locationChosen) && (
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image source={pin} style={{ tintColor: '#F93963' }} />
+                    <Text style={[styles.redText, { marginLeft: 5 }]}>
+                      {this.state.post.business.name}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -467,13 +492,16 @@ class NewPostView extends React.Component {
             onSwipeComplete={this.toggleModal}
             swipeDirection="down"
           >
-            <View style={{ borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' }}>
-              <View style={{ marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1 }}>
+            <View style={{
+              borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' 
+            }}>
+              <View style={{
+                marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1 
+              }}>
                 <SemblyPlaceAutoComplete
                   longitude={this.props.location.lon}
                   latitude={this.props.location.lat}
                   onResult={(business) => {
-                    console.log(business);
                     if (business.id === '') {
                       this.setState({
                         post: {
@@ -483,6 +511,8 @@ class NewPostView extends React.Component {
                       });
                     } else {
                       this.setState({
+                        searchLatitude: business.coordinates._latitude,
+                        searchLongitude: business.coordinates._longitude,
                         post: {
                           ...this.state.post,
                           business: {
@@ -495,9 +525,24 @@ class NewPostView extends React.Component {
                   }}
                 />
               </View>
+              <View style={{
+                opacity: this.state.post.business.name === '' ? 0.4 : 1, zIndex: this.state.post.business.name === '' ? 0 : 1, position: 'absolute', top: 4, right: 5,
+              }}
+              >
+                <SemblyButton
+                  onPress={() => {
+                    this.toggleModal();
+                    this.setState({ locationChosen: true });
+                  }}
+                  label="Select"
+                  width={65}
+                  height={25}
+                />
+              </View>
               <View style={{ height: 380 }}>
                 <SemblyMapView
-                  // searchLatitude={}
+                  searchLatitude={this.state.searchLatitude}
+                  searchLongitude={this.state.searchLongitude}
                 />
               </View>
             </View>

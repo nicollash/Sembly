@@ -256,6 +256,9 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
     } else locationName = geocode.json.results[0].address_components[2].long_name;
   }
 
+  // Temporary work-around
+  locationName = 'Omaha';
+
   // Make database requests
   const categories = await admin
     .firestore()
@@ -365,11 +368,12 @@ exports.searchBusinesses = functions.https.onRequest(async (request, response) =
       })
       .get(),
   ]).then(res => {
-    console.log(res[0], res[1]);
+    // console.log(res[0], res[1]);
     businessRes = res[0].docs.map((b) => {
       return {
         id: b.data().id,
         name: b.data().name,
+        coordinates: b.data().coordinates,
       };
     });
     eventRes = res[1].docs.map(event => {

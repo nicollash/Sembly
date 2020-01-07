@@ -104,7 +104,7 @@ class SemblyPlaceAutoComplete extends React.Component {
               this.props.onResult({ id: '', name: '' });
             }
           }}
-          placeholder="Add location"
+          placeholder="Add Location"
           placeholderTextColor="#C7CAD1"
           style={{ fontSize: 17, color: '#26315F' }}
           renderItem={({ item }) => (

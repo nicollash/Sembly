@@ -213,6 +213,7 @@ class NewPostView extends React.Component {
             })
             .catch((err) => {
               console.log(err);
+              this.toggleSpinner();
             });
         }
       },

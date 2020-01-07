@@ -126,6 +126,7 @@ class NewPostView extends React.Component {
       spinner: false,
       submitted: false,
       locationChosen: false,
+      locationInput: '',
       post: {
         location: {
           name: '',
@@ -228,8 +229,7 @@ class NewPostView extends React.Component {
   }
 
   toggleModal = () => {
-    Keyboard.dismiss();
-    this.setState({ modal: !this.state.modal });
+    this.setState({ modal: !this.state.modal, locationChosen: false });
   }
 
   render() {
@@ -494,13 +494,16 @@ class NewPostView extends React.Component {
           >
             <View style={{
               borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' 
-            }}>
+            }}
+            >
               <View style={{
                 marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1 
-              }}>
+              }}
+              >
                 <SemblyPlaceAutoComplete
                   longitude={this.props.location.lon}
                   latitude={this.props.location.lat}
+                  query={this.state.post.business.name}
                   onResult={(business) => {
                     if (business.id === '') {
                       this.setState({
@@ -520,19 +523,22 @@ class NewPostView extends React.Component {
                             name: business.name,
                           },
                         },
+                        locationInput: business.name,
                       });
                     }
                   }}
+                  textChanged={locationInput => this.setState({ locationInput })}
                 />
               </View>
               <View style={{
-                opacity: this.state.post.business.name === '' ? 0.4 : 1, zIndex: this.state.post.business.name === '' ? 0 : 1, position: 'absolute', top: 4, right: 5,
+                opacity: (this.state.post.business.name === '' || this.state.post.business.name !== this.state.locationInput) ? 0.4 : 1, zIndex: this.state.post.business.name === '' ? 0 : 1, position: 'absolute', top: 4, right: 5,
               }}
               >
                 <SemblyButton
                   onPress={() => {
                     this.toggleModal();
                     this.setState({ locationChosen: true });
+                    this.mainInput.focus();
                   }}
                   label="Select"
                   width={65}

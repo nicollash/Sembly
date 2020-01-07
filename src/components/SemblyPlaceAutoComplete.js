@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 class SemblyPlaceAutoComplete extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { businesses: [], query: '' };
+    this.state = { businesses: [], query: this.props.query || '' };
     this.debounceQuery = _.debounce(this.launchQuery, 800);
   }
 
@@ -98,7 +98,10 @@ class SemblyPlaceAutoComplete extends React.Component {
           data={businesses}
           defaultValue={query}
           hideResults={businesses.length <= 0}
-          onChangeText={res => this.setState({ query: res }, this.debounceQuery)}
+          onChangeText={(res) => {
+            this.setState({ query: res }, this.debounceQuery);
+            this.props.textChanged(res);
+          }}
           onKeyPress={({ nativeEvent }) => {
             if (nativeEvent.key === 'Backspace') {
               this.props.onResult({ id: '', name: '' });

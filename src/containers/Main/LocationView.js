@@ -66,19 +66,18 @@ class LocationView extends React.Component {
     return (
       <View>
         <View style={{ height: (this.props.panelHeight > 50 ? this.props.panelHeight : 400) }}>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView>
             <View style={{
               justifyContent: 'flex-start',
               alignItems: 'center',
               borderRadius: 12,
-              flex: 1,
             }}
             >
               <View style={{ width: '100%' }}>
                 <View style={{ minHeight: 190, width: '100%' }}>
                   <ImageBackground
-                    source={{ uri: location.picture } || require('../../../assets/images/SemblyLogo.png')}
                     style={{ flex: 1 }}
+                    source={{ uri: location.picture } || require('../../../assets/images/SemblyLogo.png')}
                   />
                 </View>
                 <View style={{ marginTop: 10 }}>

@@ -140,6 +140,7 @@ class SemblyMapView extends React.Component {
           mapRef={(map) => {
             this.map = map;
           }}
+          clusterColor={'#F7567C'}
           style={{ width: '100%', height: '100%' }}
           showsPointsOfInterest={false}
           customMapStyle={[

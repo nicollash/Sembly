@@ -6,8 +6,7 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 
-import MapView from 'react-native-maps';
-
+import MapView from "react-native-map-clustering";
 // Redux
 import { connect } from 'react-redux';
 
@@ -82,7 +81,7 @@ class SemblyMapView extends React.Component {
   
   render() {
     const eventPins = this.props.events.map(event => (
-      <SemblyMapPin
+      <SemblyMapPin coordinate={{ latitude: event.location.lat, longitude: event.location.lon }}
         latitude={event.location.lat}
         longitude={event.location.lon}
         pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
@@ -93,27 +92,27 @@ class SemblyMapView extends React.Component {
         pinLabel="Event"
       />
     ));
-    const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => (
-      <SemblyMapPin
-        latitude={post.location.lat}
-        longitude={post.location.lon}
-        pinColor="#BADAFF"
-        pinIcon={post.category !== 'General'
-          ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
-          : icons[0]}
-        onPress={() => NavigationService.navigate('Post', { post })}
-        // notifications={post.notifications}
-        notifications={_.random(0, 25)}
-        pinLabel="Label"
-      />
-    ));
+    const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => {
+      return <SemblyMapPin coordinate={{ latitude: post.location.lat, longitude: post.location.lon }}
+      latitude={post.location.lat}
+      longitude={post.location.lon}
+      pinColor="#BADAFF"
+      pinIcon={post.category !== 'General'
+        ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
+        : icons[0]}
+      onPress={() => NavigationService.navigate('Post', { post })}
+      // notifications={post.notifications}
+      notifications={_.random(0, 25)}
+      pinLabel="Label"
+    />
+    });
     const businessPins = this.props.businesses.map((business) => {
       const pin = _.where(this.props.categories, { title: business.type });
       if (!pin || pin.length === 0) {
         return null;
       }
       return (
-        <SemblyMapPin
+        <SemblyMapPin coordinate={{ latitude: business.location.lat, longitude: business.location.lon }}
           latitude={business.location.lat}
           longitude={business.location.lon}
           pinColor={_.where(this.props.categories, { title: business.type })[0].color}
@@ -138,7 +137,7 @@ class SemblyMapView extends React.Component {
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
-          ref={(map) => {
+          mapRef={(map) => {
             this.map = map;
           }}
           style={{ width: '100%', height: '100%' }}
@@ -173,8 +172,8 @@ class SemblyMapView extends React.Component {
           }}
         >
           {eventPins}
-          {/* {postPins} */}
-          {/* {businessPins} */}
+          {postPins}
+          {businessPins}
           {unclusteredBusinessPins}
         </MapView>
       </View>

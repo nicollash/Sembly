@@ -78,7 +78,7 @@ class SemblyMapView extends React.Component {
   updateFeed = (lat = undefined, lon = undefined) => {
     this.props.refreshFeed(lat || this.props.location.lat, lon || this.props.location.lon);
   }
-  
+
   render() {
     const eventPins = this.props.events.map(event => (
       <SemblyMapPin coordinate={{ latitude: event.location.lat, longitude: event.location.lon }}
@@ -86,7 +86,7 @@ class SemblyMapView extends React.Component {
         longitude={event.location.lon}
         pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
         pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
-        onPress={() => NavigationService.navigate('Location', { location: event })}
+        onPress={() => { NavigationService.navigate('Location', { location: event })}}
         // notifications={event.notifications}
         // notifications={_.random(0, 25)}
         pinLabel="Event"
@@ -100,7 +100,7 @@ class SemblyMapView extends React.Component {
       pinIcon={post.category !== 'General'
         ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
         : icons[0]}
-      onPress={() => NavigationService.navigate('Post', { post })}
+      onPress={() => { NavigationService.navigate('Post', { post })}}
       // notifications={post.notifications}
       notifications={_.random(0, 25)}
       pinLabel="Label"
@@ -117,7 +117,7 @@ class SemblyMapView extends React.Component {
           longitude={business.location.lon}
           pinColor={_.where(this.props.categories, { title: business.type })[0].color}
           pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
-          onPress={() => NavigationService.navigate('Location', { location: business })}
+          onPress={(nativeEvent) =>{ this.props.onResult({id: business.id, name: business.name, nativeEvent }), NavigationService.navigate('Location', { location: business })}}
           notifications={business.recentPosts}
           // notifications={_.random(0, 25)}
           pinLabel={business.name}
@@ -134,6 +134,8 @@ class SemblyMapView extends React.Component {
         }
       }
     }
+
+
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView

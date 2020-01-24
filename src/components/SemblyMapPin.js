@@ -50,6 +50,7 @@ class SemblyMapPin extends React.Component {
 
   render() {
     const { notifications } = this.props;
+
     return (
       <Marker
         coordinate={{ latitude: this.props.latitude, longitude: this.props.longitude }}
@@ -61,12 +62,12 @@ class SemblyMapPin extends React.Component {
         <View style={{ alignItems: 'center' }}>
           <View>
             <Image
-              source={require('../../assets/images/MapPinTemplate.png')}
-              style={{ tintColor: this.props.pinColor }}
+              source={2}
+              style={{ tintColor: 'this.props.pinColor' }}
             />
             {this.props.pinIcon !== null && (
               <Image
-                source={this.props.pinIcon}
+                source={2}
                 style={{
                   position: 'absolute',
                   top: 2.5,

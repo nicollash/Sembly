@@ -221,6 +221,8 @@ class NewPostView extends React.Component {
   };
 
   submit = () => {
+
+
     this.props.createNewPost(this.state.post);
     this.props.updateUserProfile(this.state.post);
     this.setState({ submitted: true });
@@ -237,7 +239,6 @@ class NewPostView extends React.Component {
   render() {
     const { sendingPost } = this.props;
     const profilePicture = firebase.auth().currentUser.photoURL;
-
     return (
       <View keyboardShouldPersistTaps="always">
         <View accessibilityIgnoresInvertColors style={styles.container}>
@@ -357,11 +358,11 @@ class NewPostView extends React.Component {
             swipeDirection="down"
           >
             <View style={{
-              borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff' 
+              borderTopRightRadius: 20, borderTopLeftRadius: 20, height: 400, backgroundColor: '#fff'
             }}
             >
               <View style={{
-                marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1 
+                marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1
               }}
               >
                 <SemblyPlaceAutoComplete
@@ -392,6 +393,7 @@ class NewPostView extends React.Component {
                     }
                   }}
                   textChanged={locationInput => this.setState({ locationInput })}
+                  selectedLocationOnMap={this.state.locationInput}
                 />
               </View>
               <View style={{
@@ -413,6 +415,21 @@ class NewPostView extends React.Component {
                 <SemblyMapView
                   searchLatitude={this.state.searchLatitude}
                   searchLongitude={this.state.searchLongitude}
+                  onResult={(business) => {
+                      let event = business.nativeEvent.nativeEvent;
+                      this.setState({
+                        searchLatitude: event.coordinate ? event.longitude : undefined,
+                        searchLongitude: event.coordinate ? event.longitude : undefined,
+                        post: {
+                          ...this.state.post,
+                          business: {
+                            id: business.id,
+                            name: business.name,
+                          },
+                        },
+                        locationInput: business.name,
+                    });
+                  }}
                 />
               </View>
             </View>

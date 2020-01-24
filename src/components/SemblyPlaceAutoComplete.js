@@ -83,7 +83,6 @@ class SemblyPlaceAutoComplete extends React.Component {
 
   render() {
     const { businesses, query } = this.state;
-
     return (
       <View style={styles.container}>
         <Autocomplete
@@ -96,13 +95,14 @@ class SemblyPlaceAutoComplete extends React.Component {
           listContainerStyle={styles.listView}
           listStyle={{ borderRadius: 10 }}
           data={businesses}
-          defaultValue={query}
+          defaultValue={this.props.selectedLocationOnMap}
           hideResults={businesses.length <= 0}
           onChangeText={(res) => {
             this.setState({ query: res }, this.debounceQuery);
             this.props.textChanged(res);
           }}
           onKeyPress={({ nativeEvent }) => {
+
             if (nativeEvent.key === 'Backspace') {
               this.props.onResult({ id: '', name: '' });
             }
@@ -111,6 +111,7 @@ class SemblyPlaceAutoComplete extends React.Component {
           placeholderTextColor="#C7CAD1"
           style={{ fontSize: 17, color: '#26315F' }}
           renderItem={({ item }) => (
+
             <TouchableOpacity
               onPress={() => {
                 Keyboard.dismiss();

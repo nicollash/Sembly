@@ -78,8 +78,15 @@ class FeedView extends React.Component {
 
   componentWillMount() {}
 
+  componentWillUnmount(){
+    this.focusListener.remove();
+  }
+
   componentDidMount() {
     this.props.refreshFeed();
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this._onRefresh();
+    });
   }
 
   componentDidUpdate(prevState, prevProps) {

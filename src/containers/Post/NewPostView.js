@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
   postText: {
     maxHeight: isIphoneX() ? hp(37) : 254.5,
     width: 310,
-    color: '#000',
+    color: '#4D4847',
+    fontWeight: '400',
     fontFamily: theme.fonts.bold,
   },
 });

@@ -86,7 +86,7 @@ class SemblyMapView extends React.Component {
         longitude={event.location.lon}
         pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
         pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
-        onPress={() => { NavigationService.navigate('Location', { location: event })}}
+        onPress={() => NavigationService.navigate('Location', { location: event })}
         // notifications={event.notifications}
         // notifications={_.random(0, 25)}
         pinLabel="Event"
@@ -100,7 +100,7 @@ class SemblyMapView extends React.Component {
       pinIcon={post.category !== 'General'
         ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
         : icons[0]}
-      onPress={() => { NavigationService.navigate('Post', { post })}}
+      onPress={() => NavigationService.navigate('Post', { post })}
       // notifications={post.notifications}
       notifications={_.random(0, 25)}
       pinLabel="Label"
@@ -134,8 +134,6 @@ class SemblyMapView extends React.Component {
         }
       }
     }
-
-
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView

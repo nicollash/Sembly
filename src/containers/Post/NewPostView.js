@@ -221,8 +221,6 @@ class NewPostView extends React.Component {
   };
 
   submit = () => {
-
-
     this.props.createNewPost(this.state.post);
     this.props.updateUserProfile(this.state.post);
     this.setState({ submitted: true });
@@ -239,6 +237,7 @@ class NewPostView extends React.Component {
   render() {
     const { sendingPost } = this.props;
     const profilePicture = firebase.auth().currentUser.photoURL;
+    
     return (
       <View keyboardShouldPersistTaps="always">
         <View accessibilityIgnoresInvertColors style={styles.container}>

@@ -62,12 +62,12 @@ class SemblyMapPin extends React.Component {
         <View style={{ alignItems: 'center' }}>
           <View>
             <Image
-              source={2}
-              style={{ tintColor: 'this.props.pinColor' }}
+              source={require('../../assets/images/MapPinTemplate.png')}
+              style={{ tintColor: this.props.pinColor}}
             />
             {this.props.pinIcon !== null && (
               <Image
-                source={2}
+                source={this.props.pinIcon}
                 style={{
                   position: 'absolute',
                   top: 2.5,

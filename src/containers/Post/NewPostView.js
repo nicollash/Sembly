@@ -362,7 +362,7 @@ class NewPostView extends React.Component {
             }}
             >
               <View style={{
-                marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1
+                marginTop: 7, marginLeft: 5, paddingBottom: 6, zIndex: 1, paddingTop: 4, height: 35,
               }}
               >
                 <SemblyPlaceAutoComplete
@@ -397,7 +397,7 @@ class NewPostView extends React.Component {
                 />
               </View>
               <View style={{
-                opacity: (this.state.post.business.name === '' || this.state.post.business.name !== this.state.locationInput) ? 0.4 : 1, zIndex: this.state.post.business.name === '' ? 0 : 1, position: 'absolute', top: 4, right: 5,
+                opacity: (this.state.post.business.name === '' || this.state.post.business.name !== this.state.locationInput) ? 0.4 : 1, zIndex: this.state.post.business.name === '' ? 0 : 1, position: 'absolute', top: 8, right: 5,
               }}
               >
                 <SemblyButton

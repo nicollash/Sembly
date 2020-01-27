@@ -4,6 +4,7 @@ import _ from 'underscore';
 import {
   View,
   PermissionsAndroid,
+  Dimensions,
 } from 'react-native';
 
 import MapView from "react-native-map-clustering";
@@ -42,6 +43,9 @@ class SemblyMapView extends React.Component {
     super(props);
 
     this.state = {
+      region: {
+        lonDelta: 0.0421,
+      },
     };
   }
 
@@ -134,14 +138,18 @@ class SemblyMapView extends React.Component {
         }
       }
     }
+
+    const clustered = Math.log2(360 * ((Dimensions.get('window').width / 256) / this.state.region.lonDelta)) + 1 < 17;
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
         <MapView
           mapRef={(map) => {
             this.map = map;
           }}
-          clusterColor={'#F7567C'}
+          clusterColor={clustered ? '#F7567C' : 'transparent'}
+          clusterTextColor={clustered ? '#fff' : 'transparent'}
           style={{ width: '100%', height: '100%' }}
+          clusteringEnabled={clustered}
           showsPointsOfInterest={false}
           customMapStyle={[
             {
@@ -169,11 +177,12 @@ class SemblyMapView extends React.Component {
           }}
           showsUserLocation
           onRegionChange={(e) => {
+            this.setState({ region: { ...this.state.region, lonDelta: e.longitudeDelta } });
             this.debounceUpdateFeed(e.latitude, e.longitude);
           }}
         >
           {eventPins}
-          {postPins}
+          {/* {postPins} */}
           {businessPins}
           {unclusteredBusinessPins}
         </MapView>

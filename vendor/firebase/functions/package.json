@@ -21,8 +21,9 @@
     "geofirestore": "^3.3.1",
     "google-maps": "^3.3.0",
     "moment": "^2.24.0",
-    "request": "^2.81.0",
+    "request": "^2.83.0",
     "underscore": "^1.9.1",
+    "underscore.deep": "^0.5.1",
     "uuidv4": "^5.0.1",
     "xlsx": "^0.15.1"
   },

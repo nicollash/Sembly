@@ -253,11 +253,12 @@ exports.getFeed = functions.https.onRequest(async (request, response) => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].types[0] === 'locality' && arr[i].types[1] === 'political') {
       locationName = arr[i].long_name;
+      break;
     } else locationName = geocode.json.results[0].address_components[2].long_name;
   }
 
   // Temporary work-around
-  locationName = 'Omaha';
+  // locationName = 'Omaha';
 
   // Make database requests
   const categories = await admin

@@ -191,7 +191,9 @@ class SemblyMapView extends React.Component {
   }
 }
 
-SemblyMapView.defaultProps = {};
+SemblyMapView.defaultProps = {
+  onResult:()=>{}
+};
 
 SemblyMapView.propTypes = {};
 

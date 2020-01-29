@@ -129,16 +129,6 @@ class SemblyMapView extends React.Component {
       );
     });
 
-    let unclusteredBusinessPins = businessPins;
-    for (let i = 0; i < businessPins.length; i++) {
-      for (let j = 0; j < eventPins.length; j++) {
-        if (businessPins[i].props.latitude === eventPins[j].props.latitude
-            && businessPins[i].props.longitude === eventPins[j].props.longitude) {
-          unclusteredBusinessPins.splice(i, 1);
-        }
-      }
-    }
-
     const clustered = Math.log2(360 * ((Dimensions.get('window').width / 256) / this.state.region.lonDelta)) + 1 < 17;
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
@@ -184,7 +174,6 @@ class SemblyMapView extends React.Component {
           {eventPins}
           {/* {postPins} */}
           {businessPins}
-          {unclusteredBusinessPins}
         </MapView>
       </View>
     );

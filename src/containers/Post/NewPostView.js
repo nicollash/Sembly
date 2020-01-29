@@ -238,7 +238,7 @@ class NewPostView extends React.Component {
   render() {
     const { sendingPost } = this.props;
     const profilePicture = firebase.auth().currentUser.photoURL;
-    
+
     return (
       <View keyboardShouldPersistTaps="always">
         <View accessibilityIgnoresInvertColors style={styles.container}>
@@ -416,18 +416,17 @@ class NewPostView extends React.Component {
                   searchLatitude={this.state.searchLatitude}
                   searchLongitude={this.state.searchLongitude}
                   onResult={(business) => {
-                      let event = business.nativeEvent.nativeEvent;
-                      this.setState({
-                        searchLatitude: event.coordinate ? event.longitude : undefined,
-                        searchLongitude: event.coordinate ? event.longitude : undefined,
-                        post: {
-                          ...this.state.post,
-                          business: {
-                            id: business.id,
-                            name: business.name,
-                          },
+                    this.setState({
+                      searchLatitude: business.lat ? business.lat : undefined,
+                      searchLongitude: business.long ? business.long : undefined,
+                      post: {
+                        ...this.state.post,
+                        business: {
+                          id: business.id,
+                          name: business.name,
                         },
-                        locationInput: business.name,
+                      },
+                      locationInput: business.name,
                     });
                   }}
                 />

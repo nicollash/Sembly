@@ -84,18 +84,26 @@ class SemblyMapView extends React.Component {
   }
 
   render() {
-    const eventPins = this.props.events.map(event => (
-      <SemblyMapPin coordinate={{ latitude: event.location.lat, longitude: event.location.lon }}
-        latitude={event.location.lat}
-        longitude={event.location.lon}
-        pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
-        pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
-        onPress={() => NavigationService.navigate('Location', { location: event })}
-        // notifications={event.notifications}
-        // notifications={_.random(0, 25)}
-        pinLabel="Event"
-      />
-    ));
+    const eventsLatitude = []
+    const eventsLongitude = []
+    
+    const eventPins = this.props.events.map(event => {
+      eventsLatitude.push(event.location.lat)
+      eventsLongitude.push(event.location.lon)
+
+      return (
+        <SemblyMapPin coordinate={{ latitude: event.location.lat, longitude: event.location.lon }}
+          latitude={event.location.lat}
+          longitude={event.location.lon}
+          pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
+          pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
+          onPress={() => NavigationService.navigate('Location', { location: event })}
+          // notifications={event.notifications}
+          // notifications={_.random(0, 25)}
+          pinLabel="Event"
+        />
+      )
+    });
     const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => {
       return <SemblyMapPin coordinate={{ latitude: post.location.lat, longitude: post.location.lon }}
       latitude={post.location.lat}
@@ -110,7 +118,19 @@ class SemblyMapView extends React.Component {
       pinLabel="Label"
     />
     });
-    const businessPins = this.props.businesses.map((business) => {
+  
+    const businessPins = this.props.businesses.filter(item=>{
+      const latIndex = eventsLatitude.indexOf(item.location.lat)
+
+      if(latIndex < 0){
+        return true
+      }
+
+      if(item.location.lon !== eventsLongitude[latIndex]){
+        return true
+      }
+      return false;
+    }).map((business) => {
       const pin = _.where(this.props.categories, { title: business.type });
       if (!pin || pin.length === 0) {
         return null;
@@ -128,7 +148,7 @@ class SemblyMapView extends React.Component {
         />
       );
     });
-
+  
     const clustered = Math.log2(360 * ((Dimensions.get('window').width / 256) / this.state.region.lonDelta)) + 1 < 17;
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>

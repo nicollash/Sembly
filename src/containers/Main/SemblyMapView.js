@@ -50,19 +50,23 @@ class SemblyMapView extends React.Component {
   }
 
   componentDidMount() {
+    const { location } = this.props
     this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
-    this.map.animateCamera({
-      center: {
-        latitude: this.props.location.lat,
-        longitude: this.props.location.lon,
-      },
-      altitude: 1000,
-      zoom: 1000,
-    });
+    if(location && location.lat && location.lon){
+        this.map.animateCamera({
+        center: {
+          latitude: location.lat,
+          longitude: location.lon,
+        },
+        altitude: 1000,
+        zoom: 1000,
+      });
+    }
+    
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+    if (this.props.location && this.props.location !== prevProps.location  && this.props.location.lat && this.props.location.lon) {
       this.map.animateToRegion({
         latitude: this.props.location.lat,
         longitude: this.props.location.lon,
@@ -80,7 +84,8 @@ class SemblyMapView extends React.Component {
   }
 
   updateFeed = (lat = undefined, lon = undefined) => {
-    this.props.refreshFeed(lat || this.props.location.lat, lon || this.props.location.lon);
+    const { location } = this.props
+    this.props.refreshFeed(lat || (location && location.lat), lon || (location && location.lon));
   }
 
   render() {

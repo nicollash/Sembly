@@ -13,6 +13,7 @@ import {
   Platform,
 } from 'react-native';
 
+import moment from 'moment';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import Theme from '../../styles/theme';
@@ -20,6 +21,7 @@ import { toggleLike } from '../../actions';
 
 import NavigationService from '../../helpers/SlidingPanelNavigation';
 import firebase from 'react-native-firebase';
+import { getDistance } from '../../helpers/appFunctions';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,12 +55,16 @@ class FeedEvent extends React.Component {
 
   }
 
+  getTime = (dateObj) => {
+    return moment(dateObj).format("MMMM DD @ h:mm A")
+  }
+
   gotoLocation = (location) => {
     NavigationService.navigate('Location', { location });
   }
 
   render() {
-    const { event } = this.props;
+    const { event,location} = this.props;
     return (
       <View style={[styles.container, { elevation: this.props.isLoading ? 0 : 2 }]}>
         {event.picture !== '' && (
@@ -73,7 +79,18 @@ class FeedEvent extends React.Component {
             }}
             onPress={this.props.moveOnPress}
           >
-            <View style={{ minHeight: 100, maxHeight: 200 }}>
+            <View style={{
+                minHeight: 30, maxHeight: 50, marginTop: 0,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+                }}>
+              <View><Text>{event.title}</Text></View>
+              {event.happeningOn && <View><Text>{this.getTime(event.happeningOn)}</Text></View>}
+            </View>
+            
+            <View style={{ minHeight: 150, maxHeight: 150 }}>
               <Image
                 source={{ uri: event.picture }}
                 style={{
@@ -83,7 +100,25 @@ class FeedEvent extends React.Component {
                 }}
               />
             </View>
-            <Text
+            <View style={{
+                minHeight: 30, maxHeight: 50, marginTop: 0,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+                }}>
+              <View>
+                <Text><Image source={require('../../../assets/images/LocationViewLocationPin.png')} />{' '}{event.location.name || 'TBD'}</Text></View>
+               {location && (<View><Text>{getDistance(
+                              location.lat,
+                              location.lon,
+                              event.location.lat,
+                              event.location.lon,
+                              'K'
+                            )} Km</Text></View>)}
+            </View>
+          
+            {/* <Text
               style={{
                 marginTop: 7,
                 fontSize: 14,
@@ -94,7 +129,7 @@ class FeedEvent extends React.Component {
               }}
             >
               {event.text}
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         )}
         {event.picture === '' && (
@@ -106,7 +141,33 @@ class FeedEvent extends React.Component {
             }}
             onPress={this.props.moveOnPress}
           >
-            <Text
+             <View style={{
+                minHeight: 30, maxHeight: 50, marginTop: 0,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+                }}>
+              <View><Text>{event.title}</Text></View>
+                 {event.happeningOn && <View><Text>{this.getTime(event.happeningOn)}</Text></View>}
+              </View>
+              <View style={{
+                minHeight: 30, maxHeight: 50, marginTop: 0,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+                }}>
+                <View><Text>{event.location.name || 'TBD'}</Text></View>
+               {location && (<View><Text>{getDistance(
+                              location.lat,
+                              location.lon,
+                              event.location.lat,
+                              event.location.lon,
+                              'K'
+                            )} Km</Text></View>)}
+            </View>
+            {/* <Text
               style={{
                 fontSize: 14,
                 fontFamily: Theme.fonts.regular,
@@ -116,7 +177,7 @@ class FeedEvent extends React.Component {
               }}
             >
               {event.text}
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         )}
       </View>

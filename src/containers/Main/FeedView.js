@@ -3,6 +3,7 @@ import React from 'react';
 import _ from 'underscore';
 
 import {
+  Text,
   View,
   ScrollView,
   FlatList,
@@ -116,7 +117,7 @@ class FeedView extends React.Component {
       navigation,
       location,
     } = this.props;
-
+    
     return (
       <ScrollView
         ref={(ref) => { this.scroll = ref; }}
@@ -243,13 +244,14 @@ class FeedView extends React.Component {
                   title={this.state.selectedCategoryTitle}
                 />
               </View>
-              <View style={{ marginTop: 2 }}>
+              {this.state.selectedCategoryTitle !== 'Events' && <View style={{ marginTop: 2 }}>
                 <FeedFilterBar
                   selectedCategory={this.state.selectedCategoryTitle}
                 />
-              </View>
+              </View> }
             </View>
-            <View
+            {this.state.selectedCategoryTitle !== 'Events' && 
+            (<View
               style={{
                 marginLeft: 11,
                 shadowColor: '#e0e0e0',
@@ -272,31 +274,17 @@ class FeedView extends React.Component {
                 )}
                 ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
               />
-            </View>
+            </View>)}
           </View>
         )}
         {this.state.selectedCategoryTitle === 'Events' && (
           <View style={{ marginLeft: 12 }}>
-            <FlatList
-              scrollEnabled={false}
-              data={_.where(posts, { category: 'Events' })}
-              renderItem={({ item }) => (
-                <FeedUserPost
-                  post={item}
-                  postID={item.id}
-                  moveOnPress={() => navigation.navigate('Post', { post: item })
-                  }
-                  comments={item.comments ? item.comments.length : null}
-                />
-              )}
-              ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
-            />
             <View style={{ height: 8 }} />
             <FlatList
               scrollEnabled={false}
               data={events}
               renderItem={({ item }) => (
-                <FeedEvent event={item} />
+                <FeedEvent event={item} location={location} moveOnPress={()=>navigation.navigate('Location', { location: item })}/>
               )}
               ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
             />

@@ -4,6 +4,7 @@ import _ from 'underscore';
 
 import {
   Text,
+  Alert,
   View,
   ScrollView,
   FlatList,
@@ -202,7 +203,9 @@ class FeedView extends React.Component {
                             b.location.lon,
                           ),
                       )}
-                      renderItem={({ item }) => (
+                      renderItem={({ item }) => {
+                        console.log(item.picture);
+                        return (
                         <FeedScrollPost
                           isLoading={this.props.isLoading}
                           picture={item.picture}
@@ -217,7 +220,7 @@ class FeedView extends React.Component {
                             'N',
                           )}
                         />
-                      )}
+                        )}}
                       ItemSeparatorComponent={() => (
                         <View style={{ width: 10 }} />
                       )}
@@ -244,37 +247,39 @@ class FeedView extends React.Component {
                   title={this.state.selectedCategoryTitle}
                 />
               </View>
-              {this.state.selectedCategoryTitle !== 'Events' && <View style={{ marginTop: 2 }}>
+              <View style={{ marginTop: 2 }}>
                 <FeedFilterBar
                   selectedCategory={this.state.selectedCategoryTitle}
                 />
-              </View> }
+              </View>
             </View>
-            {this.state.selectedCategoryTitle !== 'Events' && 
-            (<View
-              style={{
-                marginLeft: 11,
-                shadowColor: '#e0e0e0',
-                shadowRadius: 3,
-                shadowOpacity: 1,
-                shadowOffset: { height: 0, width: 0 },
-              }}
-            >
-              <FlatList
-                scrollEnabled={false}
-                data={_.reject(posts, { category: 'Promos' } && { category: 'Events' })}
-                renderItem={({ item }) => (
-                  <FeedUserPost
-                    post={item}
-                    postID={item.id}
-                    moveOnPress={() => navigation.navigate('Post', { post: item })
-                    }
-                    comments={item.comments.length}
-                  />
-                )}
-                ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
-              />
-            </View>)}
+            {this.state.selectedCategoryTitle !== 'Events' && (
+              <View
+                style={{
+                  marginLeft: 11,
+                  shadowColor: '#e0e0e0',
+                  shadowRadius: 3,
+                  shadowOpacity: 1,
+                  shadowOffset: { height: 0, width: 0 },
+                }}
+              >
+                <FlatList
+                  scrollEnabled={false}
+                  // data={_.reject(posts, { category: 'Promos' } && { category: 'Events' })}
+                  data={this.state.selectedCategoryTitle === 'All' ? _.reject(posts, { category: 'Promos' } && { category: 'Events' }) : _.filter(posts, { category: this.state.selectedCategoryTitle })}
+                  renderItem={({ item }) => (
+                    <FeedUserPost
+                      post={item}
+                      postID={item.id}
+                      moveOnPress={() => navigation.navigate('Post', { post: item })
+                      }
+                      comments={item.comments.length}
+                    />
+                  )}
+                  ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+                />
+              </View>
+            )}
           </View>
         )}
         {this.state.selectedCategoryTitle === 'Events' && (

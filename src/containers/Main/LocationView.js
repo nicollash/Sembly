@@ -75,7 +75,7 @@ class LocationView extends React.Component {
           <View style={{ width: '100%' }}>
             <View style={{ minHeight: 190, width: '100%' }}>
               <ImageBackground
-                style={{ flex: 1 }}
+                style={{ flex: 1, backgroundColor: '#ddd' }}
                 source={{ uri: location.picture } || require('../../../assets/images/SemblyLogo.png')}
               />
             </View>

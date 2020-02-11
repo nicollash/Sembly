@@ -94,6 +94,7 @@ class FeedEvent extends React.Component {
                   height: '100%',
                   width: '100%',
                   borderRadius: 8,
+                  backgroundColor: '#ddd',
                 }}
               />
             </View>

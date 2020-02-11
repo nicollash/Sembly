@@ -162,24 +162,6 @@ class SemblyMapView extends React.Component {
           style={{ width: '100%', height: '100%' }}
           clusteringEnabled={clustered}
           showsPointsOfInterest={false}
-          customMapStyle={[
-            {
-              featureType: 'poi',
-              stylers: [
-                {
-                  visibility: 'off',
-                },
-              ],
-            },
-            {
-              featureType: 'transit',
-              stylers: [
-                {
-                  visibility: 'off',
-                },
-              ],
-            },
-          ]}
           initialRegion={{
             latitude: this.props.location.lat,
             longitude: this.props.location.lon,

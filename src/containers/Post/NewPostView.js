@@ -419,6 +419,7 @@ class NewPostView extends React.Component {
               </View>
               <View style={{ height: 380 }}>
                 <SemblyMapView
+                  newPost
                   searchLatitude={this.state.searchLatitude}
                   searchLongitude={this.state.searchLongitude}
                   onResult={(business) => {

@@ -52,8 +52,8 @@ class SemblyMapView extends React.Component {
   componentDidMount() {
     const { location } = this.props
     this.debounceUpdateFeed = _.debounce(this.updateFeed, 2000);
-    if(location && location.lat && location.lon){
-        this.map.animateCamera({
+    if (location && location.lat && location.lon) {
+      this.map.animateCamera({
         center: {
           latitude: location.lat,
           longitude: location.lon,
@@ -62,11 +62,10 @@ class SemblyMapView extends React.Component {
         zoom: 1000,
       });
     }
-    
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location && this.props.location !== prevProps.location  && this.props.location.lat && this.props.location.lon) {
+    if (this.props.location && this.props.location !== prevProps.location && this.props.location.lat && this.props.location.lon) {
       this.map.animateToRegion({
         latitude: this.props.location.lat,
         longitude: this.props.location.lon,
@@ -84,20 +83,21 @@ class SemblyMapView extends React.Component {
   }
 
   updateFeed = (lat = undefined, lon = undefined) => {
-    const { location } = this.props
+    const { location } = this.props;
     this.props.refreshFeed(lat || (location && location.lat), lon || (location && location.lon));
   }
 
   render() {
-    const eventsLatitude = []
-    const eventsLongitude = []
+    if (!this.props.location) return null;
+    const eventsLatitude = [];
+    const eventsLongitude = [];
     
-    const eventPins = this.props.events.map(event => {
-      eventsLatitude.push(event.location.lat)
-      eventsLongitude.push(event.location.lon)
-
+    const eventPins = this.props.events.map((event) => {
+      eventsLatitude.push(event.location.lat);
+      eventsLongitude.push(event.location.lon);
       return (
-        <SemblyMapPin coordinate={{ latitude: event.location.lat, longitude: event.location.lon }}
+        <SemblyMapPin
+          coordinate={{ latitude: event.location.lat, longitude: event.location.lon }}
           latitude={event.location.lat}
           longitude={event.location.lon}
           pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
@@ -107,53 +107,49 @@ class SemblyMapView extends React.Component {
           // notifications={_.random(0, 25)}
           pinLabel="Event"
         />
-      )
+      );
     });
-    const postPins = _.where(this.props.posts, { showOnMap: true }).map(post => {
-      return <SemblyMapPin coordinate={{ latitude: post.location.lat, longitude: post.location.lon }}
-      latitude={post.location.lat}
-      longitude={post.location.lon}
-      pinColor="#BADAFF"
-      pinIcon={post.category !== 'General'
-        ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
-        : icons[0]}
-      onPress={() => NavigationService.navigate('Post', { post })}
-      // notifications={post.notifications}
-      notifications={_.random(0, 25)}
-      pinLabel="Label"
-    />
+    const postPins = _.where(this.props.posts, { showOnMap: true }).map((post) => {
+      return (
+        <SemblyMapPin
+          coordinate={{ latitude: post.location.lat, longitude: post.location.lon }}
+          latitude={post.location.lat}
+          longitude={post.location.lon}
+          pinColor="#BADAFF"
+          pinIcon={post.category !== 'General'
+            ? icons[_.where(this.props.categories, { title: post.category })[0].icon]
+            : icons[0]}
+          onPress={() => NavigationService.navigate('Post', { post })}
+          notifications={_.random(0, 25)}
+          pinLabel="Label"
+        />
+      );
     });
   
-    const businessPins = this.props.businesses.filter(item=>{
-      const latIndex = eventsLatitude.indexOf(item.location.lat)
-
-      if(latIndex < 0){
-        return true
+    const businessPins = this.props.businesses.filter((item) => {
+      const latIndex = eventsLatitude.indexOf(item.location.lat);
+      if (latIndex < 0) {
+        return true;
       }
-
-      if(item.location.lon !== eventsLongitude[latIndex]){
-        return true
-      }
-      return false;
+      return item.location !== eventsLongitude[latIndex];
     }).map((business) => {
       const pin = _.where(this.props.categories, { title: business.type });
       if (!pin || pin.length === 0) {
         return null;
       }
       return (
-        <SemblyMapPin coordinate={{ latitude: business.location.lat, longitude: business.location.lon }}
+        <SemblyMapPin
+          coordinate={{ latitude: business.location.lat, longitude: business.location.lon }}
           latitude={business.location.lat}
           longitude={business.location.lon}
           pinColor={_.where(this.props.categories, { title: business.type })[0].color}
           pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
           onPress={() =>{ this.props.onResult({id: business.id, name: business.name, lat: business.location.lat, long:business.location.lon }), NavigationService.navigate('Location', { location: business })}}
           notifications={business.recentPosts}
-          // notifications={_.random(0, 25)}
           pinLabel={business.name}
         />
       );
     });
-  
     const clustered = Math.log2(360 * ((Dimensions.get('window').width / 256) / this.state.region.lonDelta)) + 1 < 17;
     return (
       <View accessibilityIgnoresInvertColors style={styles.container}>
@@ -192,6 +188,7 @@ class SemblyMapView extends React.Component {
           }}
           showsUserLocation
           onRegionChange={(e) => {
+            if (this.props.newPost) return null;
             this.setState({ region: { ...this.state.region, lonDelta: e.longitudeDelta } });
             this.debounceUpdateFeed(e.latitude, e.longitude);
           }}
@@ -206,7 +203,7 @@ class SemblyMapView extends React.Component {
 }
 
 SemblyMapView.defaultProps = {
-  onResult:()=>{}
+  onResult: () => {},
 };
 
 SemblyMapView.propTypes = {};

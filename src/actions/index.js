@@ -104,7 +104,8 @@ export function refreshFeed({
   type = 'hot',
   category = 'all',
   location = undefined,
-}) {
+}={}) {
+ 
   return async function refreshFeedState(dispatch, getState) {
     // eslint-disable-next-line no-underscore-dangle
     const _location = location === undefined
@@ -437,10 +438,12 @@ export function getPostsForLocation(location, state) {
 
 // New Post
 export const SENDING_POST = 'SENDING_POST';
-export function createNewPost(post) {
+export function createNewPost(post) {  
   return async function createNewPostState(dispatch, getState) {
     dispatch({ type: SENDING_POST, sendingPost: true });
     const token = await firebase.auth().currentUser.getIdToken();
+    const user = await firebase.auth().currentUser;
+    
     fetch(`${API_URL}/newPost/`, {
       method: 'POST',
       headers: {
@@ -452,13 +455,14 @@ export function createNewPost(post) {
     })
       .then(response => response.json())
       .then((dataJSON) => {
-        console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
         if (post.business) {
-          const business = Business.parse(dataJSON);
+          const newPostObj = {...post,coordinates:{_latitude:post.location.lat,_longitude:post.location.lon},user}
+          const business = Business.parse({...dataJSON,posts:[newPostObj]});
+      
           dispatch({
             type: UPDATE_BUSINESSES,
-            businesses: [business, ...getState().feed.businesses],
+            businesses: [ ...getState().feed.businesses,business],
           });
           NavigationService.navigate('Location', { location: business });
         }

@@ -3,6 +3,8 @@ import React from 'react';
 import _ from 'underscore';
 
 import {
+  Text,
+  Alert,
   View,
   ScrollView,
   FlatList,
@@ -116,7 +118,7 @@ class FeedView extends React.Component {
       navigation,
       location,
     } = this.props;
-
+    
     return (
       <ScrollView
         ref={(ref) => { this.scroll = ref; }}
@@ -201,7 +203,9 @@ class FeedView extends React.Component {
                             b.location.lon,
                           ),
                       )}
-                      renderItem={({ item }) => (
+                      renderItem={({ item }) => {
+                        console.log(item.picture);
+                        return (
                         <FeedScrollPost
                           isLoading={this.props.isLoading}
                           picture={item.picture}
@@ -216,7 +220,7 @@ class FeedView extends React.Component {
                             'N',
                           )}
                         />
-                      )}
+                        )}}
                       ItemSeparatorComponent={() => (
                         <View style={{ width: 10 }} />
                       )}
@@ -249,54 +253,43 @@ class FeedView extends React.Component {
                 />
               </View>
             </View>
-            <View
-              style={{
-                marginLeft: 11,
-                shadowColor: '#e0e0e0',
-                shadowRadius: 3,
-                shadowOpacity: 1,
-                shadowOffset: { height: 0, width: 0 },
-              }}
-            >
-              <FlatList
-                scrollEnabled={false}
-                data={_.reject(posts, { category: 'Promos' } && { category: 'Events' })}
-                renderItem={({ item }) => (
-                  <FeedUserPost
-                    post={item}
-                    postID={item.id}
-                    moveOnPress={() => navigation.navigate('Post', { post: item })
-                    }
-                    comments={item.comments.length}
-                  />
-                )}
-                ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
-              />
-            </View>
+            {this.state.selectedCategoryTitle !== 'Events' && (
+              <View
+                style={{
+                  marginLeft: 11,
+                  shadowColor: '#e0e0e0',
+                  shadowRadius: 3,
+                  shadowOpacity: 1,
+                  shadowOffset: { height: 0, width: 0 },
+                }}
+              >
+                <FlatList
+                  scrollEnabled={false}
+                  // data={_.reject(posts, { category: 'Promos' } && { category: 'Events' })}
+                  data={this.state.selectedCategoryTitle === 'All' ? _.reject(posts, { category: 'Promos' } && { category: 'Events' }) : _.filter(posts, { category: this.state.selectedCategoryTitle })}
+                  renderItem={({ item }) => (
+                    <FeedUserPost
+                      post={item}
+                      postID={item.id}
+                      moveOnPress={() => navigation.navigate('Post', { post: item })
+                      }
+                      comments={item.comments.length}
+                    />
+                  )}
+                  ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+                />
+              </View>
+            )}
           </View>
         )}
         {this.state.selectedCategoryTitle === 'Events' && (
           <View style={{ marginLeft: 12 }}>
-            <FlatList
-              scrollEnabled={false}
-              data={_.where(posts, { category: 'Events' })}
-              renderItem={({ item }) => (
-                <FeedUserPost
-                  post={item}
-                  postID={item.id}
-                  moveOnPress={() => navigation.navigate('Post', { post: item })
-                  }
-                  comments={item.comments ? item.comments.length : null}
-                />
-              )}
-              ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
-            />
             <View style={{ height: 8 }} />
             <FlatList
               scrollEnabled={false}
               data={events}
               renderItem={({ item }) => (
-                <FeedEvent event={item} />
+                <FeedEvent event={item} location={location} moveOnPress={()=>navigation.navigate('Location', { location: item })}/>
               )}
               ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
             />

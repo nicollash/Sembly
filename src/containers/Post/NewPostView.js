@@ -122,6 +122,16 @@ class NewPostView extends React.Component {
 
   constructor(props) {
     super(props);
+    const location = {
+      name: '',
+      lat: '',
+      lon: '',
+    }
+    if(this.props.location){
+      location.lat = this.props.location.lat;
+      location.lon = this.props.location.lon;
+    }
+   
     this.state = {
       modal: false,
       focused: 1,
@@ -130,11 +140,7 @@ class NewPostView extends React.Component {
       locationChosen: false,
       locationInput: '',
       post: {
-        location: {
-          name: '',
-          lat: this.props.location.lat,
-          lon: this.props.location.lon,
-        },
+        location,
         category: 'All',
         text: '',
         pictureURI: '',
@@ -147,7 +153,7 @@ class NewPostView extends React.Component {
       searchLatitude: undefined,
       searchLongitude: undefined,
     };
-    this.debounceImagePick = _.debounce(this.chooseImage, 1000);
+      this.debounceImagePick = _.debounce(this.chooseImage, 1000);
   }
 
   componentWillMount() {}
@@ -413,6 +419,7 @@ class NewPostView extends React.Component {
               </View>
               <View style={{ height: 380 }}>
                 <SemblyMapView
+                  newPost
                   searchLatitude={this.state.searchLatitude}
                   searchLongitude={this.state.searchLongitude}
                   onResult={(business) => {

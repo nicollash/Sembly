@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     height: 94.9,
     width: 140,
     borderRadius: 10,
+    backgroundColor: '#ddd',
   },
   title: {
     fontSize: 12,

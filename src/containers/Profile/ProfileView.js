@@ -146,7 +146,6 @@ class ProfileView extends React.Component {
   };
 
   render() {
-    console.log(this.props.user);
     if (!this.props.user) {
       return null;
     }

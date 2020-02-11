@@ -13,6 +13,7 @@ import {
   Platform,
 } from 'react-native';
 
+import moment from 'moment';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import Theme from '../../styles/theme';
@@ -20,6 +21,7 @@ import { toggleLike } from '../../actions';
 
 import NavigationService from '../../helpers/SlidingPanelNavigation';
 import firebase from 'react-native-firebase';
+import { getDistance } from '../../helpers/appFunctions';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,12 +55,23 @@ class FeedEvent extends React.Component {
 
   }
 
+  truncateString = (str, num) => {
+    if (str.length <= num) {
+      return str
+    }
+    return `${str.slice(0, num)}...`
+  }
+  
+  getTime = (dateObj) => {
+    return moment(dateObj).format("dddd @ h:mm A")
+  }
+
   gotoLocation = (location) => {
     NavigationService.navigate('Location', { location });
   }
 
   render() {
-    const { event } = this.props;
+    const { event,location} = this.props;
     return (
       <View style={[styles.container, { elevation: this.props.isLoading ? 0 : 2 }]}>
         {event.picture !== '' && (
@@ -73,28 +86,37 @@ class FeedEvent extends React.Component {
             }}
             onPress={this.props.moveOnPress}
           >
-            <View style={{ minHeight: 100, maxHeight: 200 }}>
+                     
+            <View style={{ minHeight: 150, maxHeight: 150 }}>
               <Image
                 source={{ uri: event.picture }}
                 style={{
                   height: '100%',
                   width: '100%',
                   borderRadius: 8,
+                  backgroundColor: '#ddd',
                 }}
               />
             </View>
-            <Text
-              style={{
-                marginTop: 7,
-                fontSize: 14,
-                fontFamily: Theme.fonts.regular,
-                lineHeight: 19,
-                color: '#26315F',
-                marginBottom: 10,
-              }}
-            >
-              {event.text}
-            </Text>
+            <View style={{
+                  minHeight: 30, maxHeight: 50, marginTop: 0,
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+              <View>
+                <Text style={{fontWeight: 'bold'}}>{this.truncateString(event.title, 20)}</Text>
+              </View>
+              <View>
+                {event.happeningOn && <Text style={{marginBottom:0,fontWeight:'600', color:'#816ddc' }} >{this.getTime(event.happeningOn)}, {getDistance(
+                              location.lat,
+                              location.lon,
+                              event.location.lat,
+                              event.location.lon,
+                              'K'
+                            )}Km</Text>}
+                </View>
+            </View>
           </TouchableOpacity>
         )}
         {event.picture === '' && (
@@ -106,17 +128,25 @@ class FeedEvent extends React.Component {
             }}
             onPress={this.props.moveOnPress}
           >
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: Theme.fonts.regular,
-                lineHeight: 19,
-                color: '#26315F',
-                marginBottom: 10,
-              }}
-            >
-              {event.text}
-            </Text>
+            <View style={{
+                minHeight: 30, maxHeight: 50, marginTop: 0,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+            <View>
+              <Text style={{fontWeight: 'bold'}}>{this.truncateString(event.title, 20)}</Text>
+            </View>
+            <View>
+              {event.happeningOn && <Text style={{marginBottom:0,fontWeight:'600', color:'#816ddc' }} >{this.getTime(event.happeningOn)}, {getDistance(
+                            location.lat,
+                            location.lon,
+                            event.location.lat,
+                            event.location.lon,
+                            'K'
+                          )}Km</Text>}
+              </View>
+          </View>
           </TouchableOpacity>
         )}
       </View>

@@ -126,12 +126,11 @@ class NewPostView extends React.Component {
       name: '',
       lat: '',
       lon: '',
-    }
-    if(this.props.location){
+    };
+    if (this.props.location) {
       location.lat = this.props.location.lat;
       location.lon = this.props.location.lon;
     }
-   
     this.state = {
       modal: false,
       focused: 1,
@@ -153,7 +152,7 @@ class NewPostView extends React.Component {
       searchLatitude: undefined,
       searchLongitude: undefined,
     };
-      this.debounceImagePick = _.debounce(this.chooseImage, 1000);
+    this.debounceImagePick = _.debounce(this.chooseImage, 1000);
   }
 
   componentWillMount() {}

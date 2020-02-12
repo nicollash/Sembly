@@ -126,7 +126,6 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 exports.addComment = functions.https.onRequest(async (request, response) => {
   console.log(util.inspect(request.body, {showHidden: false, depth: null}));
   
-  console.log('========================');
   const user = await getUser(request);
 
   const postID = request.body.postID;

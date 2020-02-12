@@ -144,7 +144,7 @@ class SemblyMapView extends React.Component {
           longitude={business.location.lon}
           pinColor={_.where(this.props.categories, { title: business.type })[0].color}
           pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
-          onPress={() =>{ this.props.onResult({id: business.id, name: business.name, lat: business.location.lat, long:business.location.lon }), NavigationService.navigate('Location', { location: business })}}
+          onPress={() => { this.props.onResult({ id: business.id, name: business.name, lat: business.location.lat, long: business.location.lon }), NavigationService.navigate('Location', { location: business })}}
           notifications={business.recentPosts}
           pinLabel={business.name}
         />

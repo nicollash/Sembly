@@ -378,6 +378,7 @@ export function getUserPosts() {
 export function fetchLocationPosts(locationID, className) {
   return async function getBusinessPostsState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
+    dispatch({ type: UPDATE_FEED_LOADING, status: true });
     fetch(`${API_URL}/getBusinessPosts/?locationID=${locationID}`, {
       method: 'GET',
       headers: {
@@ -418,9 +419,13 @@ export function fetchLocationPosts(locationID, className) {
             ],
             _.without(getState().feed.events, event),
           );
-
           dispatch({ type: UPDATE_EVENTS, events });
         }
+        dispatch({ type: UPDATE_FEED_LOADING, status: false });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
   };
 }
@@ -448,7 +453,6 @@ export function createNewPost(post) {
     })
       .then(response => response.json())
       .then((dataJSON) => {
-        console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
         if (post.business.id !== '') {
           const newPostObj = { ...post, coordinates: { _latitude: post.location.lat, _longitude: post.location.lon }, user };
@@ -468,7 +472,6 @@ export function createNewPost(post) {
             posts: [targetPost, ...getState().feed.posts],
           });
           NavigationService.navigate('Post', { post: targetPost });
-          dispatch(refreshFeed());
         }
         dispatch({ type: SENDING_POST, sendingPost: false });
       })

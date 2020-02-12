@@ -227,9 +227,11 @@ class NewPostView extends React.Component {
   };
 
   submit = () => {
-    this.props.createNewPost(this.state.post);
-    this.props.updateUserProfile(this.state.post);
-    this.setState({ submitted: true });
+    return Promise.all([
+      this.props.createNewPost(this.state.post),
+      this.props.updateUserProfile(this.state.post),
+      this.setState({ submitted: true }),
+    ]);
   };
 
   toggleSpinner = () => {
@@ -461,7 +463,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
   updateUserProfile: posts => dispatch(updateUserProfile({ postsCount: posts })),
-  refreshFeed: a => dispatch(refreshFeed({ category: a })),
+  refreshFeed: category => dispatch(refreshFeed({ category })),
 });
 
 export default connect(

@@ -105,7 +105,7 @@ class SemblyMapView extends React.Component {
           onPress={() => NavigationService.navigate('Location', { location: event })}
           // notifications={event.notifications}
           // notifications={_.random(0, 25)}
-          pinLabel="Event"
+          pinLabel={event.title}
         />
       );
     });

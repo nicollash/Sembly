@@ -47,13 +47,11 @@ class LocationView extends React.Component {
     this.state = { locationId: 0 };
   }
 
-  componentDidMount() {
-    console.log(this.props.panelHeight);
-  }
-
   render() {
     const { navigation, location } = this.props;
     const screenHeight = Dimensions.get('window').height;
+
+    console.log(location);
 
     if (!location) return null;
 
@@ -145,25 +143,23 @@ class LocationView extends React.Component {
                     </Text>
                   </View>
                 </TouchableOpacity>
-                {location.className === 'Business' && (
+                {}
+                {location.phone !== '' && (
                   <TouchableOpacity
-                    onPress={() => { Linking.openURL(`telprompt:${location.phoneNumber}`); }}
+                    onPress={() => { Linking.openURL(`telprompt:${phoneNumber || location.phone}`); }}
+                    style={{ flexDirection: 'row' }}
                   >
-                    <View style={{ flexDirection: 'row', marginLeft: 5 }}>
-                      {location.phone !== '' && (
-                        <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
-                      )}
-                      <Text
-                        style={{
-                          fontSize: wp(3.3),
-                          color: '#000',
-                          fontFamily: Theme.fonts.bold,
-                          marginLeft: 3,
-                        }}
-                      >
-                        {phoneNumber ? phoneNumber.formatNational() : location.phone}
-                      </Text>
-                    </View>
+                    <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                    <Text
+                      style={{
+                        fontSize: wp(3.3),
+                        color: '#000',
+                        fontFamily: Theme.fonts.bold,
+                        marginLeft: 3,
+                      }}
+                    >
+                      {phoneNumber ? phoneNumber.formatNational() : location.phone}
+                    </Text>
                   </TouchableOpacity>
                 )}
                 {location.constructor.name === 'Event' && (

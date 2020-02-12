@@ -100,12 +100,7 @@ export function setPanelNavigation(navigation) {
 }
 
 // User
-export function refreshFeed({
-  type = 'hot',
-  category = 'all',
-  location = undefined,
-}={}) {
- 
+export function refreshFeed({ type = 'hot', category = 'all', location = undefined }) {
   return async function refreshFeedState(dispatch, getState) {
     // eslint-disable-next-line no-underscore-dangle
     const _location = location === undefined
@@ -432,18 +427,16 @@ export function fetchLocationPosts(locationID, className) {
 
 export function getPostsForLocation(location, state) {
   const { posts } = state.feed;
-  console.log(_.where(posts, { locationID: location.id }) || []);
   return _.where(posts, { locationID: location.id }) || [];
 }
 
 // New Post
 export const SENDING_POST = 'SENDING_POST';
-export function createNewPost(post) {  
+export function createNewPost(post) {
   return async function createNewPostState(dispatch, getState) {
     dispatch({ type: SENDING_POST, sendingPost: true });
     const token = await firebase.auth().currentUser.getIdToken();
     const user = await firebase.auth().currentUser;
-    
     fetch(`${API_URL}/newPost/`, {
       method: 'POST',
       headers: {
@@ -457,12 +450,11 @@ export function createNewPost(post) {
       .then((dataJSON) => {
         // Data is business data to parse if a location was tagged,
         if (post.business) {
-          const newPostObj = {...post,coordinates:{_latitude:post.location.lat,_longitude:post.location.lon},user}
-          const business = Business.parse({...dataJSON,posts:[newPostObj]});
-      
+          const newPostObj = { ...post, coordinates: { _latitude: post.location.lat, _longitude: post.location.lon }, user };
+          const business = Business.parse({ ...dataJSON, posts: [newPostObj] });
           dispatch({
             type: UPDATE_BUSINESSES,
-            businesses: [ ...getState().feed.businesses,business],
+            businesses: [...getState().feed.businesses, business],
           });
           NavigationService.navigate('Location', { location: business });
         }
@@ -471,7 +463,6 @@ export function createNewPost(post) {
         else {
           let targetPost = Post.parse(dataJSON);
           targetPost.set('locationName', null);
-          console.log(targetPost);
           dispatch({
             type: UPDATE_POSTS,
             posts: [targetPost, ...getState().feed.posts],

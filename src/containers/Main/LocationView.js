@@ -122,37 +122,43 @@ class LocationView extends React.Component {
               <View style={{
                 flexDirection: 'row',
                 marginLeft: wp(10),
-                alignItems: 'center',
+                alignContent: 'center',
+                marginTop: 5,
+                maxWidth: wp(86),
               }}
               >
-                <TouchableOpacity
-                  onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
-                >
-                  <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
-                    {location.location.name !== '' && (
+                {location.address && (
+                  <TouchableOpacity
+                    onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
+                  >
+                    <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                       <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
-                    )}
-                    <Text style={{
-                      fontSize: wp(3.3),
-                      color: 'black',
-                      marginLeft: wp(1),
-                      fontFamily: Theme.fonts.bold,
-                    }}
-                    >
-                      {location.location.name}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                {}
-                {location.phone !== '' && (
+                      <Text style={{
+                        fontSize: wp(3),
+                        color: 'black',
+                        marginLeft: wp(1),
+                        fontFamily: Theme.fonts.bold,
+                      }}
+                      >
+                        {/* {location.address.trim().split(',')[0].split(' ').slice(0, 3)} */}
+                        {location.constructor.name === 'Business'
+                          ? location.address.split('\n')[0]
+                          : location.address.split('-')[1].split(',')[0]}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                {location.phone && (
                   <TouchableOpacity
                     onPress={() => { Linking.openURL(`telprompt:${phoneNumber || location.phone}`); }}
-                    style={{ flexDirection: 'row' }}
+                    style={{ flexDirection: 'row', marginTop: 7, marginLeft: 5 }}
                   >
-                    <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                    <Image
+                      source={require('../../../assets/images/LocationViewPhoneIcon.png')}
+                    />
                     <Text
                       style={{
-                        fontSize: wp(3.3),
+                        fontSize: wp(3),
                         color: '#000',
                         fontFamily: Theme.fonts.bold,
                         marginLeft: 3,
@@ -169,7 +175,7 @@ class LocationView extends React.Component {
                       style={{ height: 15, resizeMode: 'contain' }}
                     />
                     <Text style={{
-                      fontSize: wp(3.3),
+                      fontSize: wp(3),
                       color: '#000',
                       fontFamily: Theme.fonts.bold,
                       marginLeft: wp(0.5),
@@ -179,7 +185,35 @@ class LocationView extends React.Component {
                     </Text>
                   </View>
                 )}
+                {location.constructor.name === 'Business' && (
+                  <TouchableOpacity style={{ flexDirection: 'row', marginBottom: 11, marginLeft: 5, alignItems: 'center' }}>
+                    <Text style={{
+                      fontSize: wp(3),
+                      color: '#000',
+                      fontFamily: Theme.fonts.bold,
+                      marginLeft: wp(0.5),
+                      width: 144,
+                    }}
+                    >
+                      {location.website}
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
+              {location.constructor.name === 'Event' && (
+                <TouchableOpacity style={{ flexDirection: 'row', marginBottom: 12, marginLeft: 5, alignItems: 'center' }}>
+                  <Text style={{
+                    fontSize: wp(3),
+                    color: '#000',
+                    fontFamily: Theme.fonts.bold,
+                    marginLeft: wp(9),
+                    maxWidth: wp(89),
+                  }}
+                  >
+                    {location.fbLink}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <View style={styles.separatorBar} />

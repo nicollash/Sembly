@@ -437,6 +437,8 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
                 parseFloat(geocode.json.results[0].geometry.location.lat),
                 parseFloat(geocode.json.results[0].geometry.location.lng)
               ),
+              address: worksheet[XLSX.utils.encode_cell({ c:6, r:R })].w,
+              fbLink: worksheet[XLSX.utils.encode_cell({ c:8, r:R })].w,
               happeningOn: moment(`${worksheet[XLSX.utils.encode_cell({ c:2, r:R })].w} ${worksheet[XLSX.utils.encode_cell({ c:1, r:R })].w}`,
               "M/DD/YY HH:mmA").format(),
             };

@@ -133,6 +133,7 @@ class SemblyMapView extends React.Component {
       }
       return item.location !== eventsLongitude[latIndex];
     }).map((business) => {
+      console.log('====================', business, '====================');
       const pin = _.where(this.props.categories, { title: business.type });
       if (!pin || pin.length === 0) {
         return null;

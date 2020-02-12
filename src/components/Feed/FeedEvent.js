@@ -57,11 +57,11 @@ class FeedEvent extends React.Component {
 
   truncateString = (str, num) => {
     if (str.length <= num) {
-      return str
+      return str;
     }
-    return `${str.slice(0, num)}...`
+    return `${str.slice(0, num)}...`;
   }
-  
+
   getTime = (dateObj) => {
     return moment(dateObj).format("dddd @ h:mm A")
   }
@@ -99,23 +99,35 @@ class FeedEvent extends React.Component {
               />
             </View>
             <View style={{
-                  minHeight: 30, maxHeight: 50, marginTop: 0,
-                  width: '100%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-              <View>
-                <Text style={{fontWeight: 'bold'}}>{this.truncateString(event.title, 20)}</Text>
+              minHeight: 30, maxHeight: 50, marginTop: 0, paddingRight: 5,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+            >
+              <View style={{ marginTop: 5 }}>
+                <Text style={{ fontWeight: '600', fontSize: 13 }}>
+                  {this.truncateString(event.title, 20)}
+                </Text>
               </View>
               <View>
-                {event.happeningOn && <Text style={{marginBottom:0,fontWeight:'600', color:'#816ddc' }} >{this.getTime(event.happeningOn)}, {getDistance(
-                              location.lat,
-                              location.lon,
-                              event.location.lat,
-                              event.location.lon,
-                              'K'
-                            )}Km</Text>}
-                </View>
+                {event.happeningOn && (
+                  <Text style={{ fontSize: 12, marginTop: 5.5, fontWeight: '500', color: '#816ddc' }}>
+                    {
+                      this.getTime(event.happeningOn)
+                    }
+                    ,
+                    {getDistance(
+                      location.lat,
+                      location.lon,
+                      event.location.lat,
+                      event.location.lon,
+                      'M',
+                    )}
+                    mi
+                  </Text>
+                )}
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -129,24 +141,35 @@ class FeedEvent extends React.Component {
             onPress={this.props.moveOnPress}
           >
             <View style={{
-                minHeight: 30, maxHeight: 50, marginTop: 0,
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-            <View>
-              <Text style={{fontWeight: 'bold'}}>{this.truncateString(event.title, 20)}</Text>
-            </View>
-            <View>
-              {event.happeningOn && <Text style={{marginBottom:0,fontWeight:'600', color:'#816ddc' }} >{this.getTime(event.happeningOn)}, {getDistance(
-                            location.lat,
-                            location.lon,
-                            event.location.lat,
-                            event.location.lon,
-                            'K'
-                          )}Km</Text>}
+              minHeight: 30, maxHeight: 50, marginTop: 0,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+            >
+              <View style={{ marginTop: 5 }}>
+                <Text style={{ fontWeight: '600', fontSize: 13 }}>
+                  {this.truncateString(event.title, 20)}
+                </Text>
               </View>
-          </View>
+              <View>
+                {event.happeningOn && (
+                  <Text style={{ fontSize: 12, marginTop: 5.5, fontWeight: '500', color: '#816ddc' }}>
+                    {
+                      this.getTime(event.happeningOn)}
+                    ,
+                    {getDistance(
+                      location.lat,
+                      location.lon,
+                      event.location.lat,
+                      event.location.lon,
+                      'M',
+                    )}
+                    mi
+                  </Text>
+                )}
+              </View>
+            </View>
           </TouchableOpacity>
         )}
       </View>

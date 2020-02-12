@@ -448,8 +448,9 @@ export function createNewPost(post) {
     })
       .then(response => response.json())
       .then((dataJSON) => {
+        console.log(dataJSON);
         // Data is business data to parse if a location was tagged,
-        if (post.business) {
+        if (post.business.id !== '') {
           const newPostObj = { ...post, coordinates: { _latitude: post.location.lat, _longitude: post.location.lon }, user };
           const business = Business.parse({ ...dataJSON, posts: [newPostObj] });
           dispatch({
@@ -459,7 +460,6 @@ export function createNewPost(post) {
           NavigationService.navigate('Location', { location: business });
         }
         // and post data if no location was tagged
-        // console.log('post & dataJSON: ', post, dataJSON);
         else {
           let targetPost = Post.parse(dataJSON);
           targetPost.set('locationName', null);
@@ -468,9 +468,9 @@ export function createNewPost(post) {
             posts: [targetPost, ...getState().feed.posts],
           });
           NavigationService.navigate('Post', { post: targetPost });
+          dispatch(refreshFeed());
         }
         dispatch({ type: SENDING_POST, sendingPost: false });
-        dispatch(refreshFeed());
       })
       .catch((e) => {
         console.log(e);

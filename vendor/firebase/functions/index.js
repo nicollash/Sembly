@@ -50,12 +50,10 @@ const getUser = async req => {
 //
 exports.newPost = functions.https.onRequest(async (request, response) => {
   // response.send(`Hello from Firebase my ${request.query.a}`);
-  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
   const user = await getUser(request);
 
   // Setup image bucket
   let picture = "";
-  console.time('bucket');
   if (request.body.pictureURI) {
     const filename = path.parse(request.body.pictureURI).base;
     
@@ -70,9 +68,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 
   }
 
-  console.timeEnd('bucket');
-
   const { text, location, category, business } = request.body;
+  const isBusiness = business.id !== '';
+  console.log(isBusiness, business);
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [parseFloat(location.lat), parseFloat(location.lon)]
@@ -82,7 +80,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 
   // Geocode location, if needs be
   locationName =
-    !business
+    !isBusiness
       ? geocode.json.results[0].address_components[1].long_name
       : business.name;
 
@@ -95,9 +93,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       showOnMap: location.name !== "",
       createdAt: moment().format(),
       locationName,
-      locationID: business ? business.id : 'none',
-      locationType: business ? (category === 'Events' ? 'event' : 'business') : 'none',
-      businessName: business ? business.name : 'noname',
+      locationID: isBusiness ? business.id : 'none',
+      locationType: isBusiness ? (category === 'Events' ? 'event' : 'business') : 'none',
+      businessName: isBusiness ? business.name : 'noname',
       category,
       picture,
       user: {
@@ -110,10 +108,14 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
-      return business ? geofirestore.collection("Businesses").doc(`${business.id}`).get() : docRef.get();
-    }).then(doc => {
-      console.log({ ...doc.data() });
-      return response.status(200).send({...doc.data() });
+      return isBusiness ? geofirestore.collection("Businesses") : Promise.resolve(docRef);
+    }).then((doc) => {
+      return isBusiness
+        ? doc.doc(`${business.id}`).get()
+        : doc.get();
+    })
+    .then((doc) => {
+      return response.status(200).send({ ...doc.data() });
     })
     .catch(error => {
       console.log("Error adding document: ", error);

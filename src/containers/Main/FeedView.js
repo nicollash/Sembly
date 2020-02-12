@@ -203,9 +203,7 @@ class FeedView extends React.Component {
                             b.location.lon,
                           ),
                       )}
-                      renderItem={({ item }) => {
-                        console.log(item.picture);
-                        return (
+                      renderItem={({ item }) => (
                         <FeedScrollPost
                           isLoading={this.props.isLoading}
                           picture={item.picture}
@@ -220,7 +218,7 @@ class FeedView extends React.Component {
                             'N',
                           )}
                         />
-                        )}}
+                      )}
                       ItemSeparatorComponent={() => (
                         <View style={{ width: 10 }} />
                       )}

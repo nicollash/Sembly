@@ -51,7 +51,7 @@ class Event extends EventRecord<EventProps> {
       posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
       happeningOn: moment(data.happeningOn),
       location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
-      //
+      address: data.address,
       interested: data.interested,
       going: data.going,
       interestedCount: data.interestedCount,

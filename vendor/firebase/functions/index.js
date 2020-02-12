@@ -55,6 +55,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 
   // Setup image bucket
   let picture = "";
+  console.time('bucket');
   if (request.body.pictureURI) {
     const filename = path.parse(request.body.pictureURI).base;
     
@@ -68,6 +69,8 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     picture = (await imageFile.getSignedUrl({ action: 'read', expires: '03-17-2025' }))[0];
 
   }
+
+  console.timeEnd('bucket');
 
   const { text, location, category, business } = request.body;
   geocode = await googleMaps
@@ -503,6 +506,7 @@ exports.uploadBusinesses = functions.https.onRequest(async (request, response) =
                     parseFloat(geocode.json.results[0].geometry.location.lat),
                     parseFloat(geocode.json.results[0].geometry.location.lng)
                   ),
+                  address: worksheet[XLSX.utils.encode_cell({ c: 3, r: R })].w,
                   phone: worksheet[XLSX.utils.encode_cell({ c:5, r:R })].w,
                   website: worksheet[XLSX.utils.encode_cell({ c:4, r:R })].w,
                   type: worksheet[XLSX.utils.encode_cell({ c:7, r:R })].w

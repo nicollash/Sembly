@@ -49,7 +49,6 @@ class Post extends PostRecord<PostProps> {
   }
 
   static parse(data) {
-    
     return new Post({
       id: data.id,
       title: data.title ? data.title : '',

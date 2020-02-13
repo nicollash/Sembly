@@ -80,12 +80,8 @@ class FeedView extends React.Component {
 
   componentWillMount() {}
 
-  componentWillUnmount(){
-    this.focusListener.remove();
-  }
-
   componentDidMount() {
-    this.props.refreshFeed();
+    this.props.refreshFeed({});
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this._onRefresh();
     });
@@ -95,6 +91,10 @@ class FeedView extends React.Component {
     if (this.props.resets && !prevProps.resets) {
       this._handleScroll();
     }
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   _handleScroll = () => {
@@ -203,9 +203,7 @@ class FeedView extends React.Component {
                             b.location.lon,
                           ),
                       )}
-                      renderItem={({ item }) => {
-                        console.log(item.picture);
-                        return (
+                      renderItem={({ item }) => (
                         <FeedScrollPost
                           isLoading={this.props.isLoading}
                           picture={item.picture}
@@ -220,7 +218,7 @@ class FeedView extends React.Component {
                             'N',
                           )}
                         />
-                        )}}
+                      )}
                       ItemSeparatorComponent={() => (
                         <View style={{ width: 10 }} />
                       )}

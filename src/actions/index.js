@@ -233,7 +233,7 @@ export function updateUserProfile({
           displayName, photoURL, facebookUser, email,
         };
         dispatch({ type: UPDATE_USER, user });
-        dispatch(refreshFeed());
+        dispatch(refreshFeed({}));
       })
       .catch(e => console.log(e));
   };
@@ -378,6 +378,7 @@ export function getUserPosts() {
 export function fetchLocationPosts(locationID, className) {
   return async function getBusinessPostsState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
+    dispatch({ type: UPDATE_FEED_LOADING, status: true });
     fetch(`${API_URL}/getBusinessPosts/?locationID=${locationID}`, {
       method: 'GET',
       headers: {
@@ -418,9 +419,13 @@ export function fetchLocationPosts(locationID, className) {
             ],
             _.without(getState().feed.events, event),
           );
-
           dispatch({ type: UPDATE_EVENTS, events });
         }
+        dispatch({ type: UPDATE_FEED_LOADING, status: false });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
   };
 }
@@ -449,17 +454,26 @@ export function createNewPost(post) {
       .then(response => response.json())
       .then((dataJSON) => {
         // Data is business data to parse if a location was tagged,
-        if (post.business) {
-          const newPostObj = { ...post, coordinates: { _latitude: post.location.lat, _longitude: post.location.lon }, user };
-          const business = Business.parse({ ...dataJSON, posts: [newPostObj] });
+        if (post.business.id !== '') {
+          const newPostObj = Post.parse({
+            ...post,
+            id: post.business.id,
+            coordinates: { _latitude: post.location.lat, _longitude: post.location.lon },
+            user,
+          });
+          dispatch({
+            type: UPDATE_POSTS,
+            posts: [newPostObj, ...getState().feed.posts],
+          });
+          const business = _.find([...getState().feed.businesses], { id: post.business.id });
+          const parsedBusiness = Business.parse({ ...dataJSON, posts: [...business.posts, newPostObj] });
           dispatch({
             type: UPDATE_BUSINESSES,
-            businesses: [...getState().feed.businesses, business],
+            businesses: [...getState().feed.businesses, parsedBusiness],
           });
-          NavigationService.navigate('Location', { location: business });
+          NavigationService.navigate('Location', { location: parsedBusiness });
         }
         // and post data if no location was tagged
-        // console.log('post & dataJSON: ', post, dataJSON);
         else {
           let targetPost = Post.parse(dataJSON);
           targetPost.set('locationName', null);
@@ -470,7 +484,6 @@ export function createNewPost(post) {
           NavigationService.navigate('Post', { post: targetPost });
         }
         dispatch({ type: SENDING_POST, sendingPost: false });
-        dispatch(refreshFeed());
       })
       .catch((e) => {
         console.log(e);
@@ -515,7 +528,7 @@ export function addComment({ post = undefined, text = '' }) {
       return Promise.all([
         dispatch({ type: ADD_COMMENT, comment }),
         dispatch(updatePostCollection(post, updatedPosts)),
-        dispatch(refreshFeed()),
+        dispatch(refreshFeed({})),
       ]);
     });
     // dispatch({ type: ADD_COMMENT, comment });

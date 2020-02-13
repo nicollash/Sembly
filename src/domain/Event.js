@@ -14,11 +14,12 @@ const EventRecord = Immutable.Record({
   posts: [],
   happeningOn: moment(),
   location: new Location(),
-
+  address: '',
   interested: false,
   going: false,
   interestedCount: 0,
   goingCount: 0,
+  fbLink: '',
 });
 
 const EventProps = {
@@ -29,12 +30,12 @@ const EventProps = {
   posts: PropTypes.arrayOf(Post),
   happeningOn: PropTypes.object,
   location: PropTypes.instanceOf(Location),
-  //
+  address: PropTypes.string,
   interested: PropTypes.bool,
   going: PropTypes.bool,
   interestedCount: PropTypes.number,
   goingCount: PropTypes.number,
-  //
+  fbLink: PropTypes.string,
 };
 
 class Event extends EventRecord<EventProps> {
@@ -51,12 +52,12 @@ class Event extends EventRecord<EventProps> {
       posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
       happeningOn: moment(data.happeningOn),
       location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
-      //
+      address: data.address,
       interested: data.interested,
       going: data.going,
       interestedCount: data.interestedCount,
       goingCount: data.goingCount,
-      //
+      fbLink: data.fbLink,
     });
   }
 }

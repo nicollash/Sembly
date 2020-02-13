@@ -8,10 +8,13 @@ import {
   View,
   Text,
   Image,
+  Alert,
   ImageBackground,
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  RefreshControl,
+  Platform,
   FlatList,
   StyleSheet,
   Share,
@@ -23,7 +26,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import {
-  getLocationReference, setPanelHeight, updateMap, fetchLocationPosts, getPostsForLocation,
+  getLocationReference, setPanelHeight, updateMap, fetchLocationPosts, getPostsForLocation, refreshFeed, UPDATE_FEED_LOADING,
 } from '../../actions';
 import { isIphoneX } from '../../styles/iphoneModelCheck';
 
@@ -43,15 +46,13 @@ const styles = StyleSheet.create({
 class LocationView extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = { locationId: 0 };
   }
 
   render() {
     const { navigation, location } = this.props;
-    const screenHeight = Dimensions.get('window').height;
 
-    console.log(location);
+    console.log(this.props.posts);
 
     if (!location) return null;
 
@@ -63,7 +64,19 @@ class LocationView extends React.Component {
     const phoneNumber = location.phone ? parsePhoneNumberFromString(location.phone) : undefined;
 
     return (
-      <ScrollView>
+      <ScrollView
+        ref={(ref) => { this.scroll = ref; }}
+        pointerEvents={this.props.isLoading ? 'none' : 'auto'}
+        refreshControl={(
+          <RefreshControl
+            refreshing={this.props.isLoading}
+            onRefresh={this.props.refreshFeed}
+          />
+        )}
+        contentContainerStyle={{
+          opacity: Platform.OS === 'ios' && this.props.isLoading ? 0.6 : 1,
+        }}
+      >
         <View style={{
           justifyContent: 'flex-start',
           alignItems: 'center',
@@ -122,37 +135,43 @@ class LocationView extends React.Component {
               <View style={{
                 flexDirection: 'row',
                 marginLeft: wp(10),
-                alignItems: 'center',
+                alignContent: 'center',
+                marginTop: 5,
+                maxWidth: wp(86),
+                maxHeight: 30,
               }}
               >
-                <TouchableOpacity
-                  onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
-                >
-                  <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
-                    {location.location.name !== '' && (
+                {location.address && (
+                  <TouchableOpacity
+                    onPress={() => this.props.updateMap(location.location.lat, location.location.lon)}
+                  >
+                    <View style={{ flexDirection: 'row', paddingVertical: hp(1) }}>
                       <Image source={require('../../../assets/images/LocationViewLocationPin.png')} />
-                    )}
-                    <Text style={{
-                      fontSize: wp(3.3),
-                      color: 'black',
-                      marginLeft: wp(1),
-                      fontFamily: Theme.fonts.bold,
-                    }}
-                    >
-                      {location.location.name}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                {}
-                {location.phone !== '' && (
+                      <Text style={{
+                        fontSize: wp(3.2),
+                        color: '#000',
+                        marginLeft: wp(1),
+                        fontFamily: Theme.fonts.bold,
+                      }}
+                      >
+                        {location.constructor.name === 'Business'
+                          ? location.address.split('\n')[0]
+                          : location.address.split('-')[1].split(',')[0]}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                {location.phone && (
                   <TouchableOpacity
                     onPress={() => { Linking.openURL(`telprompt:${phoneNumber || location.phone}`); }}
-                    style={{ flexDirection: 'row' }}
+                    style={{ flexDirection: 'row', marginTop: 7, marginLeft: 10 }}
                   >
-                    <Image source={require('../../../assets/images/LocationViewPhoneIcon.png')} />
+                    <Image
+                      source={require('../../../assets/images/LocationViewPhoneIcon.png')}
+                    />
                     <Text
                       style={{
-                        fontSize: wp(3.3),
+                        fontSize: wp(3.2),
                         color: '#000',
                         fontFamily: Theme.fonts.bold,
                         marginLeft: 3,
@@ -169,10 +188,10 @@ class LocationView extends React.Component {
                       style={{ height: 15, resizeMode: 'contain' }}
                     />
                     <Text style={{
-                      fontSize: wp(3.3),
+                      fontSize: wp(3.2),
                       color: '#000',
                       fontFamily: Theme.fonts.bold,
-                      marginLeft: wp(0.5),
+                      marginLeft: 3,
                     }}
                     >
                       {location.happeningOn.format('MMMM Do YYYY, h:mm:ss a')}
@@ -180,32 +199,62 @@ class LocationView extends React.Component {
                   </View>
                 )}
               </View>
+              {location.constructor.name === 'Business' && (
+                <TouchableOpacity style={{ flexDirection: 'row', marginBottom: 11.5, marginLeft: 5, alignItems: 'center' }}>
+                  <Text style={{
+                    fontSize: wp(3),
+                    color: '#000',
+                    fontFamily: Theme.fonts.bold,
+                    marginLeft: wp(9),
+                    maxWidth: wp(89),
+                  }}
+                  >
+                    {location.website}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {location.constructor.name === 'Event' && (
+                <TouchableOpacity style={{ flexDirection: 'row', marginBottom: 12, marginLeft: 5, alignItems: 'center' }}>
+                  <Text style={{
+                    fontSize: wp(3),
+                    color: '#000',
+                    fontFamily: Theme.fonts.bold,
+                    marginLeft: wp(9),
+                    maxWidth: wp(89),
+                  }}
+                  >
+                    {location.fbLink}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <View style={styles.separatorBar} />
           <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
-            <FlatList
-              data={this.props.posts}
-              renderItem={({ item }) => (
-                <FeedUserPost
-                  post={item}
-                  postID={item.id}
-                  location={item.title}
-                  username={item.user.name}
-                  userPostText={item.text}
-                  userPostPicture={item.picture}
-                  userProfilePicture={item.user.avatar}
-                  moveOnPress={() => this.props.navigation.navigate('Post', { post: item, sourceLocation: location })}
-                  comments={item.comments.length}
-                />
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{ height: 8 }} />
-              )}
-              ListFooterComponent={() => (
-                <View style={{ height: 100 }} />
-              )}
-            />
+            {location.posts.length !== this.props.posts && (
+              <FlatList
+                data={this.props.posts}
+                renderItem={({ item }) => (
+                  <FeedUserPost
+                    post={item}
+                    postID={item.id}
+                    location={item.title}
+                    username={item.user.name}
+                    userPostText={item.text}
+                    userPostPicture={item.picture}
+                    userProfilePicture={item.user.avatar}
+                    moveOnPress={() => this.props.navigation.navigate('Post', { post: item, sourceLocation: location })}
+                    comments={item.comments.length}
+                  />
+                )}
+                ItemSeparatorComponent={() => (
+                  <View style={{ height: 8 }} />
+                )}
+                ListFooterComponent={() => (
+                  <View style={{ height: 100 }} />
+                )}
+              />
+            )}
           </View>
         </View>
         <View style={{ height: this.props.panelHeight === 20 ? 190 : hp(100) - 80 - this.props.panelHeight }} />
@@ -224,6 +273,7 @@ LocationView.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   const location = getLocationReference(ownProps.navigation.getParam('location'), state);
   return {
+    isLoading: state.feed.isLoading,
     businesses: state.feed.businesses,
     posts: getPostsForLocation(location, state),
     location,
@@ -234,6 +284,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   updateMap: (lat, lon) => dispatch(updateMap(lat, lon)),
   fetchLocationPosts: (id, className) => dispatch(fetchLocationPosts(id, className)),
+  refreshFeed: category => dispatch(refreshFeed({ category })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationView);

@@ -50,7 +50,6 @@ const getUser = async req => {
 //
 exports.newPost = functions.https.onRequest(async (request, response) => {
   // response.send(`Hello from Firebase my ${request.query.a}`);
-  console.log(util.inspect(request.body, {showHidden: false, depth: null}))
   const user = await getUser(request);
 
   // Setup image bucket
@@ -70,6 +69,8 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
   }
 
   const { text, location, category, business } = request.body;
+  const isBusiness = business.id !== '';
+  console.log(isBusiness, business);
   geocode = await googleMaps
     .reverseGeocode({
       latlng: [parseFloat(location.lat), parseFloat(location.lon)]
@@ -79,7 +80,7 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 
   // Geocode location, if needs be
   locationName =
-    !business
+    !isBusiness
       ? geocode.json.results[0].address_components[1].long_name
       : business.name;
 
@@ -92,9 +93,9 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
       showOnMap: location.name !== "",
       createdAt: moment().format(),
       locationName,
-      locationID: business ? business.id : 'none',
-      locationType: business ? (category === 'Events' ? 'event' : 'business') : 'none',
-      businessName: business ? business.name : 'noname',
+      locationID: isBusiness ? business.id : 'none',
+      locationType: isBusiness ? (category === 'Events' ? 'event' : 'business') : 'none',
+      businessName: isBusiness ? business.name : 'noname',
       category,
       picture,
       user: {
@@ -107,10 +108,14 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
     })
     .then(docRef => {
       console.log("Document written with ID: ", docRef.id);
-      return business ? geofirestore.collection("Businesses").doc(`${business.id}`).get() : docRef.get();
-    }).then(doc => {
-      console.log({ ...doc.data() });
-      return response.status(200).send({...doc.data() });
+      return isBusiness ? geofirestore.collection("Businesses") : Promise.resolve(docRef);
+    }).then((doc) => {
+      return isBusiness
+        ? doc.doc(`${business.id}`).get()
+        : doc.get();
+    })
+    .then((doc) => {
+      return response.status(200).send({ ...doc.data() });
     })
     .catch(error => {
       console.log("Error adding document: ", error);
@@ -121,7 +126,6 @@ exports.newPost = functions.https.onRequest(async (request, response) => {
 exports.addComment = functions.https.onRequest(async (request, response) => {
   console.log(util.inspect(request.body, {showHidden: false, depth: null}));
   
-  console.log('========================');
   const user = await getUser(request);
 
   const postID = request.body.postID;
@@ -434,6 +438,8 @@ exports.uploadEvents = functions.https.onRequest(async (request, response) => {
                 parseFloat(geocode.json.results[0].geometry.location.lat),
                 parseFloat(geocode.json.results[0].geometry.location.lng)
               ),
+              address: worksheet[XLSX.utils.encode_cell({ c:6, r:R })].w,
+              fbLink: worksheet[XLSX.utils.encode_cell({ c:8, r:R })].w,
               happeningOn: moment(`${worksheet[XLSX.utils.encode_cell({ c:2, r:R })].w} ${worksheet[XLSX.utils.encode_cell({ c:1, r:R })].w}`,
               "M/DD/YY HH:mmA").format(),
             };
@@ -503,6 +509,7 @@ exports.uploadBusinesses = functions.https.onRequest(async (request, response) =
                     parseFloat(geocode.json.results[0].geometry.location.lat),
                     parseFloat(geocode.json.results[0].geometry.location.lng)
                   ),
+                  address: worksheet[XLSX.utils.encode_cell({ c: 3, r: R })].w,
                   phone: worksheet[XLSX.utils.encode_cell({ c:5, r:R })].w,
                   website: worksheet[XLSX.utils.encode_cell({ c:4, r:R })].w,
                   type: worksheet[XLSX.utils.encode_cell({ c:7, r:R })].w

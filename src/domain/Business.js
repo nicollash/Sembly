@@ -13,11 +13,13 @@ const BusinessRecord = Immutable.Record({
   description: '',
   picture: '',
   location: new Location(),
+  address: '',
   posts: [],
   phone: '',
   logo: '',
   type: 'General',
   recentPosts: 0,
+  website: '',
 });
 
 const BusinessProps = {
@@ -27,19 +29,20 @@ const BusinessProps = {
   description: PropTypes.text,
   picture: PropTypes.text,
   location: new Location(),
+  address: PropTypes.text,
   posts: PropTypes.arrayOf(Post),
   phone: PropTypes.text,
   logo: PropTypes.text,
   type: PropTypes.text,
   recentPosts: PropTypes.number,
-  //
+  website: PropTypes.text,
 };
 
 class Business extends BusinessRecord<BusinessProps> {
   get className() {
     return 'business';
   }
-  
+
   static parse(data) {
     return new Business({
       id: data.id,
@@ -48,12 +51,13 @@ class Business extends BusinessRecord<BusinessProps> {
       description: data.description,
       picture: data.picture,
       location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
-      posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
+      address: data.address,
+      posts: data.posts,
       phone: data.phone,
       logo: data.picture,
       type: data.type,
       recentPosts: data.recentPosts || 0,
-      //
+      website: data.website,
     });
   }
 }

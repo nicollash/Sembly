@@ -233,7 +233,7 @@ export function updateUserProfile({
           displayName, photoURL, facebookUser, email,
         };
         dispatch({ type: UPDATE_USER, user });
-        dispatch(refreshFeed());
+        dispatch(refreshFeed({}));
       })
       .catch(e => console.log(e));
   };
@@ -455,13 +455,23 @@ export function createNewPost(post) {
       .then((dataJSON) => {
         // Data is business data to parse if a location was tagged,
         if (post.business.id !== '') {
-          const newPostObj = { ...post, coordinates: { _latitude: post.location.lat, _longitude: post.location.lon }, user };
-          const business = Business.parse({ ...dataJSON, posts: [newPostObj] });
+          const newPostObj = Post.parse({
+            ...post,
+            id: post.business.id,
+            coordinates: { _latitude: post.location.lat, _longitude: post.location.lon },
+            user,
+          });
+          dispatch({
+            type: UPDATE_POSTS,
+            posts: [newPostObj, ...getState().feed.posts],
+          });
+          const business = _.find([...getState().feed.businesses], { id: post.business.id });
+          const parsedBusiness = Business.parse({ ...dataJSON, posts: [...business.posts, newPostObj] });
           dispatch({
             type: UPDATE_BUSINESSES,
-            businesses: [...getState().feed.businesses, business],
+            businesses: [...getState().feed.businesses, parsedBusiness],
           });
-          NavigationService.navigate('Location', { location: business });
+          NavigationService.navigate('Location', { location: parsedBusiness });
         }
         // and post data if no location was tagged
         else {
@@ -518,7 +528,7 @@ export function addComment({ post = undefined, text = '' }) {
       return Promise.all([
         dispatch({ type: ADD_COMMENT, comment }),
         dispatch(updatePostCollection(post, updatedPosts)),
-        dispatch(refreshFeed()),
+        dispatch(refreshFeed({})),
       ]);
     });
     // dispatch({ type: ADD_COMMENT, comment });

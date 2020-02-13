@@ -52,7 +52,7 @@ class Business extends BusinessRecord<BusinessProps> {
       picture: data.picture,
       location: new Location({ lat: data.coordinates._latitude, lon: data.coordinates._longitude }),
       address: data.address,
-      posts: data.posts ? data.posts.map(post => Post.parse(post)) : [],
+      posts: data.posts,
       phone: data.phone,
       logo: data.picture,
       type: data.type,

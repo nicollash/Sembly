@@ -202,7 +202,10 @@ class AppRoot extends React.PureComponent {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevState) {
+    if (prevState.user.email === '' && this.state.user) {
+      this.geoLocate();
+    }
     if (this.props.user.facebookUser === 'Old') {
       this.navigator.dispatch(
         NavigationActions.navigate({

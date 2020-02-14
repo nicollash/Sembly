@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { addComment, refreshFeed, updateUserProfile, COMMENT_UPLOADING, commentUpload } from '../actions';
+import { addComment, updateUserProfile, COMMENT_UPLOADING, commentUpload } from '../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../styles/theme';
@@ -106,7 +106,6 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   addComment: ({ post, text }) => dispatch(addComment({ post, text })),
   commentUpload: status => dispatch(commentUpload(status)),
-  refreshFeed: category => dispatch(refreshFeed({ category })),
   updateUserProfile: comment => dispatch(updateUserProfile({ comment })),
 });
 

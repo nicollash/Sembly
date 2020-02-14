@@ -183,7 +183,7 @@ export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 export function updateLocation(lat = 0, lon = 0) {
   return function updateLocationState(dispatch) {
     dispatch({ type: UPDATE_LOCATION, lat, lon });
-    dispatch(refreshFeed({ location: { lat, lon } }));
+    // dispatch(refreshFeed({ location: { lat, lon } }));
   };
 }
 
@@ -235,7 +235,7 @@ export function updateUserProfile({
         };
         return Promise.all([
           dispatch({ type: UPDATE_USER, user }),
-          dispatch(refreshFeed({})),
+          // dispatch(refreshFeed({})),
         ]);
       })
       .catch(e => console.log(e));
@@ -537,7 +537,7 @@ export function addComment({ post = undefined, text = '' }) {
       return Promise.all([
         dispatch({ type: ADD_COMMENT, comment }),
         dispatch(updatePostCollection(post, updatedPosts)),
-        dispatch(refreshFeed({})),
+        // dispatch(refreshFeed({})),
         dispatch(commentUpload(false)),
       ]);
     });

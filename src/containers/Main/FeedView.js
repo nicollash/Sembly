@@ -74,14 +74,13 @@ class FeedView extends React.Component {
     this.state = {
       selectedCategoryTitle: 'All',
       selectedCategoryIcon: icons[0],
-      refreshing: false,
     };
   }
 
   componentWillMount() {}
 
   componentDidMount() {
-    this.props.refreshFeed({});
+    // this.props.refreshFeed({});
   }
 
   componentDidUpdate(prevState, prevProps) {

@@ -229,7 +229,7 @@ class LocationView extends React.Component {
           </View>
           <View style={styles.separatorBar} />
           <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
-            {location.posts.length !== this.props.posts && (
+            {location.posts.length !== this.props.posts.length && (
               <FlatList
                 data={this.props.posts}
                 renderItem={({ item }) => (

@@ -52,11 +52,9 @@ class LocationView extends React.Component {
   render() {
     const { navigation, location } = this.props;
 
-    console.log(this.props.posts);
+    if (!location || !location.address) return null;
 
-    if (!location) return null;
-
-    if (this.state.locationId !== location.id) {
+    if (location && (this.state.locationId !== location.id)) {
       this.props.fetchLocationPosts(location.id, location.className);
       this.setState({ locationId: location.id });
     }
@@ -154,9 +152,9 @@ class LocationView extends React.Component {
                         fontFamily: Theme.fonts.bold,
                       }}
                       >
-                        {location.constructor.name === 'Business'
+                        {location.className === 'business'
                           ? location.address.split('\n')[0]
-                          : location.address.split('-')[1].split(',')[0]}
+                          : location.address.split('-')[1].split(',')[0] || location.address}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -181,7 +179,7 @@ class LocationView extends React.Component {
                     </Text>
                   </TouchableOpacity>
                 )}
-                {location.constructor.name === 'Event' && (
+                {location.className === 'event' && (
                   <View style={{ flexDirection: 'row', marginLeft: wp(1.5), alignItems: 'center' }}>
                     <Image
                       source={require('../../../assets/images/clockIcon.png')}
@@ -199,7 +197,7 @@ class LocationView extends React.Component {
                   </View>
                 )}
               </View>
-              {location.constructor.name === 'Business' && (
+              {location.className === 'business' && (
                 <TouchableOpacity style={{ flexDirection: 'row', marginBottom: 11.5, marginLeft: 5, alignItems: 'center' }}>
                   <Text style={{
                     fontSize: wp(3),
@@ -213,7 +211,7 @@ class LocationView extends React.Component {
                   </Text>
                 </TouchableOpacity>
               )}
-              {location.constructor.name === 'Event' && (
+              {location.className === 'event' && (
                 <TouchableOpacity style={{ flexDirection: 'row', marginBottom: 12, marginLeft: 5, alignItems: 'center' }}>
                   <Text style={{
                     fontSize: wp(3),

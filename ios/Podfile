@@ -54,6 +54,8 @@ target 'sembly' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+
   post_install do |installer|
     fix_fb
     installer.pods_project.targets.each do |target|

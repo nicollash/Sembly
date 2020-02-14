@@ -29,7 +29,7 @@ import SemblyLabel from '../../components/SemblyLabel';
 import SemblyPlaceAutoComplete from '../../components/SemblyPlaceAutoComplete';
 import SemblyDropdown from '../../components/SemblyDropdown';
 import { SemblyInput, SemblyButton } from '../../components';
-import { createNewPost, updateUserProfile, refreshFeed } from '../../actions';
+import { createNewPost, updateUserProfile } from '../../actions';
 import { focusTextInput } from '../../helpers/appFunctions';
 import theme from '../../styles/theme';
 import SemblyMapView from '../Main/SemblyMapView';
@@ -463,7 +463,6 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   createNewPost: post => dispatch(createNewPost(post)),
   updateUserProfile: posts => dispatch(updateUserProfile({ postsCount: posts })),
-  refreshFeed: category => dispatch(refreshFeed({ category })),
 });
 
 export default connect(

@@ -7,9 +7,11 @@ import {
   Dimensions,
 } from 'react-native';
 
-import MapView from "react-native-map-clustering";
+import MapView from 'react-native-map-clustering';
 // Redux
 import { connect } from 'react-redux';
+
+import Sentry from '../../log';
 
 import SemblyMapPin from '../../components/SemblyMapPin';
 import NavigationService from '../../helpers/SlidingPanelNavigation';
@@ -88,7 +90,7 @@ class SemblyMapView extends React.Component {
   }
 
   render() {
-    if (!this.props.location) return null;
+    if (!this.props.location || !this.props.location.lat) return null;
     const eventsLatitude = [];
     const eventsLongitude = [];
     
@@ -196,6 +198,7 @@ const mapStateToProps = (state, ownProps) => ({
   posts: state.feed.posts,
   location: state.user.location,
   categories: state.feed.categories,
+  user: state.user,
   // activeLocation: state.map.activeLocation,
 });
 

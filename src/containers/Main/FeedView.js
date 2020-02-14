@@ -74,17 +74,13 @@ class FeedView extends React.Component {
     this.state = {
       selectedCategoryTitle: 'All',
       selectedCategoryIcon: icons[0],
-      refreshing: false,
     };
   }
 
   componentWillMount() {}
 
   componentDidMount() {
-    this.props.refreshFeed({});
-    this.focusListener = this.props.navigation.addListener('didFocus', () => {
-      this._onRefresh();
-    });
+    // this.props.refreshFeed({});
   }
 
   componentDidUpdate(prevState, prevProps) {
@@ -94,7 +90,6 @@ class FeedView extends React.Component {
   }
 
   componentWillUnmount() {
-    this.focusListener.remove();
   }
 
   _handleScroll = () => {

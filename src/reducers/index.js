@@ -26,6 +26,7 @@ import {
   SET_PANEL_HEIGHT,
   ADD_COMMENT,
   SCROLL_TO_TOP,
+  COMMENT_UPLOADING,
 } from '../actions';
 
 
@@ -121,6 +122,7 @@ const userDefault = {
   email: '',
   posts: [],
   comments: [],
+  commentUploading: false,
   likesCount: 0,
   facebookUser: undefined,
 };
@@ -131,6 +133,8 @@ const user = (state = userDefault, action) => {
     return Object.assign({}, state, { location: { lat: action.lat, lon: action.lon } });
   case UPDATE_USER:
     return Object.assign({}, state, { ...action.user });
+  case COMMENT_UPLOADING:
+    return Object.assign({}, state, { commentUploading: action.status });
   case LOGIN_ERROR:
     return Object.assign({}, state, { loginError: action.message });
   case SIGNUP_ERROR:

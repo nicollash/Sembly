@@ -24,6 +24,7 @@ export const UPDATE_FILTER = 'UPDATE_FILTER';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
+export const COMMENT_UPLOADING = 'COMMENT_UPLOADING';
 
 // Utilities
 export function getPostCollection(post) {
@@ -232,8 +233,10 @@ export function updateUserProfile({
         const user = {
           displayName, photoURL, facebookUser, email,
         };
-        dispatch({ type: UPDATE_USER, user });
-        dispatch(refreshFeed({}));
+        return Promise.all([
+          dispatch({ type: UPDATE_USER, user }),
+          dispatch(refreshFeed({})),
+        ]);
       })
       .catch(e => console.log(e));
   };
@@ -492,6 +495,12 @@ export function createNewPost(post) {
   };
 }
 
+export function commentUpload(status) {
+  return async function commentUploadState(dispatch) {
+    dispatch({ type: COMMENT_UPLOADING, status });
+  };
+}
+
 // Add comment
 export const ADD_COMMENT = 'ADD_COMMENT';
 export function addComment({ post = undefined, text = '' }) {
@@ -529,6 +538,7 @@ export function addComment({ post = undefined, text = '' }) {
         dispatch({ type: ADD_COMMENT, comment }),
         dispatch(updatePostCollection(post, updatedPosts)),
         dispatch(refreshFeed({})),
+        dispatch(commentUpload(false)),
       ]);
     });
     // dispatch({ type: ADD_COMMENT, comment });

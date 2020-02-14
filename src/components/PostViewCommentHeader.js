@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { addComment, refreshFeed, updateUserProfile } from '../actions';
+import { addComment, refreshFeed, updateUserProfile, COMMENT_UPLOADING, commentUpload } from '../actions';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import theme from '../styles/theme';
@@ -33,7 +33,6 @@ class PostViewCommentHeader extends React.Component {
 
     this.state = {
       comment: '',
-      spinning: false,
     };
   }
 
@@ -71,13 +70,8 @@ class PostViewCommentHeader extends React.Component {
                 setTimeout(() => {
                   this.setState({ comment: '' });
                 }, 50),
-                this.setState({ spinning: true }),
-                this.props.addComment({ post: this.props.post, text: comment })
-                  .then(() => {
-                    setTimeout(() => {
-                      this.setState({ spinning: false });
-                    }, 2000);
-                  }),
+                this.props.commentUpload(true),
+                this.props.addComment({ post: this.props.post, text: comment }),
                 this.props.updateUserProfile(comment),
                 Keyboard.dismiss(),
               ]);
@@ -85,7 +79,7 @@ class PostViewCommentHeader extends React.Component {
             multiline
             returnKeyType="send"
           />
-          {this.state.spinning && (
+          {this.props.commentUploading && (
             <View style={{ position: 'absolute', right: 5 }}>
               <ActivityIndicator color="#28335E" />
             </View>
@@ -106,10 +100,12 @@ PostViewCommentHeader.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => ({
+  commentUploading: state.user.commentUploading,
 });
 
 const mapDispatchToProps = dispatch => ({
-  addComment: ({post, text}) => dispatch(addComment({ post, text })),
+  addComment: ({ post, text }) => dispatch(addComment({ post, text })),
+  commentUpload: status => dispatch(commentUpload(status)),
   refreshFeed: category => dispatch(refreshFeed({ category })),
   updateUserProfile: comment => dispatch(updateUserProfile({ comment })),
 });

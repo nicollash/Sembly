@@ -82,9 +82,6 @@ class FeedView extends React.Component {
 
   componentDidMount() {
     this.props.refreshFeed({});
-    this.focusListener = this.props.navigation.addListener('didFocus', () => {
-      this._onRefresh();
-    });
   }
 
   componentDidUpdate(prevState, prevProps) {
@@ -94,7 +91,6 @@ class FeedView extends React.Component {
   }
 
   componentWillUnmount() {
-    this.focusListener.remove();
   }
 
   _handleScroll = () => {

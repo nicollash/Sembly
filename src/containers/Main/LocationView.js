@@ -49,6 +49,9 @@ class LocationView extends React.Component {
     this.state = { locationId: 0 };
   }
 
+  componentDidMount() {
+  }
+
   render() {
     const { navigation, location } = this.props;
 
@@ -230,7 +233,7 @@ class LocationView extends React.Component {
           <View style={styles.separatorBar} />
           <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
             <FlatList
-              data={this.props.posts}
+              data={_.uniq([...location.posts, ...this.props.posts])}
               renderItem={({ item }) => (
                 <FeedUserPost
                   post={item}

@@ -236,7 +236,6 @@ export function updateUserProfile({
         };
         return Promise.all([
           dispatch({ type: UPDATE_USER, user }),
-          dispatch(refreshFeed({})),
         ]);
       })
       .catch(e => console.log(e));
@@ -465,10 +464,6 @@ export function createNewPost(post) {
             coordinates: { _latitude: post.location.lat, _longitude: post.location.lon },
             user,
           });
-          // dispatch({
-          //   type: UPDATE_POSTS,
-          //   posts: [newPostObj, ...getState().feed.posts],
-          // });
           const business = _.find([...getState().feed.businesses], { id: post.business.id });
           const parsedBusiness = Business.parse({ ...dataJSON, posts: [...business.posts, newPostObj] });
           dispatch({
@@ -476,7 +471,6 @@ export function createNewPost(post) {
             businesses: [...getState().feed.businesses, parsedBusiness],
           });
           NavigationService.navigate('Location', { location: parsedBusiness });
-          // dispatch(refreshFeed({}));
         }
         // and post data if no location was tagged
         else {

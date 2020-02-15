@@ -67,15 +67,15 @@ class SemblyMapView extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location && this.props.location !== prevProps.location && this.props.location.lat && this.props.location.lon) {
-      this.map.animateToRegion({
-        latitude: this.props.location.lat,
-        longitude: this.props.location.lon,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      }, 2500);
-      this.debounceUpdateFeed();
-    }
+    // if (this.props.location && this.props.location !== prevProps.location && this.props.location.lat && this.props.location.lon) {
+    //   this.map.animateToRegion({
+    //     latitude: this.props.location.lat,
+    //     longitude: this.props.location.lon,
+    //     latitudeDelta: 0.0922,
+    //     longitudeDelta: 0.0421,
+    //   }, 2500);
+    //   this.debounceUpdateFeed();
+    // }
     if (this.props.searchLatitude) {
       this.map.animateToRegion({
         latitude: this.props.searchLatitude,

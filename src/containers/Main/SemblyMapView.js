@@ -104,7 +104,7 @@ class SemblyMapView extends React.Component {
           longitude={event.location.lon}
           pinColor={_.where(this.props.categories, { title: 'Events' })[0].color}
           pinIcon={icons[_.where(this.props.categories, { title: 'Events' })[0].icon]}
-          onPress={() => NavigationService.navigate('Location', { location: event })}
+          onPress={() => this.props.newPost ? null : NavigationService.navigate('Location', { location: event })}
           // notifications={event.notifications}
           // notifications={_.random(0, 25)}
           pinLabel={event.title}
@@ -146,7 +146,7 @@ class SemblyMapView extends React.Component {
           longitude={business.location.lon}
           pinColor={_.where(this.props.categories, { title: business.type })[0].color}
           pinIcon={icons[_.where(this.props.categories, { title: business.type })[0].icon]}
-          onPress={() => { this.props.onResult({ id: business.id, name: business.name, lat: business.location.lat, long: business.location.lon }), NavigationService.navigate('Location', { location: business })}}
+          onPress={() => { this.props.onResult({ id: business.id, name: business.name, lat: business.location.lat, long: business.location.lon }), this.props.newPost ? null : NavigationService.navigate('Location', { location: business })}}
           notifications={business.recentPosts}
           pinLabel={business.name}
         />

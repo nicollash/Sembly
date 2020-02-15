@@ -67,7 +67,7 @@ class LocationView extends React.Component {
         pointerEvents={this.props.isLoading ? 'none' : 'auto'}
         refreshControl={(
           <RefreshControl
-            refreshing={this.props.isLoading}
+            refreshing={this.props.isLoading && !this.props.resets}
             onRefresh={this.props.refreshFeed}
           />
         )}
@@ -229,30 +229,28 @@ class LocationView extends React.Component {
           </View>
           <View style={styles.separatorBar} />
           <View style={{ left: '2.8%', marginTop: isIphoneX() ? hp(1) : hp(1), width: '100%' }}>
-            {location.posts.length !== this.props.posts.length && (
-              <FlatList
-                data={this.props.posts}
-                renderItem={({ item }) => (
-                  <FeedUserPost
-                    post={item}
-                    postID={item.id}
-                    location={item.title}
-                    username={item.user.name}
-                    userPostText={item.text}
-                    userPostPicture={item.picture}
-                    userProfilePicture={item.user.avatar}
-                    moveOnPress={() => this.props.navigation.navigate('Post', { post: item, sourceLocation: location })}
-                    comments={item.comments.length}
-                  />
-                )}
-                ItemSeparatorComponent={() => (
-                  <View style={{ height: 8 }} />
-                )}
-                ListFooterComponent={() => (
-                  <View style={{ height: 100 }} />
-                )}
-              />
-            )}
+            <FlatList
+              data={this.props.posts}
+              renderItem={({ item }) => (
+                <FeedUserPost
+                  post={item}
+                  postID={item.id}
+                  location={item.title}
+                  username={item.user.name}
+                  userPostText={item.text}
+                  userPostPicture={item.picture}
+                  userProfilePicture={item.user.avatar}
+                  moveOnPress={() => this.props.navigation.navigate('Post', { post: item, sourceLocation: location })}
+                  comments={item.comments.length}
+                />
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{ height: 8 }} />
+              )}
+              ListFooterComponent={() => (
+                <View style={{ height: 100 }} />
+              )}
+            />
           </View>
         </View>
         <View style={{ height: this.props.panelHeight === 20 ? 190 : hp(100) - 80 - this.props.panelHeight }} />
@@ -276,6 +274,7 @@ const mapStateToProps = (state, ownProps) => {
     posts: getPostsForLocation(location, state),
     location,
     panelHeight: state.appState.panelHeight,
+    resets: state.feed.resets,
   };
 };
 

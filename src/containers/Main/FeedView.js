@@ -80,7 +80,7 @@ class FeedView extends React.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    // this.props.refreshFeed({});
+    this._onRefresh();
   }
 
   componentDidUpdate(prevState, prevProps) {

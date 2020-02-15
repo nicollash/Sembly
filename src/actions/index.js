@@ -103,6 +103,7 @@ export function setPanelNavigation(navigation) {
 // User
 export function refreshFeed({ type = 'hot', category = 'all', location = undefined }) {
   return async function refreshFeedState(dispatch, getState) {
+    console.log("REFRESH FEED");
     // eslint-disable-next-line no-underscore-dangle
     const _location = location === undefined
       ? {
@@ -183,7 +184,7 @@ export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 export function updateLocation(lat = 0, lon = 0) {
   return function updateLocationState(dispatch) {
     dispatch({ type: UPDATE_LOCATION, lat, lon });
-    // dispatch(refreshFeed({ location: { lat, lon } }));
+    dispatch(refreshFeed({ location: { lat, lon } }));
   };
 }
 
@@ -235,7 +236,7 @@ export function updateUserProfile({
         };
         return Promise.all([
           dispatch({ type: UPDATE_USER, user }),
-          // dispatch(refreshFeed({})),
+          dispatch(refreshFeed({})),
         ]);
       })
       .catch(e => console.log(e));
@@ -381,7 +382,7 @@ export function getUserPosts() {
 export function fetchLocationPosts(locationID, className) {
   return async function getBusinessPostsState(dispatch, getState) {
     const token = await firebase.auth().currentUser.getIdToken();
-    dispatch({ type: UPDATE_FEED_LOADING, status: true });
+    // dispatch({ type: UPDATE_FEED_LOADING, status: true });
     fetch(`${API_URL}/getBusinessPosts/?locationID=${locationID}`, {
       method: 'GET',
       headers: {
@@ -424,11 +425,11 @@ export function fetchLocationPosts(locationID, className) {
           );
           dispatch({ type: UPDATE_EVENTS, events });
         }
-        dispatch({ type: UPDATE_FEED_LOADING, status: false });
+        // dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: UPDATE_FEED_LOADING, status: false });
+        // dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
   };
 }
@@ -464,10 +465,10 @@ export function createNewPost(post) {
             coordinates: { _latitude: post.location.lat, _longitude: post.location.lon },
             user,
           });
-          dispatch({
-            type: UPDATE_POSTS,
-            posts: [newPostObj, ...getState().feed.posts],
-          });
+          // dispatch({
+          //   type: UPDATE_POSTS,
+          //   posts: [newPostObj, ...getState().feed.posts],
+          // });
           const business = _.find([...getState().feed.businesses], { id: post.business.id });
           const parsedBusiness = Business.parse({ ...dataJSON, posts: [...business.posts, newPostObj] });
           dispatch({
@@ -475,6 +476,7 @@ export function createNewPost(post) {
             businesses: [...getState().feed.businesses, parsedBusiness],
           });
           NavigationService.navigate('Location', { location: parsedBusiness });
+          // dispatch(refreshFeed({}));
         }
         // and post data if no location was tagged
         else {
@@ -537,11 +539,9 @@ export function addComment({ post = undefined, text = '' }) {
       return Promise.all([
         dispatch({ type: ADD_COMMENT, comment }),
         dispatch(updatePostCollection(post, updatedPosts)),
-        // dispatch(refreshFeed({})),
         dispatch(commentUpload(false)),
       ]);
     });
-    // dispatch({ type: ADD_COMMENT, comment });
   };
 }
 

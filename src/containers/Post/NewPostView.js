@@ -158,7 +158,7 @@ class NewPostView extends React.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    this.props.navigation.setParams({ submit: this.submit });
+    this.props.navigation.setParams({ submit: this.submit, goBack: this.goBack });
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
   }
 

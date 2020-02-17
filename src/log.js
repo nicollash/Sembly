@@ -1,5 +1,8 @@
 import * as Sentry from '@sentry/react-native';
 
-Sentry.init({
-  dsn: 'https://aa47444b44084c8cb4806bd5add1edbd@sentry.io/2505726',
-});
+// eslint-disable-next-line no-undef
+if (!__DEV__) {
+  Sentry.init({
+    dsn: 'https://03df0cda3fec4a1c8d41dcfc22f923a3@sentry.io/2525582', 
+  });
+}

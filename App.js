@@ -18,12 +18,7 @@ import store, { persistor } from './src/reducers';
 // Views
 import { AppRoot } from './src/containers';
 
-import * as Sentry from '@sentry/react-native';
-
-Sentry.init({ 
-  dsn: 'https://aa47444b44084c8cb4806bd5add1edbd@sentry.io/2505726', 
-});
-
+import './src/log';
 
 type Props = {};
 class App extends Component<Props> {

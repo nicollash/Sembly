@@ -64,6 +64,20 @@ class LocationView extends React.Component {
 
     const phoneNumber = location.phone ? parsePhoneNumberFromString(location.phone) : undefined;
 
+
+    
+    let locationAddress = location.address
+    if(location.className === 'business'){
+      if(location.address.split('\n') && location.address.split('\n')[0]){
+        locationAddress = location.address.split('\n')[0]
+      }
+    }else if(location.address.split('-')){
+      if(location.address.split('-')[1] && location.address.split('-')[1].split(',')){
+        locationAddress = location.address.split('-')[1].split(',')[0]
+      }
+    }
+
+
     return (
       <ScrollView
         ref={(ref) => { this.scroll = ref; }}
@@ -154,10 +168,8 @@ class LocationView extends React.Component {
                         marginLeft: wp(1),
                         fontFamily: Theme.fonts.bold,
                       }}
-                      >
-                        {location.className === 'business'
-                          ? location.address.split('\n')[0]
-                          : location.address.split('-')[1].split(',')[0] || location.address}
+                      > 
+                        {locationAddress} 
                       </Text>
                     </View>
                   </TouchableOpacity>

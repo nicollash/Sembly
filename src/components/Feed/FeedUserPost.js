@@ -177,7 +177,7 @@ class FeedUserPost extends React.Component {
             justifyContent: 'space-between',
           }}
         >
-          {post.showOnMap && post.locationName && (
+          {post.showOnMap && post.location && (
             <TouchableOpacity onPress={() => this.gotoLocation(post.location)}>
               <View
                 style={{
@@ -188,10 +188,10 @@ class FeedUserPost extends React.Component {
                 <Image
                   source={require('../../../assets/images/PhotoPostLocationIcon.png')}
                 />
-                <View style={{ width: Platform.OS === 'ios' ? 5 : 0 }} />
+                {/* <View style={{ width: Platform.OS === 'ios' ? 5 : 0 }} />
                 <Text style={[styles.postText, { marginTop: 1, marginLeft: Platform.OS === 'ios' ? 0 : 5 }]}>
                   {post.locationName}
-                </Text>
+                </Text> */}
               </View>
             </TouchableOpacity>
           )}

@@ -22,6 +22,7 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_FEED_LOADING = 'UPDATE_FEED_LOADING';
 export const UPDATE_FILTER = 'UPDATE_FILTER';
 export const UPDATE_POSTS = 'UPDATE_POSTS';
+export const UPDATE_FIXED_POSTS= 'UPDATE_FIXED_POSTS'
 export const UPDATE_EVENTS = 'UPDATE_EVENTS';
 export const UPDATE_BUSINESSES = 'UPDATE_BUSINESSES';
 export const COMMENT_UPLOADING = 'COMMENT_UPLOADING';
@@ -72,6 +73,7 @@ export function getLocationReference(location, state) {
 export function updatePostCollection(post, posts) {
   return function updatePostCollectionState(dispatch, getState) {
     dispatch({ type: UPDATE_POSTS, posts });
+    dispatch({ type: UPDATE_FIXED_POSTS, posts });
     // if (post.locationID === 'none') dispatch({ type: UPDATE_POSTS, posts });
 
     // if (post.locationID !== 'none' && post.locationType === 'business') {
@@ -170,6 +172,7 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
         // Update posts
         const posts = feedJSON.posts.map(p => Post.parse(p));
         dispatch({ type: UPDATE_POSTS, posts });
+        dispatch({ type: UPDATE_FIXED_POSTS, posts });
 
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       })
@@ -177,6 +180,26 @@ export function refreshFeed({ type = 'hot', category = 'all', location = undefin
         console.log(e);
         dispatch({ type: UPDATE_FEED_LOADING, status: false });
       });
+  };
+}
+
+export function refreshFeedLocaly({ type = 'hot', category = 'all', location = undefined }) {
+  return async function refreshFeedLocaly(dispatch, getState) {
+    
+    // eslint-disable-next-line no-underscore-dangle
+    const posts = _.sortBy(getState().feed.fixedPosts, (post) => {
+      switch(type) {
+        case 'Hot':
+          return (-post.comments.length);
+        case 'Best':
+          return (-post.likesCount);
+        case 'New':
+          return -moment(post.createdAt).unix();
+      }
+    })
+
+    dispatch({ type: UPDATE_POSTS, posts });
+    dispatch({ type: UPDATE_FEED_LOADING, status: false });
   };
 }
 
@@ -480,6 +503,7 @@ export function createNewPost(post) {
             type: UPDATE_POSTS,
             posts: [targetPost, ...getState().feed.posts],
           });
+          dispatch({ type: UPDATE_FIXED_POSTS, posts: [targetPost, ...getState().feed.posts], });
           NavigationService.navigate('Post', { post: targetPost });
         }
         dispatch({ type: SENDING_POST, sendingPost: false });

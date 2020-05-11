@@ -27,6 +27,7 @@ import {
   ADD_COMMENT,
   SCROLL_TO_TOP,
   COMMENT_UPLOADING,
+  UPDATE_FIXED_POSTS,
 } from '../actions';
 
 
@@ -98,6 +99,8 @@ const feed = (state = feedDefault, action) => {
     return Object.assign({}, state, { categories: action.categories });
   case UPDATE_POSTS:
     return Object.assign({}, state, { posts: action.posts });
+  case UPDATE_FIXED_POSTS:
+    return Object.assign({}, state, { fixedPosts: action.posts });
   case UPDATE_EVENTS:
     return Object.assign({}, state, { events: action.events });
   case UPDATE_BUSINESSES:

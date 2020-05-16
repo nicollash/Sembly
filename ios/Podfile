@@ -47,10 +47,13 @@ target 'sembly' do
   pod 'RNFS', :path => '../node_modules/react-native-fs'
   pod 'react-native-fbsdk', :path => '../vendor/react-native-fbsdk'
 
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
-  pod 'FBSDKShareKit'
+  #pod 'FBSDKCoreKit'
+  #pod 'FBSDKLoginKit'
+  #pod 'FBSDKShareKit'
 
+pod 'FBSDKCoreKit', '5.8.0'
+pod 'FBSDKLoginKit', '5.8.0'
+pod 'FBSDKShareKit', '5.8.0'
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 

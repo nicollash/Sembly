@@ -27,12 +27,12 @@ target 'sembly' do
 
   # Firebase
   #use_frameworks!
-  pod 'Firebase/Core', '~> 6.3.0'
-  pod 'Firebase/Messaging', '~> 6.3.0'
-  pod 'Firebase/Auth', '~> 6.3.0'
-  pod 'Firebase/Storage', '~> 6.3.0'
+  pod 'Firebase/Core', '~> 6.8.1'
+  pod 'Firebase/Messaging', '~> 6.8.1'
+  pod 'Firebase/Auth', '~> 6.8.1'
+  pod 'Firebase/Storage', '~> 6.8.1'
   pod 'Firebase/Database'
-  pod 'Firebase/Firestore', '~> 6.3.0'
+  pod 'Firebase/Firestore', '~> 6.8.1'
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
